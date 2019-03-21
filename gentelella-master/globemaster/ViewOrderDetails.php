@@ -65,8 +65,67 @@
                                 </h1>
                                 <div class="clearfix"></div>
                             </div> <!--END Xtitle-->
-                           
                             <div class="x_content">
+
+                            <?php
+                                $GET_OR_FROM_SESSION_1 = $_SESSION['order_number_from_view'];
+                                $SQL_SELECT_FROM_ORDER_ORDERSTATUS_1 = "SELECT * FROM orders WHERE ordernumber = '$GET_OR_FROM_SESSION_1'";
+                                $RESULT_SELECT_ORDERSTATUS_1 = mysqli_query($dbc,$SQL_SELECT_FROM_ORDER_ORDERSTATUS_1);
+                                while($ROW_RESULT_SELECT_STATUS_1=mysqli_fetch_array($RESULT_SELECT_ORDERSTATUS_1,MYSQLI_ASSOC))
+                                {
+                                    $statows = $ROW_RESULT_SELECT_STATUS_1['order_status'];
+                                    $fabstatows = $ROW_RESULT_SELECT_STATUS_1['fab_status'];
+                                    if($statows == "PickUp") //order status
+                                    {
+                            ?>
+                                    <p><font color = "black">This order is to be picked up by the customer.</font></p>
+                            <?php
+                                        if($fabstatows == "Under Fabrication" || $fabstatows == "For Fabrication") //fabrication status
+                                        {
+                            ?>
+                                    <p><font color = "#ADD8E6">This order is still staged for fabrication, and is not yet ready for pickup.</font></p>
+                            <?php
+                                        }
+                                        else if($fabstatows == "Disapproved")
+                                        {
+                            ?>
+                                    <p><font color = "red">This order's fabrication request has been disapproved. Please inform the customer about the disapproval.</font></p>
+                            <?php
+                                        }
+                                        else if($fabstatows == "Finished Fabrication")
+                                        {
+                            ?>
+                                    <p><font color = "green">This order's fabrication request is finished! The items are ready to be picked up by the customer. Please inform the customer about this.</font></p>
+                            <?php
+                                        }
+                                        else if($fabstatows == "No Fabrication")
+                                        {
+                            ?>
+                                    <p><font color = "blue">The items are ready to be picked up by the customer. Please inform the customer about this.</font></p>
+                            <?php
+                                        }
+                                    }
+                                    else if($statows == "Order In Progress" || $statows == "Deliver")
+                                    {
+                            ?>
+                                    <p><font color = "black">This order is currently in progress.</font></p>
+                            <?php
+                                    }
+                                    else if($statows == "Cancelled")
+                                    {
+                            ?>
+                                    <p><font color = "red">This order is cancelled.</font></p>
+                            <?php 
+                                    }
+                                    else if($statows == "Delivered")
+                                    {
+                            ?>
+                                    <p><font color = "green">This order is completed.</font></p> 
+                            <?php
+                                    }
+                                }
+                            ?>
+                           
                           
                                 <form class="form-horizontal form-label-center" method="POST">
 
