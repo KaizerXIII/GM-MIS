@@ -35,6 +35,10 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- JQUERY -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="js/script.js"></script>
   </head>
 
   <body class="nav-md">
@@ -97,7 +101,7 @@
                               </div>
                           </div> -->
                           <center>
-                          <div id="reportrange" class="btn btn-success btn-lg" >
+                          <div id="report_range" class="btn btn-success btn-lg" >
                           <span></span> <b class="caret"></b>
 
                               
@@ -112,6 +116,69 @@
                           </div> -->
 
                         </div>
+                        <script>
+                        
+                            $(document).ready(function() {
+                              
+
+                            $(function() {
+                              
+                              var start = moment("2019-01-01 00:00:00");
+                              var end = moment("2019-01-31 00:00:00");
+
+                              function cb(start, end) {
+                                $('#report_range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                              }
+
+                              $('#report_range').daterangepicker({
+                                startDate: start,
+                                endDate: end,
+                                ranges: {
+                                  'Today': [moment(), moment()],
+                                  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                  'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                }
+                              }, cb);
+
+                              cb(start, end);
+
+                            });
+
+
+                            $('#report_range').on('apply.daterangepicker', function(ev, picker) {
+                              var start = picker.startDate;
+                              var end = picker.endDate;
+                              var getTable = $('#datatable-buttons').DataTable();
+
+                              $.fn.dataTable.ext.search.push(
+                                function(settings, data, dataIndex) {
+                                  var min = start;
+                                  var max = end;
+                                  var startDate = new Date(data[2]);
+                                  
+                                  if (min == null && max == null) {
+                                    return true;
+                                  }
+                                  if (min == null && startDate <= max) {
+                                    return true;
+                                  }
+                                  if (max == null && startDate >= min) {
+                                    return true;
+                                  }
+                                  if (startDate <= max && startDate >= min) {
+                                    return true;
+                                  }
+                                  return false;
+                                }
+                              );
+                              getTable.draw();
+                              $.fn.dataTable.ext.search.pop();
+                              });
+                            });
+                        </script>
                        
                     
                     <table id="datatable-buttons" class="table table-striped table-bordered">
