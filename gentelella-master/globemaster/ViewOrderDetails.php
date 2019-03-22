@@ -252,11 +252,8 @@
                                         $ORDER_STATUS[] = $ROW_RESULT_SELECT_ORDERS['order_status'];
                                         $INSTALL_STATUS[] = $ROW_RESULT_SELECT_ORDERS['installation_status'];
                                         $FAB_STATUS[] = $ROW_RESULT_SELECT_ORDERS['fab_status'];
-                                        $TOTAL_AMOUNT[] =  number_format(($ROW_RESULT_SELECT_ORDERS['totalamt']),2);   
-
-                                       ;
-                                        
-                                       
+                                        $TOTAL_AMOUNT[] =  number_format(($ROW_RESULT_SELECT_ORDERS['totalamt']),2);                                          
+                                                                             
                                     }
                                       
                                     
@@ -386,10 +383,6 @@
                 </div><!--END Container Body-->        
 </body>
 <!-- /page content -->
-
-
-
-
 <script type="text/javascript">
     function validate(obj) {
     obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max

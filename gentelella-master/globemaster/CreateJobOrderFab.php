@@ -80,7 +80,7 @@
                                echo"Item ID = ", $_SESSION['item_id'],"<br>"; 
                                
                                $ITEM = $_SESSION['item_id'];
-                              $EXPLODED_ITEM = explode(",", $ITEM);
+                               $EXPLODED_ITEM = explode(",", $ITEM);
                                echo"Exploded Item ID = ",$EXPLODED_ITEM[0],"<br>"; //Explodes String from $_GET to be converted to usable array
 
 
