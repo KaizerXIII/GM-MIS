@@ -462,6 +462,7 @@
                 datasets: [{
                 label: 'Actual Sales',
                 borderColor: "#26B99A",
+                backgroundColor: 'rgba(0,0,0,0.5)',
                 data: totalsales_month},{
                 label: 'Expected Sales',
                 borderColor: "#273746",

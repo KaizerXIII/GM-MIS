@@ -44,7 +44,6 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h1>Create Job Order for Fabrication</h1><br>
               </div>
             </div>
             <div class="clearfix"></div>
@@ -52,8 +51,16 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                      <h3>
+                  <?php
+                    if(isset($_GET['order_id']))
+                    {
+                   
+                     $_SESSION['getORNumber'] = $_GET['order_id']; //Stores the Value of Get from Order Form
+                    }
+                  ?>
+                <h1>Create a Job Order for Fabrication - [<?php echo $_SESSION['getORNumber'];?>]</h1><br>
                         <b>
+                        <div style = "display:none">
                           <?php
                            
                            $currentStatus = $_SESSION['DeliveryStatus'];
@@ -71,6 +78,11 @@
                                echo $_SESSION['getORNumber'],"<br>"; 
 
                                $_SESSION['getDeliveryDate'] = $_GET['deliver_date']; //Get the Deliv Date
+                                  $DELDATE = $_SESSION['getDeliveryDate'];
+                                    $TIME1 = strtotime($DELDATE);
+                                    $NEW_TIME_FORMAT1 = date('D, M d, Y',$TIME1);
+                                    echo $NEW_TIME_FORMAT1;
+
                                echo"Deliver Date = ", $_SESSION['getDeliveryDate'],"<br>"; 
 
                                $_SESSION['client_id'] = $_GET['client_id']; //Get Client ID
@@ -97,7 +109,10 @@
                                echo"Payment ID = ", $_SESSION['payment_id'],"<br>"; // Get Pay Id, remove all Echo once Finalized
 
                                
-                               
+                          ?>
+
+
+                          <?php  
                             }
                             else
                             {
@@ -107,68 +122,185 @@
                             }
                            
                           ?>
+                          </div>
                         </b>
                       </h3>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <br />
+                    <br>
                     <!-- enctype="multipart/form-data" : required inside tag to upload correctly -->
                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" class="form-horizontal form-label-left" enctype="multipart/form-data">
+<!-- NEW FABRICATION DETAILS DESIGN -->
+<div class="col-md-6 col-sm-6 col-xs-12" >
+    <div class="x_panel" >
 
+        <center><font color = "#2a5eb2"><h3>Order Details </h1>
+        
+        </h3></font></center>
+        <div class="ln_solid"></div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Client Name</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+<?php
+  $queryGetCustomerName = "SELECT * FROM clients
+  WHERE client_id  = ".$_SESSION['client_id']."";
+  $resultGetCustomerName = mysqli_query($dbc,$queryGetCustomerName);
+  $rowGetCustomerName = mysqli_fetch_array($resultGetCustomerName,MYSQLI_ASSOC);
+?>
+                <input type="text" id = "item_count" class="form-control" readonly="readonly" value = "<?php echo $rowGetCustomerName['client_name'];?>">
+            </div>
+        </div>
+<!-- INSERT IF HERE -->
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Current Order Status</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input name = "pangalan" type="text" id = "item_name" class="form-control" readonly="readonly" value = "<?php echo $currentStatus;?>">
+            </div>
+        </div>
+        <!-- Show only when order status is for delivery -->
+        <div class="form-group" style = "display:block">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Delivery Date</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input name = "pangalan" type="text" id = "item_name" class="form-control" readonly="readonly" 
+                value = "<?php 
+                echo $NEW_TIME_FORMAT1;
+                ?>">
+            </div>
+        </div>
+        <!-- meh -->
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Current Fabrication Status</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id = "item_tyoe" class="form-control" readonly="readonly" value = "<?php echo $fabricationStatus;?>">
+            </div>
+        </div>
+<?php
+  $queryGetPaymentType = "SELECT * FROM ref_payment
+  WHERE payment_id  = ".$_SESSION['payment_id']."";
+  $resultGetPaymentType = mysqli_query($dbc,$queryGetPaymentType);
+  $rowGetPaymentType = mysqli_fetch_array($resultGetPaymentType,MYSQLI_ASSOC);
+?>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment Type</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id = "supplier_name" class="form-control" readonly="readonly" value = "<?php echo $rowGetPaymentType['paymenttype'];?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <br><br>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Tendered Amount</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right" value = "<?php echo $_SESSION['total'];?>">
+            </div>
+        </div>
+        
+    </div> <!--END XPanel-->
+</div> <!--END Class Colmd-->
+<div class="col-md-6 col-sm-6 col-xs-12" >
+
+<div class="x_panel">
+
+  <center><h3><font color = "black">Items Ordered for This Transaction</font>
+</h3></center>
+  <div class="ln_solid"></div>
+  <!-- recently damaged table -->
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+    
+        <div class="x_content">
+            <table id ="damageTable" class="table">
+                <thead>
+                    <tr>    
+                    <th>Item Name</th>
+                    <th>Quantity</th>
                     
+                    </tr>
+                </thead>
+<?php
+    for($i = 0; $i < sizeof($EXPLODED_ITEM); $i++)
+    {
+      $queryGetItemsOrdered = "SELECT * FROM items_trading
+      WHERE item_id = ".$EXPLODED_ITEM[$i]."";
+      $resultGetItemsOrdered = mysqli_query($dbc,$queryGetItemsOrdered);
+      $rowGetItemsOrdered = mysqli_fetch_array($resultGetItemsOrdered,MYSQLI_ASSOC);
+      $ITEMSORDERED =  $rowGetItemsOrdered['item_name'];
+      $ITEMSQUANTITY = $_SESSION['item_qty'];
+      $ITEMSQUANTITY1 = explode(",", $ITEMSQUANTITY);
+?>
+                    <tbody>
+                      <tr>
+                      <td><?php echo $ITEMSORDERED;?></td>
+                      <td><?php echo $ITEMSQUANTITY1[$i];?></td>
+                      </tr>                                                         
+                    </tbody>
+<?php
+    }
+?>
+            </table>
+        </div> <!--END Xcontent-->
+      </div><!--END Col MD-->
+    </div><!--END Class-row -->
+  </div><!--END XPanel-->
+</div><!--ENDCol MD-->
+
+<div class = "clearfix"></div>
+        <div class="ln_solid"></div>
+        <center><h3>Fabrication Order Details
+        </h3></center>
+<div class="ln_solid"></div>
+                <div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Description <span class="required">*</span>
+                        <label class="control-label col-md-5 col-sm-5 col-xs-12">Enter Description <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                         <textarea id="message" required="required" class="form-control" name="item_description" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.."
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                         <textarea id="message" required="required" class="form-control" name="item_description" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-minlength-message="Please enter at least a description of 20 characters"
                             data-parsley-validation-threshold="10"></textarea>
-                          <br/>
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Fabrication Cost: ₱<span class="required">*</span>
+                        <label class="control-label col-md-5 col-sm-5 col-xs-12">Enter Fabrication Cost: ₱<span class="required">*</span>
                         </label>
-                         <div class="col-md-6 col-sm-6 col-xs-12">
+                         <div class="col-md-3 col-sm-3 col-xs-12">
                           <input type="number" id = "fab_cost" name="fab_cost"  required="required" class="form-control col-md-7 col-xs-12" step=".01" min="0" max ="99999.99" oninput="validate(this)">
                         </div>
                       </div>
-                      <br><br>
-
-                      <div class="form-group" >
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Amount: ₱<span class="required">*</span>
-                        </label>
-                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="number" name="total_amount"  id = "total_amount" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      </div>
-                      <br><br> 
-                      
-
+                      <br>
                       <div class="form-group" style = "display:none" id ="installDiv">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">For Installation?<span class="required">*</span>
+                        <label class="control-label col-md-5 col-sm-5 col-xs-12">For Installation?<span class="required">*</span>
                         </label>
-                         <div class="col-md-6 col-sm-6 col-xs-12">
+                         <div class="col-md-3 col-sm-3 col-xs-12">
                           <input type="checkbox" name="installation" required="required" id = "installbutton" value = "With Installation">
                          
                         </div>
                       </div>
+                      <br>
+                      <div class="form-group">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-12">Upload Reference Drawing <span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="file" name="file_reference" id="fileToUpload" required="required">
+                            <br>
+                            <p>Please choose a file no more than 25MB in size.
+                            <p><font color = "red">File types are limited to (.jpg, .png).</font></p>
+                        </div>
+                      </div>  
                       <br><br>
 
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Upload Reference Drawing <span class="required">*</span>
+                      <div class="form-group" >
+                        <label class="control-label col-md-5 col-sm-5 col-xs-12">Total Amount: ₱<span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="file" name="file_reference" id="fileToUpload" required="required">
+                         <div class="col-md-3 col-sm-3 col-xs-12">
+                          <input type="number" name="total_amount"  id = "total_amount" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
-
-                      <div class="ln_solid"></div>
+                </div>
+                  <div class="ln_solid"></div>
 
                       <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <button name="createBtn" class="btn btn-round btn-success" type="submit" class="btn btn-success" onclick ="removerequired()">Create</button>
-						              <button class="btn btn-round btn-primary" type="reset">Reset</button>
+                        <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
+						              <button class="btn btn-primary" type="reset">Reset</button>
+                          <button name="createBtn" class="btn btn-success" type="submit" class="btn btn-success" onclick ="removerequired()">Create</button>
                           <!-- <button class="btn btn-round btn-primary" type="button" onclick ="testScript()">Test Function</button> -->
                         </div>
                       </div>
