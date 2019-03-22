@@ -210,8 +210,8 @@
                                 $nov = test_input($_POST['nov']);
                                 $dec = test_input($_POST['dec']);
 
-                                $expected = array($_POST['jan'], $_POST['feb'], $_POST['mar'], $_POST['apr'], $_POST['may'], $_POST['jun'], $_POST['jul'], $_POST['aug'], $_POST['sept'], $_POST['aug'], $_POST['nov'], $_POST['dec']);
-                              }
+                                // $expected = array($_POST['jan'], $_POST['feb'], $_POST['mar'], $_POST['apr'], $_POST['may'], $_POST['jun'], $_POST['jul'], $_POST['aug'], $_POST['sept'], $_POST['aug'], $_POST['nov'], $_POST['dec']);
+                              $expected = 5000;                              }
 
                               function test_input($data) {
                                 $data = trim($data);
@@ -281,6 +281,32 @@
                         <canvas id="mybarChart" width="350" height="260">></canvas>
                       </div>
                     </div>
+                    <div class="slidecontainer" id = "sliderAmount">
+                            <input type="range" min="1" max="50" value="50" class="slider" id="rangeSlider"> </input>
+
+                            <p>Value: <span id="value"></span></p>
+                            Set Estimated Annual Demand: <input id = "maxInput" type ="number" min = "0" onkeydown="return processKey(event)" value = "0"> </input>
+                            <script>
+                                function processKey(e)
+                                {
+                                    if (null == e)
+                                        e = window.event ;
+                                    if (e.keyCode == 13)  {
+                                        // document.getElementById("maxInput").click();
+
+                                        var getInputEntered = document.getElementById("maxInput");
+                                        var getValueofInputEntered = getInputEntered.value;
+
+                                        var slider = document.getElementById("rangeSlider");
+                                        slider.setAttribute("max",getValueofInputEntered);
+
+
+                                        return false;
+                                    }
+                                }
+                            </script>
+
+                        </div>
                   </div>
 
                 <div class="col-md-4 col-sm-6 col-xs-12">
@@ -294,38 +320,34 @@
                       <table class="table table-bordered">
                         <thead>
                           <tr>
-                            <th></th>
-                            <th>Expected Sales</th>
+                            <th>For the Month</th>
                             <th>Actual Sales</th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php 
-                            require_once('DataFetchers/mysql_connect.php');
-                            $query = "SELECT * FROM items_trading";
-                            $result = mysqli_query($dbc,$query);
-                            $result1 = mysqli_fetch_array($result,MYSQLI_ASSOC);
 
-                            $actualsales[] = array($result1['price']);
-                            $count = 0;
-                            $months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-                            
-                              for($i=0; $i<=11; $i++)
-                              {
-                                echo '<tr>';
-                                echo '<td>';
-                                echo $months[$i];
-                                echo '</td>';
-                                echo '<td align= "right">';
-                                echo "₱",$expected[$i];
-                                echo '</td>';
-                                echo '<td align= "right">';
-                                echo "₱",$result1['price'];
-                                echo '</td>';
-                                echo '</tr>';
-                              }
-                            
-                            print_r($actualsales);
+                            require_once('DataFetchers/mysql_connect.php');
+                            $query = "SELECT months, SUM(IFNULL(totalamt,0)) as totalamtsales 
+                            FROM months m
+                            LEFT JOIN orders o
+                            on MONTHNAME(order_date) = m.months
+                            WHERE YEAR(order_date) is NULL or YEAR(order_date) = 2019 
+                            GROUP BY months
+                            ORDER BY monthsid;";
+                            $result = mysqli_query($dbc,$query);
+                            while($result1=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                            {
+
+                              echo '<tr>';
+                              echo '<td>';
+                              echo $result1['months'];
+                              echo '</td>';
+                              echo '<td align= "right">';
+                              echo "₱",$result1['totalamtsales'];
+                              echo '</td>';
+                              echo '</tr>';
+                            }
                           ?>
                         </tbody>
                       </table>
@@ -333,7 +355,7 @@
                     </div>
                   </div>
                 </div>
-          <br />
+          <br>
 
           
 
@@ -401,24 +423,31 @@
           method: "GET",
           success: function(data) {
             console.log(data);
-            var itemid = [];
-            var itemname = [];
-            var itemlabel = [];
-            var itemprice = [];
-            var itemcount = [];
+            // var itemid = [];
+            // var itemname = [];
+            // var itemlabel = [];
+            // var itemprice = [];
+            // var itemcount = [];
+            var totalsales_month = [];
             var itemcount1 = <?php echo json_encode($test1); ?>;
-            var expected = <?php echo json_encode($expected); ?>;
+            var expected = [];
             var variancearray = [];
+
+            console.log(data);
 
             for(var i in data) 
             {
-              itemid.push("Item " + data[i].item_id);
-              itemname.push(data[i].item_name);
-              itemlabel.push(data[i].item_name + "-" + "Item " + data[i].item_id);
-              itemprice.push(data[i].price);
-              itemcount.push(data[i].item_count);
+              // itemid.push("Item " + data[i].item_id);
+              // itemname.push(data[i].item_name);
+              // itemlabel.push(data[i].item_name + "-" + "Item " + data[i].item_id);
+              // itemprice.push(data[i].price);
+              // itemcount.push(data[i].item_count);
+              console.log(data[i]);
 
-              variancearray.push(Math.abs(data[i].price - expected[i]));
+              totalsales_month.push(data[i].totalamtsales);
+              expected.push(5000);
+
+              variancearray.push(Math.abs(data[i].totalamtsales - expected[i]));
 
               console.log(variancearray);
             }
@@ -433,7 +462,7 @@
                 datasets: [{
                 label: 'Actual Sales',
                 borderColor: "#26B99A",
-                data: itemprice},{
+                data: totalsales_month},{
                 label: 'Expected Sales',
                 borderColor: "#273746",
                 data: expected},{
@@ -441,7 +470,6 @@
                 borderColor: "#DF013A",
                 data: variancearray}]
             },
-
               options: 
               {
                 responsive: true,
@@ -472,6 +500,52 @@
     } 
     
   </script>
+
+<script>
+    var slider = document.getElementById("rangeSlider");
+    var output = document.getElementById("value");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+</script> <!-- Script to Get Value of OnChange from Slider -->
+  <style>
+    .slidecontainer {
+        width: 100%;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+</style>
 	
   </body>
 </html>

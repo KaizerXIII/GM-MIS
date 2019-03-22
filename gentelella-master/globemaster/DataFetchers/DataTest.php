@@ -16,7 +16,13 @@ if(!$mysqli){
 }
 
 //query to get data from the table
-$query = sprintf("SELECT item_id, item_name, price, item_count FROM items_trading ORDER BY item_id LIMIT 12");
+$query = sprintf("SELECT months, SUM(IFNULL(totalamt,0)) as totalamtsales 
+FROM months m
+LEFT JOIN orders o
+on MONTHNAME(order_date) = m.months
+WHERE YEAR(order_date) is NULL or YEAR(order_date) = 2019 
+GROUP BY months
+ORDER BY monthsid;");
 
 //execute query
 $result = $mysqli->query($query);
