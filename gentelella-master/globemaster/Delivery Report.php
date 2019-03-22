@@ -66,7 +66,7 @@
 
                                                
                                 ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
-                                <option value="All">All </option>                                               
+                                                                          
                         </select>
                       </h1>
                       <script>  //Filter Table based on Warehouse                   
@@ -85,23 +85,17 @@
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
-                        <div class="well" style="overflow: auto">
-                            <div class="col-md-4">
-                              <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                    
+                      
+                          <div class="well" style="overflow: auto">
+                            <h1  ><font size = "6px">  Current Report as of: 
+                              <div id="report_range" class="btn btn-primary btn-lg" >
+                                <span></span> <b class="caret"></b>      
                               </div>
-                            </div>
-                            <div class="col-md-4">
-                              <p>Please pick a date range for the respective report</p>
-                            </div>
-                            <div class="col-md-4">
-                              <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                              </div>
-                            </div>
+                            </font></h1>
                           </div>
+                      
+                     
                     </p>
                     <table id="datatable-buttons" class="table table-striped table-bordered">
                       <thead>
@@ -112,13 +106,14 @@
                           <th>Truck Plate</th>
                           <th>Driver</th>
                           <th>Location</th>
+                          <th>Status</th>
                         </tr>
                       </thead>
 
                       <tbody>
                       <?php
                           require_once('DataFetchers/mysql_connect.php');
-                          $query = "SELECT * FROM scheduledelivery WHERE delivery_status = 'Delivered' OR delivery_status = 'Order Cancelled'";                      
+                          $query = "SELECT * FROM scheduledelivery WHERE delivery_status = 'Delivered' OR delivery_status = 'Cancelled' OR delivery_status = 'Late Delivery'";                      
                           $resultofQuery =  mysqli_query($dbc, $query);
                           while($row=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
                           {
@@ -129,6 +124,7 @@
                               echo ' <td align="center">'.$row['truck_Number'].' </td>';
                               echo ' <td align="left">'.$row['driver'].' </td>';
                               echo ' <td align="left">'.$row['Destination'].' </td>';
+                              echo ' <td align="left">'.$row['delivery_status'].' </td>';
                             echo '</tr>';
                           }
                         ?>
@@ -217,6 +213,70 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
+
+    <script>
+                        
+      $(document).ready(function() {
+        
+
+      $(function() {
+        
+        var start = moment("2019-01-01 00:00:00");
+        var end = moment("2019-01-31 00:00:00");
+
+        function cb(start, end) {
+          $('#report_range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+
+        $('#report_range').daterangepicker({
+          startDate: start,
+          endDate: end,
+          ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          }
+        }, cb);
+
+        cb(start, end);
+
+      });
+
+
+        $('#report_range').on('apply.daterangepicker', function(ev, picker) { //Applies the changes on the Datepicker
+          var start = picker.startDate;
+          var end = picker.endDate;
+          var getTable = $('#datatable-buttons').DataTable();
+  
+          $.fn.dataTable.ext.search.push( //Checks all the dates between start and end then pushes it to array
+            function(settings, data, dataIndex) {
+              var min = start;
+              var max = end;
+              var startDate = new Date(data[2]); //gets the date in the specific col of the table
+              
+              if (min == null && max == null) {
+                return true;
+              }
+              if (min == null && startDate <= max) {
+                return true;
+              }
+              if (max == null && startDate >= min) {
+                return true;
+              }
+              if (startDate <= max && startDate >= min) {
+                return true;
+              }
+              return false;
+            }
+          );   
+          getTable.draw(); //Draws table based on the dates between start and end compared to the column 
+          $.fn.dataTable.ext.search.pop();//Pops the function                    
+        });
+      });
+  </script>
 
   
 	

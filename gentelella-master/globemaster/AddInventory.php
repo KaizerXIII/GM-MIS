@@ -181,6 +181,16 @@
                             $itemTypeIDfromSelect = $_POST['selectItemtype'];
                             $supplierIDFromSelect = $_POST['supplier'];
 
+                            $CHECK_IF_SAME_NAME_IN_ITEMS_TRADING = "SELECT * FROM items_trading";
+                            $RESULT_CHECKER=mysqli_query($dbc,$CHECK_IF_SAME_NAME_IN_ITEMS_TRADING);
+                            while($ROW_CHECKER = mysqli_fetch_array($RESULT_CHECKER,MYSQLI_ASSOC))
+                            {
+                              if($ROW_CHECKER['item_name'] == $itemName)
+                              {
+                                die('Error: Duplicate Item Detected');
+                              }
+                            }
+                            
                            
 
                             $queryWarehouseID = "SELECT warehouses.warehouse_id FROM warehouses WHERE warehouse = '$warehouseIDfromSelect'";
@@ -234,7 +244,7 @@
                                 echo '</script>';
                                 header("Location: ViewInventory.php");
                             }              
-                        }
+                        }//END ISSET
 
 ?>
                       

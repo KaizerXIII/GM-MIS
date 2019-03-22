@@ -161,7 +161,30 @@
                         <div class="col-md-12 col-sm-6 col-xs-12 col-md-offset-3">
                           <button class="btn btn-danger" type="button">Cancel</button>
 						              <button class="btn btn-primary" type="reset">Reset</button>
-                          <button type="submit" class="btn btn-success" name = "SubmitBtn" onclick="return getConfirmation()">Submit</button>
+                          <button type="submit" class="btn btn-success" name = "submitNextMonthSales" onclick="">Submit</button>
+
+                          <?php   
+                            if(isset($_POST['submitNextMonthSales']))
+                            {
+                              $GET_NEXT_MONTH_SALES = $_POST['targetSales'];
+                              $UPDATE_NEXT_MONTH_COL = "UPDATE ref_eoqformula
+                              SET ref_eoqformula.nextMonthSales  = ('$GET_NEXT_MONTH_SALES')
+                              WHERE formulaID ='1';";
+                              $RESULT_UPDATE_NEXT_MONTH_SALES=mysqli_query($dbc,$UPDATE_NEXT_MONTH_COL);
+                              if(!$RESULT_UPDATE_NEXT_MONTH_SALES) 
+                              {
+                                  die('Error: ' . mysqli_error($dbc));
+                              } 
+                              else 
+                              {
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Updated: Targetted Next Month Sales!");';
+                                  echo '</script>';
+                                  
+                              }        
+                            }
+
+                          ?>
 
                         </div>
                       </div>
