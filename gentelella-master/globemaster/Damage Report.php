@@ -72,7 +72,7 @@
                         {
                     ?>
                     
-                        <label id ="total_loss"><b><font color = "black" size = "5px">Current Report - Total Losses: [ <?php echo '₱ '."".number_format($rowTotalLoss['accumulated_loss'], 2);?> ]</font></b></label>
+                        <label id ="total_loss" ><b><font color = "black" size = "5px">Current Report - Total Losses: [ <?php echo '₱ '."".number_format($rowTotalLoss['accumulated_loss'], 2);?> ]</font></b></label>
                     <?php
                         }
                     ?>
@@ -287,6 +287,7 @@
         $('#report_range').on('apply.daterangepicker', function(ev, picker) { //Applies the changes on the Datepicker
           var start = picker.startDate;
           var end = picker.endDate;
+          
           var getTable = $('#datatable-buttons').DataTable();
           var total_amt_label = document.getElementById('total_loss');
 

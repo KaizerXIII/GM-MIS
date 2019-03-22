@@ -73,37 +73,38 @@
                                 <option value="All">All </option>                                               
                         </select>
                       </h1>
+                     
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <p class="text-muted font-13 m-b-30">
-                        <div class="well" style="overflow: auto">
-                            <div class="col-md-4">
-                              <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <p>Please pick a date range for the respective report</p>
-                            </div>
-                            <div class="col-md-4">
-                              <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                              </div>
-                            </div>
-                          </div>
-                    </p>
+                 
+                  <h1  ><font size = "6px">  Current Report as of: 
+                  
+                    <div id="report_range" class="btn btn-primary btn-lg" >
+                          <span></span> <b class="caret"></b>      
+                    </div> 
                     
+                  </font></h1>
+                 
+                    
+                
+                    <label id ="total_profit"  style="text-align:left;" ><b><font color = "black" size = "5px">Total Profit: [  ]</font></b></label>
+                      
+                  
+                    
+
+
+
                     <div class="col-md-12 col-sm-8 col-xs-12">
                     <table id="datatable-buttons" class="table table-striped table-bordered">
                       <thead>
                         <tr>
                           <th width ="100px">Item Name</th>
+                          <th width ="100px">Item Type</th>
                           <th width ="100px">Client Name</th>
                           <th width ="10px">Total Quantity Sold</th>
                           <th width ="100px">Total Price Sold</th>
+                          <th width ="100px">Order Date</th>
                        
                         </tr>
                       </thead>
@@ -129,14 +130,22 @@
                                 $resultOrderDetail = mysqli_query($dbc,$query);
                                 $qtyfromOrderDeatils = mysqli_fetch_array($resultOrderDetail,MYSQLI_ASSOC);
                                 $itemQty = $qtyfromOrderDeatils['total_amount'];
+
+                                $TYPE_ID = $row['itemtype_id'];
+                                $SELECT_ITEM_TYPE_NAME = "SELECT * FROM ref_itemtype WHERE itemtype_id ='$TYPE_ID'";
+                                $RESULT_SELECT_ITEM_TYPE_NAME = mysqli_query($dbc,$SELECT_ITEM_TYPE_NAME);
+                                $GET_ROW_NAME = mysqli_fetch_array($RESULT_SELECT_ITEM_TYPE_NAME,MYSQLI_ASSOC);
+                                $ITEM_TYPE_NAME = $GET_ROW_NAME['itemtype'];
                                 
                                
                               }    
                             echo '<tr>';
                               echo ' <td> '.$row['item_name']. '</td>';
+                              echo ' <td> '.$ITEM_TYPE_NAME. '</td>';
                               echo ' <td>'.$row['client_name'].' </td>';
                               echo ' <td align="right">'.$itemQty.' </td>';
-                              echo ' <td align="right"> ₱ '.number_format((float)($itemQty * $row['price']), 2, '.', ',').' </td>';
+                              echo ' <td align="right"> ₱ '.number_format($row['totalamt'], 2, '.', ',').' </td>';
+                              echo ' <td>'.$row['order_date'].' </td>';
                               
                             echo '</tr>';
                           }
@@ -227,6 +236,117 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
+
+    <script>
+                        
+      $(document).ready(function() {
+        
+
+      $(function() {
+        
+        var start = moment("2019-01-01 00:00:00");
+        var end = moment("2019-01-31 00:00:00");
+
+        function cb(start, end) {
+          $('#report_range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+
+        $('#report_range').daterangepicker({
+          startDate: start,
+          endDate: end,
+          ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          }
+        }, cb);
+
+        cb(start, end);
+
+      });
+
+
+      $('#report_range').on('apply.daterangepicker', function(ev, picker) { //Applies the changes on the Datepicker
+        var start = picker.startDate;
+        var end = picker.endDate;
+        var getTable = $('#datatable-buttons').DataTable();
+
+        $.fn.dataTable.ext.search.push( //Checks all the dates between start and end then pushes it to array
+          function(settings, data, dataIndex) {
+            var min = start;
+            var max = end;
+            var startDate = new Date(data[5]); //gets the date in the specific col of the table
+            
+            if (min == null && max == null) {
+              return true;
+            }
+            if (min == null && startDate <= max) {
+              return true;
+            }
+            if (max == null && startDate >= min) {
+              return true;
+            }
+            if (startDate <= max && startDate >= min) {
+              return true;
+            }
+            return false;
+          }
+        );
+        getTable.draw(); //Draws table based on the dates between start and end compared to the column 
+        var total_amt_label = document.getElementById("total_profit");
+        console.log(formatNumber(getTable.column(4,{'search': 'applied'}).data()));
+
+        var current_data_from_table = formatNumber(getTable.column(4,{'search': 'applied'}).data());  //Applies the searched version of the table to get the column data to sum the total Loss of the current report
+        var sum = 0;
+
+        for(var i = 0; i < current_data_from_table.length; i++)
+        {
+          sum = sum +parseFloat(current_data_from_table[i]);
+        }      
+
+        total_amt_label.innerHTML = '<b><font color = "black" size = "5px"> Total Profit: [<font color = "green"> ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font> ]</font></b>';
+         
+        $.fn.dataTable.ext.search.pop();//Pops the function
+        });
+      });
+  </script>
+
+   <script>  //Filter Table based on Item Type              
+        var get_select_value = document.getElementById("selectItemType");
+        get_select_value.onchange = function()
+        {
+          console.log(get_select_value.value); 
+          var getTable = $('#datatable-buttons').DataTable();
+          
+          getTable.columns(1).search(get_select_value.value).draw();
+          //Get the col of table and searches IF it contains the [VALUE] inside () then draws the table accordingly 
+
+            var total_amt_label = document.getElementById("total_profit"); //Computes the total profit when filter by item type
+            console.log(formatNumber(getTable.column(4,{'search': 'applied'}).data()));
+
+            var current_data_from_table = formatNumber(getTable.column(4,{'search': 'applied'}).data());  //Applies the searched version of the table to get the column data to sum the total Loss of the current report
+            var sum = 0;
+
+            for(var i = 0; i < current_data_from_table.length; i++)
+            {
+              sum = sum +parseFloat(current_data_from_table[i]);
+            }      
+
+            total_amt_label.innerHTML = '<b><font color = "black" size = "5px"> Total Profit: [<font color = "green"> ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font> ]</font></b>';
+        }//End function                                                                
+  </script> 
+  <script>
+    function formatNumber(n) { //Removes the peso sign and comma to add the values properly
+    for(var i = 0; i < n.length; i++)
+    {
+      n[i] = n[i].replace(/[₱,]+/g,"","");
+    }
+      return n ;
+    }
+  </script>
 	
   </body>
 </html>
