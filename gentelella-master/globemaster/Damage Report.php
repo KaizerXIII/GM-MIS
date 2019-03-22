@@ -35,6 +35,8 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- CDN FOR SUM() -->
+    <!-- <script src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js" type="text/javascript"></script> -->
   </head>
 
   <body class="nav-md">
@@ -51,152 +53,16 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h1><font size = "6px"> Damaged Items Report as of: DATE RANGE/MONTH-YEAR/YEAR
+                    <h1><font size = "6px"> Damaged Items Report as of: 
 
-                    <button type="submit" class="btn btn-primary btn-lg" style="float: right;"  data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-filter"></i> Filter this Report</button>
-</font></h1>
+                    <div id="report_range" class="btn btn-primary btn-lg" >
+                          <span></span> <b class="caret"></b>      
+                    </div>
 
-<!-- Small modal for date filter-->
-<form action="<?php echo $_SERVER['SalesForecasting.php']; ?>" method="POST" class="form-horizontal form-label-left">
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
+                    <!-- <button type="submit" class="btn btn-primary btn-lg" style="float: right;"  data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-filter"></i> Filter this Report</button> -->
+                  </font></h1>
 
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-        </button>
-        <h3 class="modal-title" id="myModalLabel2">Report Filtering</h3>
-      </div>
-      <div class="modal-body">
-        <h4>Please choose a filter</h4>
-        <div class="form-group">
-          <br>
-          <center>
-            <!-- <div class="input-group col-md-12 col-xs-12">
-                <input type="text" class="form-control" aria-label="Text input with dropdown button" value = "Yearly" id = "salesforecastlabel" readonly style="text-align:center">
-                <div class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    <li id = "yearly" onclick="changetoyear();"><a>Yearly</a>
-                    </li>
-                    <li id = "monthyear" onclick = "changetoMY();"><a>Month-Year</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li onclick = "changetoDP()" id="datepick"><a>Custom Date Range</a>
-                    </li>
-                  </ul>
-              </div>
-            </div> -->
 
-            <div class="input-group col-md-12 col-xs-12">
-              <select class="form-control" value = "" style = "text-align-last:center;" id = "reportfilterlabel"  onchange = "changepickers(this)">
-                <option id = "" value = "">Choose..</option>
-                <option id = "yearly" value = "yearly">Yearly</option>
-                <option id = "monthyear" value = "monthyear">Month-Year</option>
-                <option id="datepick" value="datepick">Custom Date Range</option>
-              </select>
-            </div>
-
-            <div class="input-group col-md-12 col-xs-12" style = "display:none" id = "yearpicker">
-              <select class="form-control" style = "text-align-last:center;">
-                <option id = "" value = "">Choose..</option>
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-              </select>
-            </div>
-
-          <div style = "display:none" class="col-md-12 col-xs-12" id = "monthyearpicker">
-            <div class="input-group col-md-12 col-xs-12">
-              <p>Month</p>
-              <select class="form-control" style = "text-align-last:center;">
-                <option id = "" value = "">Choose..</option>
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-              </select>
-            </div>
-            <div class="input-group col-md-12 col-xs-12">
-              <p>Year</p>
-              <select class="form-control" style = "text-align-last:center;">
-                <option id = "" value = "">Choose..</option>
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-              </select>
-            </div>
-          </div>
-
-          <div style = "display:none" class="col-md-12 col-xs-12" id = "reportrangepicker">
-          <br><br>
-            <div class='col-md-12'>
-                <div class="form-group">
-                  <input type="date" name="startdate" id = "startdate" onchange ="date_setter(this)" class="form-control col-md-12 col-xs-12 deliveryDate" placeholder = "Start Date">
-                </div>
-            </div>
-
-            <p>to</p>
-
-            <div class='col-md-12'>
-                <div class="form-group">
-                  <input type="date" name="enddate" id = "enddate" class="form-control col-md-12 col-xs-12 deliveryDate" placeholder = "End Date">
-                </div>
-            </div>
-          </div>
-
-<!-- Date Setter Script -->
-<script>
-  function date_setter(obj)
-  {
-    // document.getElementById("enddate").valueAsDate = new Date()
-    var start_date = new Date(obj.valueAsDate);
-    var end_date = start_date.addDays(30)
-
-    end_date = moment(start_date).format('YYYY-MM-DD');
-    
-    
-
-    $('#enddate').val(end_date);
-    
-    var END_DATE_INPUT = document.getElementById('enddate').valueAsDate;
-    
-    var old_start_date = END_DATE_INPUT.addDays(-30);
-
-    start_date = moment(start_date).format('YYYY-MM-DD');
-    old_start_date = moment(END_DATE_INPUT).format('YYYY-MM-DD');
-
-    document.getElementById('enddate').setAttribute('max', start_date);
-    document.getElementById('enddate').setAttribute('min', old_start_date );
-  }
-  
-
-</script>
-<!-- End Date Setter Script -->
-          </center>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Forecast</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-</form>
-<!-- /modal end -->
 
                     <?php 
                        
@@ -205,7 +71,8 @@
                         while($rowTotalLoss=mysqli_fetch_array($resultOfSqlTotalLoss,MYSQLI_ASSOC))
                         {
                     ?>
-                        <label><b><font color = "black" size = "5px">Total losses for this report: <?php echo '₱'."".number_format($rowTotalLoss['accumulated_loss'], 2);?></font></b></label>
+                    
+                        <label id ="total_loss"><b><font color = "black" size = "5px">Current Report - Total Losses: [ <?php echo '₱ '."".number_format($rowTotalLoss['accumulated_loss'], 2);?> ]</font></b></label>
                     <?php
                         }
                     ?>
@@ -223,7 +90,7 @@
                           <th>Item Name Reference</th>
                           <th>Damaged Percentage</th>
                           <th>Item Quantity</th>
-                          <th>Total Loss</th>
+                          <th>Loss per Item</th>
                           <th>Date Occured </th>
                          
                         </tr>
@@ -347,7 +214,7 @@
     <script src="../build/js/custom.min.js"></script>
 
     <!-- Modal Input Buton Toggles -->
-    <script>
+    <!-- <script>
             var reportfilterlabel = document.getElementById("reportfilterlabel");
             var reportfilterlabelVal = reportfilterlabel.value;
             
@@ -384,46 +251,93 @@
               }
             }
             
-    </script>
+    </script> -->
 
-    <!-- <script>
-            var reportfilterlabel = document.getElementById("reportfilterlabel");
-            
-            var yearly = document.getElementById("yearly");
-            var monthyear = document.getElementById("monthyear");
-            
+    <script>
+                        
+        $(document).ready(function() {
+          
 
-            var yearpicker = document.getElementById("yearpicker");
-            var monthyearpicker = document.getElementById("monthyearpicker");
-            var reportrangepicker = document.getElementById("reportrangepicker");
-            function changetoMY()
-            {
-              yearpicker.style.display = "none";
-              reportrangepicker.style.display = "none";
-              monthyearpicker.style.display = "block";
+        $(function() {
+          
+          var start = moment("2019-01-01 00:00:00");
+          var end = moment("2019-01-31 00:00:00");
+
+          function cb(start, end) {
+            $('#report_range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+          }
+
+          $('#report_range').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+              'Today': [moment(), moment()],
+              'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+              'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+              'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+              'This Month': [moment().startOf('month'), moment().endOf('month')],
+              'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
+          }, cb);
+
+          cb(start, end);
+
+        });
+
+        $('#report_range').on('apply.daterangepicker', function(ev, picker) { //Applies the changes on the Datepicker
+          var start = picker.startDate;
+          var end = picker.endDate;
+          var getTable = $('#datatable-buttons').DataTable();
+          var total_amt_label = document.getElementById('total_loss');
+
+          $.fn.dataTable.ext.search.push( //Checks all the dates between start and end then pushes it to array
+            function(settings, data, dataIndex) 
+            {
+              var min = start;
+              var max = end;
+              var startDate = new Date(data[4]); //gets the date in the specific col of the table
+              
+              if (min == null && max == null) {
+                return true;
+              }
+              if (min == null && startDate <= max) {
+                return true;
+              }
+              if (max == null && startDate >= min) {
+                return true;
+              }
+              if (startDate <= max && startDate >= min) {
+                return true;
+              }
+              return false;
+            }
+          );
+          getTable.draw(); //Draws table based on the dates between start and end compared to the column 
+          console.log(formatNumber(getTable.column(3,{'search': 'applied'}).data()));
+
+          var current_data_from_table = formatNumber(getTable.column(3,{'search': 'applied'}).data());  //Applies the searched version of the table to get the column data to sum the total Loss of the current report
+          var sum = 0;
+
+          for(var i = 0; i < current_data_from_table.length; i++)
+          {
+            sum = sum +parseFloat(current_data_from_table[i]);
+          }      
+         
+          total_amt_label.innerHTML = '<b><font color = "black" size = "5px">Current Report - Total Losses: [ ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+' ]</font></b>';
+          $.fn.dataTable.ext.search.pop();//Pops the function
+          
+          });//End function
+        }); //END Document .ready
     </script>
 
     <script>
-        var reportfilterlabel = document.getElementById("reportfilterlabel");
-            
-        var yearly = document.getElementById("yearly");
-        var monthyear = document.getElementById("monthyear");
-        var datepick = document.getElementById("datepick");
-        
-
-        var yearpicker = document.getElementById("yearpicker");
-        var monthyearpicker = document.getElementById("monthyearpicker");
-        var reportrangepicker = document.getElementById("reportrangepicker");
-        
-        
-        function changetoDP()
-          {
-            yearpicker.style.display = "none";
-            monthyearpicker.style.display = "none";
-            reportrangepicker.style.display = "block";
-          }
-    </script>   -->
-	
+      function formatNumber(n) { //Removes the peso sign and comma to add the values properly
+       for(var i = 0; i < n.length; i++)
+       {
+        n[i] = n[i].replace(/[₱,]+/g,"","");
+       }
+        return n ;
+      }
+    </script>
   </body>
 </html>

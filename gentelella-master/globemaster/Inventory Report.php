@@ -37,7 +37,8 @@
     <link href="../build/css/custom.min.css" rel="stylesheet">
     <!-- JQUERY -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-
+   
+    
 <script type="text/javascript" src="js/script.js"></script>
   </head>
 
@@ -73,7 +74,7 @@
 
                                                
                                 ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
-                                                                   
+                                                      <option value="">All </option>             
                         </select>
                       </h1>
                       <script>  //Filter Table based on Warehouse                   
@@ -101,7 +102,7 @@
                               </div>
                           </div> -->
                           <center>
-                          <div id="report_range" class="btn btn-success btn-lg" >
+                          <div id="report_range" class="btn btn-primary btn-lg" >
                           <span></span> <b class="caret"></b>
 
                               
@@ -148,16 +149,16 @@
                             });
 
 
-                            $('#report_range').on('apply.daterangepicker', function(ev, picker) {
+                            $('#report_range').on('apply.daterangepicker', function(ev, picker) { //Applies the changes on the Datepicker
                               var start = picker.startDate;
                               var end = picker.endDate;
                               var getTable = $('#datatable-buttons').DataTable();
 
-                              $.fn.dataTable.ext.search.push(
+                              $.fn.dataTable.ext.search.push( //Checks all the dates between start and end then pushes it to array
                                 function(settings, data, dataIndex) {
                                   var min = start;
                                   var max = end;
-                                  var startDate = new Date(data[2]);
+                                  var startDate = new Date(data[2]); //gets the date in the specific col of the table
                                   
                                   if (min == null && max == null) {
                                     return true;
@@ -174,8 +175,8 @@
                                   return false;
                                 }
                               );
-                              getTable.draw();
-                              $.fn.dataTable.ext.search.pop();
+                              getTable.draw(); //Draws table based on the dates between start and end compared to the column 
+                              $.fn.dataTable.ext.search.pop();//Pops the function
                               });
                             });
                         </script>
