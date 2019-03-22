@@ -91,7 +91,7 @@
                                echo"Item Quantity = ", $_SESSION['item_qty'],"<br>"; 
 
                                $_SESSION['order_date'] = $_GET['order_date']; //Get qty per item
-                               echo"Item Quantity = ", $_SESSION['order_date'],"<br>"; 
+                               echo"Order Date = ", $_SESSION['order_date'],"<br>"; 
 
                                $_SESSION['payment_id'] = $_GET['pay_id'];
                                echo"Payment ID = ", $_SESSION['payment_id'],"<br>"; // Get Pay Id, remove all Echo once Finalized
@@ -244,7 +244,7 @@
                             '$INSTALLATION_STATUS',
                             '$FAB_STATUS',
                             '$PAYMENT_STATUS');";
-                           $resultToInsertORDERS = mysqli_query($dbc,$sqlToInsertToORDERS);
+                           $resultToInsertORDERS = mysqli_query($dbc,$sqlToInsertToORDERS);//Isnerts to Orders
 
                           if(!$resultToInsertORDERS) //Chceker
                             {
@@ -256,6 +256,24 @@
                                 echo 'alert("1st Insert Successful!");';
                                 echo '</script>';                            
                             }
+                          if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
+                          {
+                            $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
+                            SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_TOTAL')
+                            WHERE client_id ='$CLIENT_ID';";
+                              $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
+                              if(!$RESULT_UNPAID_TOTAL) 
+                              {
+                                  die('Error: ' . mysqli_error($dbc));
+                              } 
+                              else 
+                              {
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Added Unpaid Amount to Client");';
+                                  echo '</script>';
+                                  header("Location: ViewOrders.php");
+                              }                                                 
+                          }//END IF             
 
                          $ITEM_ID = $_SESSION['item_id'];
                          $EXPLODED_ITEM_ID = explode(",", $ITEM_ID);
@@ -335,7 +353,8 @@
                               echo '<script language="javascript">';
                               echo 'alert("3rd Insert Successful!");';
                               echo '</script>';                            
-                          }                                                                                                   
+                          } 
+                                                                                                               
                         } // END IF DELIVER
                         else //Insert to DB if PickUp
                         {
@@ -376,6 +395,24 @@
                                 echo 'alert("1st Insert Successful!");';
                                 echo '</script>';                            
                             }
+                          if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
+                          {
+                            $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
+                            SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_TOTAL')
+                            WHERE client_id ='$CLIENT_ID';";
+                              $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
+                              if(!$RESULT_UNPAID_TOTAL) 
+                              {
+                                  die('Error: ' . mysqli_error($dbc));
+                              } 
+                              else 
+                              {
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Added Unpaid Amount to Client");';
+                                  echo '</script>';
+                                  header("Location: ViewOrders.php");
+                              }                                                 
+                          }//END IF 
 
                          $ITEM_ID = $_SESSION['item_id'];
                          $EXPLODED_ITEM_ID = explode(",", $ITEM_ID);
@@ -456,7 +493,8 @@
                               echo '</script>';               
                               header("Location: ViewOrders.php");             
                           }
-                        }//END ELSE 
+                        }//END ELSE
+                        
                       } //END IF ISSET POST BTN  
                       
                    

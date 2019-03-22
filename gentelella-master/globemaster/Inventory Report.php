@@ -69,32 +69,51 @@
 
                                                
                                 ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
-                                <option value="All">All </option>                                               
+                                                                   
                         </select>
                       </h1>
+                      <script>  //Filter Table based on Warehouse                   
+                            var get_select_value = document.getElementById("selectWarehouse");
+                            get_select_value.onchange = function()
+                            {
+                              console.log(get_select_value.value); 
+                              var getTable = $('#datatable-buttons').DataTable();
+                              
+                              getTable.columns(4).search(get_select_value.value).draw();
+                              //Get the col of table and searches IF it contains the [VALUE] inside () then draws the table accordingly 
+                            }                                                                          
+                      </script> 
+                     
                     
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
                         <div class="well" style="overflow: auto">
-                            <div class="col-md-4">
-                              <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+
+                          <!-- <div class='col-md-4'>
+                              <div class="form-group">
+                                <input type="date" name="startdate" id = "startdate" onchange ="setStartDate(this)" class="form-control col-md-7 col-xs-12 deliveryDate">
                               </div>
-                            </div>
-                            <div class="col-md-4">
-                              <p>Please pick a date range for the respective report</p>
-                            </div>
-                            <div class="col-md-4">
-                              <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                          </div> -->
+                          <center>
+                          <div id="reportrange" class="btn btn-success btn-lg" >
+                          <span></span> <b class="caret"></b>
+
+                              
+                          </div></center>
+                          <!-- <div class="col-md-4">
+                                <p>Please pick a date range for the respective report</p>
+                          </div> -->
+                            <!-- <div class='col-md-4'>
+                              <div class="form-group">
+                                <input type="date" name="enddate" id = "enddate" onchange ="setEndDate(this)" class="form-control col-md-7 col-xs-12 deliveryDate">
                               </div>
-                            </div>
-                          </div>
-                    </p>
+                          </div> -->
+
+                        </div>
+                       
+                    
                     <table id="datatable-buttons" class="table table-striped table-bordered">
                       <thead>
                         <tr>
@@ -153,72 +172,6 @@
         <!-- /footer content -->
       </div>
     </div>
-    <script>
-         <?php
-          require_once('DataFetchers/mysql_connect.php');
-
-          echo 'var dropdown = document.getElementById("selectWarehouse");'; 
-
-          $warehouseNameArray = array();
-          $SKUArray = array();
-          $itemNameArray = array();
-          $itemCountArray = array();
-          $lastRestockArray = array();
-          $TotalProcuredArray = array();
-        
-          $query = "SELECT * FROM items_trading
-          join warehouses ON items_trading.warehouse_id = warehouses.warehouse_id
-          ORDER BY item_id";                      
-          $resultofQuery =  mysqli_query($dbc, $query);
-
-          while($row=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
-          {
-            $id = $row['item_id'];
-            $totalProcuredquery = "SELECT sum(quantity) as TotalProcured, item_id FROM restock_detail WHERE item_id = '$id' ;";
-            $resultforTotal =  mysqli_query($dbc, $totalProcuredquery);
-            $row2 = mysqli_fetch_array($resultforTotal,MYSQLI_ASSOC);
-
-            $warehouseNameArray[] = $row['warehouse'];
-            $SKUArray[] = $row['sku_id'];
-            $itemNameArray[] = $row['item_name'];
-            $itemCountArray[] = $row['item_count'];
-            $lastRestockArray[] = $row['last_restock'];
-            $TotalProcuredArray[] = $row2['TotalProcured'];
-          }
-          
-
-          echo "var warehouseNameFromPHP = ".json_encode($warehouseNameArray).";";
-          echo "var SKUFromPHP = ".json_encode($SKUArray).";"; 
-          echo "var itemNameFromPHP = ".json_encode($itemNameArray).";"; 
-          echo "var itemCountFromPHP = ".json_encode($itemCountArray).";"; 
-          echo "var lastRestockFromPHP = ".json_encode($lastRestockArray).";";
-          echo "var TotalProcuredFromPHP = ".json_encode($TotalProcuredArray).";"; //Store PHP array to JS Array
-
-          echo  " dropdown.onchange = function(){";
-
-           echo 'var table = document.getElementById("datatable-buttons");';        //Deletes All Rows of Table except Header before Inserting new Rows   
-            echo 'for(var i = table.rows.length - 1; i > 0; i--){';     
-               echo 'table.deleteRow(i);';
-            echo'}'; //END FOR
-         
-          echo 'var compare = dropdown.value;'; //gets the value of Dropdown
-
-          echo 'for(var i = 0; i < warehouseNameFromPHP.length; i++){';
-            echo 'if(warehouseNameFromPHP[i] == compare){';             
-              echo  "var newRow = document.getElementById('datatable-buttons').insertRow();";
-              echo  'newRow.innerHTML = "<tr> <td>" +SKUFromPHP[i]+ "</td> <td>" +itemNameFromPHP[i]+ "</td>  <td>" +lastRestockFromPHP[i]+"</td><td>" +itemCountFromPHP[i]+ "</td><td>" +warehouseNameFromPHP[i]+ "</td><td>" +TotalProcuredFromPHP[i]+ "</td></tr>";';
-            echo '}'; //END IF 1
-
-            echo 'if(compare == "All"){';
-              echo 'window.location.reload();'; //Refreshes the page to return to Normal            
-            echo '}'; //END IF 2        
-          echo '}';//END FOR
-        echo '}'; //End Function
-        ?>
-
-   
-    </script>
-
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -279,10 +232,17 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-
-    <script>
+    <style>
+      .deliveryDate {
+          -moz-appearance:textfield;
+      }
       
-    </script>
+      .deliveryDate::-webkit-outer-spin-button,
+      .deliveryDate::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+  </style> <!-- To Remove the Up/Down Arrows from Date Selection -->
 	
   </body>
 

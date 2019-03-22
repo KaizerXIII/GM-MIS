@@ -110,9 +110,9 @@
                                                         <tr>
                                                             <th>Item Name</th>
                                                             <th>Item Type</th>
-                                                            <th>Supplier</th>
-                                                            <th>Stock </th>
+                                                            <th>Supplier</th>                                                           
                                                             <th>Price</th>
+                                                            <th>Stock </th>
                                                             
                                                             <th class="col-md-1 col-sm-1 col-xs-1">Quantity</th>
                                                             <th>Add</th>
@@ -155,16 +155,17 @@
                                                                     echo $supplierName;
                                                                     echo '</td>';
 
-                                                                    echo '<td>';
+                                                                   
+                                                                    echo '<td align = right>';
+                                                                    echo  '₱'." ".number_format($row['price'], 2);
+                                                                    echo '</td>';
+                                                                    echo '<td align = right>';
                                                                     echo $row['item_count'];
                                                                     echo '</td>';
 
-                                                                    echo '<td>';
-                                                                    echo  '₱'." ".number_format($row['price'], 2);
-                                                                    echo '</td>';
                                                                                                                             
                                                                     echo '<td >';
-                                                                    echo '<input type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="1" max ="',$row['item_count'],'" value="" placeholder ="0"></input>';
+                                                                    echo '<input  style="text-align:right;" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="1" max ="',$row['item_count'],'" value="" placeholder ="0"></input>';
                                                                     echo '</td>';
 
                                                                     echo '<td align = center >';
@@ -254,6 +255,24 @@
                                     '$PAYMENT_STATUS');";
 
                                 $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
+                                if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
+                                {
+                                  $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
+                                  SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
+                                  WHERE client_id ='$CLIENT_ID';";
+                                   $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
+                                   if(!$RESULT_UNPAID_TOTAL) 
+                                   {
+                                       die('Error: ' . mysqli_error($dbc));
+                                   } 
+                                   else 
+                                   {
+                                       echo '<script language="javascript">';
+                                       echo 'alert("Added Unpaid Amount to Client");';
+                                       echo '</script>';
+                                      //  header("Location: ViewOrders.php");
+                                   }                                                 
+                                }//END IF
                                 
                                $CART_ITEM_ID = $_SESSION['order_form_item_id'];
                                $CART_ITEM_QTY = $_SESSION['order_form_item_qty'];
@@ -299,10 +318,9 @@
                                          echo 'alert("Subtract Successfull");';
                                          echo '</script>';
                                          header("Location: ViewOrders.php");
-                                     }
-                                    
-                                   
+                                     }                                                                      
                                   }//End For
+                                
 
                                   
                              }//End 2nd IF                                                                                                                    
@@ -334,16 +352,33 @@
                                 '$INSTALL_STATUS',
                                 '$FAB_STATUS',
                                 '$PAYMENT_STATUS');";
-
                             $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
+
+                            if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
+                            {
+                              $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
+                              SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
+                              WHERE client_id ='$CLIENT_ID';";
+                               $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
+                               if(!$RESULT_UNPAID_TOTAL) 
+                               {
+                                   die('Error: ' . mysqli_error($dbc));
+                               } 
+                               else 
+                               {
+                                   echo '<script language="javascript">';
+                                   echo 'alert("Added Unpaid Amount to Client");';
+                                   echo '</script>';
+                                //    header("Location: ViewOrders.php");
+                               }                                                 
+                            }//END IF
                             
                             $CART_ITEM_ID = $_SESSION['order_form_item_id'];
                             $CART_ITEM_QTY = $_SESSION['order_form_item_qty'];
                             $ITEM_NAME = array();
                             $ITEM_PRICE = array();
                             $DELIVERY_STATUS = $_SESSION['DeliveryStatus'];
-                            
-                            
+                                                        
                             for($i = 0; $i < sizeof($CART_ITEM_ID); $i++)
                             {
                                 $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = $CART_ITEM_ID[$i];";
@@ -385,6 +420,7 @@
                                 }
                                 
                             }//End For
+                            
                                 
                         }// END else IF
                     }//END 1st IF
@@ -913,9 +949,7 @@ function nextpageNOFabrication()
     if(confirm("Submit Order?"))
     {
         getAjax();
-        alert("Order Successful!")
-    
-        
+        alert("Order Successful!")  
         // window.location.href = "ViewOrders.php";   
          
         
@@ -946,10 +980,9 @@ function nextpageNOFabrication()
             post_item_qty: GET_CART_QTY
         },
         success: function(data, textStatus)
-         {
-            $(".result").html(data); 
-            alert("Ajax Gud");   
-            }//End Scucess
+        {
+          
+        }//End Scucess
         
             }); // End ajax    
      } //End function

@@ -69,6 +69,17 @@
                                 <option value="All">All </option>                                               
                         </select>
                       </h1>
+                      <script>  //Filter Table based on Warehouse                   
+                            var get_select_value = document.getElementById("selectLocation");
+                            get_select_value.onchange = function()
+                            {
+                              console.log(get_select_value.value); 
+                              var getTable = $('#datatable-buttons').DataTable();
+                              
+                              getTable.columns(5).search(get_select_value.value).draw();
+                              //Get the col of table and searches IF it contains the [VALUE] inside () then draws the table accordingly 
+                            }                                                                          
+                      </script> 
                   
                     <div class="clearfix"></div>
                   </div>
@@ -207,61 +218,7 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 
-    <script>
-    <?php
-    require_once('DataFetchers/mysql_connect.php');
-
-      echo 'var dropdown = document.getElementById("selectLocation");'; 
-
-      $DRNumberArray = array();
-      $ClientArray = array();
-      $DateArray = array();
-      $TruckPlateArray = array();
-      $DriverArray = array();
-      $LocationArray = array();
-
-      $query = "SELECT * FROM scheduledelivery";                      
-      $resultofQuery =  mysqli_query($dbc, $query);
-      while($row=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
-      {
-        $DRNumberArray[] = $row['delivery_Receipt'];
-        $ClientArray[] = $row['customer_Name'];
-        $DateArray[] = $row['delivery_Date'];
-        $TruckPlateArray[] = $row['truck_Number'];
-        $DriverArray[] = $row['driver'];
-        $LocationArray[] = $row['Destination'];
-      }
-
-      echo "var DrNumberFromPHP = ".json_encode($DRNumberArray).";";
-      echo "var ClientFromPHP = ".json_encode($ClientArray).";"; 
-      echo "var DateFromPHP = ".json_encode($DateArray).";"; 
-      echo "var TruckplateFromPHP = ".json_encode($TruckPlateArray).";"; 
-      echo "var DriverFromPHP = ".json_encode($DriverArray).";";
-      echo "var LocationFromPHP = ".json_encode($LocationArray).";";  //Store PHP array to JS Array
-
-      echo  " dropdown.onchange = function(){";
-
-        echo 'var table = document.getElementById("datatable-buttons");';        //Deletes All Rows of Table except Header before Inserting new Rows   
-            echo 'for(var i = table.rows.length - 1; i > 0; i--){';     
-               echo 'table.deleteRow(i);';
-            echo'}'; //END FOR
-         
-          echo 'var compare = dropdown.value;'; //gets the value of Dropdown
-
-          echo 'for(var i = 0; i < LocationFromPHP.length; i++){';
-            echo 'if(LocationFromPHP[i] == compare){';             
-              echo  "var newRow = document.getElementById('datatable-buttons').insertRow();";
-              echo  'newRow.innerHTML = "<tr> <td>" +DrNumberFromPHP[i]+ "</td> <td>" +ClientFromPHP[i]+ "</td>  <td>" +DateFromPHP[i]+"</td><td>" +TruckplateFromPHP[i]+ "</td><td>" +DriverFromPHP[i]+ "</td><td>" +LocationFromPHP[i]+ "</td></tr>";';
-            echo '}'; //END IF 1
-
-            echo 'if(compare == "All"){';
-              echo 'window.location.reload();'; //Refreshes the page to return to Normal            
-            echo '}'; //END IF 2        
-          echo '}';//END FOR
-        echo '}'; //End Function
-        ?>
-                    
-    </script>
+  
 	
   </body>
 </html>
