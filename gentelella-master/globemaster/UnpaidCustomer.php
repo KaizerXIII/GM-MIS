@@ -140,7 +140,7 @@
                           echo $ROW_GET_ORDER_NUMBER['payment_status'];
                         echo '</td>';
                         echo '<td align = center>';
-                          echo '<button type="button" class="btn btn-success" value ="'.$ROW_GET_ORDER_NUMBER['ordernumber'].'" data-toggle="modal" data-target=".bs-example-modal-lg"><i  class="fa fa-money" ></i> </button>';
+                          echo '<button type="button" class="btn btn-success" value ="'.$ROW_GET_ORDER_NUMBER['ordernumber'].'"><i  class="fa fa-money" ></i> </button>';
                         echo '</td>';
                       echo '</tr>';
                   }

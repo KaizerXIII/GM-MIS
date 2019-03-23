@@ -92,7 +92,7 @@
                                                 <?php
 
                                                     require_once('DataFetchers/mysql_connect.php');
-                                                    $SQL_CLIENT_LIST="SELECT client_id, client_name FROM clients";
+                                                    $SQL_CLIENT_LIST="SELECT client_id, client_name FROM clients WHERE client_status = 'Allowed'";
                                                     $result=mysqli_query($dbc,$SQL_CLIENT_LIST);
                                                     while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                                                     {
