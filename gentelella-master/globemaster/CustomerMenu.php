@@ -252,8 +252,9 @@
                                   <td align = 'center'><font color = "red ">Disallowed</font></td>
                       <?php
                                 }
+                                $GIVE_CLIENT_ID = $clients['client_id'];
                                 echo "<td align = 'center'>";
-                                echo '<a href ="UnpaidCustomer.php"><i onclick = "teit()"class="fa fa-wrench" > </a>'; 
+                                echo '<a href ="UnpaidCustomer.php?give_client_id='.$GIVE_CLIENT_ID.' "><i class="fa fa-wrench" > </a>'; 
                                 echo "</td></tr>";
                             }
                             echo "</tbody>";
