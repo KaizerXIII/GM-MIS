@@ -171,22 +171,23 @@
         while($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_fetch_array($RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE,MYSQLI_ASSOC))
         {       
       ?>
-
-        <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Initial Unpaid Amount</label>
-            <div class="col-md-3 col-sm-3 col-xs-12">
+<div class = "col-md-12">
+        <div class="form-group col-md-6 col-sm-3 col-xs-12">
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Initial Amount</label>
+            <div class="col-md-8 col-sm-3 col-xs-12">
                 <input type="text" id = "initial_amount" class="form-control" readonly="readonly" style="text-align:right" value ="₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['init_unpaid'], 2); ?>
                 ">
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Remaining Unpaid Amount</label>
-            <div class="col-md-3 col-sm-3 col-xs-12">
+        <div class="form-group col-md-6 col-sm-3 col-xs-12">
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Remaining Unpaid</label>
+            <div class="col-md-8 col-sm-3 col-xs-12">
                 <input type="text" id = "total_unpaid_amount" class="form-control" readonly="readonly" style="text-align:right"  value ="₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['totalunpaid'], 2); ?>
                 ">
             </div>
         </div>
+</div>
       <?php
       $_SESSION['SET_MAX_BY_TOTAL_UNPAID'] = $ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['totalunpaid'];
       }
@@ -239,14 +240,16 @@
     </div><!--END Class-row --> 
 </div><!--ENDCol MD-->
 <div class = "clearfix"></div>
-
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment</label>
-    <div class="col-md-3 col-sm-3 col-xs-12">
-        <input type="number" step = "any" name="client_payment" id = "payment" class="form-control" style="text-align:right" oninput ="validate(this)" min ="1" max = <?php echo $_SESSION['SET_MAX_BY_TOTAL_UNPAID'];?>
-        >
-  </div>
-</div>             
+<div class = "col-md-12 col-sm-12 col-xs-12" align = "left">
+  <div class="form-group">
+      <label class="control-label col-md-2 col-sm-2 col-xs-12">Payment Amount</label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+          <input placeholder = "Please input payment here" type="number" step = "any" name="client_payment" id = "payment" class="form-control" style="text-align:right" oninput ="validate(this)" min ="1" max = <?php echo $_SESSION['SET_MAX_BY_TOTAL_UNPAID'];?>
+          >
+      </div>
+  </div>  
+</div> 
+                  <div class = "clearfix"> </div>         
          <div class = "ln_solid"> </div>
          <div align = "center">
          <button type="submit" name = "confirm_payment" class="btn btn-success" >Confirm Payment</button>
