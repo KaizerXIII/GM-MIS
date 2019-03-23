@@ -116,15 +116,9 @@
                 <div class="row x_title">
                 
                   <div class="col-md-6">
-                    <h3>Trading Assets: <large> <b>Top Selling Items </b>[2019] </large></h3>
+                    <h3><large> <b>Top Selling Items </b>[2019] </large></h3>
                     <br>
                     
-                  </div>
-                  <div class="col-md-6">
-                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                      <span>December 30, 2010 - January 28, 2020</span> <b class="caret"></b>
-                    </div>
                   </div>
                 
 
@@ -158,9 +152,6 @@
                             <th class="column-title">Price </th>
                             <th class="column-title" width ="50px">Quantity Sold </th>
                             <th class="column-title">Total Price Sold </th>
-                            
-                            <th class="column-title no-link last"><span class="nobr">Action</span>
-                            </th>
                             <th class="bulk-actions" colspan="7">
                               <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                             </th>
@@ -212,8 +203,6 @@
                                   echo '</td>';
                                   echo '<td align ="right"> ₱ ';
                                   echo number_format((float)($row['price'] * $itemQty), 2, '.', ',');
-                                  echo '</td>';
-                                  echo '<td align = "center" class="last" ><a href="#" data-toggle="modal" data-target=".bs-example-modal-lg">View Details</a></td>';
                                   echo '</tr>';
                               }
                             }
@@ -311,7 +300,7 @@
             responsive: true,
             title: {
                 display: true,
-                text: 'Chart.js Line Chart'
+                text: 'Inventory Items'
             },
             tooltips: {
                 mode: 'label',
