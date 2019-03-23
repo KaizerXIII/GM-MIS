@@ -88,7 +88,7 @@
                     <br>
                     <!-- enctype="multipart/form-data" : required inside tag to upload correctly -->
                     <form action="<?php echo $_SERVER["PHP_SELF"] . '?'.http_build_query($_GET); ?>" method="POST" class="form-horizontal form-label-left" onsubmit="return confirm('Confirm Client Payment?')">
-
+<!-- 
                     <div class="col-md-6 col-sm-6 col-xs-12" >
                         <div class="x_panel" >
 
@@ -148,9 +148,9 @@
                           <?php
                             } //END While 
                           ?>
-        
-                    </div> <!--END XPanel-->
-                </div> <!--END Class Colmd-->
+         -->
+                    <!-- </div> END XPanel -->
+                <!-- </div> END Class Colmd -->
 <div class="col-md-6 col-sm-6 col-xs-12" >
 
 <div class="x_panel">
@@ -176,6 +176,13 @@
                 <tbody>
                   <?php 
                   
+                  $GET_OR_FROM_AJAX_SESSION =  $_SESSION['ordernumber_array_from_unpaid_customer_php'];
+          
+                  $SQL_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = "SELECT * FROM unpaid_clients WHERE clientID ='$GET_CLIENT_ID_FROM_MENU' AND ordernumber ='$GET_OR_FROM_AJAX_SESSION'";
+                  $RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_query($dbc,$SQL_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE);
+                  $ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_fetch_array($RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE,MYSQLI_ASSOC);
+                        
+                
                   $GET_CLIENT_ID_FROM_MENU = $_SESSION['get_client_id_from_customer_menu'];
                   $SQL_GET_ORDER_NUMBER_BASED_ON_CLIENT_ID = "SELECT * FROM orders WHERE client_id ='$GET_CLIENT_ID_FROM_MENU' AND payment_status ='Unpaid'";
                   $RESULT_GET_ORDER_NUMBER = mysqli_query($dbc,$SQL_GET_ORDER_NUMBER_BASED_ON_CLIENT_ID);
@@ -199,11 +206,148 @@
               ?>                  
                 </tbody>
             </table>
+            <div class = "ln_solid"></div>
+            <div align = "right">
+              <label><font color = "black">Total Unpaid Amount: ₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['totalunpaid'], 2); ?></font></label>
+            </div>
         </div> <!--END Xcontent-->
       </div><!--END Col MD-->
     </div><!--END Class-row -->
   </div><!--END XPanel-->
 </div><!--ENDCol MD-->
+
+<div class="col-md-6 col-sm-6 col-xs-12" >
+                        <div class="x_panel" >
+
+                        <center><h3><font color = "lightblue">Payment Trail</font>
+</h3></center>
+                            <div class="ln_solid"></div>
+                            <?php 
+        $GET_OR_FROM_AJAX_SESSION =  $_SESSION['ordernumber_array_from_unpaid_customer_php'];
+
+        $SQL_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = "SELECT * FROM unpaid_clients WHERE clientID ='$GET_CLIENT_ID_FROM_MENU' AND ordernumber ='$GET_OR_FROM_AJAX_SESSION'";
+        $RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_query($dbc,$SQL_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE);
+        while($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_fetch_array($RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE,MYSQLI_ASSOC))
+        {       
+      ?>
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Initial Unpaid Amount</label>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <input type="text" id = "initial_amount" class="form-control" readonly="readonly" style="text-align:right" value ="₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['init_unpaid'], 2); ?>
+                ">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Remaining Unpaid Amount</label>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <input type="text" id = "total_unpaid_amount" class="form-control" readonly="readonly" style="text-align:right"  value ="₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['totalunpaid'], 2); ?>
+                ">
+            </div>
+        </div>
+      <?php
+      $_SESSION['SET_MAX_BY_TOTAL_UNPAID'] = $ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['totalunpaid'];
+      }
+        
+      ?>
+
+        <div class = "clearfix"></div>
+<div class="col-md-12 col-sm-12 col-xs-12" >
+
+  
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+    
+        <div class="x_content">
+            <table id ="damageTable" class="table">
+                <thead>
+                    <tr>    
+                      <th>Amount Paid</th>
+                      <th>Payment Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td></td>
+                    <td></td>
+                </tbody>
+            </table>
+        </div> <!--END Xcontent-->
+      </div><!--END Col MD-->
+    </div><!--END Class-row --> 
+</div><!--ENDCol MD-->
+<div class = "clearfix"></div>
+
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment</label>
+    <div class="col-md-3 col-sm-3 col-xs-12">
+        <input type="number" step = "any" name="client_payment" id = "payment" class="form-control" style="text-align:right" oninput ="validate(this)" min ="1" max = <?php echo $_SESSION['SET_MAX_BY_TOTAL_UNPAID'];?>
+        >
+  </div>
+</div>             
+         <div class = "ln_solid"> </div>
+         <div align = "center">
+         <button type="button" class="btn btn-success" >Confirm Payment</button>
+    </div>
+  </div> <!-- END XPanel -->
+</div> <!-- END Class Colmd -->
+            <div class = "clearfix"> </div>
+            <div class = "ln_solid"> </div> 
+
+                <div class="col-md-12 col-sm-12 col-xs-12" >
+                        <div class="x_panel" >
+
+                            <center><font color = "#2a5eb2"><h3>Customer Details </h1>
+                            
+                            </h3></font></center>
+                            <div class="ln_solid"></div>
+                            <?php 
+                                $SQL_GET_CLIENT_DETAILS = "SELECT * FROM clients WHERE client_id ='$GET_CLIENT_ID_FROM_MENU'";
+                                $RESULT_GET_CLIENT_DETAILS = mysqli_query($dbc,$SQL_GET_CLIENT_DETAILS);
+                                while($ROW_GET_CLIENT_DETAILS = mysqli_fetch_array($RESULT_GET_CLIENT_DETAILS,MYSQLI_ASSOC))
+                                {
+
+                                
+                            ?>
+
+                            <div class="form-group col-md-6 col-sm-6 col-xs-12 ">
+                                <label class="control-label col-md-6 col-sm-3 col-xs-12">Contact Number</label>
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <input name = "contact_number" type="text" id = "contact_number" class="form-control" readonly="readonly" value ="<?php echo $ROW_GET_CLIENT_DETAILS['client_contactno'] ?>
+                                    ">
+                                </div>
+                            </div>
+                          
+                            <div class="form-group col-md-6 col-sm-6 col-xs-12 " style = "display:block">
+                                <label class="control-label col-md-2 col-sm-3 col-xs-12">E-mail Address</label>
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <input name = "pangalan" type="text" id = "email_address" class="form-control" readonly="readonly"  value ="<?php echo $ROW_GET_CLIENT_DETAILS['client_email'] ?>
+                                    ">
+                                </div>
+                            </div>
+
+                            
+                          
+                            <div class="form-group col-md-6 col-sm-6 col-xs-12 ">
+                                <label class="control-label col-md-6 col-sm-3 col-xs-12">Status</label>
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <input type="text" id = "client_status" class="form-control" readonly="readonly"  value ="<?php echo $ROW_GET_CLIENT_DETAILS['client_status'] ?>
+                                    ">
+                                </div>
+                            </div>
+                            <div class = "clearfix"></div>
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12 " style = "display:block">
+                                <label class="control-label col-md-3 col-sm-6 col-xs-12">Location</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input name = "pangalan" type="text" id = "location" class="form-control" readonly="readonly"  value ="<?php echo $ROW_GET_CLIENT_DETAILS['client_address']." | ".$ROW_GET_CLIENT_DETAILS['client_city']?>
+                                    ">
+                                </div>
+                            </div>
+                          <?php
+                            } //END While 
+                          ?>
+                    </div> <!-- END XPanel -->
+                </div> <!-- END Class Colmd-->
 
 <!-- Large modal -->
 
