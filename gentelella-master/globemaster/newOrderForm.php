@@ -272,20 +272,11 @@
                                        echo '</script>';
                                       //  header("Location: ViewOrders.php");
                                    }
+
                                    $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
                                    VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
                                    $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
-                                   if(!$RESULT_INSERT_TO_UNPAID_TABLE) 
-                                   {
-                                       die('Error: ' . mysqli_error($dbc));
-                                   } 
-                                   else 
-                                   {
-                                    //    echo '<script language="javascript">';
-                                    //    echo 'alert("Added Unpaid Amount to Client");';
-                                    //    echo '</script>';
-                                   
-                                   }                                                             
+                                                                                           
                                 }//END IF
                                 
                                $CART_ITEM_ID = $_SESSION['order_form_item_id'];
@@ -387,18 +378,8 @@
                                } 
                                $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
                                VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
-                               $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE); //Inserts to UNPAID Client Table for reference
-                               if(!$RESULT_INSERT_TO_UNPAID_TABLE) 
-                               {
-                                   die('Error: ' . mysqli_error($dbc));
-                               } 
-                               else 
-                               {
-                                //    echo '<script language="javascript">';
-                                //    echo 'alert("Added Unpaid Amount to Client");';
-                                //    echo '</script>';
-                               
-                               }                                                
+                               $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
+                                                                           
                             }//END IF
 
                             
