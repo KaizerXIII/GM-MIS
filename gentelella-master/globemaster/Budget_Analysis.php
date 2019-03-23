@@ -40,29 +40,9 @@
             <!-- /sidebar menu -->
 
         <!-- page content -->
-        <div class="right_col" role="main">
-          <!-- top tiles -->
+        <div class="right_col" role="main"> 
           <div class="row tile_count">
-           <!-- <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"> Target Sales: </span>
-              <div class="count">2500</div>
-              
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"> Total Sales: </span>
-              <div class="count">500</div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top">Total Profit: </span>
-              <div class="count green">2,500,000</div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Incurred Cost: </span>
-              <div class="count">764,567</div>
-            </div>-->
-           
           </div>
-          <!-- /top tiles -->
 
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -70,222 +50,49 @@
 
                 <div class="row x_title">
                   <div class="col-md-6">
-                    <h3>Budget Analysis:    <small> <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                      <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                    </div></small></h3>
-                    
-                  </div>
-                
-                </div>
+                  <!-- dropdown input here? -->
+                    <h3>Sales Variance Analysis for the Year: 
+                    <select id="selectYear" name = "selectYear" style=" width:90px";>
+                                <?php
+                                    require_once('DataFetchers/mysql_connect.php');
+                                    $query = "SELECT YEAR(order_date) AS years
+                                    FROM orders
+                                    GROUP BY YEAR(order_date)
+                                    ORDER BY YEAR(order_date);";                      
+                                    $resultofQuery =  mysqli_query($dbc, $query);
+                                    while($row=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
+                                    {
+                                      echo '<option value="'.$row['years'].'">'.$row['years'].'</option> ';
+                                    }
 
-                <!-- Add Data module -->
-                <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target=".bs-example-modal-lg"><i class = "fa fa-plus"></i> Add Data</button>
-
-                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                  <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">Add Expected Data</h4>
-                      </div>
-
-                      <div class = "modal-body">
-                      <form class="form-horizontal form-label-left" method="post" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-
-                        <span class="section">Input for Expected Data Each Month</span>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Year <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="year" placeholder = "Input a year of analysis" required type="number" min="2001" max="2099" step="1" value="2019" />
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">January <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="jan" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0" />
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">February <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="feb"  placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0" />
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">March <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="mar" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">April <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="apr" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">May <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="may" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">June <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="jun" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">July <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="jul" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">August <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="aug" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">September <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="sept" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">October <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="oct" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">November <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="nov" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                          </div>
-                        </div>
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">December <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="customer" class="form-control col-md-7 col-xs-12" name="dec" placeholder = "Input a monetary amount (e.g. 1000.00)" required type="number" required name="price" min="0" step=0.1 value = "0"/>
-                            <br>
-                            <br>
-                            <br>
-                            <button type="submit" class="btn btn-success btn-lg" name = "submit" value = "submit">Submit </button>
-                            <button type="reset" class="btn btn-danger btn-lg">Reset </button>
-                            <!-- php start -->
-                            <?php
-                            $year = $jan = $feb = $mar = $apr = $may = $jun = $jul = $aug = $sept = $oct = $nov = $dec = "";
-
-                              if($_SERVER["REQUEST_METHOD"] == "POST")
-                              {
-                                $year = test_input($_POST['year']);
-                                $jan = test_input($_POST['jan']);
-                                $feb = test_input($_POST['feb']);
-                                $mar = test_input($_POST['mar']);
-                                $apr = test_input($_POST['apr']);
-                                $may = test_input($_POST['may']);
-                                $jun = test_input($_POST['jun']);
-                                $jul = test_input($_POST['jul']);
-                                $aug = test_input($_POST['aug']);
-                                $sept = test_input($_POST['sept']);
-                                $oct = test_input($_POST['oct']);
-                                $nov = test_input($_POST['nov']);
-                                $dec = test_input($_POST['dec']);
-
-                                // $expected = array($_POST['jan'], $_POST['feb'], $_POST['mar'], $_POST['apr'], $_POST['may'], $_POST['jun'], $_POST['jul'], $_POST['aug'], $_POST['sept'], $_POST['aug'], $_POST['nov'], $_POST['dec']);
-                              $expected = 5000;                              }
-
-                              function test_input($data) {
-                                $data = trim($data);
-                                $data = stripslashes($data);
-                                $data = htmlspecialchars($data);
-                                return $data;
-                             }
-                            
-
-                             
-                             $test1 = array (112, 223, 334, 445, 445, 556, 775, 889)          
-                            ?>
-                            <!-- php end -->
-                          </div>
-                        </div>
-
-                        
-                        
-                      </form>
-                    </div>
-                    </div>
+                                               
+                                ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    \    
+                        </select></h3> 
                   </div>
                 </div>
-                <!-- End Add Data Modal -->
-                
-                
+
                 <!-- test -->
-                <?php 
-                // foreach ($_POST as $a)
-                // echo $a;
-                ?>
-
-
-
                 <div class="row">
-                  <div class="col-md-8 col-sm-8 col-xs-12">
+                  <div class="col-md-9 col-sm-9 col-xs-12">
                     <div class="x_panel">
-                      <div class="x_title">
-                        <h2>
-                          <?php 
-                            if (isset($_POST["year"]))
-                            {
-                              echo "Sales Variance Analysis for Year ", $_POST['year'];
-                            }
-                            else 
-                              echo "Sales Variance Analysis for Year ", date('Y'); 
-                          ?>
-                        </h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                          </li>
-                          <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                              <li><a href="#">Settings 1</a>
-                              </li>
-                              <li><a href="#">Settings 2</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li><a class="close-link"><i class="fa fa-close"></i></a>
-                          </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                      </div>
                       <div class="x_content">
-                        <canvas id="mybarChart" width="350" height="260">></canvas>
+                      <?php
+                        $query1 = "SELECT nextMonthSales 
+                        FROM ref_eoqformula;";                      
+                        $resultofQuery1 =  mysqli_query($dbc, $query1);
+                        $row1=mysqli_fetch_array($resultofQuery1,MYSQLI_ASSOC);
+                        // echo $row1['nextMonthSales'];
+                      
+                        $expectedsales = $row1['nextMonthSales'];
+                      ?>
+
+                        <canvas id="mybarChart" width="350" height="180">></canvas>
                       </div>
                     </div>
+                    <p><font color = "lightblue">Drag the slider to change expected sales values.</font></p>
+                    <p><b>Expected Sales: ₱ <span id="value"></span>.00</b></p>
                     <div class="slidecontainer" id = "sliderAmount">
-                            <input type="range" min="1" max="50" value="50" class="slider" id="rangeSlider"> </input>
-
-                            <p>Value: <span id="value"></span></p>
-                            Set Estimated Annual Demand: <input id = "maxInput" type ="number" min = "0" onkeydown="return processKey(event)" value = "0"> </input>
+                            <input type="range" min="1" max="<?php echo $expectedsales + $expectedsales;?>" value="<?php echo $expectedsales;?>" class="slider" id="rangeSlider" onchange = "updateExpected()"> </input>
                             <script>
                                 function processKey(e)
                                 {
@@ -309,10 +116,10 @@
                         </div>
                   </div>
 
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-3 col-sm-3 col-xs-12">
                   <div class="x_panel">
                     <div class="x_title">
-                      <h2>Current Analysis:  </h2>
+                      <h2>Current Data From Paid Sales:  </h2>
 
                       <div class="clearfix"></div>
                     </div>
@@ -409,11 +216,21 @@
     <script src="../vendors/echarts/dist/echarts.min.js"></script>
     <script src="../vendors/echarts/map/js/world.js"></script> -->
     
+
+    <script>
+      // function changeExpected()
+      // {
+      //   console.log("hi");  
+      // }
+    </script>
     <script>
         // Bar chart
-
+        
+        var variancearray = [];
+        var totalsales_month = [];
+        var expectedsalesfromPHP = <?php echo json_encode($expectedsales);?>;
       
-      if ($('#mybarChart').length )
+      if ($('#mybarChart').length)
       { 
 
 			  $(document).ready(function()
@@ -423,53 +240,53 @@
           method: "GET",
           success: function(data) {
             console.log(data);
-            // var itemid = [];
-            // var itemname = [];
-            // var itemlabel = [];
-            // var itemprice = [];
-            // var itemcount = [];
-            var totalsales_month = [];
-            var itemcount1 = <?php echo json_encode($test1); ?>;
+
             var expected = [];
-            var variancearray = [];
+            var expectedSlider = document.getElementById("rangeSlider");
 
+            console.log(expectedsalesfromPHP);
             console.log(data);
-
+            
             for(var i in data) 
             {
-              // itemid.push("Item " + data[i].item_id);
-              // itemname.push(data[i].item_name);
-              // itemlabel.push(data[i].item_name + "-" + "Item " + data[i].item_id);
-              // itemprice.push(data[i].price);
-              // itemcount.push(data[i].item_count);
               console.log(data[i]);
 
               totalsales_month.push(data[i].totalamtsales);
-              expected.push(5000);
-
-              variancearray.push(Math.abs(data[i].totalamtsales - expected[i]));
+              expected.push(expectedsalesfromPHP);
+              variancearray.push(Math.abs(data[i].totalamtsales - expectedsalesfromPHP)); //computes for variance by subtracting total sales per month to expected sales. gets absolute value.
 
               console.log(variancearray);
             }
 			  
             var ctx = document.getElementById("mybarChart");
-            var mybarChart = new Chart(ctx, 
+            mybarChart = new Chart(ctx, 
             {
-              type: 'line',
+              type: 'bar',
               data: 
               {
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                datasets: [{
-                label: 'Actual Sales',
-                borderColor: "#26B99A",
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                data: totalsales_month},{
-                label: 'Expected Sales',
-                borderColor: "#273746",
-                data: expected},{
-                label: 'Sales Variance',
-                borderColor: "#DF013A",
-                data: variancearray}]
+                datasets: 
+                [
+                  {
+                  label: 'Actual Sales',
+                  borderColor: "#26B99A",
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  fill: {origin},
+                  data: totalsales_month
+                  },
+                  {
+                  label: 'Expected Sales',
+                  borderColor: "#273746",
+                  data: expected
+                  },
+                  {
+                  label: 'Sales Variance',
+                  type: 'bar',
+                  borderColor: "#DF013A",
+                  fill: false,
+                  data: variancearray
+                  }
+                ]
             },
               options: 
               {
@@ -500,6 +317,35 @@
       })
     } 
     
+  </script>
+  <!-- UPDATE CHARTS BASED ON SLIDER SCRIPT -->
+  <script>
+    var expectedSlider = document.getElementById("rangeSlider");
+    function updateExpected()
+    {
+      console.log(expectedSlider.value);
+      
+
+      for(var j = 0; j <= 11; j++)
+        {
+          window.variancearray[j] = 0;
+          console.log(window.variancearray[j]);
+        }
+      for(var i = 0; i <= 11; i++)
+      {
+        var expectedsalesrecompute = expectedSlider.value;
+
+        window.mybarChart.data.datasets[1].data[i] = expectedsalesrecompute;
+        console.log(window.totalsales_month[i]);
+        console.log(expectedsalesrecompute);
+        // console.log(window.mybarChart.data.datasets[2].data);
+        // console.log(window.variancearray);
+        window.variancearray[i] = (Math.abs(window.totalsales_month[i] - expectedsalesrecompute));
+        console.log(window.variancearray[i]);
+        window.mybarChart.update();
+      }
+      
+    }
   </script>
 
 <script>
