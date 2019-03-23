@@ -353,8 +353,8 @@
                                                 if($statohs == "PickUp")
                                                 {
                                         ?>
-                                                <button name = "confirmButton" type="button" class="btn btn-success" style = "display:block" onclick ="FinishOrder()">Finish</button>
-                                                <button type="button" class="btn btn-warning"  style = "display:block" onclick="cancelWarning()">Cancel Order</button>
+                                                <button name = "confirmButton" type="button" class="btn btn-success" onclick ="FinishOrder()">Finish</button>
+                                                <button type="button" class="btn btn-warning" onclick="cancelWarning()">Cancel Order</button>
                                         <?php
                                                 }
                                                 else if($statohs == "Order In Progress" || $statohs == "Late Delivery" || $statohs == "Order Cancelled" || $statohs == "Delivered" || $statohs == "Deliver")

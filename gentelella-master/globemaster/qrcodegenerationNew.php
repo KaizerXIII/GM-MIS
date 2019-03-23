@@ -87,7 +87,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h1>QR Code Generator</h1>
+                    <h1><i class="fa fa-qrcode"></i>  QR Code Generator</h1>
                    
                     <div class="clearfix"></div>
                   </div>

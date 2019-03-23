@@ -496,7 +496,7 @@ if(!(isset($_SESSION['usertype']))){
             color: #1D2B51;
             }
         
-        h3 {
+        /* h3 {
             font-family: 'COUTURE Bold', Arial, sans-serif;
             font-weight:normal;
             font-style:normal;
@@ -508,7 +508,7 @@ if(!(isset($_SESSION['usertype']))){
             font-style:normal;
             color: #1D2B51;
             font-size: 15px;
-            }
+            } */
     </style>  
 
 

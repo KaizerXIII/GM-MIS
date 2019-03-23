@@ -222,6 +222,7 @@
                           <th>E-mail Address</th>
                           <th>Total Unpaid</th>
                           <th>Status</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <?php
@@ -242,15 +243,18 @@
                                 if($clients['client_status'] == "Allowed")
                                 {
                       ?>
-                                  <td align = 'center'><font color = "green">Allowed</font></td></tr>
+                                  <td align = 'center'><font color = "green">Allowed</font></td>
                       <?php
                                 }
                                 else if($clients['client_status'] == "Disallowed")
                                 {
                       ?>
-                                  <td align = 'center'><font color = "red ">Disallowed</font></td></tr>
+                                  <td align = 'center'><font color = "red ">Disallowed</font></td>
                       <?php
                                 }
+                                echo "<td align = 'center'>";
+                                echo '<a href ="UnpaidCustomer.php"><i onclick = "teit()"class="fa fa-wrench" > </a>'; 
+                                echo "</td></tr>";
                             }
                             echo "</tbody>";
                       ?>
