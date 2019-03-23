@@ -332,10 +332,6 @@ $pricePerItem = array();
 $totalPrice = array();
 $expected_date = array();
 
-
-
-
-
 $SchedDelivOrderNumber = array(); 
 $SchedDelivDR = array();
 $SchedDelivDate = array();
@@ -350,20 +346,29 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
 {
     $OR_FROM_SCHED_DELIV_TABLE =  $rowofResult2['ordernumber'];
 
-    $queryToGetItemList = "SELECT * FROM orders
-    JOIN order_details ON orders.ordernumber = order_details.ordernumber
-    WHERE orders.ordernumber = '$OR_FROM_SCHED_DELIV_TABLE'";
+    $QUERY_GET_OR_FROM_ORDERS = "SELECT * FROM orders
+    WHERE ordernumber = '$OR_FROM_SCHED_DELIV_TABLE'";
+    
+    $RESULT_GET_OR = mysqli_query($dbc, $QUERY_GET_OR_FROM_ORDERS);
+    while($ROW_RESULT_GET_OR=mysqli_fetch_array($RESULT_GET_OR,MYSQLI_ASSOC))
+    {
+        $totalPrice[] = number_format(($ROW_RESULT_GET_OR['totalamt']),2);
+        $FORMATTED_EXPECTED_DATE = date('F j, Y',strtotime($ROW_RESULT_GET_OR['expected_date'])); //Formats date 
+        $expected_date[]= $FORMATTED_EXPECTED_DATE;
+    }
+
+    $queryToGetItemList = "SELECT * FROM order_details
+    WHERE ordernumber = '$OR_FROM_SCHED_DELIV_TABLE'";
     $resultofQuery1 = mysqli_query($dbc, $queryToGetItemList);
     while($rowofResult1=mysqli_fetch_array($resultofQuery1,MYSQLI_ASSOC))
     {
         $orderNumberArray[] = $rowofResult1['ordernumber']; //Compare this 
         $itemName[] = $rowofResult1['item_name'];
         $quantity[] = $rowofResult1['item_qty'];
-        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);
-        $totalPrice[] = number_format(($rowofResult1['totalamt']),2);
-        $FORMATTED_EXPECTED_DATE = date('F j, Y',strtotime($rowofResult1['expected_date'])); //Formats date 
-        $expected_date[]= $FORMATTED_EXPECTED_DATE;
+        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);      
     }
+    
+
     $FORMATTED_DELIV_DATE = date('F j, Y',strtotime($rowofResult2['delivery_Date'])); //Formats date 
    
     $SchedDelivOrderNumber[] = $rowofResult2['ordernumber']; //To this
@@ -417,7 +422,7 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
                 echo 'deliverStatusfromHTML.value = drStatFromPHP[i];';
                 echo 'deliverTotalfromHTML.value = "₱ "+ ItemTotalFromPHP[i];';
                 echo 'expectedDatefromHTML.value = drExpectedDateFromPHP[i];';
-                echo 'var count = OrderNumberFromOrderDetails.length -1;';
+                echo 'var count = OrderNumberFromOrderDetails.length ;';
 
                 echo 'while(count >= 0){';
                     
