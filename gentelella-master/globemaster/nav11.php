@@ -11,24 +11,10 @@ if(!(isset($_SESSION['usertype']))){
 }
 ?>
 
-<script type="text/javascript"> 
-  function display_c(){
-    var refresh=1000; // Refresh rate in milli seconds
-    mytime=setTimeout('display_ct()',refresh)
-  }
-  function display_ct() {
-    var x = new Date()
-    document.getElementById('ct').innerHTML = x;
-    tt=display_c();
- }
- 
-</script>
-
-
     <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title">
-                <a href="MainDashboard.php" class="site_title"><img src="images/GM%20LOGO.png" width = "50px" height = "50px" onload = "display_ct()"><font face="Couture Bold Italic" size="4" color="#1D2B51">Globe Master</font></a>
+                <a href="MainDashboard.php" class="site_title"><img src="images/GM%20LOGO.png" width = "50px" height = "50px"><font face="Couture Bold Italic" size="4" color="#1D2B51">Globe Master</font></a>
             </div>
 
             <div class="clearfix"></div>
@@ -55,7 +41,6 @@ if(!(isset($_SESSION['usertype']))){
                 $user=$row['usertype'];
                 
                     echo "<h2><font face='Couture Bold'>Welcome, ";
-                    echo "<br>";
                     echo $_SESSION["firstname"];
                     echo " ";
                     echo $_SESSION["lastname"];
@@ -94,6 +79,7 @@ if(!(isset($_SESSION['usertype']))){
                       echo "<ul class='nav child_menu'>";
                       if($user == 'CFO'){
                       echo    "<li><a href='InputPage.php'>Input EOQ Details</a></li>";
+                      echo    "<li><a href='EOQ Input.php'>Input EOQ Details</a></li>";
                       
                       }
                       if($user == 'CEO' or $user == 'CFO' or $user == 'MKT'){
@@ -114,7 +100,7 @@ if(!(isset($_SESSION['usertype']))){
                       <?php
                      if($user == 'MKT' or $user == 'SALES' or $user == 'INV'){
                   
-                      echo "<li><a href='qrcodegeneration.php'>Generate QR Code</a></li>";
+                      echo "<li><a href='qrcodegenerationNew.php'>Generate QR Code</a></li>";
                       
                         }
                       ?>
@@ -189,12 +175,13 @@ if(!(isset($_SESSION['usertype']))){
                   echo   "<ul class='nav child_menu'>";
                   echo     "<li><a> Sales <span class='fa fa-chevron-down'></span></a>";
                   echo       "<ul class='nav child_menu'>";
-                  echo         "<li data-toggle='modal' data-target='#SalesVarianceAnalysis'><a>Sales Variance Analysis</a></li>";
+                  echo         "<li><a href='index.html'>Sales Variance Analysis</a></li>";
                   echo         "<li data-toggle='modal' data-target='.bs-example-modal-sm'><a>Sales Forecasting</a></li>";
                   echo       "</ul>";
                   echo    "</li>";
-                  echo    "<li><a> Inventory <span class='fa fa-chevron-down'></span></a>";
+                  echo    "<li><a> Inventory <span class='fa fa-chevron-dow'></span></a>";
                   echo        "<ul class='nav child_menu'>";
+                  echo            "<li><a>Inventory Forecasting</a></li>";
                   echo            "<li><a href='InventoryForecasting.php'>Inventory Forecasting</a></li>";
                   echo         "</ul>";
                   echo    "</li>";
@@ -289,9 +276,11 @@ if(!(isset($_SESSION['usertype']))){
                   </ul>
                 </li>
 
-                <div id='ct' class="monika" style="font-size:120%"></div>
-
                 <li role="presentation" class="dropdown">
+                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="badge bg-green">6</span>
+                  </a>
                   <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                     <li>
                       <a>
@@ -357,7 +346,7 @@ if(!(isset($_SESSION['usertype']))){
         </div>
         <!-- /top navigation -->
 
-        <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
               <div class="modal-dialog modal-sm">
                 <div class="modal-content">
 
@@ -368,9 +357,9 @@ if(!(isset($_SESSION['usertype']))){
                   </div>
                   <div class="modal-body">
                     <h4>Select a Type of Forecast</h4>
-                    <br>
+                    <br> -->
                         <!-- Split button -->
-                        <center><div class="btn-group">
+                        <!-- <center><div class="btn-group">
                           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="invforecastlabel">
                           Choose..
                             <span class="caret"></span>
@@ -435,46 +424,9 @@ if(!(isset($_SESSION['usertype']))){
 
                 </div>
               </div>
-            </div>
-
-
+            </div> -->
             <!-- /modals -->
             
-            <!-- SALES VARIANCE ANALYSIS MODALS -->
-            <div id="SalesVarianceAnalysis" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <center><h3 class="modal-title"><img src="images/GM%20LOGO.png" width = "50px" height = "50px">Sales Variance Analysis</h3>
-                  </div>
-                  <div class="modal-body">
-                    <center><h4>CHOOSE YOUR STORE FOR ANALYSIS:</h4>
-                    <div class="btn-group">
-                          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="salesvariancelabel">
-                          Choose..
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                            <li id = "svtrading" onclick="changetotrading();"><a href="#">Trading</a>
-                            </li>
-                            <li id = "svdepot" onclick = "changetodepot();"><a href="#">Depot</a>
-                            </li>
-                          </ul>
-                        </div>  
-                    
-                  </div>
-                  <div class="modal-footer">
-                      <a href="SalesVarianceAnalysis.php"><button type="submit" class="btn btn-primary">Next</button></a>  
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
 
         <!-- Custom Fonts -->
     <style>
@@ -495,27 +447,14 @@ if(!(isset($_SESSION['usertype']))){
             font-style:normal;
             color: #1D2B51;
             }
-        
-        h3 {
-            font-family: 'COUTURE Bold', Arial, sans-serif;
-            font-weight:normal;
-            font-style:normal;
-            color: #1D2B51;
-            }
-        h4 {
-            font-family: 'COUTURE Bold', Arial, sans-serif;
-            font-weight:normal;
-            font-style:normal;
-            color: #1D2B51;
-            font-size: 15px;
-            }
+
     </style>  
 
 
     <!-- SCRIPTS -->
 
           <!-- Change Button Label Script -->
-          <script>
+          <!-- <script>
             var invforecastlabel = document.getElementById("invforecastlabel");
             
             var invnaive = document.getElementById("invnaive");
@@ -523,7 +462,7 @@ if(!(isset($_SESSION['usertype']))){
             var invtimeseries = document.getElementById("invtimerseries");
             function changetonaive()
             {
-              invforecastlabel.innerHTML = "Naive Forecasting";
+              invforecastlabel.innerHTML = "Naive Forecasting`";
               
             }
             function changetots()
@@ -536,10 +475,10 @@ if(!(isset($_SESSION['usertype']))){
               invforecastlabel.innerHTML = "Short Term Forecasting";
               
             }
-          </script>
+          </script> -->
 
           <!-- Toggle datepicker script -->
-          <script>
+          <!-- <script>
             var customdatepick = document.getElementById("customdatepick");
             var datepickerdiv = document.getElementById("datepickerdiv");
             var invforecastlabel = document.getElementById("invforecastlabel");
@@ -549,38 +488,4 @@ if(!(isset($_SESSION['usertype']))){
               datepickerdiv.style.display = "block";
               invforecastlabel.innerHTML = "Custom Date Pick";
             }
-          </script>
-                  
-          <!-- Change Button Label Analysis -->
-          <script>
-            var salesvariancelabel = document.getElementById("salesvariancelabel");
-            
-            var svtrading = document.getElementById("svtrading");
-            var svdepot = document.getElementById("svdepot");
-        
-            function changetotrading()
-            {
-              salesvariancelabel.innerHTML = "GLOBEMASTER TRADING";
-              
-            }
-            function changetodepot()
-            {
-              salesvariancelabel.innerHTML = "GLOBEMASTER DEPOT";
-              
-            }
-          </script>
-
-          <!-- Toggle datepicker script -->
-          <script>
-            var customdatepick = document.getElementById("customdatepick");
-            var datepickerdiv = document.getElementById("datepickerdiv");
-            var invforecastlabel = document.getElementById("invforecastlabel");
-            
-            function toggledatepicker()
-            {
-              datepickerdiv.style.display = "block";
-              invforecastlabel.innerHTML = "Custom Date Pick";
-            }
-          </script>          
-
-          
+          </script>   -->
