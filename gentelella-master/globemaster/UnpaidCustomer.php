@@ -229,7 +229,7 @@
         <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Initial Unpaid Amount</label>
             <div class="col-md-3 col-sm-3 col-xs-12">
-                <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right" value ="₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['init_unpaid'], 2); ?>
+                <input type="text" id = "initial_amount" class="form-control" readonly="readonly" style="text-align:right" value ="₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['init_unpaid'], 2); ?>
                 ">
             </div>
         </div>
@@ -237,7 +237,7 @@
         <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Remaining Unpaid Amount</label>
             <div class="col-md-3 col-sm-3 col-xs-12">
-                <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right"  value ="₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['totalunpaid'], 2); ?>
+                <input type="text" id = "total_unpaid_amount" class="form-control" readonly="readonly" style="text-align:right"  value ="₱ <?php echo number_format($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE['totalunpaid'], 2); ?>
                 ">
             </div>
         </div>
@@ -292,61 +292,12 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" name="confirm_payment" class="btn btn-success">Confirm Payment</button>
 
-        <?php
-        if(isset($_POST['confirm_payment'] ))
-        {
-          if(!empty($_POST['client_payment']))
-          {
-            $GET_UNPAID_ID = "SELECT * FROM unpaid_clients WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION'";
-            $RESULT_UNPAID_ID = mysqli_query($dbc,$GET_UNPAID_ID);
-            $ROW_UNPAID_ID = mysqli_fetch_assoc($RESULT_UNPAID_ID);
-    
-              $GET_UNPAID_ID_FROM_SQL = $ROW_UNPAID_ID['unpaidID'];
-              $GET_PAYMENT_OF_CLIENT = $_POST['client_payment'];
-    
-            $INSERT_TO_AUDIT = "INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date) 
-            VALUES('$GET_UNPAID_ID_FROM_SQL','$GET_PAYMENT_OF_CLIENT', Now());";
-
-            $RESULT_INSERT_TO_AUDIT = mysqli_query($dbc,$INSERT_TO_AUDIT); //Insert to PaymentAudit
-            
-            $UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE = "UPDATE clients
-            SET clients.total_unpaid  = (total_unpaid - '$GET_PAYMENT_OF_CLIENT')
-            WHERE client_id ='$GET_CLIENT_ID_FROM_MENU';";
-
-            $RESULT_UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE=mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE); //Update Total Unpaid in clients table
-
-            $UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE = "UPDATE unpaid_clients
-            SET unpaid_clients.totalunpaid  = (totalunpaid - '$GET_PAYMENT_OF_CLIENT')
-            WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION';";
-
-            $RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE = mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE);  //Update Total Unpaid in clients table
-            if(!$RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE) 
-            {
-                die('Error: ' . mysqli_error($dbc));
-            } 
-            else 
-            {
-               
-            }
-
-
-            
-          }//END IF ISSET
-          else
-          {
-            echo '<script language="javascript">';
-            echo 'alert("Please INPUT Amount!");';
-            echo '</script>';
-          }
-         
-        }//END IF ISSET
-        
-        ?>
+       
       </div>
 
     </div>
   </div>
-</div>
+</div> <!-- MODAL-->
             </form>
           </div>
         </div>
@@ -416,21 +367,75 @@
     $('#damageTable tbody button.btn.btn-success').on('click', function(e) 
     {              
       var buttonValue = $(this).val();
+      var initial_box = document.getElementById("initial_amount");
+      var total_unpaid_box = document.getElementById("total_unpaid_amount");
       
       request = $.ajax({
-          url: "ajax/unpaid_client_get_ordernumber.php",
+          url: "ajax/set_unpaid_order_modal.php",
           type: "POST",
-          data: {post_order_number: buttonValue},
+          data: {
+            post_order_number: buttonValue,
+            post_client_id: "<?php echo $_SESSION['get_client_id_from_customer_menu']?>"
+          },
           success: function(data) 
           {
-            // alert(data);
-
+            $('.modal-body').remove(data);
+            $('.modal-body').append(data);
           }//END SUCCESS
           
       });//END AJAX
     });                        
     </script>
-   
+    <?php
+        if(isset($_POST['confirm_payment'] ))
+        {
+          if(!empty($_POST['client_payment']))
+          {
+            $GET_UNPAID_ID = "SELECT * FROM unpaid_clients WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION'";
+            $RESULT_UNPAID_ID = mysqli_query($dbc,$GET_UNPAID_ID);
+            $ROW_UNPAID_ID = mysqli_fetch_assoc($RESULT_UNPAID_ID);
+    
+              $GET_UNPAID_ID_FROM_SQL = $ROW_UNPAID_ID['unpaidID'];
+              $GET_PAYMENT_OF_CLIENT = $_POST['client_payment'];
+    
+            $INSERT_TO_AUDIT = "INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date) 
+            VALUES('$GET_UNPAID_ID_FROM_SQL','$GET_PAYMENT_OF_CLIENT', Now());";
+
+            $RESULT_INSERT_TO_AUDIT = mysqli_query($dbc,$INSERT_TO_AUDIT); //Insert to PaymentAudit
+            
+            $UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE = "UPDATE clients
+            SET clients.total_unpaid  = (total_unpaid - '$GET_PAYMENT_OF_CLIENT')
+            WHERE client_id ='$GET_CLIENT_ID_FROM_MENU';";
+
+            $RESULT_UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE=mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE); //Update Total Unpaid in clients table
+
+            $UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE = "UPDATE unpaid_clients
+            SET unpaid_clients.totalunpaid  = (totalunpaid - '$GET_PAYMENT_OF_CLIENT')
+            WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION';";
+
+            $RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE = mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE);  //Update Total Unpaid in clients table
+            if(!$RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE) 
+            {
+                die('Error: ' . mysqli_error($dbc));
+            } 
+            else 
+            {
+              echo "<meta http-equiv='refresh' content='0'>";
+            }
+
+
+            
+          }//END IF ISSET
+          else
+          {
+            echo '<script language="javascript">';
+            echo 'alert("Please INPUT Amount!");';
+            echo '</script>';
+          }
+         
+        }//END IF ISSET
+        
+        ?>
  
     
   </body>
