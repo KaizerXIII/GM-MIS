@@ -33,8 +33,6 @@
 
     $NEW_ITEM_NAME = $GET_DMG_ITEM_NAME.' - '. $UNDAMAGED_PERCENTAGE.'% ' ;
 
-    
-
     $SQL_SELECT_FROM_ITEMS_TRADING = "SELECT * FROM items_trading WHERE item_id = '$ITEM_ID_FROM_DB'";
     $RESULT_SELECT_SQL = mysqli_query($dbc,$SQL_SELECT_FROM_ITEMS_TRADING);
     $ROW_RESULT_SELECT_SQL = mysqli_fetch_assoc($RESULT_SELECT_SQL); //Gets the item details

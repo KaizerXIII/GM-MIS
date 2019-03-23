@@ -39,6 +39,7 @@
         else 
         {
             echo 'Discount is Set!';
+             
         }
     }//End 1st IF
     else

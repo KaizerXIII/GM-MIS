@@ -17,7 +17,7 @@ require_once('DataFetchers/mysql_connect.php');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>GM MIS | Assets Trading</title>
+    <title>GM MIS |Sales Forecasting</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -66,7 +66,7 @@ require_once('DataFetchers/mysql_connect.php');
             $ROW_CHECK_STATUS = mysqli_fetch_assoc($RESULT_SELECT_ITEM_NAME);
             $CURRENT_ITEM_NAME = $ROW_CHECK_STATUS['item_name']; 
 
-            echo $CURRENT_ITEM_NAME;?> </b></h1><br>
+            echo $CURRENT_ITEM_NAME;?> </b>]</h1><br>
         </div><!-- PHP END -->
         <!-- /top tiles -->
 

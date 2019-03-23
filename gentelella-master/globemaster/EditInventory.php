@@ -416,7 +416,7 @@
                                <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
                                         
                                         <div class="ln_solid"></div>
-                                            <button name = "confirmButton" type="submit" class="btn btn-success" onclick ="generalAlert()">Confirm</button>
+                                            <button name = "confirmButton" type="button" class="btn btn-success" onclick ="generalAlert()">Confirm</button>
                                             <button type="reset" class="btn btn-warning" onclick="clearLocalStorage()">Archive</button>
 
                                         </div><!--END Col MD-->
@@ -461,8 +461,14 @@
         $supplierArray[] = $row['supplier_name']; 
         $priceArray[] = $row['price']; 
         $warehouseArray[] = $row['warehouse']; 
-        $lastRestockArray[] = $row['last_restock']; 
-        $lastUpdateArray[] = $row['last_update']; 
+
+        $ORIGINAL_RESTOCK_DATE = $row['last_restock'];
+        $FORMATTED_RESTOCK_DATE = date("D, F d Y H:i:s", strtotime($ORIGINAL_RESTOCK_DATE));
+        $ORIGINAL_UPDATE_DATE = $row['last_update'];
+        $FORMATTED_UPDATE_DATE = date("D, F d Y H:i:s", strtotime($ORIGINAL_UPDATE_DATE));
+
+        $lastRestockArray[] = $FORMATTED_RESTOCK_DATE; 
+        $lastUpdateArray[] = $FORMATTED_UPDATE_DATE; 
         
     }
     
@@ -683,7 +689,14 @@
     }
     function generalAlert()
     {
-        confirm("Do you want to Continue?");
+        if(confirm("Do you want to Return?"))
+        {
+            window.location.href = "ViewInventory.php";  
+        }
+        else
+        {
+            alert("Action: Cancelled");
+        }
     }
 </script>
 
@@ -805,6 +818,7 @@ var discount_amount = document.getElementById('discountamt');
                 {
                     console.log(data);
                     alert(data);   
+                    window.location.href = "EditInventory.php";  
                    
                 }//End Scucess
                         
