@@ -135,14 +135,88 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td align = "center"><a href ="UnpaidCustomer.php"><i onclick = "teit()"class="fa fa-money" > </a></td>
+                    <td align = "center"><i onclick = "teit()"class="fa fa-money"  data-toggle="modal" data-target=".bs-example-modal-lg"></td>
                 </tbody>
             </table>
         </div> <!--END Xcontent-->
       </div><!--END Col MD-->
     </div><!--END Class-row -->
   </div><!--END XPanel-->
-</div><!--ENDCol MD-->                    </form>
+</div><!--ENDCol MD-->
+
+<!-- Large modal -->
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Customer Payments</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Initial Unpaid Amount</label>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right" >
+          </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Remaining Unpaid Amount</label>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right" >
+          </div>
+        </div>
+        <div class = "clearfix"></div>
+<div class="col-md-12 col-sm-12 col-xs-12" >
+
+<div class="x_panel">
+
+  <center><h3><font color = "lightblue">Payment Trail</font>
+</h3></center>
+  <div class="ln_solid"></div>
+  <!-- recently damaged table -->
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+    
+        <div class="x_content">
+            <table id ="damageTable" class="table">
+                <thead>
+                    <tr>    
+                      <th>Amount Paid</th>
+                      <th>Payment Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td></td>
+                    <td></td>
+                </tbody>
+            </table>
+        </div> <!--END Xcontent-->
+      </div><!--END Col MD-->
+    </div><!--END Class-row -->
+  </div><!--END XPanel-->
+</div><!--ENDCol MD-->
+<div class = "clearfix"></div>
+
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment</label>
+    <div class="col-md-3 col-sm-3 col-xs-12">
+        <input type="text" id = "item_price" class="form-control" style="text-align:right" >
+  </div>
+</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success">Save changes</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+                    </form>
                   </div>
                 </div>
               </div>
