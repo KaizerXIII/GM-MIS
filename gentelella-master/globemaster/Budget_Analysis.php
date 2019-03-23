@@ -63,10 +63,8 @@
                                     while($row=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
                                     {
                                       echo '<option value="'.$row['years'].'">'.$row['years'].'</option> ';
-                                    }
-
-                                               
-                                ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    \    
+                                    }           
+                                ?> <!-- PHP END [ Getting the Warehouses from DB ]-->   
                         </select></h3> 
                   </div>
                 </div>
@@ -261,7 +259,7 @@
             var ctx = document.getElementById("mybarChart");
             mybarChart = new Chart(ctx, 
             {
-              type: 'bar',
+              type: 'line',
               data: 
               {
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -270,13 +268,15 @@
                   {
                   label: 'Actual Sales',
                   borderColor: "#26B99A",
-                  backgroundColor: 'rgba(0,0,0,0.5)',
-                  fill: {origin},
+                  fill:false,
                   data: totalsales_month
                   },
                   {
                   label: 'Expected Sales',
                   borderColor: "#273746",
+                  borderDash: [5, 5],
+                  fill: 1,
+                  backgroundColor: 'rgba(153, 0, 0, 0.5)',
                   data: expected
                   },
                   {

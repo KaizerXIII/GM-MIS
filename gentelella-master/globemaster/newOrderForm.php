@@ -86,9 +86,9 @@
                                         <form class="form-horizontal form-label-left" method="POST">
 
                                             <div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Client</label>
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <select class="form-control col-md-7 col-xs-12" id="clientID" name="clientID">
+                                                <h1><font color = "black"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Client:</label></font></h1>
+                                                <div class="col-md-2 col-sm-2 col-xs-12" style = "align: left;">
+                                                    <select class="form-control col-md-12 col-xs-12" id="clientID" name="clientID">
                                                 <?php
 
                                                     require_once('DataFetchers/mysql_connect.php');
@@ -98,8 +98,8 @@
                                                     {
                                                         echo "<option value=".$row['client_id']."> ".$row['client_name']."</option>";  
                                                     }
-                                                    ?> 
-                                                </select>
+                                                ?> 
+                                                    </select>
                                                 </div>
                                                 
                                             </div>
@@ -877,8 +877,8 @@
                     $(".result").html(data);    
                     }
                   
-                });
-            }
+                }); //end ajax 
+            } //end success
 
             
         </script>

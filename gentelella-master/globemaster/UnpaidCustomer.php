@@ -103,7 +103,7 @@
             <br><br>
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Unpaid Amount</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right" >
+                <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right">
             </div>
         </div>
         

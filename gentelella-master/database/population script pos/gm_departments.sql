@@ -1,0 +1,5 @@
+insert into gm_departments (DepartmentCode, DepartmentName, IsDeleted, GUID, TerminalID, LastModified) values ('Mauv', 'Research and Development', 1, '391b9bc0-a4a4-4fa4-9b76-47f6247a0f5b', 5, '2018-09-04');
+insert into gm_departments (DepartmentCode, DepartmentName, IsDeleted, GUID, TerminalID, LastModified) values ('Purple', 'Accounting', 0, 'f3980537-6f8b-4d37-9aea-d0b17e449eb1', 5, '2018-03-15');
+insert into gm_departments (DepartmentCode, DepartmentName, IsDeleted, GUID, TerminalID, LastModified) values ('Yellow', 'Business Development', 0, '8bbfea5a-0615-49fe-b128-e4bde912fb8b', 4, '2017-03-03');
+insert into gm_departments (DepartmentCode, DepartmentName, IsDeleted, GUID, TerminalID, LastModified) values ('Green', 'Engineering', 1, '5e2f2b8c-adc0-43b7-b650-d37715ed13d5', 3, '2018-12-10');
+insert into gm_departments (DepartmentCode, DepartmentName, IsDeleted, GUID, TerminalID, LastModified) values ('Maroon', 'Accounting', 1, '2d245efa-e6c1-4a98-b94a-49dc9c61d2f4', 4, '2017-07-04');
