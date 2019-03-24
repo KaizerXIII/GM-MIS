@@ -247,10 +247,10 @@
                                         };
                                         
                                         //<-----------------------------------------[ QUERY FOR PRIMARY KEY]---------------------------------------->
-                                        $queryItemID = "SELECT count(SchedID)+1 as Count FROM scheduledelivery; ";
-                                        $resultItemID = mysqli_query($dbc,$queryItemID);
-                                        $rowResultItemID = mysqli_fetch_assoc($resultItemID);
-                                        $SchedID = $rowResultItemID['Count']; // Get SchedID and Add 1 for DR - | Extra Query Kase ayaw gawin Auto increment , ambobo talaga
+                                        // $queryItemID = "SELECT count(SchedID)+1 as Count FROM scheduledelivery; ";
+                                        // $resultItemID = mysqli_query($dbc,$queryItemID);
+                                        // $rowResultItemID = mysqli_fetch_assoc($resultItemID);
+                                        // $SchedID = $rowResultItemID['Count']; // Get SchedID and Add 1 for DR - | Extra Query Kase ayaw gawin Auto increment , ambobo talaga
                                         //<-----------------------------------------[ QUERY FOR PRIMARY KEY]---------------------------------------->   
                                        
                                         // $orderNumArray = array();
@@ -311,7 +311,7 @@
                                             // echo '</script>';                                           
                                         }
 
-                                        $SchedID++; //Add +1 to Primary to Avoid Error on Duplicate key : Stupid kase ayaw gawin Auto incrememt, napaka BOBITO!
+                                        // $SchedID++; //Add +1 to Primary to Avoid Error on Duplicate key : Stupid kase ayaw gawin Auto incrememt, napaka BOBITO!
                                         $deliveryReceipt++;
 
                                         $UPDATE_ORDERS_TABLE = "UPDATE orders

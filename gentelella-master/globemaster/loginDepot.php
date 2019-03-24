@@ -1,12 +1,12 @@
 <?php
 session_start();
-require_once('DataFetchers/mysql_connect.php');
+require_once('DataFetchers/mysql_connect1.php');
 // session_destroy();
 if(isset($_POST['login']))
 {
     $_SESSION['username'] = $_POST['loginuser'];
     $_SESSION['password'] = $_POST['loginpass'];
-    require_once('DataFetchers/mysql_connect.php');
+    require_once('DataFetchers/mysql_connect1.php');
     $checkuser = "SELECT * FROM gm_users WHERE username = '{$_SESSION['username']}' AND password = '{$_SESSION['password']}'";
     $result=mysqli_query($dbc,$checkuser);
     $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
@@ -18,7 +18,7 @@ if(isset($_POST['login']))
         $_SESSION["lastname"] = $row["last_name"];
 
         header("Location: http://".$_SERVER['HTTP_HOST'].
-            dirname($_SERVER['PHP_SELF'])."/MainDashboard.php");
+            dirname($_SERVER['PHP_SELF'])."/DepotDashboard.php");
     }
     else
     {
@@ -59,7 +59,7 @@ if(isset($_POST['login']))
 				<div class="d-flex justify-content-center form_container">
 					<form action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST">
                         <div>
-                            <h1 align="center"><font size="6">Globe Master Trading</font></h1><br>
+                            <h1 align="center"><font size="6">Globe Master Home Depot</font></h1><br>
 						</div>
 						<div class="input-group mb-3">
 							<div class="input-group-append">
@@ -102,8 +102,14 @@ if(isset($_POST['login']))
 		html {
 			margin: 0;
 			padding: 0;
-			height: 100%;
-			background: #1D2B51 !important;
+			background-image: url("images/globemasterbackground.jpg") !important;
+			/* Full height */
+			height: 100%; 
+
+			/* Center and scale the image nicely */
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
 		}
 		.user_card {
 			height: 450px;

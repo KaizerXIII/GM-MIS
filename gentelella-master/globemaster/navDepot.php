@@ -7,7 +7,7 @@ $fname="";
 $lname="";
 if(!(isset($_SESSION['usertype']))){
     header("Location: http://".$_SERVER['HTTP_HOST'].
-        dirname($_SERVER['PHP_SELF'])."/login.php");
+        dirname($_SERVER['PHP_SELF'])."/loginDepot.php");
 }
 ?>
 
@@ -41,7 +41,7 @@ if(!(isset($_SESSION['usertype']))){
               <div class="profile_info">
                 <span>
                 <?php
-                  require_once('DataFetchers/mysql_connect.php');
+                  require_once('DataFetchers/mysql_connect1.php');
                   $checkuser = "SELECT usertype, usertype_id FROM gm_usertype WHERE usertype_id = '{$_SESSION['usertype']}'";
                   $result=mysqli_query($dbc,$checkuser);
                   $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
@@ -266,7 +266,7 @@ if(!(isset($_SESSION['usertype']))){
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <img src="images/img.jpg" alt="">
                     <?php
-                  require_once('DataFetchers/mysql_connect.php');
+                  require_once('DataFetchers/mysql_connect1.php');
                   $checkuser = "SELECT usertype, usertype_id FROM gm_usertype WHERE usertype_id = '{$_SESSION['usertype']}'";
                   $result=mysqli_query($dbc,$checkuser);
                   $row=mysqli_fetch_array($result,MYSQLI_ASSOC);

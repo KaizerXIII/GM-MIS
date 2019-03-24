@@ -1,5 +1,5 @@
 <?php
-$dbc=mysqli_connect('localhost','root','Rane0708!','mydbmiggy');
+$dbc=mysqli_connect('localhost','root','Rane0708!','movedb');
 
 
 if (!$dbc) {
