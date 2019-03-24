@@ -160,7 +160,7 @@
 <div class="col-md-6 col-sm-6 col-xs-12" >
                         <div class="x_panel" >
 
-                        <center><h3><font color = "lightblue">Payment Trail</font>
+                        <center><h3><font color = "blue">Payment Trail:</font> <b><?php echo $GET_OR_FROM_AJAX_SESSION;?></b>
 </h3></center>
                             <div class="ln_solid"></div>
                             <?php 
@@ -410,37 +410,38 @@
             $GET_UNPAID_ID = "SELECT * FROM unpaid_clients WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION'";
             $RESULT_UNPAID_ID = mysqli_query($dbc,$GET_UNPAID_ID);
             $ROW_UNPAID_ID = mysqli_fetch_assoc($RESULT_UNPAID_ID);
-    
+           
+          
+            
               $GET_UNPAID_ID_FROM_SQL = $ROW_UNPAID_ID['unpaidID'];
               $GET_PAYMENT_OF_CLIENT = $_POST['client_payment'];
     
-            $INSERT_TO_AUDIT = "INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date) 
-            VALUES('$GET_UNPAID_ID_FROM_SQL','$GET_PAYMENT_OF_CLIENT', Now());";
+              $INSERT_TO_AUDIT = "INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date) 
+              VALUES('$GET_UNPAID_ID_FROM_SQL','$GET_PAYMENT_OF_CLIENT', Now());";
 
-            $RESULT_INSERT_TO_AUDIT = mysqli_query($dbc,$INSERT_TO_AUDIT); //Insert to PaymentAudit
-            
-            $UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE = "UPDATE clients
-            SET clients.total_unpaid  = (total_unpaid - '$GET_PAYMENT_OF_CLIENT')
-            WHERE client_id ='$GET_CLIENT_ID_FROM_MENU';";
+              $RESULT_INSERT_TO_AUDIT = mysqli_query($dbc,$INSERT_TO_AUDIT); //Insert to PaymentAudit
+              
+              $UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE = "UPDATE clients
+              SET clients.total_unpaid  = (total_unpaid - '$GET_PAYMENT_OF_CLIENT')
+              WHERE client_id ='$GET_CLIENT_ID_FROM_MENU';";
 
-            $RESULT_UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE=mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE); //Update Total Unpaid in clients table
+              $RESULT_UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE=mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE); //Update Total Unpaid in clients table
 
-            $UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE = "UPDATE unpaid_clients
-            SET unpaid_clients.totalunpaid  = (totalunpaid - '$GET_PAYMENT_OF_CLIENT')
-            WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION';";
+              $UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE = "UPDATE unpaid_clients
+              SET unpaid_clients.totalunpaid  = (totalunpaid - '$GET_PAYMENT_OF_CLIENT')
+              WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION';";
 
-            $RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE = mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE);  //Update Total Unpaid in clients table
-            if(!$RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE) 
-            {
-                die('Error: ' . mysqli_error($dbc));
-            } 
-            else 
-            {
-              echo "<meta http-equiv='refresh' content='0'>";
-            }
+              $RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE = mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE);  //Update Total Unpaid in clients table
+              if(!$RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE) 
+              {
+                  die('Error: ' . mysqli_error($dbc));
+              } 
+              else 
+              {
+                echo "<meta http-equiv='refresh' content='0'>";
+              }
 
-
-            
+                      
           }//END IF ISSET
           else
           {
@@ -452,7 +453,6 @@
         }//END IF ISSET
         
         ?>
- 
-    
+
   </body>
 </html>
