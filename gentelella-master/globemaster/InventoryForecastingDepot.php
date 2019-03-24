@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-require_once("InventoryForecastingController.php");
+require_once("InventoryForecastingControllerDepot.php");
 ?>
 <html lang="en">
   <head>
@@ -62,7 +62,7 @@ require_once("InventoryForecastingController.php");
                     <div class="form-group">  
                         <br>
 
-                        <?php //echo get_end_inventory("2019-03-13", "9"); ?>
+                        <?php //print_r(naive("2019-03-14", "2019-03-31","11")); ?>
                         <br>
                 
                         <?php //echo get_end_inventory("2019-03-14", "9"); ?>

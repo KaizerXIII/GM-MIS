@@ -145,7 +145,8 @@
 
 
                                                     $('#enddate').val(end_date);
-
+                                                    $('#salesforecastlabel').val();
+                                                    
                                                     var END_DATE_INPUT = document.getElementById('enddate').valueAsDate;
 
                                                     var old_start_date = END_DATE_INPUT.addDays(-60);
@@ -249,6 +250,8 @@
         var SALES_FORECAST_LABEL = document.getElementById("salesforecastlabel");
         SALES_FORECAST_LABEL.value = obj.textContent;
         TYPE = "naive";
+      
+        
         console.log(TYPE);
     }
     function changetots(obj)//Long

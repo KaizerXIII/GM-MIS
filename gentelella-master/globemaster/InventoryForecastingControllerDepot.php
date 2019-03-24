@@ -2,28 +2,32 @@
 
     function get_end_inventory($date, $item_id)
     {
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','1234','depotdb');
 
-        $SQL_GET_TOTAL_SALES_PER_ITEM = "SELECT sum(order_details.item_qty) as CURRENT_SALES FROM orders
-        JOIN order_details ON orders.ordernumber = order_details.ordernumber
-        WHERE DATE(orders.order_date) = DATE(now()) AND order_details.item_id = '$item_id'";
+        $SQL_GET_TOTAL_SALES_PER_ITEM = "SELECT p.productID, SUM(sd.Price) AS 'CURRENT_SALES'
+        FROM gm_products p
+        JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
+        JOIN gm_sales s on sd.SalesID = s.SalesID
+        WHERE p.productID = '$item_id' and DATE(sd.RecordDate) = DATE('$date')
+        GROUP BY 1;";
         $RESULT_GET_TOTAL_SALES_PER_ITEM =  mysqli_query($dbc,$SQL_GET_TOTAL_SALES_PER_ITEM);
         $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_TOTAL_SALES_PER_ITEM); //Query for Today
 
         $CURRENT_SALES_PER_ITEM = $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM['CURRENT_SALES'];
 
-        $SQL_GET_RESTOCK_PER_ITEM = "SELECT sum(quantity) AS CURRENT_RESTOCK from restock_detail
-        WHERE DATE(restock_date) = DATE(Now()) AND item_id = '$item_id'";
+        $SQL_GET_RESTOCK_PER_ITEM = "SELECT sum(gm_inventoryindetails.Quantity) as CURRENT_RESTOCK FROM gm_inventoryindetails
+        JOIN gm_businessdays ON gm_inventoryindetails.BusinessDayID = gm_businessdays.BusinessDayID
+        WHERE gm_inventoryindetails.ProductID = '$item_id' AND DATE(gm_businessdays.BusinessDate) = DATE('$date');";
         $RESULT_GET_RESTOCK_PER_ITEM =  mysqli_query($dbc,$SQL_GET_RESTOCK_PER_ITEM);
         $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_RESTOCK_PER_ITEM);
 
         $CURRENT_RESTOCK_PER_ITEM = $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM['CURRENT_RESTOCK']; //Query for Today
 
-        $SQL_GET_CURRENT_ITEM_COUNT = "SELECT * FROM items_trading WHERE item_id ='$item_id'";
+        $SQL_GET_CURRENT_ITEM_COUNT = "SELECT * FROM gm_inventorystocks WHERE ProductID ='$item_id'";
         $RESULT_GET_CURRENT_ITEM_COUNT =  mysqli_query($dbc,$SQL_GET_CURRENT_ITEM_COUNT);
         $ROW_RESULT_GET_CURRENT_ITEM_COUNT = mysqli_fetch_assoc($RESULT_GET_CURRENT_ITEM_COUNT);
 
-        $CURRENT_ENDING_INVENTORY = $ROW_RESULT_GET_CURRENT_ITEM_COUNT['item_count'] + ($CURRENT_RESTOCK_PER_ITEM - $CURRENT_SALES_PER_ITEM); //dis da ending inventory
+        $CURRENT_ENDING_INVENTORY = $ROW_RESULT_GET_CURRENT_ITEM_COUNT['StockOnHand'] + ($CURRENT_RESTOCK_PER_ITEM - $CURRENT_SALES_PER_ITEM); //dis da ending inventory
         $COMPUTED_DAYS = array();
         $date1=date_create(date('Y-m-d'));
         $date2=date_create($date);
@@ -42,24 +46,35 @@
             $i++;
         }
         $inventory_array = array();
-        
+        print_r($COMPUTED_DAYS);
         foreach($COMPUTED_DAYS as $comp_date)
         {
-            $SQL_GET_TOTAL_SALES_PER_ITEM = "SELECT sum(order_details.item_qty) as CURRENT_SALES FROM orders
-            JOIN order_details ON orders.ordernumber = order_details.ordernumber
-            WHERE DATE(orders.order_date) = DATE('$comp_date') AND order_details.item_id = '$item_id'";
+            // $SQL_GET_TOTAL_SALES_PER_ITEM = "SELECT sum(order_details.item_qty)  as CURRENT_SALES FROM orders
+            // JOIN order_details ON orders.ordernumber = order_details.ordernumber
+            // WHERE DATE(orders.order_date) = DATE('$comp_date') AND order_details.item_id = '$item_id'";
+            // $RESULT_GET_TOTAL_SALES_PER_ITEM =  mysqli_query($dbc,$SQL_GET_TOTAL_SALES_PER_ITEM);
+            // $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_TOTAL_SALES_PER_ITEM); //Query for Today
+
+            $SQL_GET_TOTAL_SALES_PER_ITEM = "SELECT p.productID, SUM(sd.Price) AS 'CURRENT_SALES'
+            FROM gm_products p
+            JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
+            JOIN gm_sales s on sd.SalesID = s.SalesID
+            WHERE p.productID = '$item_id' and DATE(sd.RecordDate) = DATE('$comp_date')
+            GROUP BY 1;";
             $RESULT_GET_TOTAL_SALES_PER_ITEM =  mysqli_query($dbc,$SQL_GET_TOTAL_SALES_PER_ITEM);
-            $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_TOTAL_SALES_PER_ITEM); //Query for Today
- 
+            $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_TOTAL_SALES_PER_ITEM);
+
             $CURRENT_SALES_PER_ITEM = $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM['CURRENT_SALES'];
 
-            $SQL_GET_RESTOCK_PER_ITEM = "SELECT sum(quantity) AS CURRENT_RESTOCK from restock_detail
-            WHERE DATE(restock_date) = DATE('$comp_date') AND item_id = '$item_id'";
+            $SQL_GET_RESTOCK_PER_ITEM = "SELECT sum(gm_inventoryindetails.Quantity) as CURRENT_RESTOCK FROM gm_inventoryindetails
+            JOIN gm_businessdays ON gm_inventoryindetails.BusinessDayID = gm_businessdays.BusinessDayID
+            WHERE gm_inventoryindetails.ProductID = '$item_id' AND DATE(gm_businessdays.BusinessDate) = DATE('$comp_date');";
             $RESULT_GET_RESTOCK_PER_ITEM =  mysqli_query($dbc,$SQL_GET_RESTOCK_PER_ITEM);
             $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_RESTOCK_PER_ITEM);
 
             $CURRENT_RESTOCK_PER_ITEM = $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM['CURRENT_RESTOCK']; //Query for Today
             $CURRENT_ENDING_INVENTORY = $CURRENT_ENDING_INVENTORY + ($CURRENT_RESTOCK_PER_ITEM - $CURRENT_SALES_PER_ITEM); //dis da ending inventory
+            // echo "helllloo: ".RESULT_GET_TOTAL_SALES_PER_ITEM;
 
             array_push($inventory_array,$CURRENT_ENDING_INVENTORY);
         }
@@ -68,7 +83,7 @@
 
     
     function naive($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','1234','depotdb');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();
@@ -92,6 +107,7 @@
             $date1 = str_replace('-', '/', $cur_date_add);
             $cur_date_add = date('Y-m-d',strtotime($date1 . "+1 days"));
             $i++;
+            array_push($cur_blank, null);
         }
         $date1 = str_replace('-', '/', $start_date);
 
@@ -143,7 +159,7 @@
         return $data_return;
     }
     function short_term($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','1234','depotdb');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();
@@ -167,6 +183,7 @@
             $date1 = str_replace('-', '/', $cur_date_add);
             $cur_date_add = date('Y-m-d',strtotime($date1 . "+1 days"));
             $i++;
+            array_push($cur_blank, null);
         }
         $date1 = str_replace('-', '/', $start_date);
 
@@ -242,6 +259,8 @@
             $date1 = str_replace('-', '/', $cur_date_add);
             $cur_date_add = date('Y-m-d',strtotime($date1 . "+1 days"));
             $i++;
+            
+            array_push($cur_blank, null);
         }
         $date1 = str_replace('-', '/', $start_date);
 
@@ -255,6 +274,7 @@
         foreach($inventory_array as $inv)
         {       
             array_push($prev_vals,$inv);
+
         }
         array_push($forecasted_dates, $end_date);
 

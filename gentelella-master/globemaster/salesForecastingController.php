@@ -25,6 +25,8 @@
             $date1 = str_replace('-', '/', $cur_date_add);
             $cur_date_add = date('Y-m-d',strtotime($date1 . "+1 days"));
             $i++;
+            
+            array_push($cur_blank, null);
         }
         $date1 = str_replace('-', '/', $start_date);
 
@@ -228,6 +230,8 @@
             $date1 = str_replace('-', '/', $cur_date_add);
             $cur_date_add = date('Y-m-d',strtotime($date1 . "+1 days"));
             $i++;
+
+            array_push($cur_blank, null);
         }
         $date1 = str_replace('-', '/', $start_date);
         for ($x = 1; $x <= 365; $x++) {

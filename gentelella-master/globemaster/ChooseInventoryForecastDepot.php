@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>GM POSx | Sales Forecasting</title>
+    <title>GM POSx | Inventory Forecasting</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -64,8 +64,8 @@
         <br><br><br>
         <div class="container">
             <div class="jumbotron" style="background-color:#ffffff">
-                <center><font color = "black"><h1><font color = "#ff9900"><i class="fa fa-line-chart"></i></font><font color = "#000066"><b> Sales Forecasting</b></font></h1>
-                        <p>Please choose a type of sales forecast. <font color = "red">One item will be forecasted in participation to the total sales made.</font></p>
+                <center><font color = "black"><h1><font color = "#ff9900"><i class="fa fa-line-chart"></i></font><font color = "#000066"><b> Inventory Forecasting</b></font></h1>
+                        <p>Please choose a type of Inventory forecast. <font color = "red">One item will be forecasted in participation to the total sales made.</font></p>
                         <p>The forecast can range from the analysis of:</p>
                         <p>Naive (Past 30 days of data)</p>
                         <p>Short-term (Past 90 days of data)</p>
@@ -104,13 +104,13 @@
                                             <select name="supplier" id="item_name" required="required" class="form-control col-md-7 col-xs-12">
                                                 <option value = "">Choose...</option>
                                                 <?php
-                                                require_once('DataFetchers/mysql_connect.php');
-                                                $query = "SELECT * FROM items_trading";
+                                                require_once('DataFetchers/mysql_connect1.php');
+                                                $query = "SELECT * FROM gm_products";
                                                 $result=mysqli_query($dbc,$query);
 
                                                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                                                 {
-                                                    echo '<option value = "'.$row['item_id'].'">'.$row['item_name'].'</option>';
+                                                    echo '<option value = "'.$row['ProductID'].'">'.$row['UnitName'].'</option>';
                                                 }
                                                 ?>
                                             </select>
@@ -285,7 +285,7 @@
         {
             if(confirm("Show forecast on Selected Item and Dates?"))
             {
-                window.location.href = "SalesForecasting.php?item_id="+SET_ITEM_NAME+"&sd="+SET_START_DATE+"&ed="+SET_END_DATE+"&type="+TYPE;
+                window.location.href = "InventoryForecastingDepot.php?item_id="+SET_ITEM_NAME+"&sd="+SET_START_DATE+"&ed="+SET_END_DATE+"&type="+TYPE;
             }
             else
             {
