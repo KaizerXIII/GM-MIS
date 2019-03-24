@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
 <?php
-require_once('DataFetchers/mysql_connect.php');
+require_once('DataFetchers/mysql_connect1.php');
 ?> <!-- PHP END -->
 <?php
-require_once("salesForecastingController.php");
+require_once("salesForecastingControllerDepot.php");
 ?>
 
 <html lang="en">
@@ -16,7 +16,7 @@ require_once("salesForecastingController.php");
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>GM MIS | Sales Forecasting</title>
+    <title>GM POSx | Sales Forecasting</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +50,7 @@ require_once("salesForecastingController.php");
 
         <!-- sidebar menu -->
         <?php
-        require_once("nav.php");
+        require_once("navDepot.php");
         ?>
     </div>
     <!-- page content -->

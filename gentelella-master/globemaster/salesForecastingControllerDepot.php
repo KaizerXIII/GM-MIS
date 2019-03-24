@@ -1,7 +1,7 @@
 <?php
     
     function naive($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','movedb');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();
@@ -34,12 +34,12 @@
             array_push($prev_blank, null);
         }
         foreach($prev_days as $date){
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) ='".$date."'
-                  group by 1;";
+            $query = "SELECT p.productID, SUM(sd.Price) AS 'totalprice'
+                  FROM gm_products p
+                  JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
+                  JOIN gm_sales s on sd.SalesID = s.SalesID
+                  WHERE p.productID = ".$item_id." and DATE(s.RecordDate) = '".$date."'
+                  GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
 
@@ -63,13 +63,13 @@
         foreach($forecasted_dates as $date){
             $forecasted_sales = 0;
             $total_afcast = 0;
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) 
-                  between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(30-$ind)." DAY) and '".$forecasted_dates[0]."'
-                  group by 1;";
+            $query = "SELECT p.productID, SUM(sd.Price) AS 'totalprice'
+                    FROM gm_products p
+                    JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
+                    JOIN gm_sales s on sd.SalesID = s.SalesID
+                    WHERE p.productID = ".$item_id." and DATE(s.RecordDate) 
+                    between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(30-$ind)." DAY) and '".$forecasted_dates[0]."'
+                    GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
 
@@ -103,7 +103,7 @@
         return $data_return;
     }
     function short_term($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','movedb');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();
@@ -137,12 +137,12 @@
             array_push($prev_blank, null);
         }
         foreach($prev_days as $date){
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) = DATE('".$date."')
-                  group by 1;";
+            $query = "SELECT p.productID, SUM(sd.Price) AS 'totalprice'
+                    FROM gm_products p
+                    JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
+                    JOIN gm_sales s on sd.SalesID = s.SalesID
+                    WHERE p.productID = ".$item_id." and DATE(s.RecordDate) = '".$date."'
+                    GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
 
@@ -165,13 +165,13 @@
         foreach($forecasted_dates as $date){
             $forecasted_sales = 0;
             $total_afcast = 0;
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) 
-                  between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(90-$ind)." DAY) and '".$forecasted_dates[0]."'
-                  group by 1;";
+            $query = "SELECT p.productID, SUM(sd.Price) AS 'totalprice'
+                    FROM gm_products p
+                    JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
+                    JOIN gm_sales s on sd.SalesID = s.SalesID
+                    WHERE p.productID = ".$item_id." and DATE(s.RecordDate) 
+                    between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(30-$ind)." DAY) and '".$forecasted_dates[0]."'
+                    GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
 
@@ -204,7 +204,7 @@
         return $data_return;
     }
     function time_series($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','movedb');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();
@@ -237,12 +237,12 @@
             array_push($prev_blank, null);
         }
         foreach($prev_days as $date){
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) = DATE('".$date."')
-                  group by 1;";
+            $query = "SELECT p.productID, SUM(sd.Price) AS 'totalprice'
+            FROM gm_products p
+            JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
+            JOIN gm_sales s on sd.SalesID = s.SalesID
+            WHERE p.productID = ".$item_id." and DATE(s.RecordDate) = '".$date."'
+            GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
 
@@ -266,13 +266,13 @@
         foreach($forecasted_dates as $date){
             $forecasted_sales = 0;
             $total_afcast = 0;
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) 
-                  between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(365-$ind)." DAY) and '".$forecasted_dates[0]."'
-                  group by 1;";
+            $query = "SELECT p.productID, SUM(sd.Price) AS 'totalprice'
+            FROM gm_products p
+            JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
+            JOIN gm_sales s on sd.SalesID = s.SalesID
+            WHERE p.productID = ".$item_id." and DATE(s.RecordDate) 
+            between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(30-$ind)." DAY) and '".$forecasted_dates[0]."'
+            GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
 

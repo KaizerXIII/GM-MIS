@@ -10,7 +10,7 @@ require_once("InventoryForecastingController.php");
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>GM-MIS | Inventory Forecasting</title>
+    <title>GM POSx | Inventory Forecasting</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

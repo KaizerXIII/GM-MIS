@@ -28,7 +28,7 @@ if(!(isset($_SESSION['usertype']))){
     <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title">
-                <a href="MainDashboard.php" class="site_title"><img src="images/GM%20LOGO.png" width = "50px" height = "50px" onload = "display_ct()"><font face="Couture Bold Italic" size="4" color="#1D2B51">Globe Master</font></a>
+                <a href="DepotDashboard.php" class="site_title"><img src="images/GM%20LOGO.png" width = "50px" height = "50px" onload = "display_ct()"><font face="Couture Bold Italic" size="4" color="#1D2B51">Globe Master</font></a>
             </div>
 
             <div class="clearfix"></div>

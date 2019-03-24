@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>GM MIS | Sales Forecasting</title>
+    <title>GM POSx | Sales Forecasting</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -43,7 +43,7 @@
 
         <!-- sidebar menu -->
         <?php
-        require_once("nav.php");
+        require_once("navDepot.php");
         ?>
 
 
@@ -104,7 +104,7 @@
                                             <select name="supplier" id="item_name" required="required" class="form-control col-md-7 col-xs-12">
                                                 <option value = "">Choose...</option>
                                                 <?php
-                                                require_once('DataFetchers/mysql_connect.php');
+                                                require_once('DataFetchers/mysql_connect1.php');
                                                 $query = "SELECT * FROM items_trading";
                                                 $result=mysqli_query($dbc,$query);
 
