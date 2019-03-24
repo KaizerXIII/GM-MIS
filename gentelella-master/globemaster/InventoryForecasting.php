@@ -60,8 +60,12 @@ require_once("InventoryForecastingController.php");
                    <br>
                     <hr>
                     <div class="form-group">  
-                        <?php echo get_end_inventory("2019-03-21", "9"); ?>
+                        <br>
 
+                        <?php //echo get_end_inventory("2019-03-13", "9"); ?>
+                        <br>
+                
+                        <?php //echo get_end_inventory("2019-03-14", "9"); ?>
                         <?php //print_r(naive("2019-03-27", "2019-03-31","9")); http://localhost/GM-MIS/gentelella-master/globemaster/InventoryForecasting.php?item_id=9&sd=2019-03-01&ed=2019-04-30&type=naive?>
                     </div>    
                   </div>
@@ -156,7 +160,7 @@ require_once("InventoryForecastingController.php");
                 fill: false,
                 borderDash: [10,5],
                 pointStyle: 'circle',
-                pointRadius: 1,
+                pointRadius: 2,
                 backgroundColor: newColor,
                 borderColor: newColor,
                 borderWidth: 0,
@@ -165,7 +169,7 @@ require_once("InventoryForecastingController.php");
                 label: 'Actual Inventory of Item <?php echo $_GET['item_id']?>',
                 fill: false,
                 pointStyle: 'circle',
-                pointRadius: 1,
+                pointRadius: 2,
                 backgroundColor: window.chartColors['blue'],
                 borderColor: window.chartColors['blue'],
                 borderWidth: 0,
@@ -178,6 +182,11 @@ require_once("InventoryForecastingController.php");
             layout: {
                 padding: {
                     top: 50
+                }
+            },
+            elements: {
+                line: {
+                    tension: 0
                 }
             },
             legend: {
