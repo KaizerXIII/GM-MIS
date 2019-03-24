@@ -404,7 +404,10 @@
                                   echo 'alert("Added Unpaid Amount to Client");';
                                   echo '</script>';
                                   header("Location: ViewOrders.php");
-                              }                                                 
+                              }
+                              $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
+                              VALUES('$CLIENT_ID', '$OR_NUM', '$SANITIZED_TOTAL','$SANITIZED_TOTAL');"; 
+                              $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference                                                   
                           }//END IF             
 
                          $ITEM_ID = $_SESSION['item_id'];
@@ -543,7 +546,10 @@
                                   echo 'alert("Added Unpaid Amount to Client");';
                                   echo '</script>';
                                   header("Location: ViewOrders.php");
-                              }                                                 
+                              }                       
+                              $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
+                              VALUES('$CLIENT_ID', '$OR_NUM', '$SANITIZED_TOTAL','$SANITIZED_TOTAL');"; 
+                              $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference                          
                           }//END IF 
 
                          $ITEM_ID = $_SESSION['item_id'];
