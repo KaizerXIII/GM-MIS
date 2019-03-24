@@ -25,7 +25,7 @@
     <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
     <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
+   
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
   </head>
@@ -71,7 +71,7 @@
 
                 <!-- test -->
                 <div class="row">
-                  <div class="col-md-9 col-sm-9 col-xs-12">
+                  <div class="col-md-8 col-sm-8 col-xs-12">
                     <div class="x_panel">
                       <div class="x_content">
                       <?php
@@ -114,7 +114,7 @@
                         </div>
                   </div>
 
-                <div class="col-md-3 col-sm-3 col-xs-12">
+                <div class="col-md-4 col-sm-4 col-xs-12">
                   <div class="x_panel">
                     <div class="x_title">
                       <h2>Current Data From Paid Sales:  </h2>
@@ -122,11 +122,12 @@
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                      <table class="table table-bordered">
+                      <table class="table table-bordered" id = "walao">
                         <thead>
                           <tr>
                             <th>For the Month</th>
                             <th>Actual Sales</th>
+                            <th>Sales Variance</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -150,6 +151,9 @@
                               echo '</td>';
                               echo '<td align= "right">';
                               echo "₱",$result1['totalamtsales'];
+                              echo '</td>';
+                              echo '<td align= "right" id = "variance'.$result1['months'].'">';
+                              echo '₱ '."".number_format(($result1['totalamtsales'] - $expectedsales = $row1['nextMonthSales']), 2);
                               echo '</td>';
                               echo '</tr>';
                             }
@@ -221,6 +225,8 @@
       //   console.log("hi");  
       // }
     </script>
+
+    
     <script>
         // Bar chart
         
@@ -259,7 +265,7 @@
             var ctx = document.getElementById("mybarChart");
             mybarChart = new Chart(ctx, 
             {
-              type: 'line',
+              type: 'bar',
               data: 
               {
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -281,7 +287,7 @@
                   },
                   {
                   label: 'Sales Variance',
-                  type: 'bar',
+                  type: 'line',
                   borderColor: "#DF013A",
                   fill: false,
                   data: variancearray
@@ -290,6 +296,14 @@
             },
               options: 
               {
+                tooltips: 
+                {
+                  mode: 'label'
+                },
+                  hover: 
+                  {
+                    mode:'dataset'
+                  },
                 responsive: true,
                 scales: 
                 {
@@ -321,29 +335,48 @@
   <!-- UPDATE CHARTS BASED ON SLIDER SCRIPT -->
   <script>
     var expectedSlider = document.getElementById("rangeSlider");
+    var variancecompute = [];
     function updateExpected()
     {
       console.log(expectedSlider.value);
-      
+      console.log("hrenlo");
 
       for(var j = 0; j <= 11; j++)
         {
           window.variancearray[j] = 0;
-          console.log(window.variancearray[j]);
+          // console.log(window.variancearray[j]);
         }
       for(var i = 0; i <= 11; i++)
       {
         var expectedsalesrecompute = expectedSlider.value;
+        
 
         window.mybarChart.data.datasets[1].data[i] = expectedsalesrecompute;
-        console.log(window.totalsales_month[i]);
-        console.log(expectedsalesrecompute);
+        // console.log(window.totalsales_month[i]);
+        // console.log(expectedsalesrecompute);
         // console.log(window.mybarChart.data.datasets[2].data);
         // console.log(window.variancearray);
         window.variancearray[i] = (Math.abs(window.totalsales_month[i] - expectedsalesrecompute));
-        console.log(window.variancearray[i]);
+        variancecompute[i] = window.totalsales_month[i] - expectedsalesrecompute;
+        console.log("Variance Array: "+variancecompute[i]); 
+
+        console.log(window.variancearray[i]); 
         window.mybarChart.update();
       }
+
+      $('#varianceJanuary').html("₱ " + parseFloat(variancecompute[0]).toFixed(2));
+      $('#varianceFebruary').html("₱ " + parseFloat(variancecompute[1]).toFixed(2));
+      $('#varianceMarch').html("₱ " + parseFloat(variancecompute[2]).toFixed(2));
+      $('#varianceApril').html("₱ " + parseFloat(variancecompute[3]).toFixed(2));
+      $('#varianceMay').html("₱ " + parseFloat(variancecompute[4]).toFixed(2));
+      $('#varianceJune').html("₱ " + parseFloat(variancecompute[5]).toFixed(2));
+      $('#varianceJuly').html("₱ " + parseFloat(variancecompute[6]).toFixed(2));
+      $('#varianceAugust').html("₱ " + parseFloat(variancecompute[7]).toFixed(2));
+      $('#varianceSeptember').html("₱ " + parseFloat(variancecompute[8]).toFixed(2));
+      $('#varianceOctober').html("₱ " + parseFloat(variancecompute[9]).toFixed(2));
+      $('#varianceNovember').html("₱ " + parseFloat(variancecompute[10]).toFixed(2));
+      $('#varianceDecember').html("₱ " + parseFloat(variancecompute[11]).toFixed(2));
+
       
     }
   </script>
