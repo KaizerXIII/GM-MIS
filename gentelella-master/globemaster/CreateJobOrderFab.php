@@ -299,7 +299,6 @@
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-						              <button class="btn btn-primary" type="reset">Reset</button>
                           <button name="createBtn" class="btn btn-success" type="submit" class="btn btn-success" onclick ="removerequired()">Create</button>
                           <!-- <button class="btn btn-round btn-primary" type="button" onclick ="testScript()">Test Function</button> -->
                         </div>
