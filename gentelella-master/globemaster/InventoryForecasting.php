@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+require_once("InventoryForecastingController.php");
+?>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -26,6 +29,7 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
   </head>
 
   <body class="nav-md">
@@ -50,66 +54,11 @@
                 <div class="x_panel">
                   <div class="x_content"><br>
                       
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Client</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control col-md-7 col-xs-12" id="clientID" name="clientID">
-                                <option value="annual">Annual</option>;  
-                                <option value="month">Month</option>;  
-                                <option value="week">Week</option>;  
-                                <option value="day">Day</option>;  
-                            </select>
-                        </div>
-
-                    </div>
+                  
                    <br>
                     <hr>
                     <div class="form-group">  
-                        <table id="datatable-fixed-header" class="table table-striped table-bordered">
-                          <thead>
-                            <tr>
-                              <th>SKU</th>
-                              <th>Item Name</th>                       
-                              <th>Stock Count</th>
-                              <th>Price</th>
-                              <th>EOQ Value</th>                         
-                              <th>Last Update</th>
-
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php
-
-                                require_once('DataFetchers/mysql_connect.php');
-                                $query = "SELECT * FROM items_trading;";
-                                $result=mysqli_query($dbc,$query);
-                                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                                {
-
-                                        echo '<tr>';
-                                        echo '<td>';
-                                        echo $row['sku_id'];
-                                        echo '</td>';
-                                        echo '<td>';
-                                        echo $row['item_name'];
-                                        echo '</td>';                                  
-                                        echo '<td>';
-                                        echo $row['item_count'];
-                                        echo '</td>';
-                                        echo '<td>';
-                                        echo  'Php'." ".number_format($row['price'], 2);
-                                        echo '</td>';
-                                        echo '<td>';
-                                        echo '</td>';
-                                        echo '<td>';
-                                        echo $row['last_restock'];
-                                        echo '</td>';
-                                        echo '</tr>';
-
-                                }
-                            ?>  
-                          </tbody>
-                        </table><br>
+                        <?php echo get_end_inventory("2019-03-21", "9") ?>
                     </div>    
                   </div>
                 </div>

@@ -1,4 +1,76 @@
 <?php
+
+
+
+
+    function get_end_inventory($date, $item_id)
+    {
+        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+
+        $SQL_GET_TOTAL_SALES_PER_ITEM = "SELECT sum(order_details.item_qty) as CURRENT_SALES FROM orders
+        JOIN order_details ON orders.ordernumber = order_details.ordernumber
+        WHERE DATE(orders.order_date) = DATE(now()) AND order_details.item_id = '$item_id'";
+        $RESULT_GET_TOTAL_SALES_PER_ITEM =  mysqli_query($dbc,$SQL_GET_TOTAL_SALES_PER_ITEM);
+        $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_TOTAL_SALES_PER_ITEM); //Query for Today
+
+        $CURRENT_SALES_PER_ITEM = $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM['CURRENT_SALES'];
+
+        $SQL_GET_RESTOCK_PER_ITEM = "SELECT sum(quantity) AS CURRENT_RESTOCK from restock_detail
+        WHERE DATE(restock_date) = DATE(Now()) AND item_id = '$item_id'";
+        $RESULT_GET_RESTOCK_PER_ITEM =  mysqli_query($dbc,$SQL_GET_RESTOCK_PER_ITEM);
+        $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_RESTOCK_PER_ITEM);
+
+        $CURRENT_RESTOCK_PER_ITEM = $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM['CURRENT_RESTOCK']; //Query for Today
+
+        $SQL_GET_CURRENT_ITEM_COUNT = "SELECT * FROM items_trading WHERE item_id ='$item_id'";
+        $RESULT_GET_CURRENT_ITEM_COUNT =  mysqli_query($dbc,$SQL_GET_CURRENT_ITEM_COUNT);
+        $ROW_RESULT_GET_CURRENT_ITEM_COUNT = mysqli_fetch_assoc($RESULT_GET_CURRENT_ITEM_COUNT);
+
+        $CURRENT_ENDING_INVENTORY = $ROW_RESULT_GET_CURRENT_ITEM_COUNT['item_count'] + ($CURRENT_RESTOCK_PER_ITEM - $CURRENT_SALES_PER_ITEM); //dis da ending inventory
+        $COMPUTED_DAYS = array();
+        $date1=date_create(date('Y-m-d'));
+        $date2=date_create($date);
+        $diffs=date_diff($date1,$date2);
+        $diff = (int)$diffs->format("%a");
+        $i = 1;
+        // array_push($forecasted_dates, $start_date);
+        $date2 = str_replace('-', '/',(date_format($date2, 'Y-m-d')));
+        
+        $cur_date_add = date('Y-m-d',strtotime($date2 . "-1 days"));
+
+        while($diff >= $i)
+        {
+            array_push($COMPUTED_DAYS, $cur_date_add);
+            $date1 = str_replace('-', '/', $cur_date_add);
+            $cur_date_add = date('Y-m-d',strtotime($date1 . "-1 days"));
+            $i++;
+            
+        }
+        foreach($COMPUTED_DAYS as $comp_date)
+        {
+            $SQL_GET_TOTAL_SALES_PER_ITEM = "SELECT sum(order_details.item_qty) as CURRENT_SALES FROM orders
+            JOIN order_details ON orders.ordernumber = order_details.ordernumber
+            WHERE DATE(orders.order_date) = DATE('$date2') AND order_details.item_id = '$item_id'";
+            $RESULT_GET_TOTAL_SALES_PER_ITEM =  mysqli_query($dbc,$SQL_GET_TOTAL_SALES_PER_ITEM);
+            $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_TOTAL_SALES_PER_ITEM); //Query for Today
+
+            $CURRENT_SALES_PER_ITEM = $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM['CURRENT_SALES'];
+
+            $SQL_GET_RESTOCK_PER_ITEM = "SELECT sum(quantity) AS CURRENT_RESTOCK from restock_detail
+            WHERE DATE(restock_date) = DATE('$date2') AND item_id = '$item_id'";
+            $RESULT_GET_RESTOCK_PER_ITEM =  mysqli_query($dbc,$SQL_GET_RESTOCK_PER_ITEM);
+            $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM = mysqli_fetch_assoc($RESULT_GET_RESTOCK_PER_ITEM);
+
+            $CURRENT_RESTOCK_PER_ITEM = $ROW_RESULT_GET_TOTAL_SALES_PER_ITEM['CURRENT_RESTOCK']; //Query for Today
+
+            $SQL_GET_CURRENT_ITEM_COUNT = "SELECT * FROM items_trading WHERE item_id ='$item_id'";
+            $RESULT_GET_CURRENT_ITEM_COUNT =  mysqli_query($dbc,$SQL_GET_RESTOCK_PER_ITEM);
+
+            $CURRENT_ENDING_INVENTORY = $CURRENT_ENDING_INVENTORY + ($CURRENT_RESTOCK_PER_ITEM - $CURRENT_SALES_PER_ITEM); //dis da ending inventory
+        }
+        return $CURRENT_ENDING_INVENTORY;
+    }
+
     function short_term($start_date, $end_date, $item_id){
         $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
 
@@ -36,27 +108,9 @@
             array_push($prev_days,$cur_prev_date_add);
             array_push($prev_blank, null);
         }
-        foreach($prev_days as $date){
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) 
-                  between DATE_SUB('".$date."', INTERVAL 2 DAY) and '".$date."'
-                  group by 1;";
-            $result=mysqli_query($dbc,$query);
-            $row_cnt = $result->num_rows;
-
-            if ($row_cnt>0){
-                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                {
-                    $day_sales = ((float)$row['total_amount']);
-                    array_push($prev_vals,$day_sales);
-                }
-            }else{
-                $day_sales = 0;
-                array_push($prev_vals,$day_sales);
-            }
+        foreach($prev_days as $date)
+        {     
+            array_push($prev_vals,get_end_inventory($date, $item_id));     
         }
         array_push($forecasted_dates, $end_date);
 
@@ -71,7 +125,7 @@
                   join order_details od on o.ordernumber = od.ordernumber
                   join items_trading it on it.item_id = od.item_id
                   where it.item_id = ".$item_id." and DATE(o.order_date) 
-                  between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(90-$ind)." DAY) and '".$forecasted_dates[0]."'
+                  between DATE_SUB('".$date."', INTERVAL ".(90-$ind)." DAY) and '".$date."'
                   group by 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
@@ -172,7 +226,7 @@
                   join order_details od on o.ordernumber = od.ordernumber
                   join items_trading it on it.item_id = od.item_id
                   where it.item_id = ".$item_id." and DATE(o.order_date) 
-                  between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(30-$ind)." DAY) and '".$forecasted_dates[0]."'
+                  between DATE_SUB('".$date."', INTERVAL ".(30-$ind)." DAY) and '".$date."'
                   group by 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
@@ -277,7 +331,7 @@
                   join order_details od on o.ordernumber = od.ordernumber
                   join items_trading it on it.item_id = od.item_id
                   where it.item_id = ".$item_id." and DATE(o.order_date) 
-                  between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(365-$ind)." DAY) and '".$forecasted_dates[0]."'
+                  between DATE_SUB('".$date."', INTERVAL ".(365-$ind)." DAY) and '".$date."'
                   group by 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
