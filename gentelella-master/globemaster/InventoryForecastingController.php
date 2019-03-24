@@ -191,64 +191,37 @@
             array_push($prev_days,$cur_prev_date_add);
             array_push($prev_blank, null);
         }
-        foreach($prev_days as $date){
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) ='".$date."'
-                  group by 1;";
-            $result=mysqli_query($dbc,$query);
-            $row_cnt = $result->num_rows;
-
-            if ($row_cnt>0){
-                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                {
-                    $day_sales = ((float)$row['total_amount']);
-                    array_push($prev_vals,$day_sales);
-                }
-            }else{
-                $day_sales = 0;
-                array_push($prev_vals,$day_sales);
-            }
+        foreach($prev_days as $date)
+        {
+                     
+            array_push($prev_vals,get_end_inventory($date, $item_id));
+           
         }
         array_push($forecasted_dates, $end_date);
 
         $ind = 1;
 
-        $already_forecasted_sales = [];
+        $already_forecasted_inventory = [];
 
         foreach($forecasted_dates as $date){
-            $forecasted_sales = 0;
+            $forecasted_inventory = 0;
             $total_afcast = 0;
-            $query = "SELECT it.item_name, SUM(o.totalamt) as 'total_amount'
-                  FROM orders o
-                  join order_details od on o.ordernumber = od.ordernumber
-                  join items_trading it on it.item_id = od.item_id
-                  where it.item_id = ".$item_id." and DATE(o.order_date) 
-                  between DATE_SUB('".$date."', INTERVAL ".(30-$ind)." DAY) and '".$date."'
-                  group by 1;";
-            $result=mysqli_query($dbc,$query);
-            $row_cnt = $result->num_rows;
-
-            if ($row_cnt>0){
-                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                {
-                    $forecasted_sales = ((float)$row['total_amount']/(30-$ind));
-                }
-            }else{
-                $forecasted_sales = 0;
+            $cur_total_inv = 0;
+            for ($x = 1; $x <= count($prev_days)-$ind; $x++) {
+                $cur_total_inv = get_end_inventory($prev_days[count($prev_days)-$x],$item_id);
             }
-            if (sizeof($already_forecasted_sales) > 0){
-                foreach($already_forecasted_sales as $fcast){
+            $forecasted_inventory = ((float)$cur_total_inv/(30-$ind));
+               
+            if (sizeof($already_forecasted_inventory) > 0){
+                foreach($already_forecasted_inventory as $fcast){
                     $total_afcast += $fcast;
                 }
-                $total_afcast = (float)$total_afcast/sizeof($already_forecasted_sales);
-                $forecasted_sales = (float)($total_afcast + $forecasted_sales)/2;
+                $total_afcast = (float)$total_afcast/sizeof($already_forecasted_inventory);
+                $forecasted_inventory = (float)($total_afcast + $forecasted_inventory)/2;
             }
 
-            array_push($already_forecasted_sales,$forecasted_sales);
-            array_push($forecasted_date_vals, round($forecasted_sales));
+            array_push($already_forecasted_inventory,$forecasted_inventory);
+            array_push($forecasted_date_vals, round($forecasted_inventory));
             $ind+=1;
         }
 
