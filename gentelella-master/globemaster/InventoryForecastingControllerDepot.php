@@ -2,7 +2,7 @@
 
     function get_end_inventory($date, $item_id)
     {
-        $dbc=mysqli_connect('127.0.0.1','root','1234','depotdb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','movedb');
 
         $SQL_GET_TOTAL_SALES_PER_ITEM = "SELECT p.productID, SUM(sd.Price) AS 'CURRENT_SALES'
         FROM gm_products p
@@ -83,7 +83,7 @@
 
     
     function naive($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','depotdb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','movedb');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();
@@ -159,7 +159,7 @@
         return $data_return;
     }
     function short_term($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','depotdb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','movedb');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();

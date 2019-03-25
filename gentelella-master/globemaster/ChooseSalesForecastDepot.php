@@ -110,7 +110,7 @@
 
                                                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                                                 {
-                                                    echo '<option value = "'.$row['SKU'].'">'.$row['UnitName'].'</option>';
+                                                    echo '<option value = "'.$row['ProductID'].'">'.$row['ProductID'].' | '.$row['UnitName'].'</option>';
                                                 }
                                                 ?>
                                             </select>
@@ -121,7 +121,7 @@
                                             <p>Please choose a date range of forecast.</p>
                                             <div class='col-md-12'>
                                                 <div class="form-group">
-                                                    <input type="date" name="startdate" id = "startdate" onchange ="date_setter(this)" class="form-control col-md-7 col-xs-12 deliveryDate">
+                                                    <input type="date" name="startdate" id = "startdate" min="<?php echo date("Y-m-d", strtotime("+1days")); ?>" onchange ="date_setter(this)" class="form-control col-md-7 col-xs-12 deliveryDate">
                                                 </div>
                                             </div>
 
