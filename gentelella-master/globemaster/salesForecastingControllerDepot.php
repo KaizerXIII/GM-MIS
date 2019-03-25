@@ -38,7 +38,7 @@
                   FROM gm_products p
                   JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
                   JOIN gm_sales s on sd.SalesID = s.SalesID
-                  WHERE p.productID = ".$item_id." and DATE(s.RecordDate) = '".$date."'
+                  WHERE p.productID = ".$item_id." and DATE(sd.RecordDate) = '".$date."'
                   GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
@@ -46,7 +46,7 @@
             if ($row_cnt>0){
                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                 {
-                    $day_sales = ((float)$row['total_amount']);
+                    $day_sales = ((float)$row['totalprice']);
                     array_push($prev_vals,$day_sales);
                 }
             }else{
@@ -67,7 +67,7 @@
                     FROM gm_products p
                     JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
                     JOIN gm_sales s on sd.SalesID = s.SalesID
-                    WHERE p.productID = ".$item_id." and DATE(s.RecordDate) 
+                    WHERE p.productID = ".$item_id." and DATE(sd.RecordDate) 
                     between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(30-$ind)." DAY) and '".$forecasted_dates[0]."'
                     GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
@@ -76,7 +76,7 @@
             if ($row_cnt>0){
                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                 {
-                    $forecasted_sales = ((float)$row['total_amount']/(30-$ind));
+                    $forecasted_sales = ((float)$row['totalprice']/(30-$ind));
                 }
             }else{
                 $forecasted_sales = 0;
@@ -141,7 +141,7 @@
                     FROM gm_products p
                     JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
                     JOIN gm_sales s on sd.SalesID = s.SalesID
-                    WHERE p.productID = ".$item_id." and DATE(s.RecordDate) = '".$date."'
+                    WHERE p.productID = ".$item_id." and DATE(sd.RecordDate) = '".$date."'
                     GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
@@ -149,7 +149,7 @@
             if ($row_cnt>0){
                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                 {
-                    $day_sales = ((float)$row['total_amount']);
+                    $day_sales = ((float)$row['totalprice']);
                     array_push($prev_vals,$day_sales);
                 }
             }else{
@@ -169,8 +169,8 @@
                     FROM gm_products p
                     JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
                     JOIN gm_sales s on sd.SalesID = s.SalesID
-                    WHERE p.productID = ".$item_id." and DATE(s.RecordDate) 
-                    between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(30-$ind)." DAY) and '".$forecasted_dates[0]."'
+                    WHERE p.productID = ".$item_id." and DATE(sd.RecordDate) 
+                    between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(90-$ind)." DAY) and '".$forecasted_dates[0]."'
                     GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
@@ -178,7 +178,7 @@
             if ($row_cnt>0){
                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                 {
-                    $forecasted_sales = ((float)$row['total_amount']/(90-$ind));
+                    $forecasted_sales = ((float)$row['totalprice']/(90-$ind));
                 }
             }else{
                 $forecasted_sales = 0;
@@ -241,7 +241,7 @@
             FROM gm_products p
             JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
             JOIN gm_sales s on sd.SalesID = s.SalesID
-            WHERE p.productID = ".$item_id." and DATE(s.RecordDate) = '".$date."'
+            WHERE p.productID = ".$item_id." and DATE(sd.RecordDate) = '".$date."'
             GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
@@ -249,7 +249,7 @@
             if ($row_cnt>0){
                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                 {
-                    $day_sales = ((float)$row['total_amount']);
+                    $day_sales = ((float)$row['totalprice']);
                     array_push($prev_vals,$day_sales);
                 }
             }else{
@@ -270,8 +270,8 @@
             FROM gm_products p
             JOIN gm_salesdetails sd on p.ProductID = sd.ProductID
             JOIN gm_sales s on sd.SalesID = s.SalesID
-            WHERE p.productID = ".$item_id." and DATE(s.RecordDate) 
-            between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(30-$ind)." DAY) and '".$forecasted_dates[0]."'
+            WHERE p.productID = ".$item_id." and DATE(sd.RecordDate) 
+            between DATE_SUB('".$forecasted_dates[0]."', INTERVAL ".(365-$ind)." DAY) and '".$forecasted_dates[0]."'
             GROUP BY 1;";
             $result=mysqli_query($dbc,$query);
             $row_cnt = $result->num_rows;
@@ -279,7 +279,7 @@
             if ($row_cnt>0){
                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                 {
-                    $forecasted_sales = ((float)$row['total_amount']/(365-$ind));
+                    $forecasted_sales = ((float)$row['totalprice']/(365-$ind));
                 }
             }else{
                 $forecasted_sales = 0;

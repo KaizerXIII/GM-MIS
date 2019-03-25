@@ -59,10 +59,10 @@ require_once("salesForecastingControllerDepot.php");
         <div class="title_left">
             <h1>Sales Forecasting Participation for:[ <b> <?php
                     $CURRENT_ITEM_ID = $_GET['item_id'];
-                    $SELECT_ITEM_NAME = "SELECT * FROM items_trading WHERE item_id ='$CURRENT_ITEM_ID'";
+                    $SELECT_ITEM_NAME = "SELECT * FROM gm_products WHERE productID ='$CURRENT_ITEM_ID'";
                     $RESULT_SELECT_ITEM_NAME = mysqli_query($dbc,$SELECT_ITEM_NAME);
                     $ROW_CHECK_STATUS = mysqli_fetch_assoc($RESULT_SELECT_ITEM_NAME);
-                    $CURRENT_ITEM_NAME = $ROW_CHECK_STATUS['item_name'];
+                    $CURRENT_ITEM_NAME = $ROW_CHECK_STATUS['UnitName'];
                     echo $CURRENT_ITEM_NAME;?> </b>]</h1><br>
         </div><!-- PHP END -->
         <!-- /top tiles -->

@@ -262,7 +262,7 @@
                         <label class="control-label col-md-5 col-sm-5 col-xs-12">Enter Fabrication Cost: ₱<span class="required">*</span>
                         </label>
                          <div class="col-md-3 col-sm-3 col-xs-12">
-                          <input type="number" id = "fab_cost" name="fab_cost"  required="required" class="form-control col-md-7 col-xs-12" step=".01" min="0" max ="99999.99" oninput="validate(this)">
+                          <input type="number" id = "fab_cost" name="fab_cost"  required="required" class="form-control col-md-7 col-xs-12" step="any" min="0" max ="99999.99" oninput="validate(this)">
                         </div>
                       </div>
                       <br>

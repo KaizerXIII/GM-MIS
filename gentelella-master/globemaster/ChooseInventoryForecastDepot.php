@@ -43,7 +43,7 @@
 
         <!-- sidebar menu -->
         <?php
-        require_once("nav.php");
+        require_once("navDepot.php");
         ?>
 
 
@@ -64,7 +64,7 @@
         <br><br><br>
         <div class="container">
             <div class="jumbotron" style="background-color:#ffffff">
-                <center><font color = "black"><h1><font color = "#ff9900"><i class="fa fa-line-chart"></i></font><font color = "#000066"><b> Inventory Forecasting</b></font></h1>
+                <center><font color = "black"><h1><font color = "blue"><i class="fa fa-line-chart"></i></font><font color = "black"><b> POSx Inventory Forecasting</b></font></h1>
                         <p>Please choose a type of Inventory forecast. <font color = "red">One item will be forecasted in participation to the total sales made.</font></p>
                         <p>The forecast can range from the analysis of:</p>
                         <p>Naive (Past 30 days of data)</p>

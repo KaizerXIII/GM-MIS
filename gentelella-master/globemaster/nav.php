@@ -79,9 +79,6 @@ if(!(isset($_SESSION['usertype']))){
                     <ul class="nav child_menu">
                       <?php
                      
-                      if($user == "MKT" or $user == "SALES" or $user == 'INV' or $user == 'Superuser'){ 
-                      echo "<li><a href='AddInventory.php'>Add Inventory Item</a></li>";
-                        }
                      
                       if($user == "CFO" or $user == "MKT" or $user == "SALES" or $user == 'INV' or $user == 'CEO' or $user == 'Superuser'){
                       echo "<li><a href='ViewInventory.php'>View Inventory</a></li>";
@@ -106,7 +103,7 @@ if(!(isset($_SESSION['usertype']))){
                      
                       <?php
                       if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
-                      echo "<li><a>Item Sales Visualization</a></li>";
+                      echo "<li><a href='assets_trading.php'>Item Sales Visualization</a></li>";
                       }
                       ?>
                         
@@ -118,23 +115,16 @@ if(!(isset($_SESSION['usertype']))){
                       
                         }
                       ?>
-                      <?php
-                       if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
-                      
-                      echo "<li><a href='ItemDiscounts.php'>Discounts</a></li>";
-                      
-                        }
-                      ?>
                     </ul>
                   </li>
 
                   <?php
-                     if($user == 'CEO' or $user == 'SALES' or $user == 'INV' or $user == 'Superuser'){
+                     if($user == 'CEO' or $user == 'SALES' or $user == 'Superuser'){
                   
 
                   echo "<li><a><i class='fa fa-car'></i> Deliveries <span class='fa fa-chevron-down'></span></a>";
                   echo   "<ul class='nav child_menu'>";
-                  if($user == 'CEO' or $user == 'SALES' or $user == 'INV' or $user == 'Superuser'){
+                  if($user == 'CEO' or $user == 'SALES' or $user == 'Superuser'){
                   echo    "<li><a href='Deliveries.php'>View Deliveries</a></li>";
                 }
                 if($user == 'SALES' or $user == 'Superuser'){
@@ -154,8 +144,8 @@ if(!(isset($_SESSION['usertype']))){
                   if($user == 'MKT' or $user == 'SALES' or $user == 'Superuser'){
                   echo    "<li><a href='ViewOrders.php'>View Orders</a></li>";
                 }
-                  if ($user == 'INV' or $user == 'MKT' or $user == 'SALES' or $user == 'Superuser'){
-                  echo    "<li><a href='ViewFabJobOrders.php'>View Fabrication Job Orders</a></li>";
+                  if ($user == 'INV' or $user == 'Superuser'){
+                  echo    "<li><a href='FabricationApproval.php'>View Fabrication Job Orders</a></li>";
                  
                 }
                    echo  "</ul>";
@@ -163,22 +153,15 @@ if(!(isset($_SESSION['usertype']))){
                         }
                   ?>
                   <?php
-                       if($user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
+                    if($user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
                       echo "<li><a><i class='fa fa-user'></i> Clients <span class='fa fa-chevron-down'></span></a>";
                       echo  "<ul class='nav child_menu'>";
                 
                       echo "<li><a href='CustomerMenu.php'>View Clients</a></li>";
-                      
-              
-                      if($user == 'CFO' or $user == 'Superuser'){
-                      
-                        echo "<li><a href='ClientApproval.php'>Client Order Approval</a></li>";
-                      
-                        }
-                        echo "</ul>";
-                        echo "</li>";
-                      }
-                      ?>
+                      echo "</ul>";
+                      echo "</li>";
+                    }
+                  ?>
 
 
                   <?php
@@ -189,13 +172,13 @@ if(!(isset($_SESSION['usertype']))){
                   echo   "<ul class='nav child_menu'>";
                   echo     "<li><a> Sales <span class='fa fa-chevron-down'></span></a>";
                   echo       "<ul class='nav child_menu'>";
-                  echo         "<li data-toggle='modal' data-target='#SalesVarianceAnalysis'><a>Sales Variance Analysis</a></li>";
-                  echo         "<li data-toggle='modal' data-target='.bs-example-modal-sm'><a>Sales Forecasting</a></li>";
+                  echo         "<li><a href='budget_analysis.php'>Sales Variance Analysis</a></li>";
+                  echo         "<li><a href='choosesalesforecast.php'>Sales Forecasting</a></li>";
                   echo       "</ul>";
                   echo    "</li>";
                   echo    "<li><a> Inventory <span class='fa fa-chevron-down'></span></a>";
                   echo        "<ul class='nav child_menu'>";
-                  echo            "<li><a href='InventoryForecasting.php'>Inventory Forecasting</a></li>";
+                  echo            "<li><a href='chooseinventoryforecast.php'>Inventory Forecasting</a></li>";
                   echo         "</ul>";
                   echo    "</li>";
                   echo   "</ul>";
@@ -211,9 +194,16 @@ if(!(isset($_SESSION['usertype']))){
 
                   echo "<li><a><i class='fa fa-folder-open'></i> Reports <span class='fa fa-chevron-down'></span></a>";
                   echo   "<ul class='nav child_menu'>";
-                  echo     "<li><a>Inventory Report</a></li>";
-                  echo    "<li><a href='SalesReport.php'>Sales Report</a></li>";
-                  echo    "<li><a href='DeliveryReport.php'>Delivery Report</a></li>";
+                  if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'INV' or $user == 'Superuser'){
+                    echo     "<li><a href='Inventory Report.php'>Inventory Report</a></li>";
+                  }
+                  echo    "<li><a href='Sales Report.php'>Sales Report</a></li>";
+                  if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'SALES' or $user == 'Superuser'){
+                    echo    "<li><a href='Delivery Report.php'>Delivery Report</a></li>";
+                  }
+                  if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'INV' or $user == 'Superuser'){
+                     echo    "<li><a href='Damage Report.php'>Damages Report</a></li>";
+                  }
                   echo   "</ul>";
                   echo "</li>";
 

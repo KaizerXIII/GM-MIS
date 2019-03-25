@@ -64,7 +64,7 @@
         <br><br><br>
         <div class="container">
             <div class="jumbotron" style="background-color:#ffffff">
-                <center><font color = "black"><h1><font color = "#ff9900"><i class="fa fa-line-chart"></i></font><font color = "#000066"><b> Sales Forecasting</b></font></h1>
+                <center><font color = "black"><h1><font color = "blue"><i class="fa fa-line-chart"></i></font><font color = "black"><b> POSx Sales Forecasting</b></font></h1>
                         <p>Please choose a type of sales forecast. <font color = "red">One item will be forecasted in participation to the total sales made.</font></p>
                         <p>The forecast can range from the analysis of:</p>
                         <p>Naive (Past 30 days of data)</p>
@@ -105,12 +105,12 @@
                                                 <option value = "">Choose...</option>
                                                 <?php
                                                 require_once('DataFetchers/mysql_connect1.php');
-                                                $query = "SELECT * FROM items_trading";
+                                                $query = "SELECT * FROM gm_products";
                                                 $result=mysqli_query($dbc,$query);
 
                                                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                                                 {
-                                                    echo '<option value = "'.$row['item_id'].'">'.$row['item_name'].'</option>';
+                                                    echo '<option value = "'.$row['SKU'].'">'.$row['UnitName'].'</option>';
                                                 }
                                                 ?>
                                             </select>
@@ -285,7 +285,7 @@
         {
             if(confirm("Show forecast on Selected Item and Dates?"))
             {
-                window.location.href = "SalesForecasting.php?item_id="+SET_ITEM_NAME+"&sd="+SET_START_DATE+"&ed="+SET_END_DATE+"&type="+TYPE;
+                window.location.href = "SalesForecastingDepot.php?item_id="+SET_ITEM_NAME+"&sd="+SET_START_DATE+"&ed="+SET_END_DATE+"&type="+TYPE;
             }
             else
             {
