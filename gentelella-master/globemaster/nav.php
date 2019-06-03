@@ -148,7 +148,7 @@ if(!(isset($_SESSION['usertype']))){
                   echo    "<li><a>View Fabrication Orders <span class='fa fa-chevron-down'></span></a>";
                   echo       "<ul class='nav child_menu'>";
                   echo         "<li><a href='FabricationApproval.php'> Fabrication Approval </a></li>";
-                  echo         "<li><a href='#'>Finished Fabrication</a></li>";
+                  echo         "<li><a href='FabricationFinished.php'>Finished Fabrication</a></li>";
                   echo       "</ul>";
                   echo    "</li>";
                  
