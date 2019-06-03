@@ -194,7 +194,7 @@ require_once("InventoryForecastingController.php");
             },
             title: {
                 display: true,
-                text: 'Forecasted Sales Values'
+                text: 'Forecasted Inventory Values'
             },
             scales: {
                 xAxes: [{

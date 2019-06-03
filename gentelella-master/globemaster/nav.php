@@ -153,7 +153,7 @@ if(!(isset($_SESSION['usertype']))){
                         }
                   ?>
                   <?php
-                    if($user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
+                    if($user == 'CFO' or $user == 'MKT' or $user == 'SALES' or $user == 'Superuser'){
                       echo "<li><a><i class='fa fa-user'></i> Clients <span class='fa fa-chevron-down'></span></a>";
                       echo  "<ul class='nav child_menu'>";
                 

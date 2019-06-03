@@ -1,7 +1,7 @@
 <?php
     
     function naive($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','mydbmiggy');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();
@@ -105,7 +105,7 @@
         return $data_return;
     }
     function short_term($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','mydbmiggy');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();
@@ -206,7 +206,7 @@
         return $data_return;
     }
     function time_series($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','1234','mydb');
+        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','mydbmiggy');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();

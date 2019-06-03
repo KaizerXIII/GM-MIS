@@ -556,7 +556,7 @@
         else
         {       
             var newRow = document.getElementById('damageTable').insertRow();                       
-            newRow.innerHTML = "<tr> <td>"+ newName+ "</td> <td>" + damagePercentage.value+ "</td> </tr>";   
+            newRow.innerHTML = "<tr> <td>"+ newName+ "</td> <td>" + dmgQtyBox.value+ "</td> </tr>";   
             
             input_damage_qty.value = "";
             input_damage_percent.value = "";
