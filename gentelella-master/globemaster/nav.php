@@ -81,7 +81,8 @@ if(!(isset($_SESSION['usertype']))){
                      
                      
                       if($user == "CFO" or $user == "MKT" or $user == "SALES" or $user == 'INV' or $user == 'CEO' or $user == 'Superuser'){
-                      echo "<li><a href='ViewInventory.php'>View Inventory</a></li>";
+                      echo "<li><a href='ViewInventory.php'>View Inventory</a></li>";                    
+                      echo "<li><a href='SupplierOrderSummary.php'> Inventory Restocking </a></li>";
                         }
                       ?>
                       

@@ -62,43 +62,48 @@
                         <br>
                         Order Date: 01-01-12
                     </div> 
-                    <div class = "col-md-6" align = "right">
+                    <div class = "col-md-6" align = "right" >
                         Expected Date of Arrival: 04-01-12 to 04-15-12
                     </div>  
-                    <div class = "col-md-12; container1" align = "center"  style="z-index: 3">
+                    <div class = "col-md-12" align = "center" style="z-index: 1">
                         <ul class="progressbar">
-                            <li class="active">Ordered </li>
+                            <li class="active" >Purchased</li>
                             <li>Shipping</li>
                             <li>Delivered</li>
                         </ul>
-                    <br>
-                        <div class = "col-md-8" style = "align:center">
+                    </div> 
+                        <div id = "mydiv3" class = "col-md-5" >
                         <br>
-                        <p>1231231
+                            <div class = "col-md-2">
+                                <span class = "text"> 
+                                    03 Jun 2019 - 14:18
+                                </span>
+                            </div>
+                            <div>
+                                <span class = "text"> 
+                                    Your package has been shipped with LEX PH with tracking number LPT0000009649313.To track your parcel, click on our Tracking Page
+                                </span>
+                            </div>
                         </div>
                     <div class="clearfix"></div>
-                    <font color = "#4192f4">View Details v</font>
+                        <center><font color = "#4192f4">View Details</font></center>
                     </div>
                     <div>                    
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="50%" align = "center">
                       <thead>
                         <tr>
-                          <th>Order Number</th>
-                          <th>Order Date</th>
-                          <th>Expected Date</th>
-                          <th>Total Quantity</th>
-                          <th>Status</th>
+                          <th>Item Name</th>
+                          <th>Supplier</th>
+                          <th>Quantity</th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>SR-1</td>
-                          <td>01-01-12</td>
-                          <td>04-01-12 to 04-15-12</td>
-                          <td>100</td>
-                          <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Shipped</button></td>
-                          <td align = "center"><i class = "fa fa-wrench"></i></td>
+                          <td>Granite A</td>
+                          <td>LLC</td>
+                          <td>4</td>
+                          <td align = "center"><button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button></td>
                         </tr>                           
                       </tbody>
                     </table><br>
@@ -171,6 +176,14 @@
     </style>    
 
     <style>
+        #mydiv3{
+        text-align:left;
+        align: center;
+        border-style:solid;
+        border-width: 2px;
+    }
+    </style>
+    <style>
         .container1 {
         width: 600px;
         margin: 100px auto; 
@@ -181,38 +194,43 @@
         counter-reset: step;
         }
         .progressbar li {
-        list-style-type: none;
-        width: 33.33%;
-        float: left;
-        font-size: 12px;
-        position: relative;
-        text-align: center;
-        text-transform: uppercase;
-        color: #7d7d7d;
+            list-style-type: none;
+            width: 33.3%;
+            float: left;
+            font-size: 12px;
+            position: relative;
+            text-align: center;
+            text-transform: uppercase;
+            color: #7d7d7d;
+            
+             
+            
         }
         .progressbar li:before {
-        width: 30px;
-        height: 30px;
-        content: counter(step);
-        counter-increment: step;
-        line-height: 30px;
-        border: 2px solid #7d7d7d;
-        display: block;
-        text-align: center;
-        margin: 0 auto 10px auto;
-        border-radius: 50%;
-        background-color: white;
-        
+            width: 30px;
+            height: 30px;
+            content: counter(step);
+            counter-increment: step;
+            line-height: 30px;
+            border: 2px solid #7d7d7d;
+            display: block;
+            text-align: center;
+            margin: 0 auto 10px auto;
+            border-radius: 50%;
+            background-color: white;
+            
+            
         }
         .progressbar li:after {
-        width: 100%;
-        height: 2px;
-        content: '';
-        position: absolute;
-        background-color: #7d7d7d;
-        top: 15px;
-        left: -50%;
-        z-index: -1;
+            width: 100%;
+            height: 2px;
+            content: '';
+            position: absolute;
+            background-color: #7d7d7d;
+            top: 15px;
+            left: -50%;
+            z-index: -1;
+            
         }
         .progressbar li:first-child:after {
         content: none;
