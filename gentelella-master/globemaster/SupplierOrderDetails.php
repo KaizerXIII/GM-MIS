@@ -62,17 +62,17 @@
                         <br>
                         Order Date: 01-01-12
                     </div> 
-                    <div class = "col-md-6" align = "right">
+                    <div class = "col-md-6" align = "right" >
                         Expected Date of Arrival: 04-01-12 to 04-15-12
                     </div>  
-                    <div class = "col-md-12; container1" align = "center">
+                    <div class = "col-md-12" align = "center" style="z-index: 3">
                         <ul class="progressbar">
-                            <li class="active">Purchased</li>
+                            <li class="active" >Purchased</li>
                             <li>Shipping</li>
                             <li>Delivered</li>
                         </ul>
                     <br>
-                    <font color = "#4192f4">View Details v</font>
+                    <font color = "#4192f4">View Details</font>
                     </div>
                     <div>                    
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -166,10 +166,7 @@
     </style>    
 
     <style>
-            .container1 {
-            width: 600px;
-            margin: 100px auto; 
-        }
+          
         .progressbar {
             counter-reset: step;
         }
@@ -182,6 +179,9 @@
             text-align: center;
             text-transform: uppercase;
             color: #7d7d7d;
+            
+             
+            
         }
         .progressbar li:before {
             width: 30px;
@@ -195,6 +195,8 @@
             margin: 0 auto 10px auto;
             border-radius: 50%;
             background-color: white;
+            
+            
         }
         .progressbar li:after {
             width: 100%;
@@ -205,6 +207,7 @@
             top: 15px;
             left: -50%;
             z-index: -1;
+            
         }
         .progressbar li:first-child:after {
             content: none;

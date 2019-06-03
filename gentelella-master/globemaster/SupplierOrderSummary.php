@@ -74,7 +74,7 @@
                           <td>04-01-12 to 04-15-12</td>
                           <td>100</td>
                           <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Shipped</button></td>
-                          <td align = "center"><i class = "fa fa-wrench"></i></td>
+                          <td align = "center"><a href="SupplierOrderDetails.php"><i class = "fa fa-wrench"></i></a></td>
                         </tr>                           
                       </tbody>
                     </table><br>
