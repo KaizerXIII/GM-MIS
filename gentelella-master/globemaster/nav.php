@@ -145,7 +145,12 @@ if(!(isset($_SESSION['usertype']))){
                   echo    "<li><a href='ViewOrders.php'>View Orders</a></li>";
                 }
                   if ($user == 'INV' or $user == 'Superuser'){
-                  echo    "<li><a href='FabricationApproval.php'>View Fabrication Job Orders</a></li>";
+                  echo    "<li><a>View Fabrication Orders <span class='fa fa-chevron-down'></span></a>";
+                  echo       "<ul class='nav child_menu'>";
+                  echo         "<li><a href='FabricationApproval.php'> Fabrication Approval </a></li>";
+                  echo         "<li><a href='#'>Finished Fabrication</a></li>";
+                  echo       "</ul>";
+                  echo    "</li>";
                  
                 }
                    echo  "</ul>";

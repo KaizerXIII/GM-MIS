@@ -24,3 +24,4 @@
         }
     }
     echo json_encode($arr_data);
+    ?>

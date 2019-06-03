@@ -113,7 +113,7 @@
                       <tbody>
                       <?php
                           require_once('DataFetchers/mysql_connect.php');
-                          $query = "SELECT * FROM mydb.orders
+                          $query = "SELECT * FROM orders
                           JOIN order_details ON orders.ordernumber = order_details.ordernumber
                           JOIN items_trading ON order_details.item_id = items_trading.item_id
                           JOIN clients ON orders.client_id = clients.client_id 

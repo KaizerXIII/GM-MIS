@@ -187,15 +187,15 @@
                                     <div class="col-md-6 col-sm-6 col-xs-12" >                                  
                                         <div class="x_panel" >
 
-                                            <center><font color = "#09961e"><h3>Restocking</h3></font></center>
+                                            <center><font color = "#09961e"><h3><i class="fa fa-cubes"></i>Restocking</h3></font></center>
                                             <div class="ln_solid"></div>
 
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-1">
                                                     <button type="button" class="btn btn-round btn-primary" id = "restockbtnE" onclick = "enableRestocking();" style = "display:block"><i class="fa fa-cubes"></i> Enable Restocking</button>
                                                     <button type="button" class="btn btn-round btn-danger" id = "restockbtnD" onclick = "disableRestocking();" style = "display:none"><i class="fa fa-cubes"></i> Disable Restocking</button>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             
                                             <div class="form-group">
                                                 <br>
@@ -253,15 +253,15 @@
                             <div class="col-md-6 col-sm-6 col-xs-12" >                                  
                                         <div class="x_panel" >
 
-                                            <center><font color = "#eda01c"><h3>Discounts</h3></font></center>
+                                            <center><font color = "#eda01c"><h3><i class="fa fa-tags"></i>Discounts</h3></font></center>
                                             <div class="ln_solid"></div>
 
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-1">
                                                     <button type="button" class="btn btn-round btn-primary" id = "discountbtnE" onclick = "enableDiscount();" style = "display:block"><i class="fa fa-tags"></i> Enable Discounts</button>
                                                     <button type="button" class="btn btn-round btn-danger" id = "discountbtnD" onclick = "disableDiscount();" style = "display:none"><i class="fa fa-tag"></i> Disable Discounts</button>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             
                                             <div class="form-group">
                                                 <br>
@@ -658,28 +658,28 @@
 <!-- Restocking Onclick -->
 <script>
 // restock section
-    var restockbtnE = document.getElementById("restockbtnE");
-    var restockbtnD = document.getElementById("restockbtnD");
-    var restockinput = document.getElementById("restockamt"); 
-    var updatestock = document.getElementById("updatestock"); 
-    restockinput.disabled = true;
-    updatestock.disabled = true;
-    function enableRestocking()
-    {
-        restockbtnE.style.display = "none";
-        restockbtnD.style.display = "block";
-        restockinput.disabled = false;
-        updatestock.disabled = false;
+    // var restockbtnE = document.getElementById("restockbtnE");
+    // var restockbtnD = document.getElementById("restockbtnD");
+    // var restockinput = document.getElementById("restockamt"); 
+    // var updatestock = document.getElementById("updatestock"); 
+    // restockinput.disabled = true;
+    // updatestock.disabled = true;
+    // function enableRestocking()
+    // {
+    //     restockbtnE.style.display = "none";
+    //     restockbtnD.style.display = "block";
+    //     restockinput.disabled = false;
+    //     updatestock.disabled = false;
         
-    }
-    function disableRestocking()
-    {
-        restockbtnE.style.display = "block";
-        restockbtnD.style.display = "none";
-        restockinput.disabled = true;
-        updatestock.disabled = true;
-        var insideval = restockinput.placeholder = "0";
-    }
+    // }
+    // function disableRestocking()
+    // {
+    //     restockbtnE.style.display = "block";
+    //     restockbtnD.style.display = "none";
+    //     restockinput.disabled = true;
+    //     updatestock.disabled = true;
+    //     var insideval = restockinput.placeholder = "0";
+    // }
     function updatestockalert()
     {
         
@@ -741,28 +741,28 @@
 
 <script>
     // discount section
-    var discountbtnE = document.getElementById("discountbtnE");
-    var discountbtnD = document.getElementById("discountbtnD");
-    var discountinput = document.getElementById("discountamt"); 
-    var updatediscount = document.getElementById("updatediscount"); 
-    discountinput.disabled = true;
-    updatediscount.disabled = true;
-    function enableDiscount()
-    {
-        discountbtnE.style.display = "none";
-        discountbtnD.style.display = "block";
-        discountinput.disabled = false;
-        updatediscount.disabled = false;
+    // var discountbtnE = document.getElementById("discountbtnE");
+    // var discountbtnD = document.getElementById("discountbtnD");
+    // var discountinput = document.getElementById("discountamt"); 
+    // var updatediscount = document.getElementById("updatediscount"); 
+    // discountinput.disabled = true;
+    // updatediscount.disabled = true;
+    // function enableDiscount()
+    // {
+    //     discountbtnE.style.display = "none";
+    //     discountbtnD.style.display = "block";
+    //     discountinput.disabled = false;
+    //     updatediscount.disabled = false;
         
-    }
-    function disableDiscount()
-    {
-        discountbtnE.style.display = "block";
-        discountbtnD.style.display = "none";
-        discountinput.disabled = true;
-        updatediscount.disabled = true;
-        var insideval1 = discountinput.value = "";
-    }
+    // }
+    // function disableDiscount()
+    // {
+    //     discountbtnE.style.display = "block";
+    //     discountbtnD.style.display = "none";
+    //     discountinput.disabled = true;
+    //     updatediscount.disabled = true;
+    //     var insideval1 = discountinput.value = "";
+    // }
     function updatediscountalert() //Update Discount
     {
         insertDiscount();
