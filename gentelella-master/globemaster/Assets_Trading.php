@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>GM MIS | Assets Trading</title>
+    <title>GM MIS | Sales Participation</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -65,14 +65,18 @@
           $qtyfromOrderDeatils = mysqli_fetch_array($resultOrderDetail,MYSQLI_ASSOC);
           $itemQty = $qtyfromOrderDeatils['SUM(item_qty)'];
 
+          $query1 = "SELECT nextMonthSales FROM ref_eoqformula"; //Query for getting the Total Sales from Order Details
+          $resultexpected = mysqli_query($dbc,$query1);
+          $qtyexpected = mysqli_fetch_array($resultexpected,MYSQLI_ASSOC);
+
           echo'<div class="row tile_count">';
           echo'<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">';  //HTML to display the Target Sales and Actual Total Sales
           echo'<span class="count_top"> Target Sales: </span>';
-          echo'<div class="count">2500</div>';
+          echo'<div class="count" align = "right"> ₱ '.$qtyexpected['nextMonthSales'].'.00</div>';
               
           echo'</div>';
           echo'<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">';
-          echo'<span class="count_top"> Total Sales: </span>';
+          echo'<span class="count_top"> Total Items Sold: </span>';
           echo'<div class="count">';
           echo $itemQty;
           echo'</div>';
@@ -97,7 +101,7 @@
           }
           echo'<div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">'; //HTML to display TOTAL PROFIT and Cost
           echo'<span class="count_top">Total Profit: </span>';
-          echo'<div class="count green"> ₱';
+          echo'<div class="count green"> ₱ ';
           echo number_format($totalPrice, 2, '.', ',');
           echo'</div>';
           echo'</div>';
