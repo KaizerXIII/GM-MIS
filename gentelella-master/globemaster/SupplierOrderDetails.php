@@ -65,13 +65,18 @@
                     <div class = "col-md-6" align = "right">
                         Expected Date of Arrival: 04-01-12 to 04-15-12
                     </div>  
-                    <div class = "col-md-12; container1" align = "center">
+                    <div class = "col-md-12; container1" align = "center"  style="z-index: 3">
                         <ul class="progressbar">
-                            <li class="active">Purchased</li>
+                            <li class="active">Ordered </li>
                             <li>Shipping</li>
                             <li>Delivered</li>
                         </ul>
                     <br>
+                        <div class = "col-md-8" style = "align:center">
+                        <br>
+                        <p>1231231
+                        </div>
+                    <div class="clearfix"></div>
                     <font color = "#4192f4">View Details v</font>
                     </div>
                     <div>                    
@@ -166,57 +171,60 @@
     </style>    
 
     <style>
-            .container1 {
-            width: 600px;
-            margin: 100px auto; 
+        .container1 {
+        width: 600px;
+        margin: 100px auto; 
         }
         .progressbar {
-            counter-reset: step;
+        margin: 0;
+        padding: 0;
+        counter-reset: step;
         }
         .progressbar li {
-            list-style-type: none;
-            width: 33.3%;
-            float: left;
-            font-size: 12px;
-            position: relative;
-            text-align: center;
-            text-transform: uppercase;
-            color: #7d7d7d;
+        list-style-type: none;
+        width: 33.33%;
+        float: left;
+        font-size: 12px;
+        position: relative;
+        text-align: center;
+        text-transform: uppercase;
+        color: #7d7d7d;
         }
         .progressbar li:before {
-            width: 30px;
-            height: 30px;
-            content: counter(step);
-            counter-increment: step;
-            line-height: 30px;
-            border: 2px solid #7d7d7d;
-            display: block;
-            text-align: center;
-            margin: 0 auto 10px auto;
-            border-radius: 50%;
-            background-color: white;
+        width: 30px;
+        height: 30px;
+        content: counter(step);
+        counter-increment: step;
+        line-height: 30px;
+        border: 2px solid #7d7d7d;
+        display: block;
+        text-align: center;
+        margin: 0 auto 10px auto;
+        border-radius: 50%;
+        background-color: white;
+        
         }
         .progressbar li:after {
-            width: 100%;
-            height: 2px;
-            content: '';
-            position: absolute;
-            background-color: #7d7d7d;
-            top: 15px;
-            left: -50%;
-            z-index: -1;
+        width: 100%;
+        height: 2px;
+        content: '';
+        position: absolute;
+        background-color: #7d7d7d;
+        top: 15px;
+        left: -50%;
+        z-index: -1;
         }
         .progressbar li:first-child:after {
-            content: none;
+        content: none;
         }
         .progressbar li.active {
-            color: green;
+        color: green;
         }
         .progressbar li.active:before {
-            border-color: #55b776;
+        border-color: #55b776;
         }
         .progressbar li.active + li:after {
-            background-color: #55b776;
+        background-color: #55b776;
         }
     </style>
   </body>
