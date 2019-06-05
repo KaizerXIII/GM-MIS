@@ -72,14 +72,14 @@
                             <li>Delivered</li>
                         </ul>
                     </div> 
-                        <div id = "mydiv3" class = "col-md-5" >
+                        <div id = "mydiv3" class = "col-md-5" align = "center" >
                         <br>
                             <div class = "col-md-2">
                                 <span class = "text"> 
                                     03 Jun 2019 - 14:18
                                 </span>
                             </div>
-                            <div>
+                            <div >
                                 <span class = "text"> 
                                     Your package has been shipped with LEX PH with tracking number LPT0000009649313.To track your parcel, click on our Tracking Page
                                 </span>
@@ -95,7 +95,7 @@
                           <th>Item Name</th>
                           <th>Supplier</th>
                           <th>Quantity</th>
-                          <th></th>
+                          <th align = "center">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -103,7 +103,11 @@
                           <td>Granite A</td>
                           <td>LLC</td>
                           <td>4</td>
-                          <td align = "center"><button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button></td>
+                          <td align = "center">
+                            <button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button>
+                            <button type="button" class="btn btn-round btn-success btn-xs" id="restock_page"  onclick="location.href='EditInventory_Reworked.php?item_name=' + current_item_name;" >Restock</button>
+                           </td>
+                          
                         </tr>                           
                       </tbody>
                     </table><br>
@@ -156,10 +160,22 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-    
-    <!-- Custom Fonts -->
-    <style>
+
+    <script> //Function to send data to EditInventory.php
+        var Row = document.getElementById("datatable-responsive");
+        var Cells = Row.getElementsByTagName("td");
         
+
+        var url = "EditInventory.php?item_name=";
+        var href_to_edit_inventory =  document.getElementById("restock_page");
+        var current_item_name = Cells[0].innerText;
+        // href_to_edit_inventory.href = url+Cells[0].innerText;
+      
+        
+    </script>   
+
+    <!-- Custom Fonts -->
+    <style>     
         @font-face {
         font-family: "Couture Bold";
         src: url("css/fonts/couture-bld.otf");
@@ -174,15 +190,6 @@
             }
 
     </style>    
-
-    <style>
-        #mydiv3{
-        text-align:left;
-        align: center;
-        border-style:solid;
-        border-width: 2px;
-    }
-    </style>
     <style>
         .container1 {
         width: 600px;
@@ -202,9 +209,6 @@
             text-align: center;
             text-transform: uppercase;
             color: #7d7d7d;
-            
-             
-            
         }
         .progressbar li:before {
             width: 30px;
@@ -218,8 +222,6 @@
             margin: 0 auto 10px auto;
             border-radius: 50%;
             background-color: white;
-            
-            
         }
         .progressbar li:after {
             width: 100%;
@@ -229,8 +231,7 @@
             background-color: #7d7d7d;
             top: 15px;
             left: -50%;
-            z-index: -1;
-            
+            z-index: -1;     
         }
         .progressbar li:first-child:after {
         content: none;
@@ -244,6 +245,15 @@
         .progressbar li.active + li:after {
         background-color: #55b776;
         }
+    </style>
+
+    
+    <style>
+        #mydiv3{
+        text-align:left;
+        border-style:solid;
+        border-width: 2px;
+    }
     </style>
   </body>
 </html>
