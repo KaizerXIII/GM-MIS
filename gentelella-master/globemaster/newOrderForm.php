@@ -622,22 +622,40 @@
                         $(".qtys").each(function(i){ // this gets all the classes in the order table.
                             if (buttonValue ==$(this).attr('val_id'))
                             { //checks i there is existing item
-                                    qty = $(this).text().replace("₱ ", "");  
-                                    qty_old = parseFloat(qty.replace(/\,/g,''), 10); //old qty in cart table
 
+                                var current_stock = parseInt(row.find('td:nth-child(5)').text());
+
+                                    qty = $(this).text().replace("₱ ", "");                                    
+                                    var estinamted_total =  parseInt(itemQuantity) + parseInt(qty);
+
+                                    qty_old = parseFloat(qty.replace(/\,/g,''), 10); //old qty in cart table
+                                    
+                                    console.log("Current Stock = " +current_stock);
+                                    console.log("estinamted_total =  "+ estinamted_total);
+
+                                    if(estinamted_total > current_stock)  //checks if estimated total is greater than current stocks
+                                    {
+                                        alert("Cannot exceed Current Stock!");
+                                        item_does_not_exist = false; //item does exist
+                                    }
+                                    else
+                                    {
                                         item_does_not_exist = false; //item does exist
                                         new_qty = parseFloat(itemQuantity) + qty_old; //adds old qty with current qty in cart
 
-                                    $(this).text(new_qty);
-                                        var oldPrice =  $(this).attr('price');
-                                        var newPrice = $(this).attr('price') * new_qty;
+                                        $(this).text(new_qty);
+                                            var oldPrice =  $(this).attr('price');
+                                            var newPrice = $(this).attr('price') * new_qty;
 
-                                        var subtractOldamount = qty_old *oldPrice;
-                                        CurrentTotal = (CurrentTotal - subtractOldamount);
+                                            var subtractOldamount = qty_old *oldPrice;
+                                            CurrentTotal = (CurrentTotal - subtractOldamount);
+                                            
                                         
-                                       
-                                        CurrentTotal = CurrentTotal+ newPrice;
+                                            CurrentTotal = CurrentTotal+ newPrice;
                                         payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
+                                    } 
+
+                                    
                                       
                                     console.log("Old Amount = "+subtractOldamount);                                   
                                     console.log("Old Price = "+oldPrice);
