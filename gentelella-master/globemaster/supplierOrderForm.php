@@ -287,29 +287,29 @@
 
                                                                     
                                                                 echo '<tr class ="tableRow">';
-                                                                    echo '<td  id = ',$row['item_id'],' >';
-                                                                    echo $row['item_name'];
-                                                                    echo '</td>';
-                                                                    echo '<td>';
-                                                                    echo $itemType;
-                                                                    echo '</td>';
-                                                                    echo '<td>';
-                                                                    echo $supplierName;
-                                                                    echo '</td>';
+                                                                    // echo '<td  id = ',$row['item_id'],' >';
+                                                                    // echo $row['item_name'];
+                                                                    // echo '</td>';
+                                                                    // echo '<td>';
+                                                                    // echo $itemType;
+                                                                    // echo '</td>';
+                                                                    // echo '<td>';
+                                                                    // echo $supplierName;
+                                                                    // echo '</td>';
 
                                                                    
-                                                                    echo '<td align = right>';
-                                                                    echo  '₱'." ".number_format($row['price'], 2);
-                                                                    echo '</td>';
+                                                                    // echo '<td align = right>';
+                                                                    // echo  '₱'." ".number_format($row['price'], 2);
+                                                                    // echo '</td>';
 
                                                                                                                             
-                                                                    echo '<td >';
-                                                                    echo '<input  style="text-align:right;" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="1" max ="',$row['item_count'],'" value="" placeholder ="0"></input>';
-                                                                    echo '</td>';
+                                                                    // echo '<td >';
+                                                                    // echo '<input  style="text-align:right;" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="1" max ="',$row['item_count'],'" value="" placeholder ="0"></input>';
+                                                                    // echo '</td>';
 
-                                                                    echo '<td align = center >';
-                                                                    echo '<button type="button" class="btn btn-round btn-success" name ="add" value ="',$row['item_id'],'" > + </button>';
-                                                                    echo '</td>';
+                                                                    // echo '<td align = center >';
+                                                                    // echo '<button type="button" class="btn btn-round btn-success" name ="add" value ="',$row['item_id'],'" > + </button>';
+                                                                    // echo '</td>';
 
                                                                 echo '</tr>';                                                                                  
                                                             }
@@ -613,7 +613,7 @@
 
                   <div class="modal-header">
               
-                    <h4 class="modal-title" id="myModalLabel">Finalize Order</h4>
+                    <h4 class="modal-title" id="myModalLabel">Supplier Order Finalization</h4>
                   </div>
 
                   <div class = "modal-body">
