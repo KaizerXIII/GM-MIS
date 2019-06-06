@@ -9,7 +9,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>GM - Order Form </title>
+        <title>GM - Supplier Order Form </title>
 
         <!-- Bootstrap -->
         <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -67,7 +67,7 @@
                                     <div class="x_title">
                                         <h3> 
                                             <?php
-                                                $queryTogetMaxOR = " SELECT count(ordernumber)+1 as TOTALOR FROM orders";
+                                                $queryTogetMaxOR = " SELECT count(supply_order_id)+1 as TOTALOR FROM supply_order";
                                                 $resultOfQuery=mysqli_query($dbc,$queryTogetMaxOR);
                                                 $row = mysqli_fetch_array($resultOfQuery,MYSQLI_ASSOC);
 
@@ -86,22 +86,22 @@
                                         <form class="form-horizontal form-label-left" method="POST">
 
                                             <div class="form-group">
-                                                <h1><font color = "black"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Supplier:</label></font></h1>
-                                                <div class="col-md-2 col-sm-2 col-xs-12" style = "align: left;">
-                                                    <select class="form-control col-md-12 col-xs-12" id="clientID" name="clientID">
-                                                <?php
+                                                <h1><font color = "black"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Supplier:</label>
+                                                <div class="col-md-2 col-sm-2 col-xs-12" align="right">
+                                                    <select class="form-control col-md-12 col-xs-12" id="supplierID" name="supplierID">
+                                                        <?php
 
-                                                    require_once('DataFetchers/mysql_connect.php');
-                                                    $SQL_CLIENT_LIST="SELECT client_id, client_name FROM clients WHERE client_status = 'Allowed'";
-                                                    $result=mysqli_query($dbc,$SQL_CLIENT_LIST);
-                                                    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                                                    {
-                                                        echo "<option value=".$row['client_id']."> ".$row['client_name']."</option>";  
-                                                    }
-                                                ?> 
+                                                            require_once('DataFetchers/mysql_connect.php');
+                                                            $SQL_SUPPLIER_LIST="SELECT supplier_id, supplier_name FROM suppliers";
+                                                            $result=mysqli_query($dbc,$SQL_SUPPLIER_LIST);
+                                                            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                                                            {
+                                                                echo "<option value=".$row['supplier_id']."> ".$row['supplier_name']."</option>";  
+                                                            }
+                                                        ?> 
                                                     </select>
                                                 </div>
-                                                
+                                                </font> </h1>
                                             </div>
                                             <hr>
                                             <!-- New Stock  Button -->
@@ -128,14 +128,14 @@
                                                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Item Name <span class="required">*</span>
                                                                                     </label>
                                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                        <input id="customer" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Please enter the customer's name" required="required" type="text">
+                                                                                        <input id="new_item_name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_name" placeholder="Please enter the item's name" required="required" type="text">
                                                                                     </div>
                                                                                     </div>
                                                                                     <div class="item form-group">
                                                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Quantity <span class="required">*</span>
                                                                                     </label>
                                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                        <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="contact" placeholder="Please enter the customer contact number" required="required" type="text">
+                                                                                        <input id="new_item_quantity" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_quantity" placeholder="Please enter the quantity" required="required" type="number">
                                                                                     </div>
                                                                                     </div>
                                                                                     <!-- <div class="item form-group">
@@ -294,7 +294,7 @@
                                                                     echo $itemType;
                                                                     echo '</td>';
                                                                     echo '<td>';
-                                                                    echo $supplierName;
+                                                                    echo $row['item_count'];
                                                                     echo '</td>';
 
                                                                    
@@ -348,7 +348,7 @@
                                     <tr>
                                         <th>Item Name</th>
                                          <th>Item Type</th>
-                                         <th>Price</th>
+                                         <!-- <th>Price</th> -->
                                          <th>Quantity</th>
                                          <th>Action</th>
                                     </tr>
@@ -359,7 +359,7 @@
                                     </tr>
                                   </tbody>
                                 </table>
-                                <h4 align = "right"> Total Payment: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
+                                <h4 align = "right"> Total Quantity: <input style="text-align:right;" readonly="readonly" name="total_qty" id ="total_qty" value="0"> </h4>
                             </div>
                             <?php
                         
@@ -586,13 +586,13 @@
                     <div class='input-group col-md-14'>
                         <select class="form-control col-md-7 col-xs-12" name="paymentID" id = "paymentID">
                         <?php
-                            require_once('DataFetchers/mysql_connect.php');
-                            $SQL_PAYMENT_LIST="SELECT * FROM ref_payment";
-                            $result=mysqli_query($dbc,$SQL_PAYMENT_LIST);
-                            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                            {
-                                echo "<option value=".$row['payment_id']."> ".$row['paymenttype']."</option>";  
-                            }
+                            // require_once('DataFetchers/mysql_connect.php');
+                            // $SQL_PAYMENT_LIST="SELECT * FROM ref_payment";
+                            // $result=mysqli_query($dbc,$SQL_PAYMENT_LIST);
+                            // while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                            // {
+                            //     echo "<option value=".$row['payment_id']."> ".$row['paymenttype']."</option>";  
+                            // }
 
                             
                             ?> 
@@ -753,6 +753,7 @@
                     {
                         alert("No Quantity Set!");
                     }
+               
                     else
                     {
                         
@@ -761,28 +762,46 @@
                         $(".qtys").each(function(i){ // this gets all the classes in the order table.
                             if (buttonValue ==$(this).attr('val_id'))
                             { //checks i there is existing item
-                                    qty = $(this).text().replace("₱ ", "");  
-                                    qty_old = parseFloat(qty.replace(/\,/g,''), 10); //old qty in cart table
+                               
+                                    var current_stock = parseInt(row.find('td:nth-child(3)').text());
+
+                                    qty = $(this).text();  //Ye Old quantity, not the price
+                                    var estinamted_total =  parseInt(itemQuantity) + parseInt(qty);
+                                    console.log("estinamted_total =  "+ estinamted_total);
+
+                                    if(estinamted_total > current_stock)  
+                                    {
+                                        alert("Cannot exceed Current Stock!");
+                                        item_does_not_exist = false; //item does exist
+                                    }  
+                                    
+                                    else
+                                    {
+                                        qty_old = parseFloat(qty.replace(/\,/g,''), 10); //old qty in cart table
 
                                         item_does_not_exist = false; //item does exist
                                         new_qty = parseFloat(itemQuantity) + qty_old; //adds old qty with current qty in cart
 
-                                    $(this).text(new_qty);
-                                        var oldPrice =  $(this).attr('price');
-                                        var newPrice = $(this).attr('price') * new_qty;
+                                        $(this).text(new_qty);
+                                    }
+                                   
+                                    //     var oldPrice =  $(this).attr('price');
+                                    //     var newPrice = $(this).attr('price') * new_qty;
 
-                                        var subtractOldamount = qty_old *oldPrice;
-                                        CurrentTotal = (CurrentTotal - subtractOldamount);
+                                    //     var subtractOldamount = qty_old *oldPrice;
+                                    //     CurrentTotal = (CurrentTotal - subtractOldamount);
                                         
                                        
-                                        CurrentTotal = CurrentTotal+ newPrice;
-                                        payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
+                                    //     CurrentTotal = CurrentTotal+ newPrice;
+                                    //     payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
                                       
-                                    console.log("Old Amount = "+subtractOldamount);                                   
-                                    console.log("Old Price = "+oldPrice);
-                                    console.log("Current Total = "+CurrentTotal);
+                                    // console.log("Old Amount = "+subtractOldamount);                                   
+                                    // console.log("Old Price = "+oldPrice);
+                                    // console.log("Current Total = "+CurrentTotal);
+                                    console.log("Current Item Quantity = " + itemQuantity);
+                                    console.log(row.find('td:nth-child(3)').text());
                             }
-                        });
+                        });//END FUNCTION
                         if(item_does_not_exist){
 
                             var price =row.find('td:nth-child(4)').text().replace("₱ ", ""); //Removes the peso sign to make it as INT rather than string
@@ -795,17 +814,23 @@
 
                             CurrentTotal = CurrentTotal + totalPayment;
 
-                            var newRow = document.getElementById('cart').insertRow();                       
-                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td>" + row.find('td:nth-child(2)').text() +" </td> <td>" + row.find('td:nth-child(4)').text() + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+totalPayment.toFixed(2)+"' > - </button></td>"
+                            var newRow = document.getElementById('cart').insertRow();
+                            if(itemQuantity >row.find('td:nth-child(3)'))  
+                            {
+                                alert("Cannot exceed Current Stock!");
+                            }  
+                            else
+                            {
+                                newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td>" + row.find('td:nth-child(2)').text() +" </td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+totalPayment.toFixed(2)+"' > - </button></td>"
+
+                            }            
                              
                             // payment.value = "₱ "+ totalPayment;
                            
-                            payment.value = "₱ "+ CurrentTotal.toFixed(2);
+                            // payment.value = "₱ "+ CurrentTotal.toFixed(2);
 
                             itemName++;
-                            quantity++;
-
-                            console.log("Current Total = ");
+                            quantity++;                         
                         } // END IF                                                 
                     }   // END ELSE    
 
@@ -829,9 +854,9 @@
                         // var paymentValue = paymentBox.value.replace("₱ ", "");
                         
                         console.log("button value = "+buttonValue);
-                        console.log("Total Payment Value = "+CurrentTotal);
-                        CurrentTotal = (CurrentTotal.toFixed(2) - AmountToBeSubtracted.toFixed(2)); //Limits the Decimal points to 2
-                        paymentBox.value = "₱ " + CurrentTotal.toFixed(2);
+                        // console.log("Total Payment Value = "+CurrentTotal);
+                        // CurrentTotal = (CurrentTotal.toFixed(2) - AmountToBeSubtracted.toFixed(2)); //Limits the Decimal points to 2
+                        // paymentBox.value = "₱ " + CurrentTotal.toFixed(2);
 
                          tr.parentNode.removeChild(tr);                 
                 }                    
@@ -846,7 +871,7 @@
                     } //END FOR
                 }           
             </script>
-            <script>
+            <!-- <script>
             function getValue(obj) 
             {
                 var status = obj.value;
@@ -854,7 +879,7 @@
                 document.getElementById("nextpage").setAttribute("href",strLink);
 
               
-            }
+            } -->
         </script>
         <!-- jQuery -->
         <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -922,7 +947,7 @@
             });
         </script>
         
-        <script>
+        <!-- <script>
             var divdel = document.getElementById("ifYes");
             var yesbutton = document.getElementById("Yesbutton");
             var nobutton = document.getElementById("Nobutton");
@@ -1030,87 +1055,88 @@
             } //end success
 
             
-        </script>
+        </script>-->
 
-<script text/javascript> 
-function doAction()
-{
-    nextpageNOFabrication();   
-}
-function checkCart()
-{
-    $(document).ready(function() 
-    {
-        if($('#cart tr').length == 2) 
-        {
-            alert("WARNING: No Item(s) in Cart!"); 
-            console.log("Table Length = " +$('#cart').length );
-            $('#finalizeOrder').modal('toggle'); //Toggles the Modal to prevent No item in Cart [FOR NOW]
+<!-- <script text/javascript> -->
+
+<!-- // function doAction()
+// {
+//     nextpageNOFabrication();   
+// }
+// function checkCart()
+// {
+//     $(document).ready(function() 
+//     {
+//         if($('#cart tr').length == 2) 
+//         {
+//             alert("WARNING: No Item(s) in Cart!"); 
+//             console.log("Table Length = " +$('#cart').length );
+//             $('#finalizeOrder').modal('toggle'); //Toggles the Modal to prevent No item in Cart [FOR NOW]
             
-        }
-        else
-        {
-            // alert("OK!"); 
-            console.log("TR Length = " +$('#cart tr').length );
-        }
-    });
-}
-var getCartQuantity = []; //Get this
+//         }
+//         else
+//         {
+//             // alert("OK!"); 
+//             console.log("TR Length = " +$('#cart tr').length );
+//         }
+//     });
+// }
+// var getCartQuantity = []; //Get this
 
-function nextpageWithFabrication() //Gets all necessary values from current page to give to next Page
-{
-    var expected_date =  document.getElementById("expectedDate").value;
-    var payment_id =  document.getElementById("paymentID").value;
-    var client_id = document.getElementById("clientID").value;
-    var total_amount = document.getElementById("payment").value;
-    var CurrentOrderDate = new Date().toJSON().slice(0,10);
+// function nextpageWithFabrication() //Gets all necessary values from current page to give to next Page
+// {
+//     var expected_date =  document.getElementById("expectedDate").value;
+//     var payment_id =  document.getElementById("paymentID").value;
+//     var client_id = document.getElementById("clientID").value;
+//     var total_amount = document.getElementById("payment").value;
+//     var CurrentOrderDate = new Date().toJSON().slice(0,10);
 
-        if(confirm("Submit Order?")) //ALert IS Showing
-        {
-            $('#cart tr td:nth-child(4)').each(function (e) 
-            {
-                if($(this).length==null) //WIP : Alert not Showing WTF?
-                {
-                    alert("No Orders in Cart!");
-                }
-                else
-                {                                                        
-                    var getValue = parseInt($(this).text());
-                    getCartQuantity.push(getValue);
+//         if(confirm("Submit Order?")) //ALert IS Showing
+//         {
+//             $('#cart tr td:nth-child(4)').each(function (e) 
+//             {
+//                 if($(this).length==null) //WIP : Alert not Showing WTF?
+//                 {
+//                     alert("No Orders in Cart!");
+//                 }
+//                 else
+//                 {                                                        
+//                     var getValue = parseInt($(this).text());
+//                     getCartQuantity.push(getValue);
                   
-                    var FILTERED_ID = [];
-                    for(var i = 0; i < item_id_in_cart.length; i++){
-                        if(FILTERED_ID.indexOf(item_id_in_cart[i]) == -1){ //Filters dups
-                            FILTERED_ID.push(item_id_in_cart[i]);
-                        }
-                    }           
+//                     var FILTERED_ID = [];
+//                     for(var i = 0; i < item_id_in_cart.length; i++){
+//                         if(FILTERED_ID.indexOf(item_id_in_cart[i]) == -1){ //Filters dups
+//                             FILTERED_ID.push(item_id_in_cart[i]);
+//                         }
+//                     }           
                                  
 
-                    window.location.href = "CreateJobOrderFab.php?order_id=<?php echo $CurrentOR?>&deliver_date="+ expected_date +"&pay_id="+ payment_id +"&client_id="+ client_id +"&cart_item_id="+ FILTERED_ID +"&cart_qty_per_item="+ getCartQuantity +"&total_amount="+ total_amount +"&order_date="+ CurrentOrderDate +"  ";  
-                    var days = localStorage.setItem("settotal", total_amount); //Stores total value to get in next page                                    
+                    // window.location.href = "CreateJobOrderFab.php?order_id=<?php //echo $CurrentOR?>&deliver_date="+ expected_date +"&pay_id="+ payment_id +"&client_id="+ client_id +"&cart_item_id="+ FILTERED_ID +"&cart_qty_per_item="+ getCartQuantity +"&total_amount="+ total_amount +"&order_date="+ CurrentOrderDate +"  ";  
+//                     var days = localStorage.setItem("settotal", total_amount); //Stores total value to get in next page                                    
                                             
-                }                                       
-            });
-        }    
-} //END Function
-function nextpageNOFabrication()
-{                                                                                               
-    if(confirm("Submit Order?"))
-    {
-        getAjax();
-        alert("Order Successful!")  
-        // window.location.href = "ViewOrders.php";   
+//                 }                                       
+//             });
+//         }    
+// } //END Function
+// function nextpageNOFabrication()
+// {                                                                                               
+//     if(confirm("Submit Order?"))
+//     {
+//         getAjax();
+//         alert("Order Successful!")  
+//         // window.location.href = "ViewOrders.php";   
          
         
-    }
-    else
-    {
-        header('Location: newOrderForm.php');
-    } 
+//     }
+//     else
+//     {
+//         header('Location: newOrderForm.php');
+//     } 
    
-}
+// } -->
 
-</script>
+<!-- // </script> -->
 <script>
  function getAjax()
      {
@@ -1138,7 +1164,7 @@ function nextpageNOFabrication()
        
 </script>
 
-<script>
+<!-- <script>
 
     var paidoption = document.getElementById("paidoption");
     var unpaidoption = document.getElementById("unpaidoption");
@@ -1205,7 +1231,7 @@ function nextpageNOFabrication()
             paymentinput.classList.add('btn','btn-default','dropdown-toggle');
         }
     }
-</script>
+</script> -->
 
     </body>
 </html>
