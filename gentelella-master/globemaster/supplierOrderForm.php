@@ -9,7 +9,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>GM - Order Form </title>
+        <title>GM - Supplier Order Form </title>
 
         <!-- Bootstrap -->
         <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -67,7 +67,7 @@
                                     <div class="x_title">
                                         <h3> 
                                             <?php
-                                                $queryTogetMaxOR = " SELECT count(ordernumber)+1 as TOTALOR FROM orders";
+                                                $queryTogetMaxOR = " SELECT count(supply_order_id)+1 as TOTALOR FROM supply_order";
                                                 $resultOfQuery=mysqli_query($dbc,$queryTogetMaxOR);
                                                 $row = mysqli_fetch_array($resultOfQuery,MYSQLI_ASSOC);
 
@@ -86,22 +86,22 @@
                                         <form class="form-horizontal form-label-left" method="POST">
 
                                             <div class="form-group">
-                                                <h1><font color = "black"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Supplier:</label></font></h1>
-                                                <div class="col-md-2 col-sm-2 col-xs-12" style = "align: left;">
-                                                    <select class="form-control col-md-12 col-xs-12" id="clientID" name="clientID">
-                                                <?php
+                                                <h1><font color = "black"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Supplier:</label>
+                                                <div class="col-md-2 col-sm-2 col-xs-12" align="right">
+                                                    <select class="form-control col-md-12 col-xs-12" id="supplierID" name="supplierID">
+                                                        <?php
 
-                                                    require_once('DataFetchers/mysql_connect.php');
-                                                    $SQL_CLIENT_LIST="SELECT client_id, client_name FROM clients WHERE client_status = 'Allowed'";
-                                                    $result=mysqli_query($dbc,$SQL_CLIENT_LIST);
-                                                    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                                                    {
-                                                        echo "<option value=".$row['client_id']."> ".$row['client_name']."</option>";  
-                                                    }
-                                                ?> 
+                                                            require_once('DataFetchers/mysql_connect.php');
+                                                            $SQL_SUPPLIER_LIST="SELECT supplier_id, supplier_name FROM suppliers";
+                                                            $result=mysqli_query($dbc,$SQL_SUPPLIER_LIST);
+                                                            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                                                            {
+                                                                echo "<option value=".$row['supplier_id']."> ".$row['supplier_name']."</option>";  
+                                                            }
+                                                        ?> 
                                                     </select>
                                                 </div>
-                                                
+                                                </font> </h1>
                                             </div>
                                             <hr>
                                             <!-- New Stock  Button -->
@@ -128,14 +128,14 @@
                                                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Item Name <span class="required">*</span>
                                                                                     </label>
                                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                        <input id="customer" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Please enter the customer's name" required="required" type="text">
+                                                                                        <input id="new_item_name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_name" placeholder="Please enter the item's name" required="required" type="text">
                                                                                     </div>
                                                                                     </div>
                                                                                     <div class="item form-group">
                                                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Quantity <span class="required">*</span>
                                                                                     </label>
                                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                        <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="contact" placeholder="Please enter the customer contact number" required="required" type="text">
+                                                                                        <input id="new_item_quantity" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_quantity" placeholder="Please enter the quantity" required="required" type="number">
                                                                                     </div>
                                                                                     </div>
                                                                                     <!-- <div class="item form-group">
@@ -348,7 +348,7 @@
                                     <tr>
                                         <th>Item Name</th>
                                          <th>Item Type</th>
-                                         <th>Price</th>
+                                         <!-- <th>Price</th> -->
                                          <th>Quantity</th>
                                          <th>Action</th>
                                     </tr>
@@ -359,250 +359,32 @@
                                     </tr>
                                   </tbody>
                                 </table>
-                                <h4 align = "right"> Total Payment: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
-                            </div>
-                            <?php
-                        
-                        // WORK IN PROGESS //
-                                               
-
-                        if(isset($_POST['viewOrderButton']))
-                        {
-                            if($_SESSION['DeliveryStatus'] == "PickUp") //IF order is pickup
-                            {
-                                $CLIENT_ID = $_POST['clientID'];
-                                $PAYMENT_ID = $_POST['paymentID'];
-                                $CART_TOTAL = $_POST['totalPayment'];                               
-                                $ORDER_STATUS = $_SESSION['DeliveryStatus'];
-                                $CURRENT_OR = $CurrentOR;
-                                $INSTALL_STATUS = "No Installation";
-                                $FAB_STATUS = $_SESSION['FabricationStatus'];
-                                $PAYMENT_STATUS = $_SESSION['payment_status'];
-
-                                $SANITIZED_CART_TOTAL = filter_var($CART_TOTAL,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
-
-                                $sqlInsertToOrdersTable = "INSERT INTO orders(ordernumber, client_id, order_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
-                                VALUES(
-                                    '$CURRENT_OR',
-                                    '$CLIENT_ID', 
-                                    Now(),  
-                                    '$PAYMENT_ID', 
-                                    '$SANITIZED_CART_TOTAL',
-                                    '$ORDER_STATUS',
-                                    '$INSTALL_STATUS',
-                                    '$FAB_STATUS',
-                                    '$PAYMENT_STATUS');";
-
-                                $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
-                                if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
-                                {
-                                  $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
-                                  SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
-                                  WHERE client_id ='$CLIENT_ID';";
-                                   $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
-                                   if(!$RESULT_UNPAID_TOTAL) 
-                                   {
-                                       die('Error: ' . mysqli_error($dbc));
-                                   } 
-                                   else 
-                                   {
-                                       echo '<script language="javascript">';
-                                       echo 'alert("Added Unpaid Amount to Client");';
-                                       echo '</script>';
-                                      //  header("Location: ViewOrders.php");
-                                   }
-
-                                   $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
-                                   VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
-                                   $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
-                                                                                           
-                                }//END IF
-                                
-                               $CART_ITEM_ID = $_SESSION['order_form_item_id'];
-                               $CART_ITEM_QTY = $_SESSION['order_form_item_qty'];
-                               $ITEM_NAME = array();
-                               $ITEM_PRICE = array();
-                               $DELIVERY_STATUS = $_SESSION['DeliveryStatus'];
-                               
-                               
-                               for($i = 0; $i < sizeof($CART_ITEM_ID); $i++)
-                               {
-                                    $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = $CART_ITEM_ID[$i];";
-                                    $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlGetFromItemTrading);
-                                    while($rowOfSelect=mysqli_fetch_array($resultofInsertToOrderDetails,MYSQLI_ASSOC))
-                                    {
-                                        $ITEM_NAME[] = $rowOfSelect['item_name'];
-                                        $ITEM_PRICE[] = $rowOfSelect['price'];                                        
-                                    }
-
-                                    $sqlInsertToOrderDetails = "INSERT INTO order_details(ordernumber, client_id, item_id, item_name, item_price, item_qty, item_status)
-                                    VALUES(
-                                        '$CURRENT_OR',
-                                        '$CLIENT_ID',
-                                        '$CART_ITEM_ID[$i]',
-                                        '$ITEM_NAME[$i]',
-                                        '$ITEM_PRICE[$i]',
-                                        '$CART_ITEM_QTY[$i]',
-                                        '$DELIVERY_STATUS');";
-                                    $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlInsertToOrderDetails); //Insert To Order DEtails
-                                   
-                                    
-                                    $sqlToSubtractFromItemsTrading = "UPDATE items_trading
-                                    SET items_trading.item_count  = (item_count - '$CART_ITEM_QTY[$i]'),
-                                    last_update = Now() 
-                                    WHERE item_id ='$CART_ITEM_ID[$i]';";
-                                     $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); //Subtracts From Inventory
-                                     if(!$resultOfSubtract) 
-                                     {
-                                         die('Error: ' . mysqli_error($dbc));
-                                     } 
-                                     else 
-                                     {
-                                         echo '<script language="javascript">';
-                                         echo 'alert("Subtract Successfull");';
-                                         echo '</script>';
-                                         header("Location: ViewOrders.php");
-                                     }                                                                      
-                                  }//End For
-                                
-
-                                  
-                             }//End 2nd IF                                                                                                                    
-                         
-
-                        else if($_SESSION['DeliveryStatus'] == "Deliver") //IF ORder is Deliver
-                        {
-                            $CLIENT_ID = $_POST['clientID'];
-                            $PAYMENT_ID = $_POST['paymentID'];
-                            $CART_TOTAL = $_POST['totalPayment'];                               
-                            $ORDER_STATUS = $_SESSION['DeliveryStatus'];
-                            $CURRENT_OR = $CurrentOR;
-                            $INSTALL_STATUS = "No Installation";
-                            $FAB_STATUS = $_SESSION['FabricationStatus'];
-                            $PAYMENT_STATUS = $_SESSION['payment_status'];
-                            $EXPECTED_DATE = date('Y-m-d', strtotime($_POST['getExpectedDelivery']));
-
-                            $SANITIZED_CART_TOTAL = filter_var($CART_TOTAL,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
-
-                            $sqlInsertToOrdersTable = "INSERT INTO orders(ordernumber, client_id, order_date, expected_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
-                            VALUES(
-                                '$CURRENT_OR',
-                                '$CLIENT_ID', 
-                                Now(),
-                                '$EXPECTED_DATE',  
-                                '$PAYMENT_ID', 
-                                '$SANITIZED_CART_TOTAL',
-                                '$ORDER_STATUS',
-                                '$INSTALL_STATUS',
-                                '$FAB_STATUS',
-                                '$PAYMENT_STATUS');";
-                            $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
-
-                            if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
-                            {
-                              $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
-                              SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
-                              WHERE client_id ='$CLIENT_ID';";
-                               $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
-                               if(!$RESULT_UNPAID_TOTAL) 
-                               {
-                                   die('Error: ' . mysqli_error($dbc));
-                               } 
-                               else 
-                               {
-                                   echo '<script language="javascript">';
-                                   echo 'alert("Added Unpaid Amount to Client");';
-                                   echo '</script>';
-                                //    header("Location: ViewOrders.php");
-                               } 
-                               $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
-                               VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
-                               $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
-                                                                           
-                            }//END IF
-
-                            
-                            $CART_ITEM_ID = $_SESSION['order_form_item_id'];
-                            $CART_ITEM_QTY = $_SESSION['order_form_item_qty'];
-                            $ITEM_NAME = array();
-                            $ITEM_PRICE = array();
-                            $DELIVERY_STATUS = $_SESSION['DeliveryStatus'];
-                                                        
-                            for($i = 0; $i < sizeof($CART_ITEM_ID); $i++)
-                            {
-                                $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = $CART_ITEM_ID[$i];";
-                                $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlGetFromItemTrading);
-                                while($rowOfSelect=mysqli_fetch_array($resultofInsertToOrderDetails,MYSQLI_ASSOC))
-                                {
-                                    $ITEM_NAME[] = $rowOfSelect['item_name'];
-                                    $ITEM_PRICE[] = $rowOfSelect['price'];
-                                    
-                                }
-
-                                $sqlInsertToOrderDetails = "INSERT INTO order_details(ordernumber, client_id, item_id, item_name, item_price, item_qty, item_status)
-                                VALUES(
-                                    '$CURRENT_OR',
-                                    '$CLIENT_ID',
-                                    '$CART_ITEM_ID[$i]',
-                                    '$ITEM_NAME[$i]',
-                                    '$ITEM_PRICE[$i]',
-                                    '$CART_ITEM_QTY[$i]',
-                                    '$DELIVERY_STATUS');";
-                                $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlInsertToOrderDetails); //Insert To Order DEtails
-                                                                
-                                
-                                $sqlToSubtractFromItemsTrading = "UPDATE items_trading
-                                SET items_trading.item_count  = (item_count - '$CART_ITEM_QTY[$i]'),
-                                last_update = Now() 
-                                WHERE item_id ='$CART_ITEM_ID[$i]';";
-                                $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); //Subtracts From Inventory
-                                if(!$resultOfSubtract) 
-                                {
-                                    die('Error: ' . mysqli_error($dbc));
-                                } 
-                                else 
-                                {
-                                    echo '<script language="javascript">';
-                                    echo 'alert("Subtract Successfull");';
-                                    echo '</script>';
-                                    header("Location: ViewOrders.php");
-                                }
-                                
-                            }//End For
-                            
-                                
-                        }// END else IF
-                    }//END 1st IF
-                       
-                           
-                            
-                        ?>                   
+                                <h4 align = "right"> Total Quantity: <input style="text-align:right;" readonly="readonly" name="total_qty" id ="total_qty" value="0"> </h4>
+                            </div>                                
                         </div>
                     </div>
-                </div>
-                                                            
+                </div>                                                           
                 <!-- <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment Type</label>
                     <div class='input-group col-md-14'>
                         <select class="form-control col-md-7 col-xs-12" name="paymentID" id = "paymentID">
                         <?php
-                            require_once('DataFetchers/mysql_connect.php');
-                            $SQL_PAYMENT_LIST="SELECT * FROM ref_payment";
-                            $result=mysqli_query($dbc,$SQL_PAYMENT_LIST);
-                            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                            {
-                                echo "<option value=".$row['payment_id']."> ".$row['paymenttype']."</option>";  
-                            }
+                            // require_once('DataFetchers/mysql_connect.php');
+                            // $SQL_PAYMENT_LIST="SELECT * FROM ref_payment";
+                            // $result=mysqli_query($dbc,$SQL_PAYMENT_LIST);
+                            // while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                            // {
+                            //     echo "<option value=".$row['payment_id']."> ".$row['paymenttype']."</option>";  
+                            // }
 
                             
                             ?> 
                         </select>
                     </div>
-                </div> -->
-                
+                </div> -->               
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                        <button type="button" class="btn btn-primary" name="next" data-toggle="modal" data-target=".bs-example-modal-lg" onclick ="checkCart()">Next</button>
+                        <button type="button" class="btn btn-primary" name="complete_order" onclick = "insert_to_supply_table();">Next</button>
                         <button type="Reset" class="btn btn-danger" onclick="destroyTable();">Reset</button>
 
             <!-- Add Order2 Modal -->
@@ -700,16 +482,8 @@
                   
                     </div>
                 </div>
-              </div>
-            </div>
-            <br>
-            <br>
-            <!-- End Order2 Modal -->
-                                        </div>
-                                    </div>
-                                                </form>
+            </form>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -729,7 +503,7 @@
         var itemName = "item"+1;
         var quantity = "quantity"+1;
         var currentName = ""; 
-        var CurrentTotal = 0; //Gets the current total to pay
+        var CurrentTotal = 0; //Gets the current quantity in order
         var item_id_in_cart = []; // Get This
 
             $('#datatable-checkbox tbody button.btn.btn-success').on('click', function(e) {
@@ -753,6 +527,7 @@
                     {
                         alert("No Quantity Set!");
                     }
+               
                     else
                     {
                         
@@ -761,28 +536,37 @@
                         $(".qtys").each(function(i){ // this gets all the classes in the order table.
                             if (buttonValue ==$(this).attr('val_id'))
                             { //checks i there is existing item
-                                    qty = $(this).text().replace("₱ ", "");  
-                                    qty_old = parseFloat(qty.replace(/\,/g,''), 10); //old qty in cart table
+                               
+                                    // var current_stock = parseInt(row.find('td:nth-child(3)').text());
+                                    qty = $(this).text();  //Ye Old quantity, not the price
+                                                                
+                                    qty_old = parseInt(qty.replace(/\,/g,''), 10); //old qty in cart table
 
-                                        item_does_not_exist = false; //item does exist
-                                        new_qty = parseFloat(itemQuantity) + qty_old; //adds old qty with current qty in cart
+                                    item_does_not_exist = false; //item does exist
+                                    new_qty = parseInt(itemQuantity) + qty_old; //adds old qty with current qty in cart
 
-                                    $(this).text(new_qty);
-                                        var oldPrice =  $(this).attr('price');
-                                        var newPrice = $(this).attr('price') * new_qty;
+                                    CurrentTotal = CurrentTotal + parseInt(itemQuantity);
+                                    total_qty.value = CurrentTotal;  
+                            
+                                    $(this).text(new_qty); // ye new qty
+                  
+                                   
+                                    //     var oldPrice =  $(this).attr('price');
+                                    //     var newPrice = $(this).attr('price') * new_qty;
 
-                                        var subtractOldamount = qty_old *oldPrice;
-                                        CurrentTotal = (CurrentTotal - subtractOldamount);
-                                        
-                                       
-                                        CurrentTotal = CurrentTotal+ newPrice;
-                                        payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
-                                      
-                                    console.log("Old Amount = "+subtractOldamount);                                   
-                                    console.log("Old Price = "+oldPrice);
-                                    console.log("Current Total = "+CurrentTotal);
+                                    //     var subtractOldamount = qty_old *oldPrice;
+                                    //     CurrentTotal = (CurrentTotal - subtractOldamount);
+                                                                               
+                                    //     CurrentTotal = CurrentTotal+ newPrice;
+                                    //     payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
+                                   
+                                    // console.log("Old Amount = "+subtractOldamount);                                   
+                                    // console.log("Old Price = "+oldPrice);
+                                    // console.log("Current Total = "+CurrentTotal);
+                                    console.log("Current Item Quantity = " + itemQuantity);
+                                    // console.log(row.find('td:nth-child(3)').text());
                             }
-                        });
+                        });//END FUNCTION
                         if(item_does_not_exist){
 
                             var price =row.find('td:nth-child(4)').text().replace("₱ ", ""); //Removes the peso sign to make it as INT rather than string
@@ -791,49 +575,49 @@
 
                             // count =  count +1+ parseFloat(price.replace(/\,/g,''), 10);
                             // count =  count+ parseFloat(price.replace(/\,/g,''), 10);
-                            var totalPayment = (ParsePrice * itemQuantity);
+                            var TotalQuantity = parseInt(itemQuantity);
 
-                            CurrentTotal = CurrentTotal + totalPayment;
+                            CurrentTotal = CurrentTotal + parseInt(itemQuantity);
 
                             var newRow = document.getElementById('cart').insertRow();                       
-                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td>" + row.find('td:nth-child(2)').text() +" </td> <td>" + row.find('td:nth-child(4)').text() + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+totalPayment.toFixed(2)+"' > - </button></td>"
-                             
+                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td>" + row.find('td:nth-child(2)').text() +" </td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+TotalQuantity+"' > - </button></td>";
+                            total_qty.value = CurrentTotal;                             
                             // payment.value = "₱ "+ totalPayment;
                            
-                            payment.value = "₱ "+ CurrentTotal.toFixed(2);
-
+                            // payment.value = "₱ "+ CurrentTotal.toFixed(2);
                             itemName++;
-                            quantity++;
-
-                            console.log("Current Total = ");
+                            quantity++;                         
                         } // END IF                                                 
                     }   // END ELSE    
 
             }) //END FUNCTION
              function DeleteRow(obj) 
-               {
-                
-                        var buttonValue =obj.value;     
-                        var paymentBox = document.getElementById("payment");
+               {               
+                var buttonValue =obj.value;     
+                var paymentBox = document.getElementById("payment");
 
-                            var td = event.target.parentNode; // event.target will be the input element.
-                            var tr = td.parentNode; // the row to be removed
-                   
-                            var cartPrice = tr.cells[2].innerHTML.replace("₱ ", ""); //Gets Value of Cell in TR and Removes Peso Sign 
-                            var cartQuantity = tr.cells[3].innerHTML;
-                            var AmountToBeSubtracted = cartQuantity *  parseFloat(cartPrice.replace(/\,/g,''), 10);
-                            console.log("Cart Price = " + cartPrice);
-                            console.log("Cart Quantity = " + cartQuantity);
-                            console.log("Total Amount = " + AmountToBeSubtracted);
-                     
-                        // var paymentValue = paymentBox.value.replace("₱ ", "");
-                        
-                        console.log("button value = "+buttonValue);
-                        console.log("Total Payment Value = "+CurrentTotal);
-                        CurrentTotal = (CurrentTotal.toFixed(2) - AmountToBeSubtracted.toFixed(2)); //Limits the Decimal points to 2
-                        paymentBox.value = "₱ " + CurrentTotal.toFixed(2);
+                    var td = event.target.parentNode; // event.target will be the input element.
+                    var tr = td.parentNode; // the row to be removed
+                    var cartQuantity = tr.cells[2].innerHTML; // The item quantity in cart;
+            
+                    // var cartPrice = tr.cells[2].innerHTML.replace("₱ ", ""); //Gets Value of Cell in TR and Removes Peso Sign             
+                    // var AmountToBeSubtracted = cartQuantity *  parseFloat(cartPrice.replace(/\,/g,''), 10);
 
-                         tr.parentNode.removeChild(tr);                 
+                    // console.log("Cart Price = " + cartPrice);
+                    console.log("Cart Quantity = " + cartQuantity);
+                    // console.log("Total Amount = " + AmountToBeSubtracted);
+
+                    CurrentTotal = CurrentTotal - parseInt(cartQuantity);
+                    total_qty.value = CurrentTotal;  
+
+                // var paymentValue = paymentBox.value.replace("₱ ", "");
+              
+                // CurrentTotal = (CurrentTotal.toFixed(2) - AmountToBeSubtracted.toFixed(2)); //Limits the Decimal points to 2
+                // paymentBox.value = "₱ " + CurrentTotal.toFixed(2);
+
+                    console.log("button value = "+buttonValue);
+                    console.log("Total Quantity Value = "+CurrentTotal);
+                    tr.parentNode.removeChild(tr);                 
                 }                    
             </script>         
             <script>
@@ -844,9 +628,10 @@
                     {     
                         table.deleteRow(i);
                     } //END FOR
+                    total_qty.value = 0;
                 }           
             </script>
-            <script>
+            <!-- <script>
             function getValue(obj) 
             {
                 var status = obj.value;
@@ -854,7 +639,7 @@
                 document.getElementById("nextpage").setAttribute("href",strLink);
 
               
-            }
+            } -->
         </script>
         <!-- jQuery -->
         <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -921,8 +706,35 @@
                 $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
             });
         </script>
-        
+
         <script>
+            function insert_to_supply_table()
+                {
+                    var GET_CART_QTY=[];
+                    $('#cart tr td:nth-child(3)').each(function (e) 
+                    {
+                        var getValue =parseInt($(this).text());
+                        console.log(getValue);
+                        GET_CART_QTY.push(getValue);
+                    }) //ENd jquery
+                    
+                    request = $.ajax({
+                    url: "ajax/insert_to_supply_order_tables.php",
+                    type: "POST",
+                    data: {post_item_id: item_id_in_cart,
+                        post_item_qty: GET_CART_QTY
+                    },
+                    success: function(data, textStatus)
+                    {
+                    
+                    }//End Scucess
+                    
+                        }); // End ajax    
+                } //End function
+                
+</script>
+        
+        <!-- <script>
             var divdel = document.getElementById("ifYes");
             var yesbutton = document.getElementById("Yesbutton");
             var nobutton = document.getElementById("Nobutton");
@@ -1030,115 +842,91 @@
             } //end success
 
             
-        </script>
+        </script>-->
 
-<script text/javascript> 
-function doAction()
-{
-    nextpageNOFabrication();   
-}
-function checkCart()
-{
-    $(document).ready(function() 
-    {
-        if($('#cart tr').length == 2) 
-        {
-            alert("WARNING: No Item(s) in Cart!"); 
-            console.log("Table Length = " +$('#cart').length );
-            $('#finalizeOrder').modal('toggle'); //Toggles the Modal to prevent No item in Cart [FOR NOW]
+<!-- <script text/javascript> -->
+
+<!-- // function doAction()
+// {
+//     nextpageNOFabrication();   
+// }
+// function checkCart()
+// {
+//     $(document).ready(function() 
+//     {
+//         if($('#cart tr').length == 2) 
+//         {
+//             alert("WARNING: No Item(s) in Cart!"); 
+//             console.log("Table Length = " +$('#cart').length );
+//             $('#finalizeOrder').modal('toggle'); //Toggles the Modal to prevent No item in Cart [FOR NOW]
             
-        }
-        else
-        {
-            // alert("OK!"); 
-            console.log("TR Length = " +$('#cart tr').length );
-        }
-    });
-}
-var getCartQuantity = []; //Get this
+//         }
+//         else
+//         {
+//             // alert("OK!"); 
+//             console.log("TR Length = " +$('#cart tr').length );
+//         }
+//     });
+// }
+// var getCartQuantity = []; //Get this
 
-function nextpageWithFabrication() //Gets all necessary values from current page to give to next Page
-{
-    var expected_date =  document.getElementById("expectedDate").value;
-    var payment_id =  document.getElementById("paymentID").value;
-    var client_id = document.getElementById("clientID").value;
-    var total_amount = document.getElementById("payment").value;
-    var CurrentOrderDate = new Date().toJSON().slice(0,10);
+// function nextpageWithFabrication() //Gets all necessary values from current page to give to next Page
+// {
+//     var expected_date =  document.getElementById("expectedDate").value;
+//     var payment_id =  document.getElementById("paymentID").value;
+//     var client_id = document.getElementById("clientID").value;
+//     var total_amount = document.getElementById("payment").value;
+//     var CurrentOrderDate = new Date().toJSON().slice(0,10);
 
-        if(confirm("Submit Order?")) //ALert IS Showing
-        {
-            $('#cart tr td:nth-child(4)').each(function (e) 
-            {
-                if($(this).length==null) //WIP : Alert not Showing WTF?
-                {
-                    alert("No Orders in Cart!");
-                }
-                else
-                {                                                        
-                    var getValue = parseInt($(this).text());
-                    getCartQuantity.push(getValue);
+//         if(confirm("Submit Order?")) //ALert IS Showing
+//         {
+//             $('#cart tr td:nth-child(4)').each(function (e) 
+//             {
+//                 if($(this).length==null) //WIP : Alert not Showing WTF?
+//                 {
+//                     alert("No Orders in Cart!");
+//                 }
+//                 else
+//                 {                                                        
+//                     var getValue = parseInt($(this).text());
+//                     getCartQuantity.push(getValue);
                   
-                    var FILTERED_ID = [];
-                    for(var i = 0; i < item_id_in_cart.length; i++){
-                        if(FILTERED_ID.indexOf(item_id_in_cart[i]) == -1){ //Filters dups
-                            FILTERED_ID.push(item_id_in_cart[i]);
-                        }
-                    }           
+//                     var FILTERED_ID = [];
+//                     for(var i = 0; i < item_id_in_cart.length; i++){
+//                         if(FILTERED_ID.indexOf(item_id_in_cart[i]) == -1){ //Filters dups
+//                             FILTERED_ID.push(item_id_in_cart[i]);
+//                         }
+//                     }           
                                  
 
-                    window.location.href = "CreateJobOrderFab.php?order_id=<?php echo $CurrentOR?>&deliver_date="+ expected_date +"&pay_id="+ payment_id +"&client_id="+ client_id +"&cart_item_id="+ FILTERED_ID +"&cart_qty_per_item="+ getCartQuantity +"&total_amount="+ total_amount +"&order_date="+ CurrentOrderDate +"  ";  
-                    var days = localStorage.setItem("settotal", total_amount); //Stores total value to get in next page                                    
+                    // window.location.href = "CreateJobOrderFab.php?order_id=<?php //echo $CurrentOR?>&deliver_date="+ expected_date +"&pay_id="+ payment_id +"&client_id="+ client_id +"&cart_item_id="+ FILTERED_ID +"&cart_qty_per_item="+ getCartQuantity +"&total_amount="+ total_amount +"&order_date="+ CurrentOrderDate +"  ";  
+//                     var days = localStorage.setItem("settotal", total_amount); //Stores total value to get in next page                                    
                                             
-                }                                       
-            });
-        }    
-} //END Function
-function nextpageNOFabrication()
-{                                                                                               
-    if(confirm("Submit Order?"))
-    {
-        getAjax();
-        alert("Order Successful!")  
-        // window.location.href = "ViewOrders.php";   
+//                 }                                       
+//             });
+//         }    
+// } //END Function
+// function nextpageNOFabrication()
+// {                                                                                               
+//     if(confirm("Submit Order?"))
+//     {
+//         getAjax();
+//         alert("Order Successful!")  
+//         // window.location.href = "ViewOrders.php";   
          
         
-    }
-    else
-    {
-        header('Location: newOrderForm.php');
-    } 
+//     }
+//     else
+//     {
+//         header('Location: newOrderForm.php');
+//     } 
    
-}
+// } -->
 
-</script>
-<script>
- function getAjax()
-     {
-        var GET_CART_QTY=[];
-        $('#cart tr td:nth-child(4)').each(function (e) 
-        {
-            var getValue =parseInt($(this).text());
-            console.log(getValue);
-            GET_CART_QTY.push(getValue);
-        }) //ENd jquery
-        
-        request = $.ajax({
-        url: "ajax/JSV_Getter.php",
-        type: "POST",
-        data: {post_item_id: item_id_in_cart,
-            post_item_qty: GET_CART_QTY
-        },
-        success: function(data, textStatus)
-        {
-          
-        }//End Scucess
-        
-            }); // End ajax    
-     } //End function
-       
-</script>
+<!-- // </script> -->
 
-<script>
+
+<!-- <script>
 
     var paidoption = document.getElementById("paidoption");
     var unpaidoption = document.getElementById("unpaidoption");
@@ -1205,7 +993,7 @@ function nextpageNOFabrication()
             paymentinput.classList.add('btn','btn-default','dropdown-toggle');
         }
     }
-</script>
+</script> -->
 
     </body>
 </html>
