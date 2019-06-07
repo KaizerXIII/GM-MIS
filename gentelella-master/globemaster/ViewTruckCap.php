@@ -54,15 +54,34 @@
                 <div class="x_panel">
                   <div class="x_title col-md-12">
                       <div class="form-group">
-                        <font color = "green"><center><i class="fa fa-arrow-left fa-lg"></i> For the week of 06/12/19 - 06/19/19 <i class="fa fa-arrow-right fa-lg"></i></center></font>
+                        <!-- CLICK ARROWS FOR NEXT WEEK/PREVIOUS WEEK -->
+                        <font size = "4" color = "green"><center><i class="fa fa-arrow-left fa-lg"></i> For the week of 06/12/19 - 06/19/19 <i class="fa fa-arrow-right fa-lg"></i></center></font>
                       </div>
                  
-<!-- create a date range -->
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                    
                   <form method = "POST" action = "Delivery Receipt.php">
+
+                  <!-- START DATE PICKER FOR WEEK FILTER -->
+                  <div class = "col-md-12 col-sm-12 col-xs-12">
+                  <div class = "col-md-2 col-sm-3 col-xs-12">
+                  <font size = "5" color = "black">Show week of:</font>
+                  </div>
+                  <div class="form-group col-md-4 col-sm-4 col-xs-12">
+                        <div class='input-group date' id='myDatepicker2'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                  </div>
+                  <div>
+                  <button type="button" class="btn btn-primary">Refresh</button>
+                  </div>
+                  </div>
+                  <!-- END DATE PICKER -->
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
