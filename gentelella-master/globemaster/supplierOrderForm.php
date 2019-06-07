@@ -1,6 +1,6 @@
 <html lang="en">
 <?php 
- 
+ require_once('DataFetchers/mysql_connect.php');
 ?>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -287,29 +287,29 @@
 
                                                                     
                                                                 echo '<tr class ="tableRow">';
-                                                                    // echo '<td  id = ',$row['item_id'],' >';
-                                                                    // echo $row['item_name'];
-                                                                    // echo '</td>';
-                                                                    // echo '<td>';
-                                                                    // echo $itemType;
-                                                                    // echo '</td>';
-                                                                    // echo '<td>';
-                                                                    // echo $supplierName;
-                                                                    // echo '</td>';
+                                                                    echo '<td  id = ',$row['item_id'],' >';
+                                                                    echo $row['item_name'];
+                                                                    echo '</td>';
+                                                                    echo '<td>';
+                                                                    echo $itemType;
+                                                                    echo '</td>';
+                                                                    echo '<td>';
+                                                                    echo $row['item_count'];
+                                                                    echo '</td>';
 
                                                                    
-                                                                    // echo '<td align = right>';
-                                                                    // echo  '₱'." ".number_format($row['price'], 2);
-                                                                    // echo '</td>';
+                                                                    echo '<td align = right>';
+                                                                    echo  "N/A";
+                                                                    echo '</td>';
 
                                                                                                                             
-                                                                    // echo '<td >';
-                                                                    // echo '<input  style="text-align:right;" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="1" max ="',$row['item_count'],'" value="" placeholder ="0"></input>';
-                                                                    // echo '</td>';
+                                                                    echo '<td >';
+                                                                    echo '<input  style="text-align:right;" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="0" max ="1000" value="" placeholder ="0"></input>';
+                                                                    echo '</td>';
 
-                                                                    // echo '<td align = center >';
-                                                                    // echo '<button type="button" class="btn btn-round btn-success" name ="add" value ="',$row['item_id'],'" > + </button>';
-                                                                    // echo '</td>';
+                                                                    echo '<td align = center >';
+                                                                    echo '<button type="button" class="btn btn-round btn-success" name ="add" value ="',$row['item_id'],'" > + </button>';
+                                                                    echo '</td>';
 
                                                                 echo '</tr>';                                                                                  
                                                             }
@@ -347,7 +347,7 @@
                                   <thead>
                                     <tr>
                                         <th>Item Name</th>
-                                         <th>Item Type</th>
+                                         <!-- <th>Item Type</th> -->
                                          <!-- <th>Price</th> -->
                                          <th>Quantity</th>
                                          <th>Action</th>
@@ -359,7 +359,7 @@
                                     </tr>
                                   </tbody>
                                 </table>
-                                <h4 align = "right"> Total Quantity: <input style="text-align:right;" readonly="readonly" name="total_qty" id ="total_qty" value="0"> </h4>
+                                <h4 align = "right"> <b>Total Quantity: </b><input style="text-align:right;" readonly="readonly" name="total_qty" id ="total_qty" value="0"> </h4>
                             </div>                                
                         </div>
                     </div>
@@ -526,6 +526,7 @@
                 if(itemQuantity == 0)
                     {
                         alert("No Quantity Set!");
+                        item_id_in_cart.pop(); //Removes the ID from the array
                     }
                
                     else
@@ -549,7 +550,7 @@
                                     total_qty.value = CurrentTotal;  
                             
                                     $(this).text(new_qty); // ye new qty
-                  
+                                    item_id_in_cart.pop(); //Removes ID from array since item already exist
                                    
                                     //     var oldPrice =  $(this).attr('price');
                                     //     var newPrice = $(this).attr('price') * new_qty;
@@ -569,8 +570,8 @@
                         });//END FUNCTION
                         if(item_does_not_exist){
 
-                            var price =row.find('td:nth-child(4)').text().replace("₱ ", ""); //Removes the peso sign to make it as INT rather than string
-                            var valid= row.find('td:nth-child(4)');
+                            var price =row.find('td:nth-child(3)').text().replace("₱ ", ""); //Removes the peso sign to make it as INT rather than string
+                            var valid= row.find('td:nth-child(3)');
                             var ParsePrice = parseFloat(price.replace(/\,/g,''), 10);
 
                             // count =  count +1+ parseFloat(price.replace(/\,/g,''), 10);
@@ -580,7 +581,7 @@
                             CurrentTotal = CurrentTotal + parseInt(itemQuantity);
 
                             var newRow = document.getElementById('cart').insertRow();                       
-                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td>" + row.find('td:nth-child(2)').text() +" </td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+TotalQuantity+"' > - </button></td>";
+                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+TotalQuantity+"' > - </button></td>";
                             total_qty.value = CurrentTotal;                             
                             // payment.value = "₱ "+ totalPayment;
                            
@@ -598,7 +599,7 @@
 
                     var td = event.target.parentNode; // event.target will be the input element.
                     var tr = td.parentNode; // the row to be removed
-                    var cartQuantity = tr.cells[2].innerHTML; // The item quantity in cart;
+                    var cartQuantity = tr.cells[1].innerHTML; // The item quantity in cart;
             
                     // var cartPrice = tr.cells[2].innerHTML.replace("₱ ", ""); //Gets Value of Cell in TR and Removes Peso Sign             
                     // var AmountToBeSubtracted = cartQuantity *  parseFloat(cartPrice.replace(/\,/g,''), 10);
@@ -711,8 +712,9 @@
             function insert_to_supply_table()
                 {
                     var GET_CART_QTY=[];
-                    $('#cart tr td:nth-child(3)').each(function (e) 
+                    $('#cart tr td:nth-child(2)').each(function (e) 
                     {
+                        
                         var getValue =parseInt($(this).text());
                         console.log(getValue);
                         GET_CART_QTY.push(getValue);
