@@ -70,7 +70,14 @@
                     <div class="clearfix"></div>
                   </div>
 
-                  
+                  IF TRUCK CANNOT HANDLE DELIVERY (remove this when backend is implemented) Disable submit button when truck is unavailable.
+                  <br>
+                  <font color = "red">The delivery truck cannot handle any more deliveries for this day. Please choose another delivery date.</font>
+                  <br>
+                  IF TRUCK IS ON CODING
+                  <br>
+                  <font color = "red">The date selected is the truck's number coding date. Please choose another delivery date.</font>
+
                   <form class="form-horizontal form-label-center" method="POST">                              
                     <div class="col-md-6 col-sm-6 col-xs-12 " >
                         <div class="x_panel" >
@@ -155,6 +162,15 @@
                         </div>
                       </div>
 
+                      <!-- Added truck weight cap -->
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Truck Weight Capacity: 
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="truckWeight" name = "truckWeight" class="date-picker form-control col-md-7 col-xs-12" type="text" readonly="readonly">
+                        </div>
+                      </div>
+
                        <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Driver: 
                         </label>
@@ -163,13 +179,26 @@
                         </div>
                       </div>
                       <div class = "ln_solid"></div>
+
+
+                      <!-- Added total weight -->
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Weight: 
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="totalorderWeight" class="date-picker form-control col-md-7 col-xs-12" type="text" readonly="readonly">
+                        </div>
+                      </div>  
+
+
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Price: 
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="totalfromOrders" class="date-picker form-control col-md-7 col-xs-12" type="text" readonly="readonly" style="text-align:right;">
                         </div>
-                      </div>         
+                      </div>   
+                            
                       
                             </div><!-- mod start  -->
                           </div>
@@ -428,6 +457,10 @@
     echo  'var truckPlateBox = document.getElementById("truckPlate");';
     echo  'var driverBox = document.getElementById("driverName");';
 
+    // newly added
+    echo  'var truckweightBox = document.getElementById("truckWeight");';
+    echo  'var totalweightBox = document.getElementById("totalorderWeight");';
+
     $orderNumber = array();
     $customerName = array();
     $itemName = array();
@@ -524,12 +557,17 @@
                 echo  " totalPriceBox.value = '₱ '+ totalNumFromPHP[i];";
                 echo  " ExpectedDateBox.value = expectedDateFromPHP[i];";
                 echo  " locationBox.value = locationFromPHP[i];"; 
+
+                // Added total weight
+                // echo  " totalweightBox.value = '400' + 'kg'";
+
             
                 echo  " for (var j = 0; j < ".sizeof($truckID)."; j++) {  "; 
                 echo  "  if(locationFromPHP[i] == DestinationFromPHP[j])"; //checks if location is same as TruckDestinatrion
                 echo  "  {";
                     echo  " truckPlateBox.value = truckPlateFromPHP[j];";
                     echo  " driverBox.value = driverFirstNameFromPHP[j] + ' ' +driverLastNameFromPHP[j];";
+                    echo  " truckweightBox.value = '2150kg'";
                 echo  "  }"; 
             echo  "  }"; // end 2nd forloop
             
