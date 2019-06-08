@@ -347,9 +347,10 @@
                                   <thead>
                                     <tr>
                                         <th>Item Name</th>
-                                         <!-- <th>Item Type</th> -->
+                                        
                                          <!-- <th>Price</th> -->
                                          <th>Quantity</th>
+                                         <th>Supplier</th>
                                          <th>Action</th>
                                     </tr>
                                   </thead>
@@ -509,7 +510,11 @@
             $('#datatable-checkbox tbody button.btn.btn-success').on('click', function(e) {
                 var row = $(this).closest('tr');
                 var buttonValue = $(this).val();
-
+                            
+                var get_supplier_from_dropdown = document.getElementById("supplierID"); //gets the supplier name based on Dropdown
+                var get_supplier_id = get_supplier_from_dropdown.value; //Gets the ID of the supplier
+                var get_supplier_name = get_supplier_from_dropdown.options[get_supplier_from_dropdown.selectedIndex].text; //converts to string of the selected index
+               
                 item_id_in_cart.push(buttonValue);
                 
                 var payment = document.getElementById("payment");
@@ -522,53 +527,72 @@
                 // console.log('TR 4 cell: ' + row.find('td:nth-child(4)').text());
                
                 var currentName =  row.find('td:first').text(); 
-                console.log("Current Name = " + currentName);
+                // console.log("Current Name = " + currentName);
                 if(itemQuantity == 0)
-                    {
-                        alert("No Quantity Set!");
-                        item_id_in_cart.pop(); //Removes the ID from the array
-                    }
+                {
+                    alert("No Quantity Set!");
+                    item_id_in_cart.pop(); //Removes the ID from the array
+                }
                
-                    else
-                    {
-                        
+                else
+                {
+                    
                     var qty_old = 0
                     var item_does_not_exist = true;
-                        $(".qtys").each(function(i){ // this gets all the classes in the order table.
-                            if (buttonValue ==$(this).attr('val_id'))
-                            { //checks i there is existing item
-                               
-                                    // var current_stock = parseInt(row.find('td:nth-child(3)').text());
-                                    qty = $(this).text();  //Ye Old quantity, not the price
+                    var supplier_does_not_exist = true;
+
+                    var qty_array =[];
+                    var sp_name_array = [];
+
+                    $('.sp_name').each(function(i){ 
+                        var get_sp_name = $(this).attr('sp_id');  //Places all the supplier ID in the array FIRST
+                        sp_name_array.push(get_sp_name);
+                    });
+
+                    
+                    $('.qtys').each(function(i) //Pushes the val_id into the array SECOND then iterates through each
+                    { 
+                        var get_qty = $(this).attr('val_id');
+                        qty_array.push(get_qty);
+
+                        for(var i = 0; i <= qty_array.length; i++)
+                    { 
+                        if (get_supplier_id == sp_name_array[i] && buttonValue == qty_array[i])//checks i there is existing item
+                        {
+                    
+                            console.log("IF Statement works");
+                            var supplier_does_not_exist = false;
+                            // var current_stock = parseInt(row.find('td:nth-child(3)').text());
+                            qty = $(this).text();  //Ye Old quantity, not the price
                                                                 
-                                    qty_old = parseInt(qty.replace(/\,/g,''), 10); //old qty in cart table
+                                qty_old = parseInt(qty.replace(/\,/g,''), 10); //old qty in cart table
 
-                                    item_does_not_exist = false; //item does exist
-                                    new_qty = parseInt(itemQuantity) + qty_old; //adds old qty with current qty in cart
+                                item_does_not_exist = false; //item does exist
+                                new_qty = parseInt(itemQuantity) + qty_old; //adds old qty with current qty in cart
 
-                                    CurrentTotal = CurrentTotal + parseInt(itemQuantity);
-                                    total_qty.value = CurrentTotal;  
-                            
-                                    $(this).text(new_qty); // ye new qty
-                                    item_id_in_cart.pop(); //Removes ID from array since item already exist
-                                   
-                                    //     var oldPrice =  $(this).attr('price');
-                                    //     var newPrice = $(this).attr('price') * new_qty;
+                                CurrentTotal = CurrentTotal + parseInt(itemQuantity);
+                                total_qty.value = CurrentTotal;  
+                        
+                                $(this).text(new_qty); // ye new qty
+                                item_id_in_cart.pop(); //Removes ID from array since item already exist
+                                                        
+                        }           
+                
+                        else
+                        {
+                            var supplier_does_not_exist = true;
+                        }
 
-                                    //     var subtractOldamount = qty_old *oldPrice;
-                                    //     CurrentTotal = (CurrentTotal - subtractOldamount);
-                                                                               
-                                    //     CurrentTotal = CurrentTotal+ newPrice;
-                                    //     payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
-                                   
-                                    // console.log("Old Amount = "+subtractOldamount);                                   
-                                    // console.log("Old Price = "+oldPrice);
-                                    // console.log("Current Total = "+CurrentTotal);
-                                    console.log("Current Item Quantity = " + itemQuantity);
-                                    // console.log(row.find('td:nth-child(3)').text());
-                            }
-                        });//END FUNCTION
-                        if(item_does_not_exist){
+                    }
+
+                    });
+               
+
+                    console.log("Array 1 = "+qty_array[0]);
+                    console.log("Array 2 = "+sp_name_array[0]);
+
+                    if(item_does_not_exist && supplier_does_not_exist)
+                        {
 
                             var price =row.find('td:nth-child(3)').text().replace("₱ ", ""); //Removes the peso sign to make it as INT rather than string
                             var valid= row.find('td:nth-child(3)');
@@ -577,21 +601,58 @@
                             // count =  count +1+ parseFloat(price.replace(/\,/g,''), 10);
                             // count =  count+ parseFloat(price.replace(/\,/g,''), 10);
                             var TotalQuantity = parseInt(itemQuantity);
+                            
 
                             CurrentTotal = CurrentTotal + parseInt(itemQuantity);
 
                             var newRow = document.getElementById('cart').insertRow();                       
-                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+TotalQuantity+"' > - </button></td>";
+                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td><td class ='sp_name' sp_id = '"+get_supplier_id+"'> "+get_supplier_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+TotalQuantity+"' > - </button></td>";
                             total_qty.value = CurrentTotal;                             
                             // payment.value = "₱ "+ totalPayment;
-                           
+                            
                             // payment.value = "₱ "+ CurrentTotal.toFixed(2);
                             itemName++;
                             quantity++;                         
                         } // END IF                                                 
                     }   // END ELSE    
+                    // $(".qtys").each(function(i){ // this gets all the classes in the order table.
+                    //         if (buttonValue ==$(this).attr('val_id') )
+                    //         { //checks i there is existing item
+                                
+                    //                 // var current_stock = parseInt(row.find('td:nth-child(3)').text());
+                    //                 qty = $(this).text();  //Ye Old quantity, not the price
+                                                                
+                    //                 qty_old = parseInt(qty.replace(/\,/g,''), 10); //old qty in cart table
 
-            }) //END FUNCTION
+                    //                 item_does_not_exist = false; //item does exist
+                    //                 new_qty = parseInt(itemQuantity) + qty_old; //adds old qty with current qty in cart
+
+                    //                 CurrentTotal = CurrentTotal + parseInt(itemQuantity);
+                    //                 total_qty.value = CurrentTotal;  
+                            
+                    //                 $(this).text(new_qty); // ye new qty
+                    //                 item_id_in_cart.pop(); //Removes ID from array since item already exist
+                                    
+                    //                 //     var oldPrice =  $(this).attr('price');
+                    //                 //     var newPrice = $(this).attr('price') * new_qty;
+
+                    //                 //     var subtractOldamount = qty_old *oldPrice;
+                    //                 //     CurrentTotal = (CurrentTotal - subtractOldamount);
+                                                                                
+                    //                 //     CurrentTotal = CurrentTotal+ newPrice;
+                    //                 //     payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
+                                    
+                    //                 // console.log("Old Amount = "+subtractOldamount);                                   
+                    //                 // console.log("Old Price = "+oldPrice);
+                    //                 // console.log("Current Total = "+CurrentTotal);
+                    //                 console.log("Current Item Quantity = " + itemQuantity);
+                    //                 // console.log(row.find('td:nth-child(3)').text());
+                    //         } //END IF
+                    //     });//END FUNCTION
+                        
+                       
+
+            }); //END 1st JQUERY FUNCTION
              function DeleteRow(obj) 
                {               
                 var buttonValue =obj.value;     
@@ -711,6 +772,7 @@
         <script>
             function insert_to_supply_table()
                 {
+                    var GET_SUPPLIER_ID=[]; 
                     var GET_CART_QTY=[];
                     $('#cart tr td:nth-child(2)').each(function (e) 
                     {
@@ -718,20 +780,27 @@
                         var getValue =parseInt($(this).text());
                         console.log(getValue);
                         GET_CART_QTY.push(getValue);
-                    }) //ENd jquery
+                    }); //ENd jquery
+                    $('#cart tr td:nth-child(3)').each(function (e) 
+                    {
+                        
+                        var get_supplier_Value = $(this).text();
+                        console.log(get_supplier_Value);
+                        GET_SUPPLIER_ID.push(get_supplier_Value);
+                    }); //ENd jquery
                     
                     request = $.ajax({
-                    url: "ajax/insert_to_supply_order_tables.php",
-                    type: "POST",
-                    data: {post_item_id: item_id_in_cart,
-                        post_item_qty: GET_CART_QTY
-                    },
-                    success: function(data, textStatus)
-                    {
-                    
-                    }//End Scucess
-                    
-                        }); // End ajax    
+                        url: "ajax/insert_to_supply_order_tables.php",
+                        type: "POST",
+                        data: {post_item_id: item_id_in_cart,
+                            post_item_qty: GET_CART_QTY,
+                            post_supplier_id: GET_SUPPLIER_ID
+                        },
+                        success: function(data, textStatus)
+                        {
+                        
+                        }//End Scucess                   
+                    }); // End ajax    
                 } //End function
                 
 </script>

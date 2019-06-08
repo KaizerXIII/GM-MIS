@@ -57,14 +57,41 @@
                       
                     </p><br>
 					 -->
-                    <div class = "col-md-6">
-                        SR-1
-                        <br>
-                        Order Date: 01-01-12
-                    </div> 
-                    <div class = "col-md-6" align = "right" >
-                        Expected Date of Arrival: 04-01-12 to 04-15-12
-                    </div>  
+                     <?php
+                          if(isset($_GET['so_id']))
+                          {                     
+                            $_SESSION['supply_order_id'] = $_GET['so_id']; //Stores the Value of Get from View Inventory
+                                            
+                          }
+                          else
+                          {                        
+                             
+                          }
+                          $CURRENT_SO_ID_NUMBER = $_SESSION['supply_order_id']; //Stores the value of SO ID
+
+                          //Gets all the required Information from table based on the ID
+                          $SQL_GET_SO_FROM_DB = "SELECT supply_order_id,
+                          CAST(supply_order_date AS DATE) as SD,
+                           CAST(supply_order_expdate AS DATE) as SXD,
+                            CAST(DATE_ADD(supply_order_expdate, INTERVAL 14 DAY) AS DATE) AS EXP_RANGE,
+                             supply_order_total_quantity,
+                              supply_order_status 
+                              FROM supply_order
+                               WHERE supply_order_id = '$CURRENT_SO_ID_NUMBER'";
+                          $RESULTS_GET_FROM_DB = mysqli_query($dbc, $SQL_GET_SO_FROM_DB);
+                          $ROW_RESULT_GET_FROM_DB = mysqli_fetch_array($RESULTS_GET_FROM_DB,MYSQLI_ASSOC);
+
+
+                     
+                   echo '<div class = "col-md-6">'; 
+                        echo "<h3> SR - ", $ROW_RESULT_GET_FROM_DB['supply_order_id'],'</h3>';
+                        echo '<br>';
+                        echo '<b>Order Date: </b>', $ROW_RESULT_GET_FROM_DB['SD']; 
+                    echo'</div>'; 
+                    echo'<div class = "col-md-6" align = "right" >';
+                    echo'    <b>Expected Date of Arrival: </b>',  $ROW_RESULT_GET_FROM_DB['SXD'],' To ',  $ROW_RESULT_GET_FROM_DB['EXP_RANGE'] ;
+                    echo'</div> ';
+                    ?>
                     <div class = "col-md-12" align = "center" style="z-index: 1">
                         <ul class="progressbar">
                             <li class="active" >Purchased</li>
@@ -99,16 +126,22 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Granite A</td>
-                          <td>LLC</td>
-                          <td>4</td>
-                          <td align = "center">
-                            <button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button>
-                            <button type="button" class="btn btn-round btn-success btn-xs" id="restock_page"  onclick="location.href='EditInventory_Reworked.php?item_name=' + current_item_name;" >Restock</button>
-                           </td>
-                          
-                        </tr>                           
+                      <?php
+                        $SQL_SELECT_SO_DETAILS_FROM_DB = "SELECT * FROM supply_order_details WHERE supply_order_id = '$CURRENT_SO_ID_NUMBER '";
+                        $RESULT_GET_SO_DETAILS = mysqli_query($dbc, $SQL_SELECT_SO_DETAILS_FROM_DB);
+                        while($row=mysqli_fetch_array($RESULT_GET_SO_DETAILS,MYSQLI_ASSOC))
+                        {
+                            echo '<tr>';
+                                echo '<td>'.$row['supply_item_name'].'</td>';
+                                echo '<td>'.$row['supplier_name'].'</td>';
+                                echo '<td>'.$row['supply_item_quantity'].'</td>';
+                                echo '<td align = "center">';
+                                echo '<button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button>';
+                                echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page">Restock</button>';
+                                echo '</td>    ';      
+                            echo '</tr> '; 
+                        }
+                        ?>                         
                       </tbody>
                     </table><br>
                     </div>

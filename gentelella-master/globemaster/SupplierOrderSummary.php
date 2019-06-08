@@ -59,7 +59,7 @@
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
-                          <th>Order Number</th>
+                          <th>Supply Order Number</th>
                           <th>Order Date</th>
                           <th>Expected Date</th>
                           <th>Total Quantity</th>
@@ -68,14 +68,29 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>SR-1</td>
-                          <td>01-01-12</td>
-                          <td>04-01-12 to 04-15-12</td>
-                          <td>100</td>
-                          <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Shipped</button></td>
-                          <td align = "center"><a href="SupplierOrderDetails.php"><i class = "fa fa-wrench"></i></a></td>
-                        </tr>                           
+                      <?php
+                      $SQL_GET_ALL_SO = "SELECT supply_order_id,
+                       CAST(supply_order_date AS DATE) as SD,
+                        CAST(supply_order_expdate AS DATE) as SXD,
+                         CAST(DATE_ADD(supply_order_expdate, INTERVAL 14 DAY) AS DATE) AS EXP_RANGE,
+                          supply_order_total_quantity,
+                           supply_order_status 
+                           FROM supply_order ORDER BY supply_order_id + '0'";
+
+                      $RESULT_GET_SO = mysqli_query($dbc, $SQL_GET_ALL_SO);
+                        while($row=mysqli_fetch_array($RESULT_GET_SO,MYSQLI_ASSOC))
+                        {
+                          $SO_ID = $row['supply_order_id'];
+                          echo '<tr>';                          
+                          echo ' <td> SR - ' .$row['supply_order_id'].'</td>'; 
+                          echo ' <td>' .$row['SD'].'</td>'; 
+                          echo ' <td>[' .$row['SXD']. ']<b> To </b> [' .$row['EXP_RANGE'].']</td>'; 
+                          echo ' <td>'.$row['supply_order_total_quantity'].'</td>'; 
+                          echo ' <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>'.$row['supply_order_status'].'</button></td>'; 
+                          echo ' <td align = "center"><a href="SupplierOrderDetails.php?so_id='.$SO_ID.'"><i class = "fa fa-wrench"></i></a></td>'; 
+                          echo '</tr>'; 
+                        }
+                      ?>                          
                       </tbody>
                     </table><br>
                     <div>
