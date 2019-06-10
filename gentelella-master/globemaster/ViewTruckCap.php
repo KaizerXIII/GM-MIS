@@ -55,7 +55,9 @@
                   <div class="x_title col-md-12">
                       <div class="form-group">
                         <!-- CLICK ARROWS FOR NEXT WEEK/PREVIOUS WEEK -->
-                        <font size = "4" color = "green"><center><i class="fa fa-arrow-left fa-lg"></i> For the week of 06/12/19 - 06/19/19 <i class="fa fa-arrow-right fa-lg"></i></center></font>
+                        <font size = "4" color = "green"><center> <i class="fa fa-arrow-left fa-lg"></i>For the week of:   <span id="first_date" style="color:green"> wlao</span>
+                         To <span id="second_date" style="color:green"> walolo  wlao</span>
+                        <i class="fa fa-arrow-right fa-lg"></i> </center></font>
                       </div>
                  
                     <div class="clearfix"></div>
@@ -71,14 +73,57 @@
                   </div>
                   <div class="form-group col-md-4 col-sm-4 col-xs-12">
                         <div class='input-group date' id='myDatepicker2'>
-                            <input type='text' class="form-control" />
+                            <input type='text' class="form-control" id = "current_date">
                             <span class="input-group-addon">
                                <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                   </div>
+                  <script>
+                        var get_date = document.getElementById("current_date"); //Gets the date from datepicker
+                          var set_date;
+                          function refresh_date() 
+                          {
+                            var set_date = get_date.value;
+                            
+                            
+
+                            var next_7_days = new Date(set_date);
+                            alert(set_date);
+                            
+                            next_7_days.setDate(next_7_days.getDate() + 3);
+
+                            var get_first_month = next_7_days.getMonth()+1  
+                            var get_first_day = next_7_days.getDate()     
+                            var get_first_year = next_7_days.getFullYear() 
+
+                            var previous_7_days = new Date(set_date);
+                            previous_7_days.setDate(previous_7_days.getDate() - 3);
+
+                            var get_second_month = previous_7_days.getMonth()+1  
+                            var get_second_day = previous_7_days.getDate()     
+                            var get_second_year = previous_7_days.getFullYear() 
+
+                            var first_date_string =  ('0' + get_first_month).slice(-2) +"-" +('0' + get_first_day).slice(-2) +"-" + get_first_year;
+                            var second_date_string = ('0' + get_second_month).slice(-2) +"-" +('0' + get_second_day).slice(-2) +"-" + get_second_year;;
+
+                            document.getElementById("first_date").innerHTML = second_date_string;
+
+                            document.getElementById("second_date").innerHTML = first_date_string;
+                          }
+
+                          // function addDays = function(input_date) {
+                          //     var next_7_days = new Date(input_date);
+                          //     next_7_days.setDate(next_7_days.getDate() + 7);
+                          //     return next_7_days;
+                          // }
+                        
+                        
+                         </script>
+
+                  
                   <div>
-                  <button type="button" class="btn btn-primary">Refresh</button>
+                  <button type="button" class="btn btn-primary" onclick="refresh_date()" >Refresh</button>
                   </div>
                   </div>
                   <!-- END DATE PICKER -->
@@ -221,7 +266,7 @@
     $('#myDatepicker').datetimepicker();
     
     $('#myDatepicker2').datetimepicker({
-        format: 'DD.MM.YYYY'
+        format: 'MM-DD-YYYY'
     });
     
     $('#myDatepicker3').datetimepicker({
