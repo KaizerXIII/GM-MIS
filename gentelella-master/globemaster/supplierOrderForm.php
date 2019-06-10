@@ -85,14 +85,16 @@
 
                                         <form class="form-horizontal form-label-left" method="POST">
 
-                                            <div class="form-group">
-                                                <h1><font color = "black"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Supplier:</label>
-                                                <div class="col-md-2 col-sm-2 col-xs-12" align="right">
+                                            <div class="form-group col-md-12 col-sm-11 col-xs-12">
+                                            <div class="form-group col-md-2 col-sm-11 col-xs-12">
+                                                <font color = "black" size = "5"><b>Select Supplier:</b></font>
+                                            </div> 
+                                                <div class="col-md-2 col-sm-2 col-xs-12">
                                                     <select class="form-control col-md-12 col-xs-12" id="supplierID" name="supplierID">
                                                         <?php
 
                                                             require_once('DataFetchers/mysql_connect.php');
-                                                            $SQL_SUPPLIER_LIST="SELECT supplier_id, supplier_name FROM suppliers";
+                                                            $SQL_SUPPLIER_LIST="SELECT supplier_id, supplier_name FROM suppliers ORDER BY supplier_name ASC";
                                                             $result=mysqli_query($dbc,$SQL_SUPPLIER_LIST);
                                                             while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                                                             {
@@ -101,9 +103,119 @@
                                                         ?> 
                                                     </select>
                                                 </div>
-                                                </font> </h1>
+                                                <!-- Hyperlink for add supplier modal -->
+                                                <div class="col-md-6 col-sm-2 col-xs-12"><span>
+                                                    <a href="#bannerformmodal" data-toggle="modal" data-target=".bs-example-modal-lg2"><font size = "2">Click here to add a new supplier</font></a>
+                                                </span> </div>
+                                                <!-- New Supplier Modal Start -->
+                                                <div id = "bannerformmodal" class="modal fade bs-example-modal-lg2" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalLabel">Add a New Supplier</h4>
+                                                    </div>
+
+                                                    <div class = "modal-body">
+                                                    <form class="form-horizontal form-label-left" method="post" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+
+                                                        <span class="section">Supplier Info</span>
+                                                        <br>
+                                                        <div class="item form-group">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Supplier Name <span class="required">*</span>
+                                                            </label>
+                                                            <div class="col-md-7 col-sm-6 col-xs-12">
+                                                                <input id="addsupplierName" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="addsupplierName" placeholder="Please enter the supplier's name" required="required" type="text" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Contact Number <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-7 col-sm-6 col-xs-12">
+                                                            <input id="addsupplierNumber" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="addsupplierNumber" placeholder="Please enter the supplier's contact number" required="required" type="text" required>
+                                                        </div>
+                                                        </div>
+                                                        <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Email <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-7 col-sm-6 col-xs-12">
+                                                            <input id="addsupplierEmail" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="addsupplierEmail" placeholder="Please enter the supplier's e-mail address" required="required" type="email">
+                                                        </div>
+                                                        </div>
+                                                        <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">Address
+                                                        </label>
+                                                        <div class="col-md-7 col-sm-6 col-xs-12">
+                                                            <textarea id="addsupplierAddress" name="addsupplierAddress" class="form-control col-md-7 col-xs-12" placeholder="Please enter the supplier's address" required></textarea>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        <div class="ln_solid"></div>
+                                                        <div class="form-group">
+                                                        <div class="col-md-6 col-md-offset-3">
+                                                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                            <button class="btn btn-primary" data-dismiss="modal">Reset</button>
+                                                            <button id="send" type="submit" class="btn btn-success" onclick="confirmalert()">Submit</button>
+                                                            <br><br>
+                                                        </div>
+                                                        <!-- Add Inventory -->
+                                                        <?php
+                                                            require_once('DataFetchers/mysql_connect.php');
+
+                                                            $addsname = $addscontact = $addsemail = $addsaddress = $addsidinsert = "";
+
+                                                            if($_SERVER["REQUEST_METHOD"] == "POST")
+                                                            {
+                                                                $addsquery = "SELECT max(supplier_id) FROM suppliers";
+                                                                $addsresult1 = mysqli_query($dbc,$addsquery);
+                                                                
+                                                                $addsid = mysqli_fetch_array($addsresult1,MYSQLI_ASSOC);
+                                                                
+                                                                $addsidinsert = $addsid["max(supplier_id)"] + 1;
+                                                                // echo $idinsert; for testing
+
+                                                                $addsname = test_input($_POST['addsupplierName']);
+                                                                $addscontact = test_input($_POST['addsupplierNumber']);
+                                                                $addsemail = test_input($_POST['addsupplierEmail']);
+                                                                $addsaddress = test_input($_POST['addsupplierAddress']);
+                                                                // $status = test_input($_POST['status']);
+
+                                                                // echo '<script language="javascript">';
+                                                                // echo 'confirm(Are you sure you want to enter the following data?)';  //not showing an alert box.
+                                                                // echo '</script>';
+                                                            
+
+                                                                $sql = "INSERT INTO suppliers (supplier_id, supplier_name, supplier_address, supplier_contactno, supplier_email)
+                                                                Values(
+                                                                '$addsidinsert',
+                                                                '$addsname', 
+                                                                '$addsaddress',
+                                                                '$addscontact',
+                                                                '$addsemail')";
+
+                                                                $resultinsert = mysqli_query($dbc,$sql);
+
+                                                            }
+
+                                                            function test_input($data) 
+                                                            {
+                                                                $data = trim($data);
+                                                                $data = stripslashes($data);
+                                                                $data = htmlspecialchars($data);
+                                                                return $data;
+                                                            }
+                                                    ?>
+                                                    </form>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <!-- New Supplier Modal End -->
                                             </div>
-                                            <hr>
                                             <!-- New Stock  Button -->
                                             <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target=".bs-example-modal-lg1"><i class="fa fa-plus"></i> New Stock</button>
                                             <br><br>
@@ -138,45 +250,6 @@
                                                                                         <input id="new_item_quantity" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_quantity" placeholder="Please enter the quantity" required="required" type="number">
                                                                                     </div>
                                                                                     </div>
-                                                                                    <!-- <div class="item form-group">
-                                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Email <span class="required">*</span>
-                                                                                    </label>
-                                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                        <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="email" placeholder="Please enter the customer's e-mail address" required="required" type="email">
-                                                                                    </div>
-                                                                                    </div>
-                                                                                    <div class="item form-group">
-                                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">City <span class="required">*</span>
-                                                                                    </label>
-                                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                
-                                                                                    <select class="form-control col-md-7 col-xs-12" name="city" required="required">
-                                                                                    <option value="">Choose..</option>
-                                                                                        <?php
-                                                                                        // require_once('DataFetchers/mysql_connect.php');
-                                                                                        // $sqlPullDestination = "SELECT * FROM destination";
-                                                                                        // $resultofDestination =  mysqli_query($dbc,$sqlPullDestination);
-                                                                                        // while($rowDestination=mysqli_fetch_array($resultofDestination,MYSQLI_ASSOC))
-                                                                                        // {
-                                                                                        
-                                                                                        //         echo'<option value="';
-                                                                                        //         echo $rowDestination['DestinationName'];
-                                                                                        //         echo'">';
-                                                                                        //         echo $rowDestination['DestinationName'];
-                                                                                        //         echo'</option>';
-                                                                                        
-                                                                                        // }
-                                                                                        ?>
-                                                                                    </select>
-                                                                                        <!-- <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="city" placeholder="Please enter the customer's city of delivery" required="required" type="text"> -->
-                                                                                    <!-- </div>
-                                                                                    </div>
-                                                                                    <div class="item form-group">
-                                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">Address
-                                                                                    </label>
-                                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                        <textarea id="textarea" name="address" class="form-control col-md-7 col-xs-12" placeholder="Please enter the customer's delivery address"></textarea>
-                                                                                    </div>  -->
                                                                                     </div>
                                                                                     <div class="ln_solid"></div>
                                                                                     <div class="form-group">
@@ -187,57 +260,7 @@
                                                                                     </div>
                                                                                     </div>
                                                                                     <!-- Add Inventory -->
-                                                                                    <!-- Finished general insert, but create a status column for customer -->
-                                                                                    <?php
-                                                                                            require_once('DataFetchers/mysql_connect.php');
-
-                                                                                            $name = $idinsert = $contact = $email = $address = $status = $city = "";
-
-                                                                                            if($_SERVER["REQUEST_METHOD"] == "POST")
-                                                                                            {
-                                                                                                $query = "SELECT max(client_id) FROM clients";
-                                                                                                $result1=mysqli_query($dbc,$query);
-                                                                                                
-                                                                                                $id = mysqli_fetch_array($result1,MYSQLI_ASSOC);
-                                                                                                
-                                                                                                $idinsert = $id["max(client_id)"] + 1;
-                                                                                                // echo $idinsert; for testing
-
-                                                                                                $name = test_input($_POST['name']);
-                                                                                                $contact = test_input($_POST['contact']);
-                                                                                                $email = test_input($_POST['email']);
-                                                                                                $address = test_input($_POST['address']);
-                                                                                                $city = test_input($_POST['city']);
-                                                                                                // $status = test_input($_POST['status']);
-
-                                                                                                echo '<script language="javascript">';
-                                                                                                echo 'confirm(Are you sure you want to enter the following data?)';  //not showing an alert box.
-                                                                                                echo '</script>';
-                                                                                            
-
-                                                                                                $sql = "INSERT INTO clients (client_id, client_name, client_address, client_city, client_contactno, client_email, total_unpaid, client_status)
-                                                                                                Values(
-                                                                                                '$idinsert',
-                                                                                                '$name', 
-                                                                                                '$address',
-                                                                                                '$city',
-                                                                                                '$contact',
-                                                                                                '$email',
-                                                                                                0,
-                                                                                                'Allowed')";
-
-                                                                                                $resultinsert = mysqli_query($dbc,$sql);
-
-                                                                                            }
-
-                                                                                            function test_input($data) 
-                                                                                            {
-                                                                                                $data = trim($data);
-                                                                                                $data = stripslashes($data);
-                                                                                                $data = htmlspecialchars($data);
-                                                                                                return $data;
-                                                                                            }
-                                                                                    ?>
+                                                                                    
                                                                                 </form>
                                                                                 </div>
                                                                                 </div>
@@ -804,6 +827,20 @@
                 } //End function
                 
 </script>
+
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+    </script>
+
+    <!-- Alert Box -->
+    <script>
+    function confirmalert()
+    {
+      confirm("Are you sure you want to enter the following data?");
+    }
+    </script>
         
         <!-- <script>
             var divdel = document.getElementById("ifYes");

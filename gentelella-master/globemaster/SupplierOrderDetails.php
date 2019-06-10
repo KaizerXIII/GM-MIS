@@ -89,7 +89,7 @@
                         echo '<b>Order Date: </b>', $ROW_RESULT_GET_FROM_DB['SD']; 
                     echo'</div>'; 
                     echo'<div class = "col-md-6" align = "right" >';
-                    echo'    <b>Expected Date of Arrival: </b>',  $ROW_RESULT_GET_FROM_DB['SXD'],' To ',  $ROW_RESULT_GET_FROM_DB['EXP_RANGE'] ;
+                    echo'    <b>Expected Date of Arrival: </b>',  $ROW_RESULT_GET_FROM_DB['SXD'],' to ',  $ROW_RESULT_GET_FROM_DB['EXP_RANGE'] ;
                     echo'</div> ';
                     ?>
                     <div class = "col-md-12" align = "center" style="z-index: 1">
@@ -99,19 +99,31 @@
                             <li>Delivered</li>
                         </ul>
                     </div> 
-                        <div id = "mydiv3" class = "col-md-5" align = "center" >
                         <br>
-                            <div class = "col-md-2">
+                        <table border="0" style="width: 50%;" align = "center" frame="box">
+                        <tr>
+                          <th>03 Jun 2019 - 14:18</th>
+                          <th>Your package has been shipped with LEX PH with tracking number LPT0000009649313.To track your parcel, click on our Tracking Page</th>
+                        </tr>
+                        <tr>
+                          <td>January</td>
+                          <td>$100</td>
+                        </tr>
+                        <tr>
+                          <td>February</td>
+                          <td>$80</td>
+                        </tr>
+                      </table>
+                            <!-- <div class = "col-md-2">
                                 <span class = "text"> 
                                     03 Jun 2019 - 14:18
                                 </span>
                             </div>
-                            <div >
+                            <div class = "col-md-10">
                                 <span class = "text"> 
                                     Your package has been shipped with LEX PH with tracking number LPT0000009649313.To track your parcel, click on our Tracking Page
                                 </span>
-                            </div>
-                        </div>
+                            </div> -->
                     <div class="clearfix"></div>
                         <center><font color = "#4192f4">View Details</font></center>
                     </div>
