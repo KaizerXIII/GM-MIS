@@ -36,6 +36,13 @@
         <script type="text/javascript" src="js/script.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
 
+        <script>
+            window.onbeforeunload = function () {
+                return "Are you sure";
+            };
+        </script>
+
+
        
     </head>
 
