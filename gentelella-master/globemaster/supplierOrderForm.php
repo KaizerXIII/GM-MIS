@@ -105,7 +105,7 @@
                                                 </div>
                                                 <!-- Hyperlink for add supplier modal -->
                                                 <div class="col-md-6 col-sm-2 col-xs-12"><span>
-                                                    <a href="#bannerformmodal" data-toggle="modal" data-target=".bs-example-modal-lg2"><font size = "2">Click here to add a new supplier</font></a>
+                                                    <a href="#bannerformmodal" data-toggle="modal" data-target=".bs-example-modal-lg2"><font size = "4">Click here to add a new supplier</font></a>
                                                 </span> </div>
                                                 <!-- New Supplier Modal Start -->
                                                 <div id = "bannerformmodal" class="modal fade bs-example-modal-lg2" tabindex="-1" role="dialog" aria-hidden="true">
@@ -119,7 +119,7 @@
                                                     </div>
 
                                                     <div class = "modal-body">
-                                                    <form class="form-horizontal form-label-left" method="post" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                                                    <form class="form-horizontal form-label-left" method="POST" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 
                                                         <span class="section">Supplier Info</span>
                                                         <br>
@@ -157,16 +157,23 @@
                                                         <div class="col-md-6 col-md-offset-3">
                                                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                             <button class="btn btn-primary" data-dismiss="modal">Reset</button>
-                                                            <button id="send" type="submit" class="btn btn-success" onclick="confirmalert()">Submit</button>
+                                                            <button id="send" name = "submit_btn" type="submit" class="btn btn-success" onclick="confirmalert()">Submit</button>
                                                             <br><br>
                                                         </div>
                                                         <!-- Add Inventory -->
+                                                        <script>
+                                                            
+                                                            document.getElementById("send").addEventListener("click", function(){
+                                                                
+                                                            });
+
+                                                        </script>
                                                         <?php
                                                             require_once('DataFetchers/mysql_connect.php');
 
                                                             $addsname = $addscontact = $addsemail = $addsaddress = $addsidinsert = "";
 
-                                                            if($_SERVER["REQUEST_METHOD"] == "POST")
+                                                            if(isset($_POST["submit_btn"]))
                                                             {
                                                                 $addsquery = "SELECT max(supplier_id) FROM suppliers";
                                                                 $addsresult1 = mysqli_query($dbc,$addsquery);
@@ -193,9 +200,11 @@
                                                                 '$addsname', 
                                                                 '$addsaddress',
                                                                 '$addscontact',
-                                                                '$addsemail')";
+                                                                '$addsemail');";
 
                                                                 $resultinsert = mysqli_query($dbc,$sql);
+                                                                header('Location: '.$_SERVER['REQUEST_URI']);
+                                                                
 
                                                             }
 
@@ -838,6 +847,7 @@
     function confirmalert()
     {
       confirm("Are you sure you want to enter the following data?");
+      window.location.reload();
     }
     </script>
         
