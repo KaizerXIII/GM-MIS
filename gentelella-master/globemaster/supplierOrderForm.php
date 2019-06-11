@@ -250,7 +250,6 @@
                                                                                         <input id="new_item_quantity" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_quantity" placeholder="Please enter the quantity" required="required" type="number">
                                                                                     </div>
                                                                                     </div>
-                                                                                    </div>
                                                                                     <div class="ln_solid"></div>
                                                                                     <div class="form-group">
                                                                                     <div class="col-md-6 col-md-offset-3">
