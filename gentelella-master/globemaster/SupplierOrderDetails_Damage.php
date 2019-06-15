@@ -1,6 +1,7 @@
 <html lang="en">
 <?php 
  require_once('DataFetchers/mysql_connect.php');
+ 
 ?>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -98,16 +99,36 @@
                                                 <font color = "black" size = "5"><b>Select a Damaged Item:</b></font>
                                             </div> 
                                                 <div class="col-md-2 col-sm-2 col-xs-12">
-                                                    <select class="form-control col-md-12 col-xs-12" id="supplierID" name="supplierID"> //change id
+                                                    <select class="form-control col-md-12 col-xs-12" id="item_name_list" name="item_name_list"> 
                                                         <?php
 
                                                             require_once('DataFetchers/mysql_connect.php');
-                                                            $SQL_SUPPLIER_LIST="SELECT supplier_id, supplier_name FROM suppliers ORDER BY supplier_name ASC";
-                                                            $result=mysqli_query($dbc,$SQL_SUPPLIER_LIST);
-                                                            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                                                            $get_item_from_session = $_SESSION['list_of_items'];
+
+                                                            for($i = 0; $i < count($_SESSION['list_of_items']); $i++)
                                                             {
-                                                                echo "<option value=".$row['supplier_id']."> ".$row['supplier_name']."</option>";  
+                                                                $SQL_GET_ITEM_NAME="SELECT * FROM items_trading WHERE item_name = '$get_item_from_session[$i]'";
+                                                                $RESULT_GET_ITEM_NAME=mysqli_query($dbc,$SQL_GET_ITEM_NAME);
+                                                                if(mysqli_num_rows($RESULT_GET_ITEM_NAME) == 0)
+                                                                {
+                                                                    $SQL_GET_NEW_ITEM_NAME = "SELECT * FROM new_item_temp_table WHERE new_item_name = '$get_item_from_session[$i]' ";
+                                                                    $RESULT_GET_NEW_ITEM_NAME=mysqli_query($dbc,$SQL_GET_NEW_ITEM_NAME);
+                                                                    while($row=mysqli_fetch_array($RESULT_GET_NEW_ITEM_NAME,MYSQLI_ASSOC))
+                                                                    {
+                                                                        echo "<option value=".$row['new_item_id']."> ".$row['new_item_name']."</option>";  
+                                                                    }
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    while($row=mysqli_fetch_array($RESULT_GET_ITEM_NAME,MYSQLI_ASSOC))
+                                                                    {
+                                                                        echo "<option value=".$row['item_id']."> ".$row['item_name']."</option>";  
+                                                                    }
+                                                                }
+                                                                
                                                             }
+                                                                
                                                         ?> 
                                                     </select>
                                                 </div>
@@ -123,10 +144,10 @@
                                                         </thead>
                                                         <tbody>
                                                         <tr>
-                                                            <td>Granite A</td>
+                                                            <!-- <td>Granite A</td>
                                                             <td align = "right">10</td>
                                                             <td align = "right">30%</td>
-                                                            <td align = "center"><font color = "red" size = "5"><i class="fa fa-close"></i></font></td>
+                                                            <td align = "center"></td> -->
                                                         </tr>
 
                                                         <?php
@@ -193,6 +214,37 @@
                                                                 return (Math.min(max, Math.max(min, v))); //compares the value between the min and max , returns the max when input value > max
                                                             }
                                                         </script> <!-- To avoid the users input more than the current Max per item -->
+
+                                                        <script type="text/javascript">
+                                                        $(function()
+                                                        {
+                                                            $("#item_name_list").on('change', function(){
+                                                                var current_selected = $(this).find(":selected").text();
+
+                                                                var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
+                                                                damage_table.innerHTML = "<tr> <td>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='btn btn-danger'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
+                                                        //         console.log("New Row MUST BE Inserted");
+                                                                // alert("Works");
+                                                                // console.log($(this).find(":selected").text());
+                                                            })
+                                                            
+                                                        });//END FUNCTION
+
+                                                        // window.onload = function() 
+                                                        // {
+                                                        //     var select_item = document.getElementById('item_name_list'); 
+                                                        //     var get_selected_item_to_text = select_item.options[select_item.selectedIndex].text;
+
+                                                        //     var damage_table = document.getElementById('datatable-checkbox').insertRow();      
+
+                                                        //     select_item.onchange = function() 
+                                                        //     {
+                                                        //         damage_table.innerHTML = "<tr> <td>" + get_selected_item_to_text + "</td> <td> <input type='number'> </td> <td> <input type='number'></td><td> <button type='button' class='btn btn-danger'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
+                                                        //         console.log("New Row MUST BE Inserted");
+                                                        //     }//END ONCHANGE 
+                                                        // }//END FUNCTION
+
+                                                        </script> <!-- Script to add new rows per click of items in dropdown -->
                                                     </table>
                                             </div>
                                             
@@ -203,7 +255,7 @@
                                             </div>           
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                        <button type="button" class="btn btn-primary" name="complete_order" onclick = "confirmAdd();">Next</button>
+                        <button type="button" class="btn btn-primary" name="complete_order">Next</button>
                     </div>
                 </div>
             </form>
@@ -222,210 +274,7 @@
         </div>
 
 
-        <script>
-        var count = 0;
-        var itemName = "item"+1;
-        var quantity = "quantity"+1;
-        var currentName = ""; 
-        var CurrentTotal = 0; //Gets the current quantity in order
-        var item_id_in_cart = []; // Get This
-
-            $('#datatable-checkbox tbody button.btn.btn-success').on('click', function(e) {
-                var row = $(this).closest('tr');
-                var buttonValue = $(this).val();
-                            
-                var get_supplier_from_dropdown = document.getElementById("supplierID"); //gets the supplier name based on Dropdown
-                var get_supplier_id = get_supplier_from_dropdown.value; //Gets the ID of the supplier
-                var get_supplier_name = get_supplier_from_dropdown.options[get_supplier_from_dropdown.selectedIndex].text; //converts to string of the selected index
-               
-                item_id_in_cart.push(buttonValue);
-                
-                var payment = document.getElementById("payment");
-                var itemQuantity = document.getElementById("quantity"+buttonValue).value;
-                document.getElementById("quantity"+buttonValue).value = "";
-                
-                // console.log('TR 1 cell: ' + row.find('td:first').text());
-                // console.log('TR 2 cell: ' + row.find('td:nth-child(2)').text());
-                // console.log('TR 3 cell: ' + row.find('td:nth-child(3)').text());
-                // console.log('TR 4 cell: ' + row.find('td:nth-child(4)').text());
-               
-                var currentName =  row.find('td:first').text(); 
-                // console.log("Current Name = " + currentName);
-                if(itemQuantity == 0)
-                {
-                    alert("No Quantity Set!");
-                    item_id_in_cart.pop(); //Removes the ID from the array
-                }
-               
-                else
-                {
-                    
-                    var qty_old = 0
-                    var item_does_not_exist = true;
-                    var supplier_does_not_exist = true;
-
-                    var qty_array =[];
-                    var sp_name_array = [];
-
-                    $('.sp_name').each(function(i){ 
-                        var get_sp_name = $(this).attr('sp_id');  //Places all the supplier ID in the array FIRST
-                        sp_name_array.push(get_sp_name);
-                    });
-
-                    
-                    $('.qtys').each(function(i) //Pushes the val_id into the array SECOND then iterates through each
-                    { 
-                        var get_qty = $(this).attr('val_id');
-                        qty_array.push(get_qty);
-
-                        for(var i = 0; i <= qty_array.length; i++)
-                    { 
-                        if (get_supplier_id == sp_name_array[i] && buttonValue == qty_array[i])//checks i there is existing item
-                        {
-                    
-                            console.log("IF Statement works");
-                            var supplier_does_not_exist = false;
-                            // var current_stock = parseInt(row.find('td:nth-child(3)').text());
-                            qty = $(this).text();  //Ye Old quantity, not the price
-                                                                
-                                qty_old = parseInt(qty.replace(/\,/g,''), 10); //old qty in cart table
-
-                                item_does_not_exist = false; //item does exist
-                                new_qty = parseInt(itemQuantity) + qty_old; //adds old qty with current qty in cart
-
-                                CurrentTotal = CurrentTotal + parseInt(itemQuantity);
-                                total_qty.value = CurrentTotal;  
-                        
-                                $(this).text(new_qty); // ye new qty
-                                item_id_in_cart.pop(); //Removes ID from array since item already exist
-                                                        
-                        }           
-                
-                        else
-                        {
-                            var supplier_does_not_exist = true;
-                        }
-
-                    }
-
-                    });
-               
-
-                    console.log("Array 1 = "+qty_array[0]);
-                    console.log("Array 2 = "+sp_name_array[0]);
-
-                    if(item_does_not_exist && supplier_does_not_exist)
-                        {
-
-                            var price =row.find('td:nth-child(3)').text().replace("₱ ", ""); //Removes the peso sign to make it as INT rather than string
-                            var valid= row.find('td:nth-child(3)');
-                            var ParsePrice = parseFloat(price.replace(/\,/g,''), 10);
-
-                            // count =  count +1+ parseFloat(price.replace(/\,/g,''), 10);
-                            // count =  count+ parseFloat(price.replace(/\,/g,''), 10);
-                            var TotalQuantity = parseInt(itemQuantity);
-                            
-
-                            CurrentTotal = CurrentTotal + parseInt(itemQuantity);
-
-                            var newRow = document.getElementById('cart').insertRow();                       
-                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td><td class ='sp_name' sp_id = '"+get_supplier_id+"'> "+get_supplier_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+TotalQuantity+"' > - </button></td>";
-                            total_qty.value = CurrentTotal;                             
-                            // payment.value = "₱ "+ totalPayment;
-                            
-                            // payment.value = "₱ "+ CurrentTotal.toFixed(2);
-                            itemName++;
-                            quantity++;                         
-                        } // END IF                                                 
-                    }   // END ELSE    
-                    // $(".qtys").each(function(i){ // this gets all the classes in the order table.
-                    //         if (buttonValue ==$(this).attr('val_id') )
-                    //         { //checks i there is existing item
-                                
-                    //                 // var current_stock = parseInt(row.find('td:nth-child(3)').text());
-                    //                 qty = $(this).text();  //Ye Old quantity, not the price
-                                                                
-                    //                 qty_old = parseInt(qty.replace(/\,/g,''), 10); //old qty in cart table
-
-                    //                 item_does_not_exist = false; //item does exist
-                    //                 new_qty = parseInt(itemQuantity) + qty_old; //adds old qty with current qty in cart
-
-                    //                 CurrentTotal = CurrentTotal + parseInt(itemQuantity);
-                    //                 total_qty.value = CurrentTotal;  
-                            
-                    //                 $(this).text(new_qty); // ye new qty
-                    //                 item_id_in_cart.pop(); //Removes ID from array since item already exist
-                                    
-                    //                 //     var oldPrice =  $(this).attr('price');
-                    //                 //     var newPrice = $(this).attr('price') * new_qty;
-
-                    //                 //     var subtractOldamount = qty_old *oldPrice;
-                    //                 //     CurrentTotal = (CurrentTotal - subtractOldamount);
-                                                                                
-                    //                 //     CurrentTotal = CurrentTotal+ newPrice;
-                    //                 //     payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
-                                    
-                    //                 // console.log("Old Amount = "+subtractOldamount);                                   
-                    //                 // console.log("Old Price = "+oldPrice);
-                    //                 // console.log("Current Total = "+CurrentTotal);
-                    //                 console.log("Current Item Quantity = " + itemQuantity);
-                    //                 // console.log(row.find('td:nth-child(3)').text());
-                    //         } //END IF
-                    //     });//END FUNCTION
-                        
-                       
-
-            }); //END 1st JQUERY FUNCTION
-             function DeleteRow(obj) 
-               {               
-                var buttonValue =obj.value;     
-                var paymentBox = document.getElementById("payment");
-
-                    var td = event.target.parentNode; // event.target will be the input element.
-                    var tr = td.parentNode; // the row to be removed
-                    var cartQuantity = tr.cells[1].innerHTML; // The item quantity in cart;
-            
-                    // var cartPrice = tr.cells[2].innerHTML.replace("₱ ", ""); //Gets Value of Cell in TR and Removes Peso Sign             
-                    // var AmountToBeSubtracted = cartQuantity *  parseFloat(cartPrice.replace(/\,/g,''), 10);
-
-                    // console.log("Cart Price = " + cartPrice);
-                    console.log("Cart Quantity = " + cartQuantity);
-                    // console.log("Total Amount = " + AmountToBeSubtracted);
-
-                    CurrentTotal = CurrentTotal - parseInt(cartQuantity);
-                    total_qty.value = CurrentTotal;  
-
-                // var paymentValue = paymentBox.value.replace("₱ ", "");
-              
-                // CurrentTotal = (CurrentTotal.toFixed(2) - AmountToBeSubtracted.toFixed(2)); //Limits the Decimal points to 2
-                // paymentBox.value = "₱ " + CurrentTotal.toFixed(2);
-
-                    console.log("button value = "+buttonValue);
-                    console.log("Total Quantity Value = "+CurrentTotal);
-                    tr.parentNode.removeChild(tr);                 
-                }                    
-            </script>         
-            <script>
-                function destroyTable()
-                {
-                    var table = document.getElementById("cart");      //Deletes All Rows of Table except Header before Inserting new Rows   
-                    for(var i = table.rows.length - 1; i > 0; i--)
-                    {     
-                        table.deleteRow(i);
-                    } //END FOR
-                    total_qty.value = 0;
-                }           
-            </script>
-            <!-- <script>
-            function getValue(obj) 
-            {
-                var status = obj.value;
-                var strLink = "CreateJobOrderFab.php?order_id=<?php echo $CurrentOR?> & delivery_status =" + status;
-                document.getElementById("nextpage").setAttribute("href",strLink);
-
-              
-            } -->
-        </script>
+        
         <!-- jQuery -->
         <script src="../vendors/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap -->
@@ -492,42 +341,6 @@
             });
         </script>
 
-        <script>
-            function insert_to_supply_table()
-                {
-                    var GET_SUPPLIER_ID=[]; 
-                    var GET_CART_QTY=[];
-                    $('#cart tr td:nth-child(2)').each(function (e) 
-                    {
-                        
-                        var getValue =parseInt($(this).text());
-                        console.log(getValue);
-                        GET_CART_QTY.push(getValue);
-                    }); //ENd jquery
-                    $('#cart tr td:nth-child(3)').each(function (e) 
-                    {
-                        
-                        var get_supplier_Value = $(this).text();
-                        console.log(get_supplier_Value);
-                        GET_SUPPLIER_ID.push(get_supplier_Value);
-                    }); //ENd jquery
-                    
-                    request = $.ajax({
-                        url: "ajax/insert_to_supply_order_tables.php",
-                        type: "POST",
-                        data: {post_item_id: item_id_in_cart,
-                            post_item_qty: GET_CART_QTY,
-                            post_supplier_id: GET_SUPPLIER_ID
-                        },
-                        success: function(data, textStatus)
-                        {
-                        
-                        }//End Scucess                   
-                    }); // End ajax    
-                } //End function
-                
-</script>
-
 <script>
     if ( window.history.replaceState ) {
         window.history.replaceState( null, null, window.location.href );
@@ -550,6 +363,16 @@
             confirm("Are you sure you want to add the items to the inventory?");
         }
     </script>
+      <script type="text/javascript">
+        function validate(obj) {
+            obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max
+            console.log(obj.value);
+        }
+
+        function valBetween(v, min, max) {
+            return (Math.min(max, Math.max(min, v))); //compares the value between the min and max , returns the max when input value > max
+        }
+    </script> <!-- To avoid the users input more than the current Max per item -->
 
     <!-- Custom Fonts -->
     <style>

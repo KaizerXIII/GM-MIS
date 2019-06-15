@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+  
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -33,7 +34,8 @@
       <div class="main_container">
         
             <?php
-                require_once("nav.php");    
+                require_once("nav.php"); 
+               
             ?>
         
         <!-- page content -->
@@ -127,36 +129,57 @@
                     <div class="clearfix"></div>
                         <center><font color = "#4192f4">View Details</font></center>
                     </div>
-                    <div>                    
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="50%" align = "center">
-                      <thead>
-                        <tr>
-                          <th>Item Name</th>
-                          <th>Supplier</th>
-                          <th>Quantity</th>
-                          <th align = "center">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <?php
-                        $SQL_SELECT_SO_DETAILS_FROM_DB = "SELECT * FROM supply_order_details WHERE supply_order_id = '$CURRENT_SO_ID_NUMBER '";
-                        $RESULT_GET_SO_DETAILS = mysqli_query($dbc, $SQL_SELECT_SO_DETAILS_FROM_DB);
-                        while($row=mysqli_fetch_array($RESULT_GET_SO_DETAILS,MYSQLI_ASSOC))
-                        {
-                          $stringname = $row['supply_item_name'];
-                            echo '<tr>';
-                                echo '<td>'.$row['supply_item_name'].'</td>';
-                                echo '<td>'.$row['supplier_name'].'</td>';
-                                echo '<td>'.$row['supply_item_quantity'].'</td>';
-                                echo '<td align = "center">';
-                                echo '<button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button>';
-                                echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page"><a href = EditInventory_Reworked.php?item_name='.urlencode($stringname).'>Restock </a></button>';
-                                echo '</td>    ';      
-                            echo '</tr> '; 
-                        }
-                        ?>                         
-                      </tbody>
-                    </table><br>
+                    <form method = "POST" action = "SupplierOrderDetails_Damage.php">
+                        <div>                    
+                        <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="50%" align = "center">
+                          <thead>
+                            <tr>
+                              <th>Item Name</th>
+                              <th>Supplier</th>
+                              <th>Quantity</th>
+                              <th align = "center">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php
+                           $_SESSION['list_of_items']=array();
+                          
+                            $SQL_SELECT_SO_DETAILS_FROM_DB = "SELECT * FROM supply_order_details WHERE supply_order_id = '$CURRENT_SO_ID_NUMBER '";
+                            $RESULT_GET_SO_DETAILS = mysqli_query($dbc, $SQL_SELECT_SO_DETAILS_FROM_DB);
+                            while($row=mysqli_fetch_array($RESULT_GET_SO_DETAILS,MYSQLI_ASSOC))
+                            {
+                              $stringname = $row['supply_item_name'];
+                              
+                                echo '<tr>';
+                                    echo '<td ><input type="hidden" name = "item_name" value = "'.$row['supply_item_name'].'">'.$row['supply_item_name'].'</td>';
+                                    echo '<td>'.$row['supplier_name'].'</td>';
+                                    echo '<td>'.$row['supply_item_quantity'].'</td>';
+                                    echo '<td align = "center">';
+                                    echo '<button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button>';
+                                    echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page"><a href = EditInventory_Reworked.php?item_name='.urlencode($stringname).'>Restock </a></button>';
+                                    echo '</td>    ';      
+                                echo '</tr> '; 
+                                // echo $stringname;
+
+                               
+                                array_push($_SESSION['list_of_items'], $stringname);
+                                
+                              
+                            }
+                           
+                            echo $_SESSION['list_of_items'][0];
+                           
+                            ?>                         
+                          </tbody>
+                          <button type="submit" class="btn btn-round btn-success btn-xs" name = "restock_items">Restock</button>
+                          <?php
+
+                          
+                          ?>
+                        </table><br>
+
+                        
+                      </form>
                     </div>
                   </div>
                 </div>
