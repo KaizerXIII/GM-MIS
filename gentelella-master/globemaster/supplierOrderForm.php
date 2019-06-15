@@ -2,6 +2,8 @@
 <?php 
  require_once('DataFetchers/mysql_connect.php');
 ?>
+
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Meta, title, CSS, favicons, etc. -->
@@ -161,13 +163,7 @@
                                                             <br><br>
                                                         </div>
                                                         <!-- Add Inventory -->
-                                                        <script>
-                                                            
-                                                            document.getElementById("send").addEventListener("click", function(){
-                                                                
-                                                            });
-
-                                                        </script>
+                                                        
                                                         <?php
                                                             require_once('DataFetchers/mysql_connect.php');
 
@@ -240,36 +236,37 @@
                                                                                 </div>
 
                                                                                 <div class = "modal-body">
-                                                                                <form class="form-horizontal form-label-left" method="post" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                                                                                    <form class="form-horizontal form-label-left" method="post" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 
-                                                                                    <span class="section">Item Info</span>
-                                                                                    *The item information placed here are temporary and may be edited by the inventory manager.
-                                                                                    <br><br>
-                                                                                    <div class="item form-group">
-                                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Item Name <span class="required">*</span>
-                                                                                    </label>
-                                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                        <input id="new_item_name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_name" placeholder="Please enter the item's name" required="required" type="text">
-                                                                                    </div>
-                                                                                    </div>
-                                                                                    <div class="item form-group">
-                                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Quantity <span class="required">*</span>
-                                                                                    </label>
-                                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                        <input id="new_item_quantity" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_quantity" placeholder="Please enter the quantity" required="required" type="number">
-                                                                                    </div>
-                                                                                    </div>
-                                                                                    <div class="ln_solid"></div>
-                                                                                    <div class="form-group">
-                                                                                    <div class="col-md-6 col-md-offset-3">
-                                                                                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                                                                        <button class="btn btn-primary" data-dismiss="modal">Reset</button>
-                                                                                        <button id="send" type="submit" class="btn btn-success" onclick="confirmalert()">Submit</button>
-                                                                                    </div>
-                                                                                    </div>
-                                                                                    <!-- Add Inventory -->
-                                                                                    
-                                                                                </form>
+                                                                                        <span class="section">Item Info</span>
+                                                                                        *The item information placed here are temporary and may be edited by the inventory manager.
+                                                                                        <br><br>
+                                                                                        <div class="item form-group">
+                                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Item Name <span class="required">*</span>
+                                                                                        </label>
+                                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                                <input id="new_item_name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_name" placeholder="Please enter the item's name" required="required" type="text">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="item form-group">
+                                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Quantity <span class="required">*</span>
+                                                                                        </label>
+                                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                                <input id="new_item_quantity" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_quantity" placeholder="Please enter the quantity" required="required" type="number">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="ln_solid"></div>
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-6 col-md-offset-3">
+                                                                                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                                <button class="btn btn-primary" data-dismiss="modal">Reset</button>
+                                                                                                <button id="send" type="button" class="btn btn-success" onclick="add_to_cart_new_item()">Submit</button>';
+                                                                                                                                                                                                                                                                                         
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!-- Add Inventory -->
+                                                                                        
+                                                                                    </form>
                                                                                 </div>
                                                                                 </div>
                                                                             </div>
@@ -417,101 +414,7 @@
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
                         <button type="button" class="btn btn-primary" name="complete_order" onclick = "insert_to_supply_table();">Next</button>
-                        <button type="Reset" class="btn btn-danger" onclick="destroyTable();">Reset</button>
-
-            <!-- Add Order2 Modal -->
-            
-            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id ="finalizeOrder" >
-              <div class="modal-dialog modal-lg" >
-                <div class="modal-content" >
-
-                  <div class="modal-header">
-              
-                    <h4 class="modal-title" id="myModalLabel">Supplier Order Finalization</h4>
-                  </div>
-
-                  <div class = "modal-body">
-                  <form class="form-horizontal form-label-left" method="POST" action= "<?php echo $_SERVER["PHP_SELF"];?>">
-
-
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >For Delivery?<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <button type="button" name ="YesDeliv" class="btn btn-round btn-success" onclick = "toggleDeliveryDate(); " value = "Deliver" id = "Yesbutton" style = "display:block" >Yes</button>
-                            <button type="button" name ="NoDeliv" class="btn btn-round btn-default" onclick = "toggleDeliveryDate1();" value = "PickUp" id = "Nobutton" style = "display:none">No</button>
-                            
-                            <?php 
-                            // Session is defaulted to Deliver
-                                $_SESSION['DeliveryStatus'] = "Deliver";
-                                $_SESSION['FabricationStatus'] = "No Fabrication";
-                                // echo $_SESSION['DeliveryStatus'] = 0;
-                                                        
-                                
-                                
-                                // echo "<script type='text/javascript'>alert('$message');</script>";
-                            ?>
-                          
-                        </div>
-                        <div class="result" style = "display:none"></div>  
-                    </div>
-
-                    <div id = "ifYes" style = "display:block">
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" >Expected Date<span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="expectedDate" name="getExpectedDelivery"class="deliveryDate" data-validate-length-range="6" data-validate-words="2" name="name1" type="date" min="<?php echo date("Y-m-d", strtotime("+1days")); ?>">
-                                <style>
-                                    .deliveryDate {
-                                        -moz-appearance:textfield;
-                                    }
-                                    
-                                    .deliveryDate::-webkit-outer-spin-button,
-                                    .deliveryDate::-webkit-inner-spin-button {
-                                        -webkit-appearance: none;
-                                        margin: 0;
-                                    }
-                            </style> <!-- To Remove the Up/Down Arrows from Date Selection -->
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >For Fabrication?<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <button type="button" class="btn btn-round btn-primary" onclick = "toggleFabrication()" value = "YesFab" id = "YesbuttonFab" style = "display:none" >Yes</button>
-                            <button type="button" class="btn btn-round btn-default" onclick = "toggleFabrication1()" value = "NoFab" id = "NobuttonFab" style = "display:block">No</button>
-                        </div>
-                    </div>
-
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Is This Order Paid?<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="btn btn-default dropdown-toggle" name = "payment_status" id = "payment_status" onchange = "changebuttoncolor()" required="required">
-                                <option value="">Choose..</option>
-                                <option value="Paid"  id = "paidoption">Paid</option>
-                                <option value="Unpaid"  id = "unpaidoption">Unpaid</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="ln_solid"></div>
-                    <div class="form-group">
-                      <div class="col-md-6 col-md-offset-3">
-                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                        <!--   -->
-                        <input id="send" name ="viewOrderButton" type="submit" class="btn btn-success" style="visibility:visible" onclick="doAction()" value ="Submit" required="required"></input>
-                        <input type="button" class="btn btn-primary" id="fabricationpage" style="visibility:hidden"  onclick="nextpageWithFabrication()" value ="Next Step"></input> 
-                                  
-                      </div>
-                    </div>
-
-                    </form>
-                    <!-- Order 2 -->                   
-                  
+                        <button type="Reset" class="btn btn-danger" onclick="destroyTable();">Reset</button>                                  
                     </div>
                 </div>
             </form>
@@ -529,6 +432,34 @@
             <!-- /page content -->
         </div>
 
+        
+
+        <script>
+        var GET_NEW_ITEM_NAME = [];
+         function add_to_cart_new_item()
+         {
+             
+             if( confirm("Are you sure you want to enter the following data?"))
+             {
+                
+
+                var get_new_item_name = document.getElementById('new_item_name').value;
+                var get_new_item_qty = document.getElementById('new_item_quantity').value;
+                var get_new_item_supplier = document.getElementById('supplierID');
+                var get_sp_name = get_new_item_supplier.options[get_new_item_supplier.selectedIndex].text 
+
+                GET_NEW_ITEM_NAME.push(get_new_item_name);
+                var add_row_to_cart = document.getElementById('cart').insertRow();                       
+                add_row_to_cart.innerHTML = "<tr> <td>" + get_new_item_name + "</td> <td> " + get_new_item_qty + " </td><td> "+get_sp_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)'> - </button></td>";
+                alert("Item Added to Cart!");
+                CurrentTotal = CurrentTotal + parseInt(get_new_item_qty);
+                total_qty.value = CurrentTotal;
+             }
+            
+         }
+
+        </script><!--Script for putting new item in cart  -->
+
 
         <script>
         var count = 0;
@@ -537,6 +468,8 @@
         var currentName = ""; 
         var CurrentTotal = 0; //Gets the current quantity in order
         var item_id_in_cart = []; // Get This
+
+            
 
             $('#datatable-checkbox tbody button.btn.btn-success').on('click', function(e) {
                 var row = $(this).closest('tr');
@@ -724,16 +657,10 @@
                     total_qty.value = 0;
                 }           
             </script>
-            <!-- <script>
-            function getValue(obj) 
-            {
-                var status = obj.value;
-                var strLink = "CreateJobOrderFab.php?order_id=<?php echo $CurrentOR?> & delivery_status =" + status;
-                document.getElementById("nextpage").setAttribute("href",strLink);
 
-              
-            } -->
-        </script>
+       
+            
+           
         <!-- jQuery -->
         <script src="../vendors/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap -->
@@ -803,53 +730,54 @@
         <script>
             function insert_to_supply_table()
                 {
-                    var GET_SUPPLIER_ID=[]; 
-                    var GET_CART_QTY=[];
-                    $('#cart tr td:nth-child(2)').each(function (e) 
+                    if(confirm("Submit Order?"))
                     {
+                        var GET_SUPPLIER_ID=[]; 
+                        var GET_CART_QTY=[];
                         
-                        var getValue =parseInt($(this).text());
-                        console.log(getValue);
-                        GET_CART_QTY.push(getValue);
-                    }); //ENd jquery
-                    $('#cart tr td:nth-child(3)').each(function (e) 
-                    {
+                       
+                        alert(GET_NEW_ITEM_NAME[0]);
                         
-                        var get_supplier_Value = $(this).text();
-                        console.log(get_supplier_Value);
-                        GET_SUPPLIER_ID.push(get_supplier_Value);
-                    }); //ENd jquery
-                    
-                    request = $.ajax({
-                        url: "ajax/insert_to_supply_order_tables.php",
-                        type: "POST",
-                        data: {post_item_id: item_id_in_cart,
-                            post_item_qty: GET_CART_QTY,
-                            post_supplier_id: GET_SUPPLIER_ID
-                        },
-                        success: function(data, textStatus)
+                        $('#cart tr td:nth-child(2)').each(function (e) 
                         {
+                            
+                            var getValue =parseInt($(this).text());
+                            console.log(getValue);
+                            GET_CART_QTY.push(getValue);
+                        }); //ENd jquery
+                        $('#cart tr td:nth-child(3)').each(function (e) 
+                        {
+                            
+                            var get_supplier_Value = $(this).text();
+                            console.log(get_supplier_Value);
+                            GET_SUPPLIER_ID.push(get_supplier_Value);
+                           
+                        }); //ENd jquery
                         
-                        }//End Scucess                   
-                    }); // End ajax    
+                        request = $.ajax({
+                            url: "ajax/insert_to_supply_order_tables.php",
+                            type: "POST",
+                            data: {post_item_id: item_id_in_cart,
+                                post_item_qty: GET_CART_QTY,
+                                post_supplier_id: GET_SUPPLIER_ID,
+                                post_new_item_name: GET_NEW_ITEM_NAME
+                            },
+                            success: function(data, textStatus)
+                            {
+                                // window.location.href = "SupplierOrderSummary.php";
+                            }//End Scucess                   
+                        }); // End ajax    
+
+                    } //End IF
+                    
+                   
                 } //End function
                 
 </script>
 
 <script>
-    if ( window.history.replaceState ) {
-        window.history.replaceState( null, null, window.location.href );
-    }
-    </script>
-
-    <!-- Alert Box -->
-    <script>
-    function confirmalert()
-    {
-      confirm("Are you sure you want to enter the following data?");
-      window.location.reload();
-    }
-    </script>
+  
+</script> <!--Prevent Browser Refresh -->
         
         <!-- <script>
             var divdel = document.getElementById("ifYes");

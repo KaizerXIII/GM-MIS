@@ -75,41 +75,41 @@
                                         
                                <?php 
                             //    Discounts of item Selected
-                                    $GET_ID = $_SESSION['item_IDfromView'];
-                                    $discountpercent = array();
-                                    $discountdateend = array();
-                                    $discountstatus = array();
-                                    $ON_DISCOUNT = "On Discount";
-                                    $queryDiscountNotif = "SELECT * FROM discounts  
-                                    JOIN items_trading ON items_trading.item_id = discounts.item_id
-                                    WHERE items_trading.item_id = '$GET_ID' 
-                                    AND items_trading.onDiscount = '$ON_DISCOUNT';";
-                                    $resultDiscountNotif = mysqli_query($dbc,$queryDiscountNotif);
+                                    // $GET_ID = $_SESSION['item_IDfromView'];
+                                    // $discountpercent = array();
+                                    // $discountdateend = array();
+                                    // $discountstatus = array();
+                                    // $ON_DISCOUNT = "On Discount";
+                                    // $queryDiscountNotif = "SELECT * FROM discounts  
+                                    // JOIN items_trading ON items_trading.item_id = discounts.item_id
+                                    // WHERE items_trading.item_id = '$GET_ID' 
+                                    // AND items_trading.onDiscount = '$ON_DISCOUNT';";
+                                    // $resultDiscountNotif = mysqli_query($dbc,$queryDiscountNotif);
                                   
-                                    while($rowDiscountNotif = mysqli_fetch_array($resultDiscountNotif,MYSQLI_ASSOC))
-                                    {
-                                        $discountpercent[] = $rowDiscountNotif['percentage'];
-                                        $discountdateend[] = $rowDiscountNotif['dateEnd'];
-                                        $discountstatus[] = $rowDiscountNotif['onDiscount'];
+                                    // while($rowDiscountNotif = mysqli_fetch_array($resultDiscountNotif,MYSQLI_ASSOC))
+                                    // {
+                                    //     $discountpercent[] = $rowDiscountNotif['percentage'];
+                                    //     $discountdateend[] = $rowDiscountNotif['dateEnd'];
+                                    //     $discountstatus[] = $rowDiscountNotif['onDiscount'];
     
-                                    }
+                                    // }
                                    
                                   
-                                    for($i = 0; $i < sizeof($discountpercent); $i++)
-                                    {
-                                        if($discountstatus[$i] = "On Discount")
-                                        {
+                                    // for($i = 0; $i < sizeof($discountpercent); $i++)
+                                    // {
+                                    //     if($discountstatus[$i] = "On Discount")
+                                    //     {
                                     
-                                        echo '<div class="col-md-12 col-sm-12 col-xs-12" >';
-                                         echo '<p><font color = "red">This item is on a '.$discountpercent[$i].'% discount. The discount will end at '.$discountdateend[$i].'</font></p>';
-                                        echo '</div>';
+                                    //     echo '<div class="col-md-12 col-sm-12 col-xs-12" >';
+                                    //      echo '<p><font color = "red">This item is on a '.$discountpercent[$i].'% discount. The discount will end at '.$discountdateend[$i].'</font></p>';
+                                    //     echo '</div>';
                                   
-                                        }
-                                        else
-                                        {
-                                            echo "<p><font color = 'blue'>This item is currently on its regular price.</font></p>";
-                                        }
-                                    }
+                                    //     }
+                                    //     else
+                                    //     {
+                                    //         echo "<p><font color = 'blue'>This item is currently on its regular price.</font></p>";
+                                    //     }
+                                    // }
                                     
                                 ?>
 

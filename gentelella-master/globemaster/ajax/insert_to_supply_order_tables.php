@@ -5,6 +5,7 @@
     $_SESSION['supply_item_id'] = $_POST['post_item_id'];
     $_SESSION['supply_item_qty'] = $_POST['post_item_qty'];
     $_SESSION['supplier_name'] = $_POST['post_supplier_id'];
+    $_SESSION['new_item_name'] = $_POST['post_new_item_name'];
 
     $TOTALQTY = array_sum($_SESSION["supply_item_qty"]);
     
@@ -44,27 +45,65 @@
 
     //Inserts to the Supply details whichs contains the individual items and their quantity
     $counter = 0;
-    for($i = 0; $i < count($_SESSION['supply_item_id']) ; $i++) //Loops through the array of ID
+    $NEW_ITEM_COUNTER = 0;
+    for($i = 0; $i < count($_SESSION['supplier_name']) ; $i++) //Loops through the array of ID or Supplier whichever fits the role
     {
         $CURRENT_ID = $_SESSION['supply_item_id'][$i];
         $CURRENT_ITEM_QTY = $_SESSION['supply_item_qty'][$i];
         $CURRENT_SUPPLIER_NAME = $_SESSION['supplier_name'][$i];
+        
+
+        echo "Current New Item Name: ",$CURRENT_NAME,"\n";
+        echo "Current New Item QTY: ",$CURRENT_ITEM_QTY,"\n";
+        echo "Current New Item SP Name: ",$CURRENT_SUPPLIER_NAME,"\n";
+
+       
+        
 
         $SQL_FIND_ITEM = "SELECT * FROM items_trading WHERE item_id ='$CURRENT_ID' ;"; //Searches for the Item name based on the ID
         $RESULT_FIND_ITEM =  mysqli_query($dbc,$SQL_FIND_ITEM);
-        $ROW_RESULT_FIND_ITEM = mysqli_fetch_assoc($RESULT_FIND_ITEM);
-        $CURRENT_ITEM_NAME = $ROW_RESULT_FIND_ITEM['item_name'];
+        
+        if(mysqli_num_rows($RESULT_FIND_ITEM) == 0)
+        {
+            
+            $CURRENT_NAME = $_SESSION['new_item_name'][$NEW_ITEM_COUNTER];
+            echo  "The name of the new item = ",$CURRENT_NAME,"\n";
+            $NEW_ITEM_COUNTER= $NEW_ITEM_COUNTER + 1;
+            //Inserts to new item temp table
+            $INSERT_TO_TEMP_TABLE = "INSERT INTO new_item_temp_table (new_item_name, new_item_quantity, new_item_supplier, new_item_status) 
+            VALUES ('$CURRENT_NAME', '$CURRENT_ITEM_QTY', '$CURRENT_SUPPLIER_NAME', 'NEW');";
+            $RESULT_INSERT_TO_TEMP_TABLE =  mysqli_query($dbc,$INSERT_TO_TEMP_TABLE);
+            
 
+            //Selects the item via ID to get the name
+            $SQL_SELECT_NEW_ITEM = "SELECT * FROM new_item_temp_table WHERE new_item_name = '$CURRENT_NAME'";
+            $RESULT_SELECT_NEW_ITEM = mysqli_query($dbc,$SQL_SELECT_NEW_ITEM);
+            $ROW_RESULT_SELECT_NEW_ITEM = mysqli_fetch_assoc($RESULT_SELECT_NEW_ITEM);
+            $CURRENT_ITEM_NAME =  $ROW_RESULT_SELECT_NEW_ITEM['new_item_name'];
 
-        //Inserts to Supply Order Details
-        $SQL_INSERT_TO_SUPPLY_DETAILS = "INSERT INTO supply_order_details (supply_order_id, supply_item_name, supply_item_quantity, supplier_name) 
-        VALUES ('$CURRENT_SO', '$CURRENT_ITEM_NAME', '$CURRENT_ITEM_QTY','$CURRENT_SUPPLIER_NAME');";
-        $RESULT_INSERT_TO_DETAILS =  mysqli_query($dbc,$SQL_INSERT_TO_SUPPLY_DETAILS);
+            //Inserts to details 
+            $SQL_INSERT_TO_SUPPLY_DETAILS = "INSERT INTO supply_order_details (supply_order_id, supply_item_name, supply_item_quantity, supplier_name) 
+            VALUES ('$CURRENT_SO', '$CURRENT_ITEM_NAME', '$CURRENT_ITEM_QTY','$CURRENT_SUPPLIER_NAME');";
+            $RESULT_INSERT_TO_DETAILS = mysqli_query($dbc,$SQL_INSERT_TO_SUPPLY_DETAILS);
 
-        echo "Value of ID Array = ", $CURRENT_ID,"\n";
-        echo "Value of QTY Array = ",$CURRENT_ITEM_QTY,"\n";
-        echo "Current item Name = ",$CURRENT_ITEM_NAME,"\n";
-        echo "\n";
+            
+        }
+        else
+        {
+            
+            
+            $ROW_RESULT_FIND_ITEM = mysqli_fetch_assoc($RESULT_FIND_ITEM);
+            $CURRENT_ITEM_NAME = $ROW_RESULT_FIND_ITEM['item_name'];
+
+             //Inserts to Supply Order Details IF item is not NEW
+            $SQL_INSERT_TO_SUPPLY_DETAILS = "INSERT INTO supply_order_details (supply_order_id, supply_item_name, supply_item_quantity, supplier_name) 
+            VALUES ('$CURRENT_SO', '$CURRENT_ITEM_NAME', '$CURRENT_ITEM_QTY','$CURRENT_SUPPLIER_NAME');";
+            $RESULT_INSERT_TO_DETAILS =  mysqli_query($dbc,$SQL_INSERT_TO_SUPPLY_DETAILS);
+        }      
+        // echo "Value of ID Array = ", $CURRENT_ID,"\n";
+        // echo "Value of QTY Array = ",$CURRENT_ITEM_QTY,"\n";
+        // echo "Current item Name = ",$CURRENT_ITEM_NAME,"\n";
+        // echo "\n";
         //Checker
        
     }
@@ -75,15 +114,15 @@
     } 
     else 
     {
-      echo "Items Purchased From Supplier!";
+      echo "Items Purchased From Supplier! \n";
     }
 
 
    //-------------------------------Checker at This Part---------------------------------------------------
-    echo "Item ID at [1] = ", $_SESSION['supply_item_id'][1] ,"\n";
-    echo "Total Quantity of item @ [1] = " ,$_SESSION['supply_item_qty'][1] ,"\n";
-    echo "Supplier ID @ [1] = " ,$_SESSION['supplier_id'][0] ,"\n";
-    echo "Total QTY of ALL items in Array = ", $TOTALQTY;
+    // echo "Item ID at [0] = ", $_SESSION['supply_item_id'][0] ,"\n";
+    // echo "Total Quantity of item @ [0] = " ,$_SESSION['supply_item_qty'][0] ,"\n";
+    // echo "Supplier ID @ [0] = " ,$_SESSION['supplier_name'][0] ,"\n";
+    // echo "Total QTY of ALL items in Array = ", $TOTALQTY;
 
 
 ?>

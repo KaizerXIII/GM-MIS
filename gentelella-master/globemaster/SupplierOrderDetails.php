@@ -143,13 +143,14 @@
                         $RESULT_GET_SO_DETAILS = mysqli_query($dbc, $SQL_SELECT_SO_DETAILS_FROM_DB);
                         while($row=mysqli_fetch_array($RESULT_GET_SO_DETAILS,MYSQLI_ASSOC))
                         {
+                          $stringname = $row['supply_item_name'];
                             echo '<tr>';
                                 echo '<td>'.$row['supply_item_name'].'</td>';
                                 echo '<td>'.$row['supplier_name'].'</td>';
                                 echo '<td>'.$row['supply_item_quantity'].'</td>';
                                 echo '<td align = "center">';
                                 echo '<button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button>';
-                                echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page">Restock</button>';
+                                echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page"><a href = EditInventory_Reworked.php?item_name='.urlencode($stringname).'>Restock </a></button>';
                                 echo '</td>    ';      
                             echo '</tr> '; 
                         }
