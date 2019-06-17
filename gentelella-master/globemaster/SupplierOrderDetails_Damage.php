@@ -36,12 +36,17 @@
         <!-- JQUERY Required Scripts -->
         <script type="text/javascript" src="js/script.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-        <script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+        <!-- <script>
             window.onbeforeunload = function () {
                 return "Are you sure";
             };
-        </script>
+        </script> -->
 
 
        
@@ -104,6 +109,7 @@
 
                                                             require_once('DataFetchers/mysql_connect.php');
                                                             $get_item_from_session = $_SESSION['list_of_items'];
+                                                            $get_qty_from_session = $_SESSION['list_of_qty'];
 
                                                             for($i = 0; $i < count($_SESSION['list_of_items']); $i++)
                                                             {
@@ -115,7 +121,7 @@
                                                                     $RESULT_GET_NEW_ITEM_NAME=mysqli_query($dbc,$SQL_GET_NEW_ITEM_NAME);
                                                                     while($row=mysqli_fetch_array($RESULT_GET_NEW_ITEM_NAME,MYSQLI_ASSOC))
                                                                     {
-                                                                        echo "<option value=".$row['new_item_id']."> ".$row['new_item_name']."</option>";  
+                                                                        echo "<option value=".$get_qty_from_session[$i]."> ".$row['new_item_name']."</option>";  
                                                                     }
 
                                                                 }
@@ -123,7 +129,7 @@
                                                                 {
                                                                     while($row=mysqli_fetch_array($RESULT_GET_ITEM_NAME,MYSQLI_ASSOC))
                                                                     {
-                                                                        echo "<option value=".$row['item_id']."> ".$row['item_name']."</option>";  
+                                                                        echo "<option value=".$get_qty_from_session[$i]."> ".$row['item_name']."</option>";  
                                                                     }
                                                                 }
                                                                 
@@ -222,27 +228,40 @@
                                                                 var current_selected = $(this).find(":selected").text();
 
                                                                 var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
-                                                                damage_table.innerHTML = "<tr> <td>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='btn btn-danger'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
-                                                        //         console.log("New Row MUST BE Inserted");
-                                                                // alert("Works");
-                                                                // console.log($(this).find(":selected").text());
-                                                            })
+                                                                damage_table.innerHTML = "<tr> <td title='This is Title'>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
+                                                                
+                                                            })// END JQUERY
+
+                                                            // $("#item_name_list").on('click', function(){
+                                                            //     var current_selected = $(this).find(":selected").text();
+                                                            //     event.preventDefault();
+
+                                                            //     var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
+                                                            //     damage_table.innerHTML = "<tr> <td>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
+                                                            //     //console.log("New Row MUST BE Inserted");
+                                                            //     // alert("Works");
+                                                            //     // console.log($(this).find(":selected").text());
+                                                            // })// END JQUERY
+
+                                                           
                                                             
                                                         });//END FUNCTION
+                                                        $(document).ready(function(){
+                                                            $("#datatable-checkbox").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
+                                                                $(this).closest('tr').remove();
+                                                                });
 
-                                                        // window.onload = function() 
-                                                        // {
-                                                        //     var select_item = document.getElementById('item_name_list'); 
-                                                        //     var get_selected_item_to_text = select_item.options[select_item.selectedIndex].text;
+                                                        });  //Removes Row    
 
-                                                        //     var damage_table = document.getElementById('datatable-checkbox').insertRow();      
+                                                        var inject_variable = $('<div class="tooltip" >Not Editable</div>'); //Injects the div of tooltip via variable
 
-                                                        //     select_item.onchange = function() 
-                                                        //     {
-                                                        //         damage_table.innerHTML = "<tr> <td>" + get_selected_item_to_text + "</td> <td> <input type='number'> </td> <td> <input type='number'></td><td> <button type='button' class='btn btn-danger'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
-                                                        //         console.log("New Row MUST BE Inserted");
-                                                        //     }//END ONCHANGE 
-                                                        // }//END FUNCTION
+                                                            $("#hovercell").hover(function() 
+                                                            {
+                                                                var inject_to = e.target.append('inject');
+                                                                e.target.on('mouseout', function(e) {
+                                                                    inject_to.remove();
+                                                                });
+                                                            });   //Adds the tooltip per [CELL]    
 
                                                         </script> <!-- Script to add new rows per click of items in dropdown -->
                                                     </table>
@@ -390,6 +409,35 @@
             color: #1D2B51;
             }
 
-    </style>  
+    </style>
+
+    <style>
+    .tooltip {
+    position: relative;
+    display: inline-block;
+    
+    }
+
+    .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 180px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+    }
+
+    .tooltip:hover .tooltiptext {
+    visibility: visible;
+    }
+</style>  <!-- Tooltip style for onhover -->
     </body>
 </html>

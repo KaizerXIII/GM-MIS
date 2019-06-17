@@ -143,12 +143,14 @@
                           <tbody>
                           <?php
                            $_SESSION['list_of_items']=array();
+                           $_SESSION['list_of_qty']=array();
                           
                             $SQL_SELECT_SO_DETAILS_FROM_DB = "SELECT * FROM supply_order_details WHERE supply_order_id = '$CURRENT_SO_ID_NUMBER '";
                             $RESULT_GET_SO_DETAILS = mysqli_query($dbc, $SQL_SELECT_SO_DETAILS_FROM_DB);
                             while($row=mysqli_fetch_array($RESULT_GET_SO_DETAILS,MYSQLI_ASSOC))
                             {
                               $stringname = $row['supply_item_name'];
+                              $qty = $row['supply_item_quantity'];
                               
                                 echo '<tr>';
                                     echo '<td ><input type="hidden" name = "item_name" value = "'.$row['supply_item_name'].'">'.$row['supply_item_name'].'</td>';
@@ -163,11 +165,13 @@
 
                                
                                 array_push($_SESSION['list_of_items'], $stringname);
+                                array_push($_SESSION['list_of_qty'], $qty);
                                 
                               
                             }
                            
                             echo $_SESSION['list_of_items'][0];
+                            echo $_SESSION['list_of_qty'][0];
                            
                             ?>                         
                           </tbody>
