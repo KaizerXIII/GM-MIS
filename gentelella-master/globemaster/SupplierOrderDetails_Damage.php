@@ -228,7 +228,7 @@
                                                                 var current_selected = $(this).find(":selected").text();
 
                                                                 var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
-                                                                damage_table.innerHTML = "<tr> <td title='This is Title'>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
+                                                                damage_table.innerHTML = "<tr> <td title='This currently have: "+$(this).val()+" pieces'>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
                                                                 
                                                             })// END JQUERY
 
