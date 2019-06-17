@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>GM - Supplier Order Form </title>
+        <title>GM - Restocking [Damaged Goods] </title>
 
         <!-- Bootstrap -->
         <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -224,24 +224,24 @@
                                                         <script type="text/javascript">
                                                         $(function()
                                                         {
-                                                            $("#item_name_list").on('change', function(){
-                                                                var current_selected = $(this).find(":selected").text();
+                                                            $("#item_name_list").on('click', function(e){
+                                                                if(e.offsetY < 0)
+                                                                {
+                                                                    var current_selected = $(this).find(":selected").text();
+                                                                    
 
-                                                                var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
-                                                                damage_table.innerHTML = "<tr> <td title='This currently have: "+$(this).val()+" pieces'>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
-                                                                
+                                                                    var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
+                                                                    damage_table.innerHTML = "<tr> <td title='This item currently have: "+$(this).val()+" pieces'>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
+                                                                    //console.log("New Row MUST BE Inserted");
+                                                                    // alert("Works");
+                                                                    // console.log($(this).find(":selected").text());
+                                                                }
+                                                                else
+                                                                {
+                                                                    
+                                                                }
+                                                               
                                                             })// END JQUERY
-
-                                                            // $("#item_name_list").on('click', function(){
-                                                            //     var current_selected = $(this).find(":selected").text();
-                                                            //     event.preventDefault();
-
-                                                            //     var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
-                                                            //     damage_table.innerHTML = "<tr> <td>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
-                                                            //     //console.log("New Row MUST BE Inserted");
-                                                            //     // alert("Works");
-                                                            //     // console.log($(this).find(":selected").text());
-                                                            // })// END JQUERY
 
                                                            
                                                             
@@ -253,15 +253,7 @@
 
                                                         });  //Removes Row    
 
-                                                        var inject_variable = $('<div class="tooltip" >Not Editable</div>'); //Injects the div of tooltip via variable
-
-                                                            $("#hovercell").hover(function() 
-                                                            {
-                                                                var inject_to = e.target.append('inject');
-                                                                e.target.on('mouseout', function(e) {
-                                                                    inject_to.remove();
-                                                                });
-                                                            });   //Adds the tooltip per [CELL]    
+                                                        $(document).on("click","select option",function() {console.log("nice to meet you, console ;-)"); });
 
                                                         </script> <!-- Script to add new rows per click of items in dropdown -->
                                                     </table>
@@ -274,7 +266,7 @@
                                             </div>           
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                        <button type="button" class="btn btn-primary" name="complete_order">Next</button>
+                        <button type="button" class="btn btn-primary" name="complete_order" onclick = "confirmAdd()">Finish Restocking</button>
                     </div>
                 </div>
             </form>
