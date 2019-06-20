@@ -91,7 +91,7 @@
                           <th>Damaged Percentage</th>
                           <th>Item Quantity</th>
                           <th>Loss per Item</th>
-                          <th>Date Occured </th>
+                          <!-- <th>Date Occured </th> -->
                          
                         </tr>
                       </thead>
@@ -117,9 +117,9 @@
                             echo '<td align = "right">';
                             echo '₱'." ".number_format($row['total_loss'], 2);
                             echo '</td>';
-                            echo '<td>';
-                            echo $row['last_update'];
-                            echo '</td>';
+                            // echo '<td>';
+                            // echo $row['last_update'];
+                            // echo '</td>';
                           echo '</tr>';
                         }
 

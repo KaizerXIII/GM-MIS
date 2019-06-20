@@ -130,9 +130,10 @@
 
                                       echo '<div class = "col-md-6">';
                                         echo '<div class = "row"><h2><b>Order Number:</b> '. $ORDER_NUMBER[$i].'</h2></div>';
-
+                                        
                                             echo '<div class = "row"><h3><b>Order Status:</b> '. $ORDER_STATUS[$i].'</h3></div>';
-                                            echo '<br><br>';
+                                            require_once("damagemodal.php");
+                                            echo '<br><br><br>';
                                      
 
                                         echo '<div class = "row">';
@@ -174,7 +175,7 @@
                                 
                                           echo '<button type="button" class="btn btn-round btn-primary" disabled>Approve</button>';
                                           echo '<button type="button" class="btn btn-round btn-success" onclick = "Finishconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Finish</button> ';
-                            
+                                          
                                         }          
                                       echo '</div>';              
 
