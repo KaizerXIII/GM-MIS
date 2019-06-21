@@ -132,7 +132,7 @@
                                         echo '<div class = "row"><h2><b>Order Number:</b> '. $ORDER_NUMBER[$i].'</h2></div>';
                                         
                                             echo '<div class = "row"><h3><b>Order Status:</b> '. $ORDER_STATUS[$i].'</h3></div>';
-                                            require_once("damagemodal.php");
+                                            echo '<a href = "damage_fabrication.php">Was an item damaged during production? Click here!</a>';
                                             echo '<br><br><br>';
                                      
 

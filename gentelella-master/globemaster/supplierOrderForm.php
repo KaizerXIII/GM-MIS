@@ -68,7 +68,7 @@
                         <div class="clearfix"></div>
 
 
-                        <div class="col-md-12 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
 
                             <div class="x_content">
                             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -76,13 +76,13 @@
                                     <div class="x_title">
                                         <h3> 
                                             <?php
-                                                $queryTogetMaxOR = " SELECT count(supply_order_id)+1 as TOTALOR FROM supply_order";
-                                                $resultOfQuery=mysqli_query($dbc,$queryTogetMaxOR);
-                                                $row = mysqli_fetch_array($resultOfQuery,MYSQLI_ASSOC);
+                                                // $queryTogetMaxOR = " SELECT count(supply_order_id)+1 as TOTALOR FROM supply_order";
+                                                // $resultOfQuery=mysqli_query($dbc,$queryTogetMaxOR);
+                                                // $row = mysqli_fetch_array($resultOfQuery,MYSQLI_ASSOC);
 
-                                                $CurrentOR = "SR - ".$row['TOTALOR'];                                                           
-                                                echo "<b>".$CurrentOR."</b>";
-                                                $orderNumber = $CurrentOR;
+                                                // $CurrentOR = "SR - ".$row['TOTALOR'];                                                           
+                                                // echo "<b>".$CurrentOR."</b>";
+                                                // $orderNumber = $CurrentOR;
 
                                                //CHANGE TO SUPPLIER ORDER NUMBER IN THE FUTURE
                                             ?>
@@ -390,9 +390,6 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                        
-                                    </tr>
                                   </tbody>
                                 </table>
                                 <h4 align = "right"> <b>Total Quantity: </b><input style="text-align:right;" readonly="readonly" name="total_qty" id ="total_qty" value="0"> </h4>
