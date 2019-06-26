@@ -442,7 +442,7 @@
                     </div>
                 </div>
                                                             
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment Type</label>
                     <div class='input-group col-md-14'>
                         <select class="form-control col-md-7 col-xs-12" name="paymentID" id = "paymentID">
@@ -459,7 +459,7 @@
                             ?> 
                         </select>
                     </div>
-                </div>
+                </div> -->
                 
                 <div class="form-group">
                     <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
@@ -481,6 +481,31 @@
                   <form class="form-horizontal form-label-left" method="POST" action= "<?php echo $_SERVER["PHP_SELF"];?>">
 
 
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment Type</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="btn btn-default dropdown-toggle" name="paymentID" id = "paymentID" onchange = "setLoanDown();">
+                            <?php
+                                require_once('DataFetchers/mysql_connect.php');
+                                $SQL_PAYMENT_LIST="SELECT * FROM ref_payment";
+                                $result=mysqli_query($dbc,$SQL_PAYMENT_LIST);
+                                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                                {
+                                    echo "<option value=".$row['payment_id']."> ".$row['paymenttype']."</option>";  
+                                }
+
+                                
+                                ?> 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Loan Downpayment</label>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <input type="number" id="loanpayment" style = "text-align:right" disabled class="form-control col-md-7 col-xs-12">
+                            <!-- Loan downpayment can be 0. If set to the total value of order, the order payment status will automatically be set to PAID. -->
+                        </div>
+                    </div>
                     <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >For Delivery?<span class="required">*</span>
                         </label>
@@ -507,8 +532,12 @@
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" >Expected Date<span class="required">*</span>
                             </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="expectedDate" name="getExpectedDelivery"class="deliveryDate" data-validate-length-range="6" data-validate-words="2" name="name1" type="date" min="<?php echo date("Y-m-d", strtotime("+1days")); ?>">
+                            
+                            <div class="col-md-2 col-sm-6 col-xs-12 input-group date">
+                                <input id="expectedDate" name="getExpectedDelivery" class="form-control col-md-7 col-xs-12 deliveryDate" data-validate-length-range="6" data-validate-words="2" name="name1" type="date" min="<?php echo date("Y-m-d", strtotime("+1days")); ?>">
+                                <!-- <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span> -->
                                 <style>
                                     .deliveryDate {
                                         -moz-appearance:textfield;
@@ -519,7 +548,7 @@
                                         -webkit-appearance: none;
                                         margin: 0;
                                     }
-                            </style> <!-- To Remove the Up/Down Arrows from Date Selection -->
+                                </style> <!-- To Remove the Up/Down Arrows from Date Selection -->
                             </div>
                         </div>
                     </div>
@@ -1083,6 +1112,25 @@ function nextpageNOFabrication()
             paymentinput.classList.remove('btn','btn-success','dropdown-toggle');
             paymentinput.classList.add('btn','btn-default','dropdown-toggle');
         }
+    }
+</script>
+<script>
+    var loanpayment = document.getElementById("loanpayment");
+    var paymentID = document.getElementById("paymentID");
+
+    function setLoanDown()
+    {
+        // if(paymentID.value = "Loan")
+        // {
+        //     loanpayment.disabled = "false";
+        //     paymentID.value = "Loan";
+        // }
+        // else
+        // {
+        //     loanpayment.disabled = "true";
+        //     paymentID.value = ""
+        // }
+        // Not sure what to to with this, paki check nalang mamats.
     }
 </script>
 

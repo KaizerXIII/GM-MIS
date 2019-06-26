@@ -108,7 +108,7 @@
                       <option value="">Choose..</option>
                           <?php
                           require_once('DataFetchers/mysql_connect.php');
-                          $sqlPullDestination = "SELECT * FROM destination";
+                          $sqlPullDestination = "SELECT * FROM destination ORDER BY DestinationName";
                           $resultofDestination =  mysqli_query($dbc,$sqlPullDestination);
                           while($rowDestination=mysqli_fetch_array($resultofDestination,MYSQLI_ASSOC))
                           {
