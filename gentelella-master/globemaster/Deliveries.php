@@ -99,9 +99,24 @@
                                 echo '<td>';
                                 echo $rowofResult['Destination'];
                                 echo '</td>';  
-                                echo '<td>';
-                                echo $rowofResult['delivery_status'];
-                                echo '</td>';
+                                if($rowofResult['delivery_status'] == "Delivered")
+                                {
+                                  echo '<td>';
+                                  echo '<center><button type="button" class="btn btn-round btn-success btn-sm" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                  echo '</td>';
+                                }
+                                else if($rowofResult['delivery_status'] == "Order In Progress")
+                                {
+                                  echo '<td>';
+                                  echo '<center><button type="button" class="btn btn-round btn-primary btn-sm" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                  echo '</td>';
+                                }
+                                else if($rowofResult['delivery_status'] == "Cancelled")
+                                {
+                                  echo '<td>';
+                                  echo '<center><button type="button" class="btn btn-round btn-danger btn-sm" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                  echo '</td>';
+                                }
                                 echo '<td align = "center">';
                                 echo '<a href ="Delivery Receipt.php?deliver_number='.$rowofResult['delivery_Receipt'].'&order_number='.$rowofResult['ordernumber'].' "> <i class="fa fa-wrench"></i> </a>';
                                 echo '</td>';

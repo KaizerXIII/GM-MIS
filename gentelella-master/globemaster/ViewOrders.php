@@ -115,9 +115,22 @@
                                     echo '<td>';
                                     echo $paymentType;
                                     echo '</td>';
-                                    echo '<td>';
-                                    echo $row['order_status'];
-                                    echo '</td>';
+                                    if ($row['order_status'] == "Delivered")
+                                    {
+                                      echo '<td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Order Delivered</button></td>'; 
+                                    }
+                                    else if ($row['order_status'] == "Cancelled")
+                                    {
+                                      echo '<td align = "center"><button type="button" class="btn btn-round btn-danger btn-xs" disabled>Order Cancelled</button></td>'; 
+                                    }
+                                    else if ($row['order_status'] == "PickUp")
+                                    {
+                                      echo '<td align = "center"><button type="button" class="btn btn-round btn-primary btn-xs" disabled>For Pickup</button></td>'; 
+                                    }
+                                    else
+                                    {
+                                      echo '<td align = "center"><button type="button" class="btn btn-round btn-info btn-xs" disabled>For Delivery</button></td>'; 
+                                    }
                                     echo '<td align="center">';
                                     echo '<a href ="ViewOrderDetails.php?order_number='.$row['ordernumber'].'"> <i class="fa fa-wrench"></i> </a>';
                                     echo '</td>';
