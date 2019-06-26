@@ -84,7 +84,7 @@
                           echo '<tr>';                          
                           echo ' <td> SR - ' .$row['supply_order_id'].'</td>'; 
                           echo ' <td>' .$row['SD'].'</td>'; 
-                          echo ' <td>[' .$row['SXD']. ']<b> To </b> [' .$row['EXP_RANGE'].']</td>'; 
+                          echo ' <td>' .$row['SXD']. '  to  ' .$row['EXP_RANGE'].'</td>'; 
                           // echo ' <td>'.$row['supply_order_total_quantity'].'</td>'; 
                           echo ' <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>'.$row['supply_order_status'].'</button></td>'; 
                           echo ' <td align = "center"><a href="SupplierOrderDetails.php?so_id='.$SO_ID.'"><i class = "fa fa-wrench"></i></a></td>'; 

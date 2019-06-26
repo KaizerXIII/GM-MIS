@@ -10,6 +10,7 @@
     $GET_WAREHOUSE_ID = $_POST['post_warehouse_id'];
     $GET_TYPE_ID = $_POST['post_type_id'];
     $GET_SUPPLIER_ID = $_POST['post_supplier_id'];
+    $GET_ITEM_WEIGHT = $_POST['post_item_weight'];
 
     $DiscountStatus = "Regular Price";
 
@@ -36,7 +37,7 @@
 
    
 
-    $SQL_ADD_INVENTORY = "INSERT INTO items_trading (item_id, sku_id, item_name, itemtype_id, item_count, last_restock, last_update, threshold_amt, warehouse_id, supplier_id, price,onDiscount)
+    $SQL_ADD_INVENTORY = "INSERT INTO items_trading (item_id, sku_id, item_name, itemtype_id, item_count, last_restock, last_update, threshold_amt, warehouse_id, supplier_id, price,onDiscount, current_eoq, item_weight)
     Values(
     '$ITEM_ID',
     '$GET_SKU_ID',
@@ -47,7 +48,9 @@
     '$WAREHOUSE_ID',
     '$SUPPLIER_ID',
     '$GET_ITEM_PRICE',
-    '$DiscountStatus')";
+    '$DiscountStatus',
+    '0.00',
+    '$GET_ITEM_WEIGHT')";
 
     $RESULT_ADD_INVENTORY=mysqli_query($dbc,$SQL_ADD_INVENTORY);
     if(!$RESULT_ADD_INVENTORY) 
