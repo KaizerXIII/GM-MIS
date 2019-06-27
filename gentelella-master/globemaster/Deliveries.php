@@ -64,8 +64,8 @@
                           <th>Driver</th>
                           <th>Truck #</th>
                           <th>Customer</th>
-                          <th>Destination</th>                                                   
-                          <th>Status</th>
+                          <th>Destination Area</th>                                                   
+                          <th>Delivery Status</th>
                           <th></th>
                         </tr>
                       </thead>

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	  
-    <title>Damaged Item on Fabrication </title>
+    <title>Damaged Product on Delivery </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -61,7 +61,7 @@
           <div class="">
             <div class="page-title">
               <div>
-                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">OR-1 Damaged Item on Fabrication</h1><br>
+                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">DR-1 Damaged Item on Delivery</h1><br>
                   <!-- Add actual OR num here -->
               </div>
             </div>
