@@ -60,8 +60,16 @@ require_once('DataFetchers/mysql_connect.php');
             <div class="x_panel">
                 <div class="x_title">
                     <!-- Note that only a maximum of 5 items can be checked -->
-                    <h3>Economic Order Quantity | Inventory</h3>
+                    <h3><b>Economic Order Quantity | Inventory </b></h3>
+                    
+                    <?php
+                        $SQL_GET_FROM_EOQ_TABLE = "SELECT * FROM ref_eoqformula";
+                        $RESULT_GET_FROM_EOQ_TABLE = mysqli_query($dbc,$SQL_GET_FROM_EOQ_TABLE);
+                        $ROW_RESULT_GET_FROM_EOQ_TABLE = mysqli_fetch_array($RESULT_GET_FROM_EOQ_TABLE,MYSQLI_ASSOC);
 
+                        echo '<h2> Acquisition Cost: ₱ '.$ROW_RESULT_GET_FROM_EOQ_TABLE['AcquisitionCost'].'  | Holding Cost Percentage: '. $ROW_RESULT_GET_FROM_EOQ_TABLE['InventoryCost'].'% </h2>';
+
+                    ?>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content" >

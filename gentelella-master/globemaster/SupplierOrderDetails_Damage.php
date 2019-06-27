@@ -231,7 +231,7 @@
                                                                     
 
                                                                     var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
-                                                                    damage_table.innerHTML = "<tr> <td title='This item currently have: "+$(this).val()+" pieces'>" + current_selected + "</td> <td> <input type='number'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
+                                                                    damage_table.innerHTML = "<tr> <td title='This item currently have: "+$(this).val()+" pieces'>" + current_selected + "</td> <td> <input type='number' min = '0' max ='"+$(this).val()+"' oninput ='validate(this)'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
                                                                     //console.log("New Row MUST BE Inserted");
                                                                     // alert("Works");
                                                                     // console.log($(this).find(":selected").text());
@@ -320,6 +320,17 @@
         <script src="../build/js/custom.min.js"></script>
         <!-- bootstrap-datetimepicker -->
         <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+        <script type="text/javascript">
+            function validate(obj) {
+                obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max
+                console.log(obj.value);
+            }
+
+            function valBetween(v, min, max) {
+                return (Math.min(max, Math.max(min, v))); //compares the value between the min and max , returns the max when input value > max
+            }
+        </script> <!-- To avoid the users input more than the current Max per item -->
 
         <script>
             $('#myDatepicker').datetimepicker();

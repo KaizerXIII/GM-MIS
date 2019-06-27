@@ -29,6 +29,10 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
+      <!-- JQUERY Required Scripts -->
+      <script type="text/javascript" src="js/script.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
 
   <body class="nav-md">
@@ -78,24 +82,24 @@
                     <font color = "red">The item(s) <b>Granite-A, Granite-B, Granite-C </b>is out of stock and is not available for replenishment. Please inform the customer (09278281281).</font>
                     <br>
                     *The phone number is based on the customer info. 
-                    <form method="POST" class="form-horizontal form-label-left" id = "item_detail" >
+                    <form method="POST" class="form-horizontal form-label-left" >
 
                       <div class="form-group">
                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Item Name <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
 
-                        <select name="selectItemtype" id="select_item_type" required="required" class="form-control col-md-7 col-xs-12" onchange="getType(this)">
+                        <select name="select_damaged_item" id="select_damaged_item" required="required" class="form-control col-md-7 col-xs-12">
                         <option value = "">Choose...</option>
                          <?php
-                                // require_once('DataFetchers/mysql_connect.php');
-                                // $query = "SELECT * FROM ref_itemtype";
-                                // $result=mysqli_query($dbc,$query);
-                                // $option = "";
-                                // while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                                // {
-                                //     echo'<option value = "'.$row['itemtype'].'">'.$row['itemtype'].'</option>';
-                                // }
+                                for($i = 0; $i < sizeof($_SESSION['qty_from_fab']); $i++)
+                                {
+                                  $ITEM_QTY =  $_SESSION['qty_from_fab'][$i];
+                                  $ITEM_NAME = $_SESSION['name_from_fab'][$i];
+                                  echo'<option value = "'.$ITEM_QTY.'">'.$ITEM_NAME.'</option>'; //Temporary option value = ITEM_QTY
+                                }
+                                    
+                                
                             ?>
  
                             </select>
@@ -105,9 +109,14 @@
                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Item Quantity <span class="required">*</span>
                         </label>
                         <!-- limit this to quantity available on order -->
-                         <div class="col-md-4 col-sm-6 col-xs-12">
-                          <input type="text" name="skuid" id="sku_id" name="last-name" required="required" class="form-control col-md-7 col-xs-12"/> 
-                        </div>
+                       
+                          
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                          <input type="text" name="damaged_item_name" id="damaged_item_name" required="required" oninput ="validate(this)" class="form-control col-md-7 col-xs-12"/>';
+                          </div>
+                         
+                       
+                         
                         
                       </div>
                       <!-- Two buttons to choose for replenish or replace -->
@@ -115,7 +124,7 @@
                       <label class="control-label col-md-4 col-sm-3 col-xs-12"> <br>
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
-                          <button type="button" class="btn btn-round btn-primary" onclick="revertdisable();">Replenish</button>
+                          <button type="button" class="btn btn-round btn-primary" onclick="revertdisable()"; name = "replenish_btn" id = "replenish_btn">Replenish</button>
                           <button type="button" class="btn btn-round btn-warning" onclick="showreplace();">Replace</button>
                         </div>
                       </div>
@@ -125,17 +134,17 @@
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
 
-                        <select name="selectItemtype" id = "replacementName" required="required" class="form-control col-md-7 col-xs-12" onchange="getType(this)" disabled>
+                        <select name="replacementName" id = "replacementName" required="required" class="form-control col-md-7 col-xs-12" disabled>
                         <option value = "">Choose...</option>
                          <?php
-                                // require_once('DataFetchers/mysql_connect.php');
-                                // $query = "SELECT * FROM ref_itemtype";
-                                // $result=mysqli_query($dbc,$query);
-                                // $option = "";
-                                // while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                                // {
-                                //     echo'<option value = "'.$row['itemtype'].'">'.$row['itemtype'].'</option>';
-                                // }
+                                require_once('DataFetchers/mysql_connect.php');
+                                $query = "SELECT * FROM items_trading";
+                                $result=mysqli_query($dbc,$query);
+                                $option = "";
+                                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                                {
+                                    echo'<option value = "'.$row['item_id'].'">'.$row['item_name'].'</option>';
+                                }
                             ?>
  
                             </select>
@@ -146,7 +155,7 @@
                         </label>
                         <!-- limit this to quantity available on order -->
                          <div class="col-md-3 col-sm-6 col-xs-12">
-                          <input type="text" name="skuid"  id = "replacementQty" name="last-name" required="required" class="form-control col-md-7 col-xs-12" disabled/> 
+                          <input type="text" name="replacementQty"  id = "replacementQty" oninput ="validate(this)" required="required" class="form-control col-md-7 col-xs-12" disabled/> 
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                           <button class = "btn btn-success btn-sm" id = "addReplace" disabled onclick="revertdisable();">Add</button>
@@ -186,20 +195,58 @@
 
 
                       <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td align = "right">3</td>
-                          <td>Garrett Winters</td>
-                          <td align = "right">3</td>
-                          <td align = "center"><font color = "red"><i class="fa fa-close"></i></font></td>
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td align = "right">3</td>
-                          <td>Garrett Winters</td>
-                          <td align = "right">3</td>
-                          <td align = "center"><font color = "red"><i class="fa fa-close"></i></font></td>
-                        </tr>
+                                <tr>
+                                </tr>
+                                <script>
+                                   $(function()
+                                    {
+                                        $("#replenish_btn").on('click', function(e){
+                                          var current_damaged_item = $("#select_damaged_item :selected").text();   
+                                          var current_damaged_item_qty = $("#select_damaged_item").val();  
+                                          if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0)
+                                          {                                                            
+                                                                                                                
+                                            var damage_table = document.getElementById('datatable').insertRow();                          
+                                            damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td> <td> </td> <td> </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                                          }
+                                          else
+                                          {
+                                              alert("Please Fill up all required fields correctly!");
+                                          }
+                                                                                                                                                             
+                                        })// END JQUERY
+                                    });//END FUNCTION
+
+                                    $(function()
+                                    {
+                                        $("#addReplace").on('click', function(e){
+                                          var current_damaged_item = $("#select_damaged_item :selected").text();   
+                                          var current_damaged_item_qty = $("#select_damaged_item").val();  
+
+                                          var current_replacement_item = $("#replacementName :selected").text();   
+                                          var current_replacement_item_qty = $("#replacementQty").val();  
+
+                                          if(current_replacement_item != '' && current_replacement_item_qty != '' && current_replacement_item_qty != 0)
+                                          {                                                            
+                                                                                                                
+                                            var damage_table = document.getElementById('datatable').insertRow();                          
+                                            damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td>  <td> "+current_replacement_item+" </td> <td> "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                                          }
+                                          else
+                                          {
+                                              alert("Please Fill up all required fields correctly!");
+                                          }
+                                                                                                                                                             
+                                        })// END JQUERY
+                                    });//END FUNCTION
+
+                                    $(document).ready(function(){
+                                        $("#datatable").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
+                                            $(this).closest('tr').remove();
+                                            });
+
+                                    });  //Removes Row    
+                                </script><!-- Adds the Rows based on replinished or Replaced -->
                       </tbody>
                     </table>
                   </div>
@@ -214,87 +261,7 @@
                         <!-- </div>z -->
                       </div>
 
-                      <?php
-
-                      require_once('DataFetchers/mysql_connect.php');
-                        if(isset($_POST['submitBtn']))
-                        {
-                            $sku_id = $_POST['skuid'];
-                            $itemName = $_POST['item_name']; //Stores the Values from Textbox in HTML
-                          
-                            $itemPrice = $_POST['price'];
-                            $itemThreshold = $_POST['threshold'];
-
-                            $warehouseIDfromSelect = $_POST['selectWarehouse'];
-                            $itemTypeIDfromSelect = $_POST['selectItemtype'];
-                            $supplierIDFromSelect = $_POST['supplier'];
-
-                            $CHECK_IF_SAME_NAME_IN_ITEMS_TRADING = "SELECT * FROM items_trading";
-                            $RESULT_CHECKER=mysqli_query($dbc,$CHECK_IF_SAME_NAME_IN_ITEMS_TRADING);
-                            while($ROW_CHECKER = mysqli_fetch_array($RESULT_CHECKER,MYSQLI_ASSOC))
-                            {
-                              if($ROW_CHECKER['item_name'] == $itemName)
-                              {
-                                die('Error: Duplicate Item Detected');
-                              }
-                            }
-                            
-                           
-
-                            $queryWarehouseID = "SELECT warehouses.warehouse_id FROM warehouses WHERE warehouse = '$warehouseIDfromSelect'";
-                            $resultWarehouseID = mysqli_query($dbc,$queryWarehouseID);                                
-                            $rowWarehouseID = mysqli_fetch_assoc($resultWarehouseID); //Query for getting WarehouseID 
-
-                            $queryItemtypeID = "SELECT ref_itemtype.itemtype_id FROM ref_itemtype WHERE itemtype = '$itemTypeIDfromSelect'";
-                            $resultItemtype = mysqli_query($dbc,$queryItemtypeID);                                
-                            $rowItemtypeID = mysqli_fetch_assoc($resultItemtype); //Query For getting itemtypeID
-                            
-                            $querySupplierID = "SELECT supplier_id FROM suppliers WHERE supplier_name = '$supplierIDFromSelect'";
-                            $resultSupplierID = mysqli_query($dbc,$querySupplierID);                                
-                            $rowSupplierID = mysqli_fetch_assoc($resultSupplierID); //Query For getting itemtypeID
-
-                            $WareHouseID = $rowWarehouseID['warehouse_id'];
-                            $ItemtypeID = $rowItemtypeID['itemtype_id'];
-                           
-                            $SupplierID = $rowSupplierID['supplier_id'];
-                            $DiscountStatus = "Regular Price";
-
-                            echo  "warehouse = ".$WareHouseID;
-                            echo  "itemtype = ".$ItemtypeID;
-                            echo  "itemID = ".$ItemID;
-                            echo  "supplierID = ".$SupplierID;
-                            echo  "skuid =  ".$sku_id;
-                            echo  "item name =  ".$itemName;
-                            echo  "3shold = ".$itemThreshold;
-                            echo  "price = ".$itemPrice;
-
-                            $sql = "INSERT INTO items_trading (sku_id, item_name, itemtype_id, item_count, last_restock, last_update, threshold_amt, warehouse_id, supplier_id, price, onDiscount)
-                            Values(                           
-                            '$sku_id',
-                            '$itemName', 
-                            '$ItemtypeID',
-                            '0', now(),now(),
-                            '$itemThreshold',
-                            '$WareHouseID',
-                            '$SupplierID',
-                            '$itemPrice',
-                            '$DiscountStatus')";
-
-                            $result=mysqli_query($dbc,$sql);
-                            if(!$result) 
-                            {
-                                die('Error: ' . mysqli_error($dbc));
-                            } 
-                            else 
-                            {
-                                echo '<script language="javascript">';
-                                echo 'alert("Items Added Successfully");';
-                                echo '</script>';
-                                header("Location: ViewInventory.php");
-                            }              
-                        }//END ISSET
-
-?>
+                   
                       
                     </form>
                   </div>
@@ -316,55 +283,6 @@
       </div>
     </div>
    
-
-    <script>
-      var add_btn = document.getElementById("add_button");    
-        add_btn.onclick = function()
-        {
-          var  SET_SKU_ID = document.getElementById("sku_id").value;
-          var  SET_ITEM_NAME = document.getElementById("itemName").value;
-          var  SET_ITEM_PRICE = document.getElementById("item_price").value;
-          var  SET_ITEM_THRESHOLD = document.getElementById("threshold_amount").value;
-          var  SET_WAREHOUSE_ID = document.getElementById("warehouse_id").value;
-          var  SET_TYPE_ID = document.getElementById("select_item_type").value;
-          var  SET_SUPPLIER = document.getElementById("supplier_id").value; 
-
-          if(!SET_SKU_ID || !SET_ITEM_NAME || !SET_ITEM_PRICE || !SET_ITEM_THRESHOLD || !SET_WAREHOUSE_ID || !SET_TYPE_ID || !SET_SUPPLIER) //Checker
-          {
-            alert("Please Fill Up All Input");
-          }
-          else
-          {
-            if(confirm("Confirmation: Add New Item to Inventory?"))
-            {
-              request = $.ajax({
-                    url: "ajax/add_inventory.php",
-                    type: "POST",
-                    data: {
-                      post_sku_id: SET_SKU_ID,
-                      post_item_name: SET_ITEM_NAME,
-                      post_item_price: SET_ITEM_PRICE,
-                      post_item_threshold: SET_ITEM_THRESHOLD,
-                      post_warehouse_id: SET_WAREHOUSE_ID,
-                      post_type_id: SET_TYPE_ID,
-                      post_supplier_id: SET_SUPPLIER
-                    }, //{Variable name, variable value}
-                    success: function(data) 
-                    { //To test data
-                        alert(data);
-                        window.location.href = "ViewInventory.php";  
-                    }//End Success
-                  
-                });//End Ajax
-                alert("Item Added Successfully!");
-            }
-            else
-            {
-              alert("Action: Cancelled");
-            }
-          }    
-        } //End onclikc   
-    </script>
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -400,51 +318,7 @@
     <script src="../vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-
-    <script>
-  <?php
   
-  require_once('C:\xampp\htdocs\GM-MIS\gentelella-master\globemaster\DataFetchers\mysql_connect.php');
-  $arrayOfPrefix = array();
-  $arrayOfItemType = array();
-  $query = "SELECT * FROM ref_itemtype";
-  $result=mysqli_query($dbc,$query);
-  while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-  {
-    $arrayOfPrefix[] = $row['item_prefix'];
-    $arrayOfItemType[] = $row['itemtype'];
-  }
-
-  echo "var PrefixFromPHP = ".json_encode($arrayOfPrefix).";";
-  echo "var itemTypeFromPHP = ".json_encode($arrayOfItemType).";";
-  ?>
-  
-     function getType(selectItemType)    
-     {
-      var dropdownValue = selectItemType.value;
-       for (var i = 0; i < PrefixFromPHP.length; i++)
-       {
-         if(itemTypeFromPHP[i] == dropdownValue)
-         {
-          var item = document.getElementById('itemName');
-          item.value = PrefixFromPHP[i]+" ";
-          console.log(PrefixFromPHP[i]);
-         }
-       }
-      
-     
-     }
-    </script>
-
-     <script>
-      $("#item_price").change(function()
-      {
-      
-        var $this = $(this);
-        $this.val(parseFloat($this.val()).toFixed(2));
-          
-      }); //Sets the Decimal
-    </script>
 
 <!-- Show replacement script -->
     <script>
@@ -465,7 +339,37 @@
         // Baka need to ayusin kasi yung button na to mag aadd sa table.
       }
     </script>
+
+    <script> 
+                              
+        $(document).on('change', '#select_damaged_item', function() {
+          $("#damaged_item_name").attr({
+              "max": $(this).val()         // values (or variables) here
+            });
+        });
+
+        $(document).on('change', '#select_damaged_item', function() {
+          $("#replacementQty").attr({
+              "max": $(this).val()         // values (or variables) here
+            });
+        });
+        
+        
+
+    </script><!-- Adds the max value based on ordered item-->
+
+    <script type="text/javascript">
+      function validate(obj) {
+          obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max
+          console.log(obj.value);
+      }
+
+      function valBetween(v, min, max) {
+          return (Math.min(max, Math.max(min, v))); //compares the value between the min and max , returns the max when input value > max
+      }
+    </script> <!-- To avoid the users input more than the current Max per item -->
     
+        
     
     
     

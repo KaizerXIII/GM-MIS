@@ -159,7 +159,15 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input name="price" id="item_price" class="form-control col-md-7 col-xs-12" required="required" type="number" step="0.01" placeholder = "1000.00">
                         </div>
-                      </div><div class="form-group">
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Item Weight<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input name="item_weight" id="item_weight" class="form-control col-md-7 col-xs-12" required="required" type="number" step="0.01" placeholder = "100 KG">
+                        </div>
+                      </div>
+                      <div class="form-group">
                         <!-- <div class="col-md-6 col-sm-6 col-xs-12"> -->
                           <button name="submitBtn" class="btn btn-success" type="button" id= "add_button">Add</button>
 						              <button class="btn btn-primary" type="reset">Reset</button>
@@ -168,83 +176,88 @@
 
                       <?php
 
-                      require_once('DataFetchers/mysql_connect.php');
-                        if(isset($_POST['submitBtn']))
-                        {
-                            $sku_id = $_POST['skuid'];
-                            $itemName = $_POST['item_name']; //Stores the Values from Textbox in HTML
+                      // require_once('DataFetchers/mysql_connect.php');
+                      //   if(isset($_POST['submitBtn']))
+                      //   {
+                      //       $sku_id = $_POST['skuid'];
+                      //       $itemName = $_POST['item_name']; //Stores the Values from Textbox in HTML
                           
-                            $itemPrice = $_POST['price'];
-                            $itemThreshold = $_POST['threshold'];
+                      //       $itemPrice = $_POST['price'];
+                      //       $itemThreshold = $_POST['threshold'];
+                      //       $item_weight = $_POST['item_weight'];
 
-                            $warehouseIDfromSelect = $_POST['selectWarehouse'];
-                            $itemTypeIDfromSelect = $_POST['selectItemtype'];
-                            $supplierIDFromSelect = $_POST['supplier'];
+                      //       $warehouseIDfromSelect = $_POST['selectWarehouse'];
+                      //       $itemTypeIDfromSelect = $_POST['selectItemtype'];
+                      //       $supplierIDFromSelect = $_POST['supplier'];
+                            
 
-                            $CHECK_IF_SAME_NAME_IN_ITEMS_TRADING = "SELECT * FROM items_trading";
-                            $RESULT_CHECKER=mysqli_query($dbc,$CHECK_IF_SAME_NAME_IN_ITEMS_TRADING);
-                            while($ROW_CHECKER = mysqli_fetch_array($RESULT_CHECKER,MYSQLI_ASSOC))
-                            {
-                              if($ROW_CHECKER['item_name'] == $itemName)
-                              {
-                                die('Error: Duplicate Item Detected');
-                              }
-                            }
+                      //       $CHECK_IF_SAME_NAME_IN_ITEMS_TRADING = "SELECT * FROM items_trading";
+                      //       $RESULT_CHECKER=mysqli_query($dbc,$CHECK_IF_SAME_NAME_IN_ITEMS_TRADING);
+                      //       while($ROW_CHECKER = mysqli_fetch_array($RESULT_CHECKER,MYSQLI_ASSOC))
+                      //       {
+                      //         if($ROW_CHECKER['item_name'] == $itemName)
+                      //         {
+                      //           die('Error: Duplicate Item Detected');
+                      //         }
+                      //       }
                             
                            
 
-                            $queryWarehouseID = "SELECT warehouses.warehouse_id FROM warehouses WHERE warehouse = '$warehouseIDfromSelect'";
-                            $resultWarehouseID = mysqli_query($dbc,$queryWarehouseID);                                
-                            $rowWarehouseID = mysqli_fetch_assoc($resultWarehouseID); //Query for getting WarehouseID 
+                      //       $queryWarehouseID = "SELECT warehouses.warehouse_id FROM warehouses WHERE warehouse = '$warehouseIDfromSelect'";
+                      //       $resultWarehouseID = mysqli_query($dbc,$queryWarehouseID);                                
+                      //       $rowWarehouseID = mysqli_fetch_assoc($resultWarehouseID); //Query for getting WarehouseID 
 
-                            $queryItemtypeID = "SELECT ref_itemtype.itemtype_id FROM ref_itemtype WHERE itemtype = '$itemTypeIDfromSelect'";
-                            $resultItemtype = mysqli_query($dbc,$queryItemtypeID);                                
-                            $rowItemtypeID = mysqli_fetch_assoc($resultItemtype); //Query For getting itemtypeID
+                      //       $queryItemtypeID = "SELECT ref_itemtype.itemtype_id FROM ref_itemtype WHERE itemtype = '$itemTypeIDfromSelect'";
+                      //       $resultItemtype = mysqli_query($dbc,$queryItemtypeID);                                
+                      //       $rowItemtypeID = mysqli_fetch_assoc($resultItemtype); //Query For getting itemtypeID
                             
-                            $querySupplierID = "SELECT supplier_id FROM suppliers WHERE supplier_name = '$supplierIDFromSelect'";
-                            $resultSupplierID = mysqli_query($dbc,$querySupplierID);                                
-                            $rowSupplierID = mysqli_fetch_assoc($resultSupplierID); //Query For getting itemtypeID
+                      //       $querySupplierID = "SELECT supplier_id FROM suppliers WHERE supplier_name = '$supplierIDFromSelect'";
+                      //       $resultSupplierID = mysqli_query($dbc,$querySupplierID);                                
+                      //       $rowSupplierID = mysqli_fetch_assoc($resultSupplierID); //Query For getting itemtypeID
 
-                            $WareHouseID = $rowWarehouseID['warehouse_id'];
-                            $ItemtypeID = $rowItemtypeID['itemtype_id'];
+                      //       $WareHouseID = $rowWarehouseID['warehouse_id'];
+                      //       $ItemtypeID = $rowItemtypeID['itemtype_id'];
                            
-                            $SupplierID = $rowSupplierID['supplier_id'];
-                            $DiscountStatus = "Regular Price";
+                      //       $SupplierID = $rowSupplierID['supplier_id'];
+                      //       $DiscountStatus = "Regular Price";
 
-                            echo  "warehouse = ".$WareHouseID;
-                            echo  "itemtype = ".$ItemtypeID;
-                            echo  "itemID = ".$ItemID;
-                            echo  "supplierID = ".$SupplierID;
-                            echo  "skuid =  ".$sku_id;
-                            echo  "item name =  ".$itemName;
-                            echo  "3shold = ".$itemThreshold;
-                            echo  "price = ".$itemPrice;
+                      //       echo  "warehouse = ".$WareHouseID;
+                      //       echo  "itemtype = ".$ItemtypeID;
+                      //       echo  "itemID = ".$ItemID;
+                      //       echo  "supplierID = ".$SupplierID;
+                      //       echo  "skuid =  ".$sku_id;
+                      //       echo  "item name =  ".$itemName;
+                      //       echo  "3shold = ".$itemThreshold;
+                      //       echo  "price = ".$itemPrice;
+                      //       echo " item_weight = ".$item_weight;
 
-                            $sql = "INSERT INTO items_trading (sku_id, item_name, itemtype_id, item_count, last_restock, last_update, threshold_amt, warehouse_id, supplier_id, price, onDiscount)
-                            Values(                           
-                            '$sku_id',
-                            '$itemName', 
-                            '$ItemtypeID',
-                            '0', now(),now(),
-                            '$itemThreshold',
-                            '$WareHouseID',
-                            '$SupplierID',
-                            '$itemPrice',
-                            '$DiscountStatus')";
+                      //       $sql = "INSERT INTO items_trading (sku_id, item_name, itemtype_id, item_count, last_restock, last_update, threshold_amt, warehouse_id, supplier_id, price, onDiscount, current_eoq, item_weight)
+                      //       Values(                           
+                      //       '$sku_id',
+                      //       '$itemName', 
+                      //       '$ItemtypeID',
+                      //       '0', now(),now(),
+                      //       '$itemThreshold',
+                      //       '$WareHouseID',
+                      //       '$SupplierID',
+                      //       '$itemPrice',
+                      //       '$DiscountStatus',
+                      //       '0.00',
+                      //       '$item_weight')";
 
-                            $result=mysqli_query($dbc,$sql);
-                            if(!$result) 
-                            {
-                                die('Error: ' . mysqli_error($dbc));
-                            } 
-                            else 
-                            {
-                                echo '<script language="javascript">';
-                                echo 'alert("Items Added Successfully");';
-                                echo '</script>';
-                                header("Location: ViewInventory.php");
-                            }              
-                        }//END ISSET
+                      //       $result=mysqli_query($dbc,$sql);
+                      //       if(!$result) 
+                      //       {
+                      //           die('Error: ' . mysqli_error($dbc));
+                      //       } 
+                      //       else 
+                      //       {
+                      //           echo '<script language="javascript">';
+                      //           echo 'alert("Items Added Successfully");';
+                      //           echo '</script>';
+                      //           header("Location: ViewInventory.php");
+                      //       }              
+                      //   }//END ISSET
 
 ?>
                       
@@ -279,7 +292,8 @@
           var  SET_ITEM_THRESHOLD = document.getElementById("threshold_amount").value;
           var  SET_WAREHOUSE_ID = document.getElementById("warehouse_id").value;
           var  SET_TYPE_ID = document.getElementById("select_item_type").value;
-          var  SET_SUPPLIER = document.getElementById("supplier_id").value; 
+          var  SET_SUPPLIER = document.getElementById("supplier_id").value;
+          var  SET_ITEM_WEIGHT = document.getElementById("item_weight").value; 
 
           if(!SET_SKU_ID || !SET_ITEM_NAME || !SET_ITEM_PRICE || !SET_ITEM_THRESHOLD || !SET_WAREHOUSE_ID || !SET_TYPE_ID || !SET_SUPPLIER) //Checker
           {
@@ -299,7 +313,8 @@
                       post_item_threshold: SET_ITEM_THRESHOLD,
                       post_warehouse_id: SET_WAREHOUSE_ID,
                       post_type_id: SET_TYPE_ID,
-                      post_supplier_id: SET_SUPPLIER
+                      post_supplier_id: SET_SUPPLIER,
+                      post_item_weight: SET_ITEM_WEIGHT
                     }, //{Variable name, variable value}
                     success: function(data) 
                     { //To test data
@@ -390,6 +405,14 @@
 
      <script>
       $("#item_price").change(function()
+      {
+      
+        var $this = $(this);
+        $this.val(parseFloat($this.val()).toFixed(2));
+          
+      }); //Sets the Decimal
+
+      $("#item_weight").change(function()
       {
       
         var $this = $(this);

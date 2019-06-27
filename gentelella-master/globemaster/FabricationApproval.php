@@ -139,13 +139,23 @@
                                         echo '<div class = "row">';
                                           echo '<div class = "col-md-6">';
                                             echo '<p><b>Items Ordered:</b></p>';  
-                                              $SQL_GET_OR_NUMBER = "SELECT * FROM order_details WHERE ordernumber = '$ORDER_NUMBER[$i]'";
-                                              $RESULT_GET_OR =  mysqli_query($dbc,$SQL_GET_OR_NUMBER);
-                                              while($ROW_RESULT_GET_OR = mysqli_fetch_array($RESULT_GET_OR,MYSQLI_ASSOC))
-                                              {
-                                                $ITEM_NAME_FROM_OR_DETAILS[] = $ROW_RESULT_GET_OR ['item_name'];
-                                                echo $ROW_RESULT_GET_OR ['item_name']," - ",$ROW_RESULT_GET_OR ['item_qty'] ,"pc/s <br>";                                                
-                                              }
+
+                                              $_SESSION['name_from_fab'] = array();
+                                              $_SESSION['qty_from_fab'] = array();
+
+                                                $SQL_GET_OR_NUMBER = "SELECT * FROM order_details WHERE ordernumber = '$ORDER_NUMBER[$i]'";
+                                                $RESULT_GET_OR =  mysqli_query($dbc,$SQL_GET_OR_NUMBER);
+                                                while($ROW_RESULT_GET_OR = mysqli_fetch_array($RESULT_GET_OR,MYSQLI_ASSOC))
+                                                {
+                                                  $ITEM_NAME_FROM_OR_DETAILS[] = $ROW_RESULT_GET_OR ['item_name'];
+
+                                                  array_push($_SESSION['name_from_fab'],$ROW_RESULT_GET_OR ['item_name']);
+                                                  array_push($_SESSION['qty_from_fab'],$ROW_RESULT_GET_OR ['item_qty']);  
+                                                    
+                                                  echo $ROW_RESULT_GET_OR ['item_name']," - ",$ROW_RESULT_GET_OR ['item_qty'] ,"pc/s <br>";
+                                                  
+                                                                                          
+                                                }
                                                                         
                                             
                                         echo '</div>';    
