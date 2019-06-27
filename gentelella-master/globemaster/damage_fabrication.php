@@ -207,7 +207,7 @@
                                           {                                                            
                                                                                                                 
                                             var damage_table = document.getElementById('datatable').insertRow();                          
-                                            damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td> <td> </td> <td> </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                                            damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td> <td> </td> <td> </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
                                           }
                                           else
                                           {
