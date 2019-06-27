@@ -97,9 +97,7 @@
                                   $ITEM_QTY =  $_SESSION['qty_from_fab'][$i];
                                   $ITEM_NAME = $_SESSION['name_from_fab'][$i];
                                   echo'<option value = "'.$ITEM_QTY.'">'.$ITEM_NAME.'</option>'; //Temporary option value = ITEM_QTY
-                                }
-                                    
-                                
+                                }                                                                    
                             ?>
  
                             </select>
@@ -323,12 +321,23 @@
         {
             $("#replenish_btn").on('click', function(e){
               var current_damaged_item = $("#select_damaged_item :selected").text();   
-              var current_damaged_item_qty = $("#select_damaged_item").val();  
+              var current_damaged_item_qty = $("#damaged_item_name").val();  
               if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0)
               {                                                            
                                                                                     
                 var damage_table = document.getElementById('datatable').insertRow();                          
-                damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td> <td> </td> <td> </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td> <td> N/A </td> <td> </td> N/A <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";    
+                
+                $("#select_damaged_item :selected").attr({
+                  "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
+                });
+
+                $("#damaged_item_name").attr({
+                  "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                });
+
+                $("#damaged_item_name").val("");  //Resets input for qty 
+
               }
               else
               {
@@ -351,7 +360,16 @@
               {                                                            
                                                                                     
                 var damage_table = document.getElementById('datatable').insertRow();                          
-                damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td>  <td> "+current_replacement_item+" </td> <td> "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td>  <td> "+current_replacement_item+" </td> <td> "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                $("#select_damaged_item :selected").attr({
+                  "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
+                });
+
+                $("#damaged_item_name").attr({
+                  "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                });
+
+                $("#damaged_item_name").val("");  //Resets input for qty 
               }
               else
               {
@@ -363,8 +381,29 @@
 
         $(document).ready(function(){
             $("#datatable").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
-                $(this).closest('tr').remove();
+              var closest_tr = $(this).closest('tr').find('.dmg_item_name').text();
+              var closest_tr_qty = $(this).closest('tr').find('.dmg_item_qty').text();
+                console.log(closest_tr);
+
+                $('#select_damaged_item').children('option:selected').each(function() {
+               //Loops through all options and finds the item name 
+                    if($(this).text() == closest_tr)
+                    {
+                      $("#select_damaged_item :selected").attr({
+                        "value":  parseInt($("#select_damaged_item :selected").val()) + parseInt(closest_tr_qty)    //adds the value when the row is removed 
+                      });
+                      $("#damaged_item_name").attr({
+                        "max": $("#select_damaged_item :selected").val() //replaces the max value with added value
+                      });
+                      $("#damaged_item_name").val("");     //Resets the input for qty               
+                    }
+                    else
+                    {
+
+                    }
                 });
+              $(this).closest('tr').remove();
+              });
 
         });  //Removes Row    
     </script><!-- Adds the Rows based on replinished or Replaced -->

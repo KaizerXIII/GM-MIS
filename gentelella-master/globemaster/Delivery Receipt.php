@@ -532,7 +532,7 @@ echo '</script>';
                 }//End Scucess                       
             }); // End ajax     
         }
-</script>
+</script> <!-- scripts to get the values in the table of delivery-->
 <script>
 // To Clear localstorage =temporary
     function clearLocalStorage()  

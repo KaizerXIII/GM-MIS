@@ -263,6 +263,8 @@
             $("#damaged_item_qty").attr({
               "max": $("#select_dmg_item :selected").val()         //replaces the max value with subtravcted value
             });
+
+            $("#damaged_item_qty").val("");  //Resets input for qty
           }
           else
           {
@@ -286,7 +288,11 @@
                     {
                       $("#select_dmg_item :selected").attr({
                         "value":  parseInt($("#select_dmg_item :selected").val()) + parseInt(closest_tr_qty)    //adds the value when the row is removed 
-                      });                    
+                      });
+                      $("#damaged_item_qty").attr({
+                        "max": $("#select_dmg_item :selected").val() //replaces the max value with added value
+                      });
+                      $("#damaged_item_qty").val("");     //Resets the input for qty               
                     }
                     else
                     {
@@ -295,7 +301,7 @@
                 });
                 $(this).closest('tr').remove(); //Removes the row clicked
                 
-                // console.log($(this).closest('tr').find('.dmg_item_qty').text());
+                
             });//END onclick
 
            

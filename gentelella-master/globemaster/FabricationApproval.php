@@ -26,6 +26,9 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+     <!-- JQUERY Required Scripts -->
+     <script type="text/javascript" src="js/script.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
 
   <body class="nav-md">
@@ -107,8 +110,7 @@
 
                         }  
                         
-                        $_SESSION['name_from_fab'] = array();
-                        $_SESSION['qty_from_fab'] = array();
+                        
 
                         for($i = 0; $i < sizeof($ORDER_NUMBER); $i ++)
                         {
@@ -135,7 +137,7 @@
                                         echo '<div class = "row"><h2><b>Order Number:</b> '. $ORDER_NUMBER[$i].'</h2></div>';
                                         
                                             echo '<div class = "row"><h3><b>Order Status:</b> '. $ORDER_STATUS[$i].'</h3></div>';
-                                            echo '<a href="javascript:" onclick = "send_to_dmg_fab()">Was an item damaged during production? Click here!</a>';
+                                            echo '<a class="current_anchored_row" href="javascript:" >Was an item damaged during production? Click here!</a>';
                                             echo '<br><br><br>';
                                      
 
@@ -150,15 +152,9 @@
                                                 while($ROW_RESULT_GET_OR = mysqli_fetch_array($RESULT_GET_OR,MYSQLI_ASSOC))
                                                 {
                                                   $ITEM_NAME_FROM_OR_DETAILS[] = $ROW_RESULT_GET_OR ['item_name'];
-
-                                                 
-
-                                                  $POST_ITEM_NAME = $ROW_RESULT_GET_OR ['item_name'];
-                                                  $POST_ITEM_QTY = $ROW_RESULT_GET_OR ['item_qty'];
-
-                                                  echo $ROW_RESULT_GET_OR ['item_name']," - ",$ROW_RESULT_GET_OR ['item_qty'] ,"pc/s <br>";
-                                                  
-                                                                                          
+                                                                                              
+                                                  echo '<span class="fab_row_name">'. $ROW_RESULT_GET_OR ['item_name'],"</span> - <span class=fab_row_qty>",$ROW_RESULT_GET_OR ['item_qty'] ,"</span>pc/s  <br>";
+                                                                                                                                          
                                                 }
                                                                         
                                             
@@ -205,22 +201,64 @@
                     <div>
                    
                         <script>
-                      
+                         var post_row_item_name = [];
+                        var post_row_item_qty = []; 
+                          
+                            $(".current_anchored_row").on('click',function(){
 
+                            var split_name = $(this).closest("tr").find('span.fab_row_name').map(function(){ //Gets the currently selected <a> and searches the closest <tr> then finds the <span> with a class = fab_row_name
+                              return $(this).text();
+                            }).get().toString().split(','); //Splits the object by , to an array
+
+                            var split_qty = $(this).closest("tr").find('span.fab_row_qty').map(function(){
+                              return $(this).text();
+                            }).get().toString().split(',');
+
+
+
+                            $.each(split_name, function(){
+                             
+                              post_row_item_name.push(this.toString()); //Jquery [For Each] of the variable splitted, it will push to the array
+                            })
+
+                            $.each(split_qty, function(){
+                              post_row_item_qty.push(parseInt(this));
+                            })
+                                                      
+                            console.log(post_row_item_name);
+                            console.log(post_row_item_qty);
+
+                              request = $.ajax({
+                              url: "ajax/post_to_dmg_fab.php",
+                              type: "POST",
+                              data:{
+                                  post_item_name: post_row_item_name, //IF FROM PHP ECHO NEVER FORGET THE "" 
+                                  post_item_qty: post_row_item_qty
+                                }, 
+                                success: function(data) 
+                                { 
+                                  if(confirm("Confirm: There is/are items that are damaged?"))
+                                  {
+                                    window.location.href = "damage_fabrication.php";  
+                                  }
+                                  else
+                                  {
+                                    alert("Action: Cancelled");
+                                  }
+                                  
+                                }//End Success                       
+                              }); //End Ajax                                                          
+                            });
+    
+                          
+                         
+                          </script> 
+                        <script>   
+                         
                           function send_to_dmg_fab() 
                           {
-                            request = $.ajax({
-                            url: "ajax/post_to_dmg_fab_php.php",
-                            type: "POST",
-                            data:{
-                                post_item_name: "<?php echo  $POST_ITEM_NAME ?>", //IF FROM PHP ECHO NEVER FORGET THE "" 
-                                post_item_qty: "<?php echo  $POST_ITEM_QTY ?>"
-                              }, 
-                              success: function(data) 
-                              { 
-                                  window.location.href = "damage_fabrication.php";  
-                              }//End Success                       
-                            }); //End Ajax
+                            console.log(post_row_item_name);
+                            
                           }
 
                         </script>                       
