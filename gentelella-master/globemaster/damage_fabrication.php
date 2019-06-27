@@ -192,61 +192,10 @@
                           <th></th>
                         </tr>
                       </thead>
-
-
                       <tbody>
-                                <tr>
-                                </tr>
-                                <script>
-                                   $(function()
-                                    {
-                                        $("#replenish_btn").on('click', function(e){
-                                          var current_damaged_item = $("#select_damaged_item :selected").text();   
-                                          var current_damaged_item_qty = $("#select_damaged_item").val();  
-                                          if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0)
-                                          {                                                            
-                                                                                                                
-                                            var damage_table = document.getElementById('datatable').insertRow();                          
-                                            damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td> <td> </td> <td> </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
-                                          }
-                                          else
-                                          {
-                                              alert("Please Fill up all required fields correctly!");
-                                          }
-                                                                                                                                                             
-                                        })// END JQUERY
-                                    });//END FUNCTION
-
-                                    $(function()
-                                    {
-                                        $("#addReplace").on('click', function(e){
-                                          var current_damaged_item = $("#select_damaged_item :selected").text();   
-                                          var current_damaged_item_qty = $("#select_damaged_item").val();  
-
-                                          var current_replacement_item = $("#replacementName :selected").text();   
-                                          var current_replacement_item_qty = $("#replacementQty").val();  
-
-                                          if(current_replacement_item != '' && current_replacement_item_qty != '' && current_replacement_item_qty != 0)
-                                          {                                                            
-                                                                                                                
-                                            var damage_table = document.getElementById('datatable').insertRow();                          
-                                            damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td>  <td> "+current_replacement_item+" </td> <td> "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
-                                          }
-                                          else
-                                          {
-                                              alert("Please Fill up all required fields correctly!");
-                                          }
-                                                                                                                                                             
-                                        })// END JQUERY
-                                    });//END FUNCTION
-
-                                    $(document).ready(function(){
-                                        $("#datatable").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
-                                            $(this).closest('tr').remove();
-                                            });
-
-                                    });  //Removes Row    
-                                </script><!-- Adds the Rows based on replinished or Replaced -->
+                          <tr>
+                          </tr>
+                          
                       </tbody>
                     </table>
                   </div>
@@ -368,6 +317,57 @@
           return (Math.min(max, Math.max(min, v))); //compares the value between the min and max , returns the max when input value > max
       }
     </script> <!-- To avoid the users input more than the current Max per item -->
+
+<script>
+        $(function()
+        {
+            $("#replenish_btn").on('click', function(e){
+              var current_damaged_item = $("#select_damaged_item :selected").text();   
+              var current_damaged_item_qty = $("#select_damaged_item").val();  
+              if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0)
+              {                                                            
+                                                                                    
+                var damage_table = document.getElementById('datatable').insertRow();                          
+                damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td> <td> </td> <td> </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+              }
+              else
+              {
+                  alert("Please Fill up all required fields correctly!");
+              }
+                                                                                                                                  
+            })// END JQUERY
+        });//END FUNCTION
+
+        $(function()
+        {
+            $("#addReplace").on('click', function(e){
+              var current_damaged_item = $("#select_damaged_item :selected").text();   
+              var current_damaged_item_qty = $("#select_damaged_item").val();  
+
+              var current_replacement_item = $("#replacementName :selected").text();   
+              var current_replacement_item_qty = $("#replacementQty").val();  
+
+              if(current_replacement_item != '' && current_replacement_item_qty != '' && current_replacement_item_qty != 0)
+              {                                                            
+                                                                                    
+                var damage_table = document.getElementById('datatable').insertRow();                          
+                damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td>  <td> "+current_replacement_item+" </td> <td> "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+              }
+              else
+              {
+                  alert("Please Fill up all required fields correctly!");
+              }
+                                                                                                                                  
+            })// END JQUERY
+        });//END FUNCTION
+
+        $(document).ready(function(){
+            $("#datatable").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
+                $(this).closest('tr').remove();
+                });
+
+        });  //Removes Row    
+    </script><!-- Adds the Rows based on replinished or Replaced -->
     
         
     

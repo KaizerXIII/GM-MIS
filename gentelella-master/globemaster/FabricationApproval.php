@@ -105,7 +105,10 @@
                           // $FAB_DESCRIPTION[] = $ROW_RESULT_FAB['fab_description'];
                           // $BLOB[] = $ROW_RESULT_FAB['reference_drawing'];  
 
-                        }            
+                        }  
+                        
+                        $_SESSION['name_from_fab'] = array();
+                        $_SESSION['qty_from_fab'] = array();
 
                         for($i = 0; $i < sizeof($ORDER_NUMBER); $i ++)
                         {
@@ -132,7 +135,7 @@
                                         echo '<div class = "row"><h2><b>Order Number:</b> '. $ORDER_NUMBER[$i].'</h2></div>';
                                         
                                             echo '<div class = "row"><h3><b>Order Status:</b> '. $ORDER_STATUS[$i].'</h3></div>';
-                                            echo '<a href = "damage_fabrication.php">Was an item damaged during production? Click here!</a>';
+                                            echo '<a href="javascript:" onclick = "send_to_dmg_fab()">Was an item damaged during production? Click here!</a>';
                                             echo '<br><br><br>';
                                      
 
@@ -140,18 +143,19 @@
                                           echo '<div class = "col-md-6">';
                                             echo '<p><b>Items Ordered:</b></p>';  
 
-                                              $_SESSION['name_from_fab'] = array();
-                                              $_SESSION['qty_from_fab'] = array();
-
+                                             
+                                            
                                                 $SQL_GET_OR_NUMBER = "SELECT * FROM order_details WHERE ordernumber = '$ORDER_NUMBER[$i]'";
                                                 $RESULT_GET_OR =  mysqli_query($dbc,$SQL_GET_OR_NUMBER);
                                                 while($ROW_RESULT_GET_OR = mysqli_fetch_array($RESULT_GET_OR,MYSQLI_ASSOC))
                                                 {
                                                   $ITEM_NAME_FROM_OR_DETAILS[] = $ROW_RESULT_GET_OR ['item_name'];
 
-                                                  array_push($_SESSION['name_from_fab'],$ROW_RESULT_GET_OR ['item_name']);
-                                                  array_push($_SESSION['qty_from_fab'],$ROW_RESULT_GET_OR ['item_qty']);  
-                                                    
+                                                 
+
+                                                  $POST_ITEM_NAME = $ROW_RESULT_GET_OR ['item_name'];
+                                                  $POST_ITEM_QTY = $ROW_RESULT_GET_OR ['item_qty'];
+
                                                   echo $ROW_RESULT_GET_OR ['item_name']," - ",$ROW_RESULT_GET_OR ['item_qty'] ,"pc/s <br>";
                                                   
                                                                                           
@@ -199,6 +203,28 @@
                       </tbody>
                     </table><br>
                     <div>
+                   
+                        <script>
+                      
+
+                          function send_to_dmg_fab() 
+                          {
+                            request = $.ajax({
+                            url: "ajax/post_to_dmg_fab_php.php",
+                            type: "POST",
+                            data:{
+                                post_item_name: "<?php echo  $POST_ITEM_NAME ?>", //IF FROM PHP ECHO NEVER FORGET THE "" 
+                                post_item_qty: "<?php echo  $POST_ITEM_QTY ?>"
+                              }, 
+                              success: function(data) 
+                              { 
+                                  window.location.href = "damage_fabrication.php";  
+                              }//End Success                       
+                            }); //End Ajax
+                          }
+
+                        </script>                       
+
                     <!-- approve/disapprove/finish -->
                   <script>
                     function Approveconfirm(obj)

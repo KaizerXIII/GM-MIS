@@ -277,13 +277,15 @@
                                     ?>
                                             <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
                                             <div class="btn-group">
-                                            <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" >Finish Delivery <span class="caret"></span></button>
-                                            <ul role="menu" class="dropdown-menu">
-                                            <li><a href="#"  onclick = "finishDeliver()">Without Damages</a>
-                                            </li>
-                                            <li><a href="damage_delivery.php">With Damages</a>
-                                            </li>
-                                            </ul>
+                                                <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" >Finish Delivery <span class="caret"></span></button>
+                                                    <ul role="menu" class="dropdown-menu">
+                                                        <li>
+                                                            <a href="#"  onclick = "finishDeliver()">Without Damages</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;"  onclick = "post_to_dmg_delivery_page()">With Damages</a>
+                                                        </li>
+                                                    </ul>
                                             </div>
                                     <?php
                                         }
@@ -291,7 +293,7 @@
                                         </div>
                                     </div>
 
-                                
+                                   
 
                                     
                             </form>
@@ -375,6 +377,7 @@
 
 require_once('DataFetchers/mysql_connect.php');
 
+
 $DR_NUM_FROM_VIEW = $_SESSION['get_dr_number_from_deliveries'];
 
 $orderNumberArray = array();
@@ -417,7 +420,9 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
         $orderNumberArray[] = $rowofResult1['ordernumber']; //Compare this 
         $itemName[] = $rowofResult1['item_name'];
         $quantity[] = $rowofResult1['item_qty'];
-        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);      
+        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);
+        
+       
     }
     
 
@@ -484,10 +489,10 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
                     echo 'if(OrderNumberFromSchedDeliver[i] == OrderNumberFromOrderDetails[count]) {';
 
                         echo  "var newRow = document.getElementById('datatable').insertRow();";
-                        echo  'newRow.innerHTML = "<tr><td>" +ItemNameFromPHP[count]+ "</td> <td align = right>" +ItemQuantityFromPHP[count]+ "</td><td align = right> ₱ " +ItemPriceFromPHP[count]+ "</td></tr>";';
+                        echo  'newRow.innerHTML = "<tr><td class= item_name>" +ItemNameFromPHP[count]+ "</td> <td class=item_qty align = right>" +ItemQuantityFromPHP[count]+ "</td><td align = right> ₱ " +ItemPriceFromPHP[count]+ "</td></tr>";';
                         // echo 'localStorage.removeItem("DRfromDeliveriesPage");';
                         echo 'count--;';
-                        echo 'continue;';
+                        echo 'continue;';                    
 
                     echo '  }'; // End 2nd IF     
                     echo 'count--;';        
@@ -496,7 +501,38 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
         echo ' }';// END FOR
 echo '</script>';
 ?> <!-- PHP END -->
+         
+<script>
+    var current_name_array = [];
+    var current_qty_array = [];
+    $("#datatable .item_name").each(function() 
+    {
+        current_name_array.push( $(this).text());
+        console.log(current_name_array);
+    });
 
+    $("#datatable .item_qty").each(function() 
+    {
+        current_qty_array.push($(this).text());
+        console.log(current_qty_array);
+    });
+
+    function post_to_dmg_delivery_page()
+    {        
+            request = $.ajax({
+            url: "ajax/post_to_dmg_delivery.php",
+            type: "POST",
+                data:{
+                    post_item_name: current_name_array, //Never forget to get the Value from the <INPUTS>
+                    post_item_qty: current_qty_array                   
+                },
+                success: function(data)
+                {                 
+                    window.location.href = "damage_delivery.php";                    
+                }//End Scucess                       
+            }); // End ajax     
+        }
+</script>
 <script>
 // To Clear localstorage =temporary
     function clearLocalStorage()  
