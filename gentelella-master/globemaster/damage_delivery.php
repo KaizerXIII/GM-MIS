@@ -81,7 +81,7 @@
                     <form method="POST" class="form-horizontal form-label-left" id = "item_detail" >
 
                       <div class="form-group">
-                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Item Name <span class="required">*</span>
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Product Name <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
 
@@ -102,7 +102,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Item Quantity <span class="required">*</span>
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Product Quantity <span class="required">*</span>
                         </label>
                         <!-- limit this to quantity available on order -->
                          <div class="col-md-4 col-sm-6 col-xs-12">
@@ -115,12 +115,12 @@
                       <label class="control-label col-md-4 col-sm-3 col-xs-12"> <br>
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
-                          <button type="button" class="btn btn-round btn-primary" onclick="revertdisable();">Replenish</button>
-                          <button type="button" class="btn btn-round btn-warning" onclick="showreplace();">Replace</button>
+                          <button type="button" class="btn btn-round btn-primary" onclick="showreplace();">Replace With the Same Product</button>
+                          <button type="button" class="btn btn-round btn-danger" onclick="revertdisable();">Discard Product from Order</button>
                         </div>
                       </div>
                       <!-- FOR REPLACE ITEM -->
-                      <div class="form-group" >
+                      <!-- <div class="form-group" >
                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Replacement Item Name <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
@@ -143,15 +143,15 @@
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Quantity <span class="required">*</span>
-                        </label>
+                        </label> -->
                         <!-- limit this to quantity available on order -->
-                         <div class="col-md-3 col-sm-6 col-xs-12">
+                         <!-- <div class="col-md-3 col-sm-6 col-xs-12">
                           <input type="text" name="skuid"  id = "replacementQty" name="last-name" required="required" class="form-control col-md-7 col-xs-12" disabled/> 
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                           <button class = "btn btn-success btn-sm" id = "addReplace" disabled onclick="revertdisable();">Add</button>
                         </div> 
-                      </div>
+                      </div> -->
                       <!-- END FOR REPLACE ITEM  -->
 
                       <div class="clearfix"></div>
@@ -160,7 +160,7 @@
               <div class="col-md-8 col-sm-12 col-xs-12 col-md-offset-2">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Damaged/ Replaced Items</h2>
+                    <h2>Damaged Products</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -176,10 +176,8 @@
                     <table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
-                          <th>Item Name</th>
+                          <th>Product Name</th>
                           <th>Quantity</th>
-                          <th>Replacement Item Name</th>
-                          <th>Replacement Item Quantity</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -189,13 +187,9 @@
                         <tr>
                           <td>Tiger Nixon</td>
                           <td align = "right">3</td>
-                          <td>Garrett Winters</td>
-                          <td align = "right">3</td>
                           <td align = "center"><font color = "red"><i class="fa fa-close"></i></font></td>
                         </tr>
                         <tr>
-                          <td>Garrett Winters</td>
-                          <td align = "right">3</td>
                           <td>Garrett Winters</td>
                           <td align = "right">3</td>
                           <td align = "center"><font color = "red"><i class="fa fa-close"></i></font></td>
