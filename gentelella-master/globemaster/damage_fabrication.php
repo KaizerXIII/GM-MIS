@@ -351,7 +351,7 @@
         {
             $("#addReplace").on('click', function(e){
               var current_damaged_item = $("#select_damaged_item :selected").text();   
-              var current_damaged_item_qty = $("#select_damaged_item").val();  
+              var current_damaged_item_qty = $("#damaged_item_name").val();  
 
               var current_replacement_item = $("#replacementName :selected").text();   
               var current_replacement_item_qty = $("#replacementQty").val();  
@@ -365,11 +365,11 @@
                   "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
                 });
 
-                $("#damaged_item_name").attr({
+                $("#replacementQty").attr({
                   "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
                 });
 
-                $("#damaged_item_name").val("");  //Resets input for qty 
+                $("#replacementQty").val("");  //Resets input for qty 
               }
               else
               {
