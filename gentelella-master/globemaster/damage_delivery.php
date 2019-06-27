@@ -223,7 +223,10 @@
 
 
     <script>
+
+    
       $(document).on('change', '#select_dmg_item', function() {
+        
           $("#damaged_item_qty").attr({
               "max": $(this).val()         // values (or variables) here
             });
@@ -251,7 +254,15 @@
           {                                                            
                                                                                 
             var damage_table = document.getElementById('datatable').insertRow();                          
-            damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_damaged_item_qty+" </td>  <td> </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+            damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty > "+current_damaged_item_qty+" </td>  <td> </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+           
+            $("#select_dmg_item :selected").attr({
+              "value":  $("#select_dmg_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
+            });
+
+            $("#damaged_item_qty").attr({
+              "max": $("#select_dmg_item :selected").val()         //replaces the max value with subtravcted value
+            });
           }
           else
           {
@@ -262,9 +273,32 @@
     });//END FUNCTION
 
     $(document).ready(function(){
+      
+
             $("#datatable").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
-                $(this).closest('tr').remove();
+                var closest_tr = $(this).closest('tr').find('.dmg_item_name').text();
+                var closest_tr_qty = $(this).closest('tr').find('.dmg_item_qty').text();
+                console.log(closest_tr);
+
+                $('#select_dmg_item').children('option:selected').each(function() {
+               //Loops through all options and finds the item name 
+                    if($(this).text() == closest_tr)
+                    {
+                      $("#select_dmg_item :selected").attr({
+                        "value":  parseInt($("#select_dmg_item :selected").val()) + parseInt(closest_tr_qty)    //adds the value when the row is removed 
+                      });                    
+                    }
+                    else
+                    {
+
+                    }
                 });
+                $(this).closest('tr').remove(); //Removes the row clicked
+                
+                // console.log($(this).closest('tr').find('.dmg_item_qty').text());
+            });//END onclick
+
+           
 
         });  //Removes Row    
     </script>
