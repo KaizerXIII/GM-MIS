@@ -73,11 +73,11 @@
                 <div class="x_panel">
                   <div class="x_content">
                     <br />
-                    IF ITEM TO BE REPLENISHED IS OUT OF STOCK...
+                    <!-- IF ITEM TO BE REPLENISHED IS OUT OF STOCK...
                     <br>
                     <font color = "red">The item(s) <b>Granite-A, Granite-B, Granite-C </b>is out of stock and is not available for replenishment. Please inform the customer (09278281281).</font>
                     <br>
-                    *The phone number is based on the customer info. 
+                    *The phone number is based on the customer info.  -->
                     <form method="POST" class="form-horizontal form-label-left" id = "item_detail" >
 
                       <div class="form-group">
@@ -106,7 +106,7 @@
                         </label>
                         <!-- limit this to quantity available on order -->
                          <div class="col-md-4 col-sm-6 col-xs-12">
-                          <input type="text" name="skuid" id="sku_id" name="last-name" required="required" class="form-control col-md-7 col-xs-12"/> 
+                          <input type="number" name="skuid" id="sku_id" name="last-name" required="required" class="form-control col-md-7 col-xs-12"/> 
                         </div>
                         
                       </div>
@@ -178,6 +178,7 @@
                         <tr>
                           <th>Product Name</th>
                           <th>Quantity</th>
+                          <th>Status</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -187,11 +188,13 @@
                         <tr>
                           <td>Tiger Nixon</td>
                           <td align = "right">3</td>
+                          <td><center><button type="button" class="btn btn-round btn-success btn-sm" style = "align:center"  disabled>For Replacement</button></center></td>
                           <td align = "center"><font color = "red"><i class="fa fa-close"></i></font></td>
                         </tr>
                         <tr>
                           <td>Garrett Winters</td>
                           <td align = "right">3</td>
+                          <td><center><button type="button" class="btn btn-round btn-warning btn-sm" style = "align:center"  disabled>Discarded</button></center></td>
                           <td align = "center"><font color = "red"><i class="fa fa-close"></i></font></td>
                         </tr>
                       </tbody>
@@ -203,7 +206,6 @@
                       </div><div class="form-group" align = "right">
                         <!-- <div class="col-md-6 col-sm-6 col-xs-12"> -->
                           <button name="submitBtn" class="btn btn-success" type="button" id= "add_button">Submit</button>
-                          <button class="btn btn-primary" type="reset">Reset</button>
                           <button class="btn btn-danger" type="cancel">Cancel</button>
                         <!-- </div>z -->
                       </div>

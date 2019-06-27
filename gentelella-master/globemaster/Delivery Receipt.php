@@ -268,7 +268,7 @@
                                             <ul role="menu" class="dropdown-menu">
                                             <li><a href="#"  onclick = "finishDeliver()">Without Damages</a>
                                             </li>
-                                            <li><a href="#">With Damages</a>
+                                            <li><a href="damage_delivery.php">With Damages</a>
                                             </li>
                                             </ul>
                                     <?php
@@ -281,7 +281,7 @@
                                             <ul role="menu" class="dropdown-menu">
                                             <li><a href="#"  onclick = "finishDeliver()">Without Damages</a>
                                             </li>
-                                            <li><a href="#">With Damages</a>
+                                            <li><a href="damage_delivery.php">With Damages</a>
                                             </li>
                                             </ul>
                                             </div>
