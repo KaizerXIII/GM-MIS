@@ -29,6 +29,20 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
+    <style type="text/css">
+
+    @media print
+    {
+    .noprint {display:none;}
+    }
+
+    @media screen
+    {
+    
+    }
+
+    </style>
 </head>
 
 <body class="nav-md">
@@ -74,7 +88,7 @@
                                     <?php
                                         include("print.php");
                                     ?>                                       
-                                        <button type="" class="btn btn-primary btn-lg" onclick="printW()"><i class="fa fa-print"></i> Print</button>                                    
+                                        <button type="" class="btn btn-primary btn-lg noprint" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</button>                                    
                                 </div>                              
                                 <div class="clearfix"></div>
 
@@ -246,22 +260,38 @@
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right ">
                                     <?php
-                                        if($rowDeliveryDateDiffNow['order_status'] == "Delivered")
+                                        if($rowDeliveryDateDiffNow['order_status'] == "Delivered" || $rowDeliveryDateDiffNow['order_status'] == "Cancelled")
                                         {
                                     ?>
                                             <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
-                                            <button type="button" class="btn btn-success" onclick = "finishDeliver()" disabled>Finish Delivery</button>
+                                            <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" disabled>Finish Delivery <span class="caret"></span></button>
+                                            <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#"  onclick = "finishDeliver()">Without Damages</a>
+                                            </li>
+                                            <li><a href="damage_delivery.php">With Damages</a>
+                                            </li>
+                                            </ul>
                                     <?php
                                         }
                                         else{
                                     ?>
                                             <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
-                                            <button type="button" class="btn btn-success" onclick = "finishDeliver()">Finish Delivery</button>
+                                            <div class="btn-group">
+                                            <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" >Finish Delivery <span class="caret"></span></button>
+                                            <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#"  onclick = "finishDeliver()">Without Damages</a>
+                                            </li>
+                                            <li><a href="damage_delivery.php">With Damages</a>
+                                            </li>
+                                            </ul>
+                                            </div>
                                     <?php
                                         }
                                     ?>
                                         </div>
                                     </div>
+
+                                
 
                                     
                             </form>
