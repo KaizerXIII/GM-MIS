@@ -315,7 +315,7 @@
         if(r == true)
         {
           alert("This form has successfully been submitted. A new delivery receipt was created for the replacement item that will be delivered to the respective client.\n\nYou will be redirected to the deliveries summary screen to reschedule this order for another date of delivery.");
-          window.location.href = ("/deliveries.php");
+          window.location.href = "deliveries.php";
         }
         else
         {
