@@ -158,7 +158,7 @@
                       
                       </div><div class="form-group" align = "right">
                         <!-- <div class="col-md-6 col-sm-6 col-xs-12"> -->
-                          <button name="submitBtn" class="btn btn-success" type="button" id= "add_button">Submit</button>
+                          <button name="submitBtn" class="btn btn-success" type="button" id= "add_button" onclick = "confirmRedirectDelivery();">Submit</button>
                           <button class="btn btn-danger" type="cancel">Cancel</button>
                         <!-- </div>z -->
                       </div>
@@ -307,6 +307,23 @@
            
 
         });  //Removes Row    
+    </script>
+    <script>
+      function confirmRedirectDelivery()
+      {
+        var r = confirm("Are you sure you want to submit this damaged item form?");
+        if(r == true)
+        {
+          alert("This form has successfully been submitted. A new delivery receipt was created for the replacement item that will be delivered to the respective client.\n\nYou will be redirected to the deliveries summary screen to reschedule this order for another date of delivery.");
+          window.location.href = ("/deliveries.php");
+        }
+        else
+        {
+          alert("Please check the damaged items again.");
+        }
+        
+
+      }
     </script>
     
     
