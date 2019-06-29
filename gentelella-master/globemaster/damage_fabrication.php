@@ -103,6 +103,7 @@
  
                             </select>
                         </div>
+                        <h2>Stocks Left:</h2>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Item Quantity <span class="required">*</span>
@@ -165,10 +166,10 @@
                       <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-8 col-sm-12 col-xs-12 col-md-offset-2">
+              <div class="col-md-3 col-sm-12 col-xs-12 col-md-offset-2">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Damaged/ Replaced Items</h2>
+                    <h2>Damaged Items</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -186,14 +187,49 @@
                         <tr>
                           <th>Item Name</th>
                           <th>Quantity</th>
+                          <!-- <th>Replacement Item Name</th>
+                          <th>Replacement Item Quantity</th> -->
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <tr><td>aaa</td>
+                          <td align = "right">22</td>
+                          <td>aaa</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+              <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Replacement Items</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <!-- <p class="text-muted font-13 m-b-30">
+                      DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
+                    </p> -->
+                    <table id="datatable" class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
                           <th>Replacement Item Name</th>
                           <th>Replacement Item Quantity</th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                          <tr>
-                          </tr>
+                      <tr><td>aaa</td>
+                          <td align = "right">22</td>
+                          <td>aaa</td></tr>
                           
                       </tbody>
                     </table>

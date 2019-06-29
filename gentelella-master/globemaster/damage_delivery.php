@@ -114,7 +114,7 @@
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
                           <button type="button" id ="replacement_btn" class="btn btn-round btn-primary" >Replace With the Same Product</button>
-                          <button type="button" id ="discard_btn" class="btn btn-round btn-danger" >Discard Product from Order</button>
+                          <!-- <button type="button" id ="discard_btn" class="btn btn-round btn-danger" >Discard Product from Order</button> -->
                         </div>
                       </div>
                    
