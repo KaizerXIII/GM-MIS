@@ -26,6 +26,9 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- JQUERY Required Scripts -->
+    <script type="text/javascript" src="js/script.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
 
   <body class="nav-md">
@@ -233,7 +236,8 @@
 
                             echo "<tbody>";
 
-                            while ($clients = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+                            while ($clients = mysqli_fetch_array($result,MYSQLI_ASSOC)) 
+                            {
                                 //output a row here
                                 echo "<td>".($clients['client_name'])."</td>";
                                 echo "<td>".($clients['client_contactno'])."</td>";
@@ -254,7 +258,7 @@
                                 }
                                 $GIVE_CLIENT_ID = $clients['client_id'];
                                 echo "<td align = 'center'>";
-                                echo '<a href ="UnpaidCustomer.php?give_client_id='.$GIVE_CLIENT_ID.' "><i class="fa fa-wrench" > </a>'; 
+                                echo '<a id = "send_to_ajax" client_id = "'.$GIVE_CLIENT_ID.'"><i class="fa fa-wrench" ></a>'; 
                                 echo "</td></tr>";
                             }
                             echo "</tbody>";
@@ -271,6 +275,28 @@
         <!-- footer content -->
         
         <!-- /footer content -->
+        <script>
+
+        $("#datatable-responsive").on('click','#send_to_ajax',function(){ //Jquery [Select Table # = ID or . = Class] on [click, 'Target Part of the Table', function]
+          var client_id = $(this).attr("client_id");
+
+          request = $.ajax({
+            url: "ajax/set_customer_menu_id.php",
+            type: "POST",
+                data:{
+                    post_client_id: client_id //Never forget to get the Value from the <INPUTS>
+                                   
+                },
+                success: function(data)
+                {                 
+                    window.location.href = "UnpaidCustomer.php";                    
+                }//End Scucess                       
+            }); // End ajax            
+        });
+
+                  
+
+        </script>
       </div>
     </div>
 

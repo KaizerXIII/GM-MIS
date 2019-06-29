@@ -78,6 +78,7 @@
                   <div class="x_content">
                     <br />
                     IF ITEM TO BE REPLENISHED IS OUT OF STOCK...
+                    
                     <br>
                     <font color = "red">The item(s) <b>Granite-A, Granite-B, Granite-C </b>is out of stock and is not available for replenishment. Please inform the customer (09278281281).</font>
                     <br>
@@ -326,7 +327,7 @@
               {                                                            
                                                                                     
                 var damage_table = document.getElementById('datatable').insertRow();                          
-                damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td> <td> N/A </td> <td> </td> N/A <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";    
+                damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td> <td> N/A </td>    <td>N/A </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";    
                 
                 $("#select_damaged_item :selected").attr({
                   "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 

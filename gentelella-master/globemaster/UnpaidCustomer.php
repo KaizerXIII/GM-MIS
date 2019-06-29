@@ -57,9 +57,7 @@
                   
                 <h1>Customer Details - 
                 <?php 
-                if(isset($_GET['give_client_id']))
-                {
-                  $_SESSION['get_client_id_from_customer_menu'] = $_GET['give_client_id'];
+                 
                   $GET_CLIENT_ID_FROM_MENU = $_SESSION['get_client_id_from_customer_menu'];
                   
 
@@ -67,12 +65,6 @@
                   $RESULT_GET_CLIENT_NAME = mysqli_query($dbc,$SQL_GET_CLIENT_NAME);
                   $ROW_RESULT_GET_CLIENT_NAME =  mysqli_fetch_assoc($RESULT_GET_CLIENT_NAME);
                   echo $ROW_RESULT_GET_CLIENT_NAME['client_name'];
-
-                }
-                else
-                {
-                  $_SESSION['get_client_id_from_customer_menu'];
-                }
                       
 
                 ?>
@@ -164,13 +156,13 @@
 </h3></center>
                             <div class="ln_solid"></div>
                             <?php 
-        $GET_OR_FROM_AJAX_SESSION =  $_SESSION['ordernumber_array_from_unpaid_customer_php'];
+                              $GET_OR_FROM_AJAX_SESSION =  $_SESSION['ordernumber_array_from_unpaid_customer_php'];
 
-        $SQL_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = "SELECT * FROM unpaid_clients WHERE clientID ='$GET_CLIENT_ID_FROM_MENU' AND ordernumber ='$GET_OR_FROM_AJAX_SESSION'";
-        $RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_query($dbc,$SQL_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE);
-        while($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_fetch_array($RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE,MYSQLI_ASSOC))
-        {       
-      ?>
+                              $SQL_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = "SELECT * FROM unpaid_clients WHERE clientID ='$GET_CLIENT_ID_FROM_MENU' AND ordernumber ='$GET_OR_FROM_AJAX_SESSION'";
+                              $RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_query($dbc,$SQL_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE);
+                              while($ROW_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE = mysqli_fetch_array($RESULT_UNPAID_TOTAL_FROM_UNPAID_CLIENT_TABLE,MYSQLI_ASSOC))
+                              {       
+                            ?>
 <div class = "col-md-12">
         <div class="form-group col-md-6 col-sm-3 col-xs-12">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Initial Amount</label>
