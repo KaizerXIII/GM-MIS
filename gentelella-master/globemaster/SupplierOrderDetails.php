@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-  
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -91,7 +90,7 @@
                         echo '<b>Order Date: </b>', $ROW_RESULT_GET_FROM_DB['SD']; 
                     echo'</div>'; 
                     echo'<div class = "col-md-6" align = "right" >';
-                    echo'    <b>Expected Date of Arrival: </b>',  $ROW_RESULT_GET_FROM_DB['SXD'],' to ',  $ROW_RESULT_GET_FROM_DB['EXP_RANGE'] ;
+                    echo'    <b><font color = "black">Expected Date of Arrival: </font></b>',  $ROW_RESULT_GET_FROM_DB['SXD'],' to ',  $ROW_RESULT_GET_FROM_DB['EXP_RANGE'] ;
                     echo'</div> ';
                     ?>
                     <div class = "col-md-12" align = "center" style="z-index: 1">
@@ -157,8 +156,8 @@
                                     echo '<td>'.$row['supplier_name'].'</td>';
                                     echo '<td>'.$row['supply_item_quantity'].'</td>';
                                     echo '<td align = "center">';
-                                    echo '<button type="button" class="btn btn-round btn-danger btn-xs" disabled>Cancel</button>';
-                                    echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page"><a href = EditInventory_Reworked.php?item_name='.urlencode($stringname).'>Restock </a></button>';
+                                    echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply"><i class = "fa fa-wrench"></i> Edit</button>';
+                                    echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page">Restock</button>';
                                     echo '</td>    ';      
                                 echo '</tr> '; 
                                 // echo $stringname;
@@ -173,16 +172,52 @@
                             echo $_SESSION['list_of_items'][0];
                             echo $_SESSION['list_of_qty'][0];
                            
-                            ?>                         
+                            ?>      
+                            
+                            
+                  <!-- Small modal for edit supply qty-->
+                  <form class="form-horizontal form-label-left" method="post" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
+                  <div class="modal fade bs-example-modal-smsupply" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                      <div class="modal-content">
+
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Edit Arrived Quantity</h4>
+                        </div>
+                        <div class="modal-body">
+                          <span><h4><b>Item Name:</b> <?php echo $stringname; ?></h4></span>
+                          <!-- add backend -->
+                         <div>
+                           <label class = "control-label col-md-3 " for = "arrived">Quantity Arrived</label>
+                           <div class="col-md-9">
+                              <input type="text" id="arrived" class="form-control col-md-7 col-xs-12">
+                           </div>
+                         </div>
+                        </div>
+                        <br>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>   
+                  </form>    
+                  <!-- Small Modal end -->
                           </tbody>
-                          <button type="submit" class="btn btn-round btn-success btn-xs" name = "restock_items">Restock</button>
+                          
                           <?php
 
                           
                           ?>
                         </table><br>
-
-                        
+                        <div class = "clearfix"></div>
+                        <div class = "ln_solid"></div>
+                        <div align = "right">
+                          <button type="submit" class="btn btn-round btn-success" name = "restock_items">Proceed <i class = "fa fa-arrow-right"></i></button>
+                        </div>
                       </form>
                     </div>
                   </div>
