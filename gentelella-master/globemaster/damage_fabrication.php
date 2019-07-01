@@ -151,7 +151,7 @@
                         </label>
                         <!-- limit this to quantity available on order -->
                          <div class="col-md-3 col-sm-6 col-xs-12">
-                          <input type="text" name="replacementQty"  id = "replacementQty" oninput ="validate(this)" required="required" class="form-control col-md-7 col-xs-12" disabled/> 
+                          <input type="number" name="replacementQty"  id = "replacementQty" oninput ="validate(this)" required="required" class="form-control col-md-7 col-xs-12" disabled/> 
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                           <button class = "btn btn-success btn-sm" id = "addReplace" disabled onclick="revertdisable();">Add</button>

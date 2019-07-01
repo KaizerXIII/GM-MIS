@@ -204,43 +204,52 @@
                           </div>
 
 
-                          <div class="col-md-6 col-sm-6 col-xs-12" >
-                                        <div class="x_panel" >
-
-                                            <center><h3>Items in Order</h1>
-                                            
-                                            </h3></center>
-                                            <div class="ln_solid"></div>
-
-                                            
-
+                  <div class="col-md-6 col-sm-6 col-xs-12" >
+                    <div class="x_panel" >
+                      <center><h3>Items in Order</h1></h3></center>
+                        <div class="ln_solid"></div>
                          <div class="row" >
                             <div class="col-md-12 col-sm-12 col-xs-12"  >
-                                <table  id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
-                                    <thead>
-                                        <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 263px;">Product</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Pieces</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Price per piece</th>
-                                            
-                                            </tr>
-                                    </thead>
-
-
-                                    <tbody>
-                                    <tr role='row' class='odd'>
-                                            <!-- <td id="itemNameRow" ></td>
-                                            <td id="itemQuantityRow" ></td>
-                                            <td id="itemPriceRow" ></td>                                                                                                       -->
-                                    </tr>
-                                    
-                                    </tbody>
-                                </table>
+                              <table  id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 263px;">Product</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Pieces</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Price per piece</th>
+                                        
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                <tr role='row' class='odd'>
+                                        <!-- <td id="itemNameRow" ></td>
+                                        <td id="itemQuantityRow" ></td>
+                                        <td id="itemPriceRow" ></td>                                                                                                       -->
+                                </tr>
+                                </tbody>
+                              </table>
                             </div>
-                        </div>
-                                            
-                                        </div> <!--END XPanel-->
-                                    </div> <!--END Class Colmd-->
+                          </div>         
+                        </div> <!--END XPanel-->
+                    </div> <!--END Class Colmd-->
+                    <div class="col-md-6 col-sm-6 col-xs-12" >
+                    <div class="x_panel" >
+                      <center><h3>Fabricated Product Request</h1></h3></center>
+                        <div class="ln_solid"></div>
+                         <div class="row" >
+                           <div class = "col-md-12" align = "center">
+                             <!-- "data:image/jpg;base64,'. base64_encode($BLOB[$i]).'" -->
+                              <img src = "https://s7d4.scene7.com/is/image/roomandboard/?layer=0&size=498,300&scl=1&src=996120_wood_W&layer=comp&$prodzoom0$"  border-style = "border-width:3px;"style = "height:20vh; width:15vw">
+                           </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12"  >
+                              <br>
+                              <h2>Order Number: OR-1 | <font color = "blue">Fabricating</font> OR <font color = "red">Disapproved</font> OR <font color = "green">Finished</font></h2>
+                            </div>
+                            <div class ="col-md-12 col-sm-12 col-xs-12">
+                              <font size = "3"> Description: A big brown table</font>
+                            </div>
+                          </div>         
+                        </div> <!--END XPanel-->
+                    </div> <!--END Class Colmd-->
 
                         <div class = "clearfix"></div>
                       <div class="ln_solid"></div>
