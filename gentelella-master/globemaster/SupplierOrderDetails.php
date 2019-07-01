@@ -26,6 +26,9 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- JQUERY Required Scripts -->
+    <script type="text/javascript" src="js/script.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
 
   <body class="nav-md">
@@ -85,7 +88,7 @@
 
                      
                    echo '<div class = "col-md-6">'; 
-                        echo "<h3> SR - ", $ROW_RESULT_GET_FROM_DB['supply_order_id'],'</h3>';
+                        echo "<span class = supply_order_number><h3> SR - ", $ROW_RESULT_GET_FROM_DB['supply_order_id'],'</h3></span>';
                         echo '<br>';
                         echo '<b>Order Date: </b>', $ROW_RESULT_GET_FROM_DB['SD']; 
                     echo'</div>'; 
@@ -135,7 +138,8 @@
                             <tr>
                               <th>Item Name</th>
                               <th>Supplier</th>
-                              <th>Quantity</th>
+                              <th>Ordered Quantity</th>
+                              <th>Arrived Quantity</th>
                               <th align = "center">Action</th>
                             </tr>
                           </thead>
@@ -143,20 +147,22 @@
                           <?php
                            $_SESSION['list_of_items']=array();
                            $_SESSION['list_of_qty']=array();
-                          
+                           $count = 0; 
                             $SQL_SELECT_SO_DETAILS_FROM_DB = "SELECT * FROM supply_order_details WHERE supply_order_id = '$CURRENT_SO_ID_NUMBER '";
                             $RESULT_GET_SO_DETAILS = mysqli_query($dbc, $SQL_SELECT_SO_DETAILS_FROM_DB);
                             while($row=mysqli_fetch_array($RESULT_GET_SO_DETAILS,MYSQLI_ASSOC))
                             {
                               $stringname = $row['supply_item_name'];
-                              $qty = $row['supply_item_quantity'];
+                              $qty = $row['supply_item_quantity']; 
+                              
                               
                                 echo '<tr>';
                                     echo '<td ><input type="hidden" name = "item_name" value = "'.$row['supply_item_name'].'">'.$row['supply_item_name'].'</td>';
                                     echo '<td>'.$row['supplier_name'].'</td>';
-                                    echo '<td>'.$row['supply_item_quantity'].'</td>';
+                                    echo '<td class = supply_qty'.$count.'>'.$row['supply_item_quantity'].'</td>';
+                                    echo '<td>'.$row['supply_arrived_quantity'].'</td>';
                                     echo '<td align = "center">';
-                                    echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply"><i class = "fa fa-wrench"></i> Edit</button>';
+                                    echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.'><i class = "fa fa-wrench"></i> Edit</button>';
                                     echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page">Restock</button>';
                                     echo '</td>    ';      
                                 echo '</tr> '; 
@@ -166,7 +172,7 @@
                                 array_push($_SESSION['list_of_items'], $stringname);
                                 array_push($_SESSION['list_of_qty'], $qty);
                                 
-                              
+                                $count ++;
                             }
                            
                             echo $_SESSION['list_of_items'][0];
@@ -175,43 +181,11 @@
                             ?>      
                             
                             
-                  <!-- Small modal for edit supply qty-->
-                  <form class="form-horizontal form-label-left" method="post" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
-                  <div class="modal fade bs-example-modal-smsupply" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-md">
-                      <div class="modal-content">
-
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                          </button>
-                          <h4 class="modal-title" id="myModalLabel2">Edit Arrived Quantity</h4>
-                        </div>
-                        <div class="modal-body">
-                          <span><h4><b>Item Name:</b> <?php echo $stringname; ?></h4></span>
-                          <!-- add backend -->
-                         <div>
-                           <label class = "control-label col-md-3 " for = "arrived">Quantity Arrived</label>
-                           <div class="col-md-9">
-                              <input type="text" id="arrived" class="form-control col-md-7 col-xs-12">
-                           </div>
-                         </div>
-                        </div>
-                        <br>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>   
-                  </form>    
+                 
                   <!-- Small Modal end -->
                           </tbody>
+                        
                           
-                          <?php
-
-                          
-                          ?>
                         </table><br>
                         <div class = "clearfix"></div>
                         <div class = "ln_solid"></div>
@@ -227,6 +201,16 @@
           </div>
         </div>
         <!-- /page content -->
+        <script type="text/javascript">
+            function validate(obj) {
+                obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max
+                console.log(obj.value);
+            }
+
+            function valBetween(v, min, max) {
+                return (Math.min(max, Math.max(min, v))); //compares the value between the min and max , returns the max when input value > max
+            }
+        </script> <!-- To avoid the users input more than the current Max per item -->
 
         <!-- footer content -->
         <footer>
@@ -238,6 +222,57 @@
         <!-- /footer content -->
       </div>
     </div>
+
+     <!-- Small modal for edit supply qty-->
+     <form class="form-horizontal form-label-left" method="POST" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
+        <div class="modal fade bs-example-modal-smsupply" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2">Edit Arrived Quantity</h4>
+              </div>
+                <div class="modal-body">
+                  <h4><b><span class="item_name"> </span></b></h4>
+                  <!-- add backend -->
+                  <div>
+                      <label class = "control-label col-md-3 " for = "arrived">Quantity Arrived</label>
+                        <div class="col-md-9">
+                            <input type="number" id="arrived" class="form-control col-md-7 col-xs-12" max ="1" oninput=validate(this)>
+                        </div>
+                  </div>
+                </div>
+              <br>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" id = "btn_save" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div> 
+          </div>
+        </div>
+        <script>
+        var selected_item_name; 
+        var current_supply_qty;
+        var current_arrived;
+        var current_max;      
+        $('#datatable-responsive tbody button.btn.btn-round.btn-primary.btn-xs').on('click', function(e){ //JQuery Selector | Selects # = id of [table], tbody inside of [table] , button.[class] if with Space replace with period[.]                                         
+          var row = $(this).closest('tr');
+          
+          selected_item_name = row.find('td:first').text();
+          current_supply_qty = parseInt(row.find('td:nth-child(3)').text());
+          current_arrived = parseInt(row.find('td:nth-child(4)').text());
+
+          current_max = current_supply_qty - current_arrived
+          $('.item_name').text("Item Name: "+selected_item_name);
+
+          $('#arrived').attr({
+            "max": current_max //Replaces the max for input using the current selected item qty
+          });
+        });                               
+        </script>   
+      </form>    
 
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -269,16 +304,39 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 
-    <script> //Function to send data to EditInventory.php
-        var Row = document.getElementById("datatable-responsive");
-        var Cells = Row.getElementsByTagName("td");
+    <script> 
+
+    $('#btn_save').on('click', function(e){
+      if(confirm("Confirm Arrival of Current Item?"))
+      {
+        request = $.ajax({
+        url: "ajax/supply_order_arrived_qty.php",
+        type: "POST",
+        data: {post_item_name: selected_item_name,
+        post_item_qty: $('#arrived').val(),
+        post_supply_OR: "<?php echo $CURRENT_SO_ID_NUMBER; ?>"                    
+        },
+          success: function(data, textStatus)
+          {
+           alert("Update Successful!");
+           window.location.href = "SupplierOrderDetails.php";
+
+           $('#arrived').attr({
+            "max": data //Replaces the max for input using the current selected item qty
+          });
+           
+          }//End Scucess
+        
+        }); // End ajax  
+      }
+      else
+      {
+        alert("Action: Cancelled");
+        
+      }
         
 
-        var url = "EditInventory.php?item_name=";
-        var href_to_edit_inventory =  document.getElementById("restock_page");
-        var current_item_name = Cells[0].innerText;
-        // href_to_edit_inventory.href = url+Cells[0].innerText;
-      
+    }); 
         
     </script>   
 

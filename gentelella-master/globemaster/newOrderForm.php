@@ -159,7 +159,7 @@
                                                                     echo '<td align = right>';
                                                                     echo  '₱'." ".number_format($row['price'], 2);
                                                                     echo '</td>';
-                                                                    echo '<td align = right>';
+                                                                    echo '<td align = right class = ',$row['item_id'],'>';
                                                                     echo $row['item_count'];
                                                                     echo '</td>';
 
@@ -682,10 +682,18 @@
                                         
                                             CurrentTotal = CurrentTotal+ newPrice;
                                         payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
-                                    } 
+ 
+                                        var current_max;
+                                        $("."+buttonValue).each(function() {
+                                            cellText = parseInt($(this).html());                                             
+                                            $(this).text(cellText - itemQuantity);
+                                            current_max =  $(this).text(cellText - itemQuantity);
+                                        }); //Subtracts the added item count in the cart 
 
-                                    
-                                      
+                                        $("#quantity"+buttonValue).attr({
+                                            "max": current_max.text() 
+                                        }); 
+                                    }      
                                     console.log("Old Amount = "+subtractOldamount);                                   
                                     console.log("Old Price = "+oldPrice);
                                     console.log("Current Total = "+CurrentTotal);
@@ -712,6 +720,18 @@
 
                             itemName++;
                             quantity++;
+
+                            var current_max;
+                             $("."+buttonValue).each(function() {
+                                var cellText = parseInt($(this).html()); 
+                                
+                                $(this).text(cellText - itemQuantity);
+                                current_max =  $(this).text(cellText - itemQuantity);
+                            }); //Subtracts the added item count in the cart 
+
+                            $("#quantity"+buttonValue).attr({
+                                "max": current_max.text() 
+                            });
 
                             console.log("Current Total = ");
                         } // END IF                                                 
@@ -741,7 +761,21 @@
                         CurrentTotal = (CurrentTotal.toFixed(2) - AmountToBeSubtracted.toFixed(2)); //Limits the Decimal points to 2
                         paymentBox.value = "₱ " + CurrentTotal.toFixed(2);
 
-                         tr.parentNode.removeChild(tr);                 
+                        var current_max;
+                        $("."+tr.cells[0].id).each(function() {
+                            cellText = parseInt($(this).html()); 
+                           
+                                $(this).text(cellText + parseInt(cartQuantity));
+                            current_max =  $(this).text(cellText + parseInt(cartQuantity));
+                        }); //Adds the item count back to the stock
+
+                        $("#quantity"+tr.cells[0].id).attr({
+                            "max": current_max.text() 
+                        });       
+                        
+                         tr.parentNode.removeChild(tr); 
+
+                                 
                 }                    
             </script>         
             <script>
