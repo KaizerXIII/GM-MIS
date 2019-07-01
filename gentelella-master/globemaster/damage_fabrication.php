@@ -103,20 +103,16 @@
  
                             </select>
                         </div>
-                        <h2>Stocks Left:</h2>
+                        <h2><span id = "stocks" >Selected Item Qty: </span></h2>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Item Quantity <span class="required">*</span>
                         </label>
                         <!-- limit this to quantity available on order -->
-                       
-                          
+                                               
                           <div class="col-md-4 col-sm-6 col-xs-12">
-                          <input type="text" name="damaged_item_name" id="damaged_item_name" required="required" oninput ="validate(this)" class="form-control col-md-7 col-xs-12"/>';
-                          </div>
-                         
-                       
-                         
+                            <input type="text" name="damaged_item_name" id="damaged_item_name" required="required" oninput ="validate(this)" class="form-control col-md-7 col-xs-12"/>';
+                          </div>                                                                      
                         
                       </div>
                       <!-- Two buttons to choose for replenish or replace -->
@@ -182,7 +178,7 @@
                     <!-- <p class="text-muted font-13 m-b-30">
                       DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
                     </p> -->
-                    <table id="datatable" class="table table-striped table-bordered">
+                    <table id="datatable_replenish" class="table table-striped table-bordered">
                       <thead>
                         <tr>
                           <th>Item Name</th>
@@ -193,9 +189,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                          <tr><td>aaa</td>
-                          <td align = "right">22</td>
-                          <td>aaa</td></tr>
+                          <tr></tr>
                       </tbody>
                     </table>
                   </div>
@@ -218,18 +212,16 @@
                     <!-- <p class="text-muted font-13 m-b-30">
                       DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
                     </p> -->
-                    <table id="datatable" class="table table-striped table-bordered">
+                    <table id="datatable_replacement" class="table table-striped table-bordered">
                       <thead>
                         <tr>
-                          <th>Replacement Item Name</th>
-                          <th>Replacement Item Quantity</th>
+                          <th>Item Name</th>
+                          <th>Item Quantity</th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                      <tr><td>aaa</td>
-                          <td align = "right">22</td>
-                          <td>aaa</td></tr>
+                      <tr></tr>
                           
                       </tbody>
                     </table>
@@ -327,9 +319,14 @@
     <script> 
                               
         $(document).on('change', '#select_damaged_item', function() {
+         
+
           $("#damaged_item_name").attr({
               "max": $(this).val()         // values (or variables) here
             });
+            
+          $("#stocks").text("Selected Item Qty: " + $(this).val());  //Set the current stocks of the items in dropdown
+          
         });
 
         $(document).on('change', '#select_damaged_item', function() {
@@ -362,8 +359,8 @@
               if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0)
               {                                                            
                                                                                     
-                var damage_table = document.getElementById('datatable').insertRow();                          
-                damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td> <td> N/A </td>    <td>N/A </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";    
+                var damage_table = document.getElementById('datatable_replenish').insertRow();                          
+                damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";    
                 
                 $("#select_damaged_item :selected").attr({
                   "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
@@ -374,6 +371,8 @@
                 });
 
                 $("#damaged_item_name").val("");  //Resets input for qty 
+
+                $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
 
               }
               else
@@ -396,10 +395,10 @@
               if(current_replacement_item != '' && current_replacement_item_qty != '' && current_replacement_item_qty != 0)
               {                                                            
                                                                                     
-                var damage_table = document.getElementById('datatable').insertRow();                          
-                damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td>  <td> "+current_replacement_item+" </td> <td> "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                var damage_table = document.getElementById('datatable_replacement').insertRow();                          
+                damage_table.innerHTML = "<tr>  <td class=replace_item> "+current_replacement_item+" </td> <td class = replace_qty > "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
                 $("#select_damaged_item :selected").attr({
-                  "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
+                  "value":  $("#select_damaged_item :selected").val() - current_replacement_item_qty   //Subtracts the value from input 
                 });
 
                 $("#replacementQty").attr({
@@ -407,6 +406,8 @@
                 });
 
                 $("#replacementQty").val("");  //Resets input for qty 
+
+                $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
               }
               else
               {
@@ -417,7 +418,7 @@
         });//END FUNCTION
 
         $(document).ready(function(){
-            $("#datatable").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
+            $("#datatable_replenish").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
               var closest_tr = $(this).closest('tr').find('.dmg_item_name').text();
               var closest_tr_qty = $(this).closest('tr').find('.dmg_item_qty').text();
                 console.log(closest_tr);
@@ -432,7 +433,9 @@
                       $("#damaged_item_name").attr({
                         "max": $("#select_damaged_item :selected").val() //replaces the max value with added value
                       });
-                      $("#damaged_item_name").val("");     //Resets the input for qty               
+                      $("#damaged_item_name").val("");     //Resets the input for qty    
+
+                      $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );           
                     }
                     else
                     {
@@ -442,7 +445,32 @@
               $(this).closest('tr').remove();
               });
 
-        });  //Removes Row    
+        });  //Removes Row    of [REPLACEMENT TABLE]
+
+        $(document).ready(function(){
+            $("#datatable_replacement").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
+              var closest_tr = $(this).closest('tr').find('.dmg_item_name').text();
+              var closest_tr_qty = $(this).closest('tr').find('.replace_qty').text();
+                console.log(closest_tr);
+
+                $('#select_damaged_item').children('option:selected').each(function() {
+               //Loops through all options and finds the item name 
+                    
+                      $("#select_damaged_item :selected").attr({
+                        "value":  parseInt($("#select_damaged_item :selected").val()) + parseInt(closest_tr_qty)    //adds the value when the row is removed 
+                      });
+                      $("#damaged_item_name").attr({
+                        "max": $("#select_damaged_item :selected").val() //replaces the max value with added value
+                      });
+                      $("#damaged_item_name").val("");     //Resets the input for qty 
+
+                      $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );              
+                   
+                });
+              $(this).closest('tr').remove();
+              });
+
+        });  //Removes Row    of [REPLENISH TABLE]
     </script><!-- Adds the Rows based on replinished or Replaced -->
     
         

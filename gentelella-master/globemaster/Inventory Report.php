@@ -190,7 +190,8 @@
                           <th width ="100px">Last Restock</th>
                           <th width ="50px">Total Item Count</th>
                           <th width ="100px">Warehouse</th>
-                          <th width ="50px">Total Procured/Restock</th>
+                          <th width ="50px">Inventory In</th>
+                          <th width ="50px">Inventory Out</th>
                         </tr>
                       </thead>
                       <tbody id = "DaBodi">
@@ -211,8 +212,9 @@
                               echo ' <td> '.$row['sku_id']. '</td>';
                               echo ' <td>'.$row['item_name'].' </td>';
                               echo ' <td>'.$row['last_restock'].' </td>';
-                              echo ' <td align="center">'.$row['item_count'].' </td>';
+                              echo ' <td align="right">'.$row['item_count'].' </td>';
                               echo ' <td align="left">'.$row['warehouse'].' </td>';
+                              echo ' <td align="right">'.$row2['TotalProcured'].' </td>';
                               echo ' <td align="right">'.$row2['TotalProcured'].' </td>';
                             echo '</tr>';
                           }

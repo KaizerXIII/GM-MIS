@@ -95,9 +95,10 @@
                                  echo'<option value = "'.$ITEM_QTY.'">'.$ITEM_NAME.'</option>'; //Temporary option value = ITEM_QTY
                                }
                           ?>
- 
+                           
                             </select>
                         </div>
+                        <h2><span id = "stocks" >Selected Item Qty: </span></h2>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Product Quantity <span class="required">*</span>
@@ -230,6 +231,8 @@
           $("#damaged_item_qty").attr({
               "max": $(this).val()         // values (or variables) here
             });
+
+            $("#stocks").text("Selected Item Qty: " + $(this).val());  //Set the current stocks of the items in dropdown
         });
 
     </script> <!-- Adds the max value based on ordered item-->
@@ -265,6 +268,8 @@
             });
 
             $("#damaged_item_qty").val("");  //Resets input for qty
+
+            $("#stocks").text("Selected Item Qty: " + $("#select_dmg_item :selected").val() );
           }
           else
           {
@@ -292,7 +297,9 @@
                       $("#damaged_item_qty").attr({
                         "max": $("#select_dmg_item :selected").val() //replaces the max value with added value
                       });
-                      $("#damaged_item_qty").val("");     //Resets the input for qty               
+                      $("#damaged_item_qty").val("");     //Resets the input for qty 
+
+                      $("#stocks").text("Selected Item Qty: " + $("#select_dmg_item :selected").val() );              
                     }
                     else
                     {

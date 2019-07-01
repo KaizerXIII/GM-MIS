@@ -88,7 +88,7 @@
                  
                     
                 
-                    <label id ="total_profit"  style="text-align:left;" ><b><font color = "black" size = "5px">Total Profit: [  ]</font></b></label>
+                    <label id ="total_profit"  style="text-align:left;" ><b><font color = "black" size = "5px">Total Sold: [  ]</font></b></label>
                       
                   
                     

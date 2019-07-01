@@ -27,8 +27,8 @@
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
      <!-- JQUERY Required Scripts -->
-    <script type="text/javascript" src="js/script.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+     <script type="text/javascript" src="js/script.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
 
   <body class="nav-md">
@@ -201,7 +201,7 @@
                     <div>
                    
                         <script>
-                         var post_row_item_name = [];
+                        var post_row_item_name = [];
                         var post_row_item_qty = []; 
                           
                             $(".current_anchored_row").on('click',function(){
@@ -227,7 +227,8 @@
                                                       
                             console.log(post_row_item_name);
                             console.log(post_row_item_qty);
-
+                            if(confirm("Confirm: There is/are items that are damaged?"))
+                            {
                               request = $.ajax({
                               url: "ajax/post_to_dmg_fab.php",
                               type: "POST",
@@ -237,17 +238,18 @@
                                 }, 
                                 success: function(data) 
                                 { 
-                                  if(confirm("Confirm: There is/are items that are damaged?"))
-                                  {
-                                    window.location.href = "damage_fabrication.php";  
-                                  }
-                                  else
-                                  {
-                                    alert("Action: Cancelled");
-                                  }
-                                  
+                                  window.location.href = "damage_fabrication.php";                                   
                                 }//End Success                       
-                              }); //End Ajax                                                          
+                              }); //End Ajax              
+                            }
+                            else
+                            {
+                              alert("Action: Cancelled");
+                              post_row_item_name = [];
+                              post_row_item_qty = []; 
+                              
+                            }
+                                                                         
                             });
     
                           

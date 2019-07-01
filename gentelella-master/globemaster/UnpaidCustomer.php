@@ -119,6 +119,8 @@
                   $GET_CLIENT_ID_FROM_MENU = $_SESSION['get_client_id_from_customer_menu'];
                   $SQL_GET_ORDER_NUMBER_BASED_ON_CLIENT_ID = "SELECT * FROM orders WHERE client_id ='$GET_CLIENT_ID_FROM_MENU' AND payment_status ='Unpaid'";
                   $RESULT_GET_ORDER_NUMBER = mysqli_query($dbc,$SQL_GET_ORDER_NUMBER_BASED_ON_CLIENT_ID);
+
+                  $count = 0;
                   while($ROW_GET_ORDER_NUMBER = mysqli_fetch_array($RESULT_GET_ORDER_NUMBER,MYSQLI_ASSOC))
                   {
                       echo '<tr>';
@@ -132,9 +134,11 @@
                           echo $ROW_GET_ORDER_NUMBER['payment_status'];
                         echo '</td>';
                         echo '<td align = center>';
-                          echo '<button type="button" class="btn btn-success" value ="'.$ROW_GET_ORDER_NUMBER['ordernumber'].'"><i  class="fa fa-money" ></i> </button>';
+                          echo '<button id ="btn'.$count.'" type="button" class="btn btn-success" value ="'.$ROW_GET_ORDER_NUMBER['ordernumber'].'"><i  class="fa fa-money" ></i> </button>';
                         echo '</td>';
                       echo '</tr>';
+
+                      $count++;
                   }
               ?>                  
                 </tbody>
@@ -372,6 +376,23 @@
     <script src="../vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
+    <script>
+      var clicked_flag = false;
+      window.onload=function(){ 
+        if(clicked_flag == false)
+        {
+          $("#btn0").trigger('click', function(){              
+            clicked_flag = true;
+          });
+          clicked_flag = true;    
+        }
+        else
+        {
+          break;
+        }     
+      
+      };
+    </script><!-- On load click the button to set the required session value -->
     <script>            
     $('#damageTable tbody button.btn.btn-success').on('click', function(e) 
     {              

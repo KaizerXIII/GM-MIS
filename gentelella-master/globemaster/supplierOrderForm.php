@@ -297,7 +297,6 @@
                                                         </thead>
                                                         <tbody>
                                                         <?php
-
                                                             require_once('DataFetchers/mysql_connect.php');
                                                             $SQL_ITEM_LIST = "SELECT * FROM items_trading;";
                                                             $result1=mysqli_query($dbc,$SQL_ITEM_LIST);
@@ -320,21 +319,40 @@
                                                                 $rowSupplierName=mysqli_fetch_array($resultSupplierName,MYSQLI_ASSOC);
                                                                 $supplierName = $rowSupplierName['supplier_name'];
 
-                                                                    
+                                                                $ITEM_ID = $row['item_id'];
+                                                                $SQL_GET_2_MONTHS_DEMAND = "SELECT od.*,SUM(od.item_qty) as total_amount FROM
+                                                                order_details od JOIN orders o on od.ordernumber = o.ordernumber 
+                                                                where od.item_id = '$ITEM_ID' and (o.order_date 
+                                                                between DATE_SUB(DATE(NOW()), INTERVAL 60 DAY ) and DATE(NOW())) GROUP BY 1,2";
+                                                                $RESULT_GET_2_MONTHS_DEMAND = mysqli_query($dbc,$SQL_GET_2_MONTHS_DEMAND);
+                                                                $ROW_RESULT_GET_2_MONTHS_DEMAND = mysqli_fetch_array($RESULT_GET_2_MONTHS_DEMAND,MYSQLI_ASSOC);
+
+                                                                $TOTAL_QTY = $ROW_RESULT_GET_2_MONTHS_DEMAND['total_amount']/60;
+
+                                                                $SQL_GET_AC_AND_HC = "SELECT * FROM ref_eoqformula";
+                                                                $RESULT_SQL_GET_AC_AND_HC =  mysqli_query($dbc,$SQL_GET_AC_AND_HC);
+                                                                $ROW_RESULT_SQL_GET_AC_AND_HC = mysqli_fetch_array($RESULT_SQL_GET_AC_AND_HC,MYSQLI_ASSOC);
+
+                                                                $ACQUISITION_COST = $ROW_RESULT_SQL_GET_AC_AND_HC['AcquisitionCost'];
+                                                                $HOLDING_COST = $ROW_RESULT_SQL_GET_AC_AND_HC['InventoryCost'];
+
+                                                                $EOQ = sqrt(
+                                                                    (2 * $TOTAL_QTY * $ACQUISITION_COST) /
+                                                                    (($HOLDING_COST/100)*$row['price']));   
                                                                 echo '<tr class ="tableRow">';
-                                                                    echo '<td  id = ',$row['item_id'],' >';
+                                                                    echo '<td  id = ',$row['item_id'],' title = "Item Sold within 60 Days: ', $ROW_RESULT_GET_2_MONTHS_DEMAND['total_amount'],'">';
                                                                     echo $row['item_name'];
                                                                     echo '</td>';
                                                                     echo '<td>';
                                                                     echo $itemType;
                                                                     echo '</td>';
-                                                                    echo '<td>';
+                                                                    echo '<td align = right class = ',$row['item_id'],'>';
                                                                     echo $row['item_count'];
                                                                     echo '</td>';
 
                                                                    
                                                                     echo '<td align = right>';
-                                                                    echo  "N/A";
+                                                                    echo  ceil($EOQ);
                                                                     echo '</td>';
 
                                                                                                                             
@@ -396,25 +414,7 @@
                             </div>                                
                         </div>
                     </div>
-                </div>                                                           
-                <!-- <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment Type</label>
-                    <div class='input-group col-md-14'>
-                        <select class="form-control col-md-7 col-xs-12" name="paymentID" id = "paymentID">
-                        <?php
-                            // require_once('DataFetchers/mysql_connect.php');
-                            // $SQL_PAYMENT_LIST="SELECT * FROM ref_payment";
-                            // $result=mysqli_query($dbc,$SQL_PAYMENT_LIST);
-                            // while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                            // {
-                            //     echo "<option value=".$row['payment_id']."> ".$row['paymenttype']."</option>";  
-                            // }
-
-                            
-                            ?> 
-                        </select>
-                    </div>
-                </div> -->               
+                </div>                                                                      
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
                         <button type="button" class="btn btn-primary" name="complete_order" onclick = "insert_to_supply_table();">Next</button>
@@ -435,9 +435,6 @@
           </div>
             <!-- /page content -->
         </div>
-
-        
-
         <script>
         var GET_NEW_ITEM_NAME = [];
          function add_to_cart_new_item()
@@ -454,7 +451,7 @@
 
                 GET_NEW_ITEM_NAME.push(get_new_item_name);
                 var add_row_to_cart = document.getElementById('cart').insertRow();                       
-                add_row_to_cart.innerHTML = "<tr> <td>" + get_new_item_name + "</td> <td> " + get_new_item_qty + " </td><td> "+get_sp_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)'> - </button></td>";
+                add_row_to_cart.innerHTML = "<tr> <td>" + get_new_item_name + "</td> <td align = right> " + get_new_item_qty + " </td><td> "+get_sp_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)'> - </button></td>";
                 alert("Item Added to Cart!");
                 CurrentTotal = CurrentTotal + parseInt(get_new_item_qty);
                 total_qty.value = CurrentTotal;
@@ -543,6 +540,16 @@
                         
                                 $(this).text(new_qty); // ye new qty
                                 item_id_in_cart.pop(); //Removes ID from array since item already exist
+
+                                // $("."+buttonValue).each(function() {
+                                //     cellText = parseInt($(this).html()); 
+                                //     $(this).text(cellText - itemQuantity);
+                                //     current_max =  $(this).text(cellText - itemQuantity);
+                                // }); //Subtracts the added item count in the cart 
+
+                                // $("#quantity"+buttonValue).attr({
+                                //     "max": current_max.text() 
+                                // });
                                                         
                         }           
                 
@@ -578,7 +585,17 @@
                             
                             // payment.value = "₱ "+ CurrentTotal.toFixed(2);
                             itemName++;
-                            quantity++;                         
+                            quantity++;   
+                            // var current_max;
+                            //  $("."+buttonValue).each(function() {
+                            //     cellText = parseInt($(this).html()); 
+                            //     $(this).text(cellText - itemQuantity);
+                            //     current_max =  $(this).text(cellText - itemQuantity);
+                            // }); //Subtracts the added item count in the cart 
+
+                            // $("#quantity"+buttonValue).attr({
+                            //     "max": current_max.text() 
+                            // });
                         } // END IF                                                 
                     }   // END ELSE    
                    
@@ -606,6 +623,17 @@
               
                 // CurrentTotal = (CurrentTotal.toFixed(2) - AmountToBeSubtracted.toFixed(2)); //Limits the Decimal points to 2
                 // paymentBox.value = "₱ " + CurrentTotal.toFixed(2);
+                    // var current_max;
+                    // $("."+tr.cells[0].id).each(function() {
+                    //     cellText = parseInt($(this).html()); 
+                    //     $(this).text(cellText + parseInt(cartQuantity));
+                    //     current_max =  $(this).text(cellText + parseInt(cartQuantity));
+                    // }); //Adds the item count back to the stock
+
+                    // $("#quantity"+tr.cells[0].id).attr({
+                    //     "max": current_max.text() 
+                    // });
+                    
 
                     console.log("button value = "+buttonValue);
                     console.log("Total Quantity Value = "+CurrentTotal);
@@ -741,9 +769,6 @@
                 
 </script>
 
-<script>
-  
-</script> <!--Prevent Browser Refresh -->
 
     </body>
 </html>

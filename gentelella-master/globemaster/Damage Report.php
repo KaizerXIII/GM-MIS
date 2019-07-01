@@ -90,7 +90,7 @@
                           <th>Item Name Reference</th>
                           <th>Damaged Percentage</th>
                           <th>Item Quantity</th>
-                          <th>Loss per Item</th>
+                          <th>Total Loss</th>
                           <!-- <th>Date Occured </th> -->
                          
                         </tr>
@@ -108,10 +108,10 @@
                             echo '<td>';
                             echo $row['item_name'];
                             echo '</td>';
-                            echo '<td>';
+                            echo '<td align = "right">';
                             echo $row['damage_percentage'],"%";
                             echo '</td>';
-                            echo '<td>';
+                            echo '<td align = "right">';
                             echo $row['item_quantity'];
                             echo '</td>';
                             echo '<td align = "right">';
