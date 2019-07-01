@@ -259,7 +259,7 @@
                                                                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Quantity <span class="required">*</span>
                                                                                         </label>
                                                                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                                                <input id="new_item_quantity" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="new_item_quantity" placeholder="Please enter the quantity" required="required" type="number">
+                                                                                                <input id="new_item_quantity" class="form-control col-md-7 col-xs-12" data-validate-length-range="6"  name="new_item_quantity" placeholder="Please enter the quantity" required="required" type="number" max ="1000" oninput =validate(this) >
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="ln_solid"></div>
@@ -357,15 +357,31 @@
 
                                                                                                                             
                                                                     echo '<td >';
-                                                                    echo '<input  style="text-align:right;" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="0" max ="1000" value="" placeholder ="0"></input>';
+                                                                    echo '<input  style="text-align:right;" align = "right" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="0" max ="1000" value="" placeholder ="0"></input>';
                                                                     echo '</td>';
 
                                                                     echo '<td align = center >';
                                                                     echo '<button type="button" class="btn btn-round btn-success" name ="add" value ="',$row['item_id'],'" > + </button>';
                                                                     echo '</td>';
 
-                                                                echo '</tr>';                                                                                  
+                                                                echo '</tr>';
+                                                                if(trim($itemType) == "Granite") //IF granite, sets the Max of input to 50
+                                                                {
+                                                                    echo "<script>";                                                                   
+                                                                    echo "$('#quantity". $ITEM_ID."').attr({";
+                                                                    echo '"max": 50});';
+                                                                    echo "</script>";
+                                                                }
+                                                                else if(trim($itemType) == "Tiles") //else If TIles , set max to 5000
+                                                                {
+                                                                    echo "<script>";                                                                   
+                                                                    echo "$('#quantity". $ITEM_ID."').attr({";
+                                                                    echo '"max": 5000});';
+                                                                    echo "</script>";
+                                                                }
+                                                                
                                                             }
+                                                            
                                                         ?>  
                                                         </tbody>
                                                         <script type="text/javascript">
@@ -440,22 +456,32 @@
          function add_to_cart_new_item()
          {
              
-             if( confirm("Are you sure you want to enter the following data?"))
-             {
-                
+            var get_new_item_name = document.getElementById('new_item_name').value;
+            var get_new_item_qty = document.getElementById('new_item_quantity').value;
+            var get_new_item_supplier = document.getElementById('supplierID');
+            var get_sp_name = get_new_item_supplier.options[get_new_item_supplier.selectedIndex].text
+            if(get_new_item_name == "" || get_new_item_qty == "")
+            {
+                alert("Complete the form!");
+            }
+            else
+            {
+                if( confirm("Are you sure you want to enter the following data?"))
+             {             
 
-                var get_new_item_name = document.getElementById('new_item_name').value;
-                var get_new_item_qty = document.getElementById('new_item_quantity').value;
-                var get_new_item_supplier = document.getElementById('supplierID');
-                var get_sp_name = get_new_item_supplier.options[get_new_item_supplier.selectedIndex].text 
+
+                get_new_item_name += " | *NEW ITEM*";
 
                 GET_NEW_ITEM_NAME.push(get_new_item_name);
                 var add_row_to_cart = document.getElementById('cart').insertRow();                       
-                add_row_to_cart.innerHTML = "<tr> <td>" + get_new_item_name + "</td> <td align = right> " + get_new_item_qty + " </td><td> "+get_sp_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)'> - </button></td>";
+                add_row_to_cart.innerHTML = "<tr> <td>" + get_new_item_name + "  </td> <td align = right> " + get_new_item_qty + " </td><td> "+get_sp_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)'> - </button></td>";
                 alert("Item Added to Cart!");
                 CurrentTotal = CurrentTotal + parseInt(get_new_item_qty);
                 total_qty.value = CurrentTotal;
              }
+            } 
+            
+             
             
          }
 
