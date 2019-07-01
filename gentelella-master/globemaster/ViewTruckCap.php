@@ -191,6 +191,53 @@
                         
                       </tbody>
                     </table>
+
+                    <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Deliveries Summary</h2>
+    
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                   
+                  <form method = "POST" action = "Delivery Receipt.php">
+                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>B.D.</th>
+                          <th>Delivery Date</th>
+                          <th>Driver</th>
+                          <th>Truck #</th>                                                 
+                          <th>Delivery Status</th>
+                          <th>Time Out</th>
+                          <th>Time In</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Gawa nalang bagong table sa mysql for bulk orders para matrack time in and time out. tapos palagyan rin bagong column sa trucks table para malaman kung in or out yung truck. -->
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td align = "center"><a href = "#"><i class = "fa fa-wrench"></i></a></td>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                    </form>
+					
+					
+                  </div>
+                </div>
+              </div>
+            </div>
                     </form>
 					
 					
