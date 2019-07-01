@@ -93,6 +93,10 @@
                     echo'    <b><font color = "black">Expected Date of Arrival: </font></b>',  $ROW_RESULT_GET_FROM_DB['SXD'],' to ',  $ROW_RESULT_GET_FROM_DB['EXP_RANGE'] ;
                     echo'</div> ';
                     ?>
+                    <div align = "right">Change shipment status: <button type="button" class="btn btn-round btn-primary btn-xs">Arrived at China Port</button> 
+                    OR <button type="button" class="btn btn-round btn-primary btn-xs">Shipped from China Port</button> 
+                    OR <button type="button" class="btn btn-round btn-primary btn-xs">Arrived at Philippines Port</button></div>
+                    OR <button type="button" class="btn btn-round btn-success btn-xs">On the way to warehouse</button>
                     <div class = "col-md-12" align = "center" style="z-index: 1">
                         <ul class="progressbar">
                             <li class="active" >Purchased</li>
@@ -157,7 +161,7 @@
                                     echo '<td>'.$row['supply_item_quantity'].'</td>';
                                     echo '<td align = "center">';
                                     echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply"><i class = "fa fa-wrench"></i> Edit</button>';
-                                    echo '<button type="button" class="btn btn-round btn-success btn-xs" id="restock_page">Restock</button>';
+                                    echo '<button type="button" class="btn btn-round btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-smnewitem" id="restock_page">Create</button>';
                                     echo '</td>    ';      
                                 echo '</tr> '; 
                                 // echo $stringname;
@@ -173,45 +177,7 @@
                             echo $_SESSION['list_of_qty'][0];
                            
                             ?>      
-                            
-                            
-                  <!-- Small modal for edit supply qty-->
-                  <form class="form-horizontal form-label-left" method="post" action= "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
-                  <div class="modal fade bs-example-modal-smsupply" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-md">
-                      <div class="modal-content">
-
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                          </button>
-                          <h4 class="modal-title" id="myModalLabel2">Edit Arrived Quantity</h4>
-                        </div>
-                        <div class="modal-body">
-                          <span><h4><b>Item Name:</b> <?php echo $stringname; ?></h4></span>
-                          <!-- add backend -->
-                         <div>
-                           <label class = "control-label col-md-3 " for = "arrived">Quantity Arrived</label>
-                           <div class="col-md-9">
-                              <input type="text" id="arrived" class="form-control col-md-7 col-xs-12">
-                           </div>
-                         </div>
-                        </div>
-                        <br>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>   
-                  </form>    
-                  <!-- Small Modal end -->
                           </tbody>
-                          
-                          <?php
-
-                          
-                          ?>
                         </table><br>
                         <div class = "clearfix"></div>
                         <div class = "ln_solid"></div>
@@ -238,6 +204,164 @@
         <!-- /footer content -->
       </div>
     </div>
+    
+                      
+                            
+                            
+<!-- mid modal for edit supply qty-->
+<div class="modal fade bs-example-modal-smsupply" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel2">Edit Arrived Quantity</h4>
+      </div>
+      <div class="modal-body">
+        
+      <form method = "POST" action = "">
+        <span><h4><b>Item Name:</b> <?php echo $stringname; ?></h4></span>
+        <!-- add backend -->
+        <div class = "form-group">
+          <label class = "control-label col-md-3 " for = "arrived">Quantity Arrived <span class="required">*</span></label>
+          <div class="col-md-9">
+            <input type="text" id="arrived" class="form-control col-md-7 col-xs-12">
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>  
+    </div>
+  </div>
+</div>   
+  
+<!-- mid Modal end -->
+<!-- large modal for edit supply qty-->
+<div class="modal fade bs-example-modal-smnewitem" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel2">Edit Arrived Quantity</h4>
+      </div>
+      <div class="modal-body">
+        
+      <form method="POST" class="form-horizontal form-label-left" id = "item_detail" >
+        
+      <span><h4>Add temporary item <?php echo $stringname;?> to the inventory.</h4></span>
+      <br>
+      <div class="form-group">
+        <label class="control-label col-md-4 col-sm-3 col-xs-12">Item Category <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+
+        <select name="selectItemtype" id="select_item_type" required="required" class="form-control col-md-7 col-xs-12" onchange="getType(this)">
+        <option value = "">Choose...</option>
+          <?php
+                require_once('DataFetchers/mysql_connect.php');
+                $query = "SELECT * FROM ref_itemtype";
+                $result=mysqli_query($dbc,$query);
+                $option = "";
+                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                {
+                    echo'<option value = "'.$row['itemtype'].'">'.$row['itemtype'].'</option>';
+                }
+            ?>
+
+            </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4 col-sm-3 col-xs-12">Stock Keeping Unit (SKU) <span class="required">*</span>
+        </label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+          <input type="text" name="skuid" id="sku_id" name="last-name" required="required" class="form-control col-md-7 col-xs-12"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4 col-sm-3 col-xs-12">Choose Supplier <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+        <select name="supplier" id="supplier_id" required="required" class="form-control col-md-7 col-xs-12">
+        <option value = "">Choose...</option>
+            <?php
+                require_once('DataFetchers/mysql_connect.php');
+                $query = "SELECT * FROM suppliers";
+                $result=mysqli_query($dbc,$query);
+                
+                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                {
+                    echo '<option value = "'.$row['supplier_name'].'">'.$row['supplier_name'].'</option>';
+                }
+            ?>             
+            </select>
+        </div>
+      </div><br><br>
+      <div class="form-group">
+        <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">Item Name <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <input type="text" name="item_name" id="itemName" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="middle-name" class="control-label col-md-4 col-sm-3 col-xs-12">Warehouse Location</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+        <select name="selectWarehouse" id="warehouse_id" required="required" class="form-control col-md-7 col-xs-12">
+        <option value = "">Choose...</option>
+          <?php
+                require_once('DataFetchers/mysql_connect.php');
+                $query = "SELECT * FROM warehouses";
+                $result=mysqli_query($dbc,$query);
+                
+                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                {
+                    echo '<option value = "'.$row['warehouse'].'" > '.$row['warehouse'].' </option>';
+                }
+            ?>
+            </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4 col-sm-3 col-xs-12">Threshold Amount <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <input name="threshold" id ="threshold_amount" class="form-control col-md-7 col-xs-12" required="required" type="number" min = "0" max ="9999">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4 col-sm-3 col-xs-12">Unit Price <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <input name="price" id="item_price" class="form-control col-md-7 col-xs-12" required="required" type="number" step="0.01" placeholder = "1000.00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4 col-sm-3 col-xs-12">Item Weight<span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <input name="item_weight" id="item_weight" class="form-control col-md-7 col-xs-12" required="required" type="number" step="0.01" placeholder = "100 KG">
+        </div>
+      </div>
+      <div class="form-group" align = "right">
+        <!-- <div class="col-md-6 col-sm-6 col-xs-12"> -->
+          <button name="submitBtn" class="btn btn-success" type="button" id= "add_button">Add</button>
+          <button class="btn btn-primary" type="reset">Reset</button>
+        <!-- </div>z -->
+      </div>
+    </form>
+    </div>
+  </div>
+</div>   
+  
+<!-- Large Modal end -->
 
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -280,7 +404,59 @@
         // href_to_edit_inventory.href = url+Cells[0].innerText;
       
         
-    </script>   
+    </script> 
+    
+    <!-- Confirm add to inventory -->
+    <script>
+      var add_btn = document.getElementById("add_button");    
+        add_btn.onclick = function()
+        {
+          var  SET_SKU_ID = document.getElementById("sku_id").value;
+          var  SET_ITEM_NAME = document.getElementById("itemName").value;
+          var  SET_ITEM_PRICE = document.getElementById("item_price").value;
+          var  SET_ITEM_THRESHOLD = document.getElementById("threshold_amount").value;
+          var  SET_WAREHOUSE_ID = document.getElementById("warehouse_id").value;
+          var  SET_TYPE_ID = document.getElementById("select_item_type").value;
+          var  SET_SUPPLIER = document.getElementById("supplier_id").value;
+          var  SET_ITEM_WEIGHT = document.getElementById("item_weight").value; 
+
+          if(!SET_SKU_ID || !SET_ITEM_NAME || !SET_ITEM_PRICE || !SET_ITEM_THRESHOLD || !SET_WAREHOUSE_ID || !SET_TYPE_ID || !SET_SUPPLIER) //Checker
+          {
+            alert("Please Fill Up All Input");
+          }
+          else
+          {
+            if(confirm("Confirmation: Add New Item to Inventory?"))
+            {
+              request = $.ajax({
+                    url: "ajax/add_inventory.php",
+                    type: "POST",
+                    data: {
+                      post_sku_id: SET_SKU_ID,
+                      post_item_name: SET_ITEM_NAME,
+                      post_item_price: SET_ITEM_PRICE,
+                      post_item_threshold: SET_ITEM_THRESHOLD,
+                      post_warehouse_id: SET_WAREHOUSE_ID,
+                      post_type_id: SET_TYPE_ID,
+                      post_supplier_id: SET_SUPPLIER,
+                      post_item_weight: SET_ITEM_WEIGHT
+                    }, //{Variable name, variable value}
+                    success: function(data) 
+                    { //To test data
+                        alert(data);
+                        window.location.href = "ViewInventory.php";  
+                    }//End Success
+                  
+                });//End Ajax
+                alert("Item Added Successfully!");
+            }
+            else
+            {
+              alert("Action: Cancelled");
+            }
+          }    
+        } //End onclikc   
+    </script>
 
     <!-- Custom Fonts -->
     <style>     
