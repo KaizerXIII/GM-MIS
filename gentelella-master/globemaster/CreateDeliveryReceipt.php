@@ -482,6 +482,7 @@
     $quantity = array();
     $pricePerItem = array();
     $totalPrice = array();
+    $itemweight = array();
     
     $fabricationStatus = array();
     $paymentStatus = array();
@@ -519,6 +520,7 @@
           $pricePerItem[] =  number_format(($row['item_price']),2);  //place decimals
           // $totalPrice[] = $row['item_qty'] * $row['item_price'];
           $totalPrice[] =  number_format(($row['totalamt']),2);
+          $itemweight[] = $row['item_weight'];
   
           $fabricationStatus[] = $row['fab_status'];
           $paymentStatus[] = $row['payment_status'];
@@ -564,6 +566,7 @@
     echo "var quantityNumFromPHP = ".json_encode($quantity).";";
     echo "var PriceNumFromPHP = ".json_encode($pricePerItem).";";
     echo "var totalNumFromPHP = ".json_encode($totalPrice).";";
+    echo "var itemweightFromPHP = ".json_encode($itemweight).";";
 
     echo "var fabricationStatusFromPHP = ".json_encode($fabricationStatus).";";
     echo "var paymentStatusFromPHP = ".json_encode($paymentStatus).";";
@@ -582,10 +585,10 @@
 
     echo 'var table = document.getElementById("datatable");'; 
     echo 'table.oldHTML=table.innerHTML;';
-
+    
     echo  " dropdown.onchange = function(){";
         echo 'table.innerHTML=table.oldHTML;'; //returns to the first state of the Table;
-        
+        echo "var current_weight = 0; ";
     echo  " for (var i = 0; i < ".sizeof($orderNumber)."; i++) {  ";                                                                               
         echo  "  if(dropdown.value == orderNumFromPHP[i])";
             echo  "  {";                                 
@@ -596,15 +599,15 @@
 
                 // Added total weight
                 // echo  " totalweightBox.value = '400' + 'kg'";
-
-            
+               
+                echo "current_weight = current_weight + itemweightFromPHP[i] * quantityNumFromPHP[i];";
                 echo  " for (var j = 0; j < ".sizeof($truckID)."; j++) {  "; 
                 echo  "  if(locationFromPHP[i] == DestinationFromPHP[j])"; //checks if location is same as TruckDestinatrion
                 echo  "  {";
                     echo  " truckPlateBox.value = truckPlateFromPHP[j];";
                     echo  " driverBox.value = driverFirstNameFromPHP[j] + ' ' +driverLastNameFromPHP[j];";
-                    echo  " truckweightBox.value = TruckCapFromPHP[j];";
-                    echo  " totalweightBox.value = TruckCapFromPHP[j];";
+                    echo  " truckweightBox.value = TruckCapFromPHP[j] + ' KG';";
+                    echo  " totalweightBox.value = current_weight + ' KG';";
                 echo  "  }"; 
             echo  "  }"; // end 2nd forloop
             echo 'if(fabricationStatusFromPHP[i] == "No Fabrication"){ $("#item_fab").hide(); }';//END IF

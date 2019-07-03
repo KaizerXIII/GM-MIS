@@ -29,6 +29,9 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- JQUERY Required Scripts -->
+    <script type="text/javascript" src="js/script.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
     <style type="text/css">
 
@@ -249,7 +252,7 @@
                                             </div>
                                     </div> <!--END XPanel-->
                                 </div> <!--END Class Colmd-->
-                                <div class="col-md-6 col-sm-6 col-xs-12" >
+                                <div class="col-md-6 col-sm-6 col-xs-12" id = "fab_item">
                                 <div class="x_panel" >
                                 <center><h3>Fabricated Product Request</h1></h3></center>
                                     <div class="ln_solid"></div>
@@ -306,6 +309,10 @@
                                                 else if($FAB_STATUS == "Disapproved")
                                                 {
                                                     echo '<h2>Current Status: <font color = "red">Disapproved</font></h2>';
+                                                }
+                                                else if($FAB_STATUS == "No Fabrication")
+                                                {
+                                                    echo '<script>$("#fab_item").hide();</script>';
                                                 }
                                                 
 
