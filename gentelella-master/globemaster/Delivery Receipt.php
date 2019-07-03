@@ -256,14 +256,78 @@
                                     <div class="row" >
                                     <div class = "col-md-12" align = "center">
                                         <!-- "data:image/jpg;base64,'. base64_encode($BLOB[$i]).'" -->
-                                        <img src = "https://s7d4.scene7.com/is/image/roomandboard/?layer=0&size=498,300&scl=1&src=996120_wood_W&layer=comp&$prodzoom0$"  border-style = "border-width:3px;"style = "height:20vh; width:15vw">
+                                        <?php
+                                        $SQL_GET_OR_FROM_DR = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$GET_ID_DELIVERY' ";
+                                        $RESULT_GET_OR_FROM_DR = mysqli_query($dbc, $SQL_GET_OR_FROM_DR);
+                                        $ROW_RESULT_GET_OR = mysqli_fetch_array($RESULT_GET_OR_FROM_DR,MYSQLI_ASSOC);
+
+                                        $CURRENT_OR_OF_DR = $ROW_RESULT_GET_OR['ordernumber'];
+
+                                        $SQL_GET_FAB_DESC = "SELECT * FROM joborderfabrication WHERE order_number = '$CURRENT_OR_OF_DR'";
+                                        $RESULT_GET_FAB_DESC = mysqli_query($dbc, $SQL_GET_FAB_DESC);                                           
+                                        
+                                        $ROW_RESULT_GET_FAB_DESC = mysqli_fetch_array($RESULT_GET_FAB_DESC,MYSQLI_ASSOC);
+                                        $BLOB =  $ROW_RESULT_GET_FAB_DESC['reference_drawing'];
+                                                     
+
+                                         echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'"   border-style = "border-width:3px;"style = "height:20vh; width:15vw">'
+                                        ?>
                                     </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12"  >
                                         <br>
-                                        <h2>Order Number: OR-1 | <font color = "blue">Fabricating</font> OR <font color = "red">Disapproved</font> OR <font color = "green">Finished</font></h2>
+                                            <h2>Order Number:
+                                            <?php
+                                                $SQL_GET_OR_FROM_DR = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$GET_ID_DELIVERY' ";
+                                                $RESULT_GET_OR_FROM_DR = mysqli_query($dbc, $SQL_GET_OR_FROM_DR);
+                                                $ROW_RESULT_GET_OR = mysqli_fetch_array($RESULT_GET_OR_FROM_DR,MYSQLI_ASSOC);
+
+                                                $CURRENT_OR_OF_DR = $ROW_RESULT_GET_OR['ordernumber'];
+
+                                                echo $CURRENT_OR_OF_DR;
+
+                                                $SQL_GET_FAB_STATUS = "SELECT * FROM orders WHERE ordernumber = '$CURRENT_OR_OF_DR'";
+                                                $RESULT_GET_FAB_STATUS = mysqli_query($dbc, $SQL_GET_FAB_STATUS);
+                                                $ROW_RESULT_GET_FAB_STATUS = mysqli_fetch_array($RESULT_GET_FAB_STATUS,MYSQLI_ASSOC);
+
+                                                $FAB_STATUS = $ROW_RESULT_GET_FAB_STATUS['fab_status'];
+                                                
+                                                if($FAB_STATUS == "For Fabrication")
+                                                {
+                                                    echo '<h2>Current Status: <font color = "blue">Fabricating</font></h2>';
+                                                }
+                                                else if($FAB_STATUS == "Under Fabrication")
+                                                {
+                                                    echo '<h2>Current Status: <font color = "blue">Fabricating</font></h2>';
+                                                }
+                                                else if($FAB_STATUS == "Finished Fabrication")
+                                                {
+                                                    echo '<h2>Current Status: <font color = "green">Finished</font></h2>';
+                                                }
+                                                else if($FAB_STATUS == "Disapproved")
+                                                {
+                                                    echo '<h2>Current Status: <font color = "red">Disapproved</font></h2>';
+                                                }
+                                                
+
+                                            ?>
+                                            </h2>
                                         </div>
                                         <div class ="col-md-12 col-sm-12 col-xs-12">
-                                        <font size = "3"> Description: A big brown table</font>
+                                        <?php
+                                            $SQL_GET_FAB_DESC = "SELECT * FROM joborderfabrication WHERE order_number = '$CURRENT_OR_OF_DR'";
+                                            $RESULT_GET_FAB_DESC = mysqli_query($dbc, $SQL_GET_FAB_DESC);                                           
+                                            if(!$RESULT_GET_FAB_DESC) 
+                                            {
+                                                die('Error: ' . mysqli_error($dbc));
+                                                
+                                            } 
+                                            else 
+                                            {
+                                                $ROW_RESULT_GET_FAB_DESC = mysqli_fetch_array($RESULT_GET_FAB_DESC,MYSQLI_ASSOC);
+                                                $BLOB =  $ROW_RESULT_GET_FAB_DESC['reference_drawing'];
+                                                echo '<font size = "3">Description: '.$ROW_RESULT_GET_FAB_DESC['fab_description'].'</font>';                                           
+                                            }                                           
+                                        ?>
                                         </div>
                                     </div>         
                                     </div> <!--END XPanel-->
@@ -280,10 +344,12 @@
                                             <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
                                             <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" disabled>Finish Delivery <span class="caret"></span></button>
                                             <ul role="menu" class="dropdown-menu">
-                                            <li><a href="#"  onclick = "finishDeliver()">Without Damages</a>
-                                            </li>
-                                            <li><a href="damage_delivery.php">With Damages</a>
-                                            </li>
+                                                <li>
+                                                    <a href="#"  onclick = "finishDeliver()">Without Damages</a>
+                                                </li>
+                                                <li>
+                                                    <a href="damage_delivery.php">With Damages</a>
+                                                </li>
                                             </ul>
                                     <?php
                                         }
