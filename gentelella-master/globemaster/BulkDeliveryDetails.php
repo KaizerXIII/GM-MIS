@@ -84,94 +84,96 @@
 
                                 
                             </div>
+                            Truck number ZCV-513 is out for delivery. 
+                            Truck number ZCV-513 is idle.
                             <div class="col-md-12 col-sm-12 col-xs-12" >
                             <?php
-                                    $GET_ID_DELIVERY = $_SESSION['get_dr_number_from_deliveries'];
-                                    $deliveryexpected = array();
-                                    $deliverydate = array();
-                                    $datetoday = date("Y-m-d");
-                                    $queryDeliveryDate = "SELECT * FROM orders o
-                                    JOIN scheduledelivery sd 
-                                    ON o.ordernumber = sd.ordernumber 
-                                    WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
-                                    $resultDeliveryDate = mysqli_query($dbc,$queryDeliveryDate);
+                                    // $GET_ID_DELIVERY = $_SESSION['get_dr_number_from_deliveries'];
+                                    // $deliveryexpected = array();
+                                    // $deliverydate = array();
+                                    // $datetoday = date("Y-m-d");
+                                    // $queryDeliveryDate = "SELECT * FROM orders o
+                                    // JOIN scheduledelivery sd 
+                                    // ON o.ordernumber = sd.ordernumber 
+                                    // WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
+                                    // $resultDeliveryDate = mysqli_query($dbc,$queryDeliveryDate);
                                   
-                                    while($rowDeliveryDate = mysqli_fetch_array($resultDeliveryDate,MYSQLI_ASSOC))
-                                    {
-                                        $deliveryexpected[] = $rowDeliveryDate['expected_date'];
-                                        $deliverydate[] = $rowDeliveryDate['delivery_Date'];
-                                    }
+                                    // while($rowDeliveryDate = mysqli_fetch_array($resultDeliveryDate,MYSQLI_ASSOC))
+                                    // {
+                                    //     $deliveryexpected[] = $rowDeliveryDate['expected_date'];
+                                    //     $deliverydate[] = $rowDeliveryDate['delivery_Date'];
+                                    // }
                                    
                                   
-                                    for($i = 0; $i < sizeof($deliveryexpected); $i++)
-                                    {
-                                        // to check countdown till delivery
-                                        $queryDeliveryDateDiffNow = "SELECT order_status, DATEDIFF(CURDATE(),sd.delivery_Date) 
-                                        AS datedifferenceNow
-                                        FROM orders o
-                                        JOIN scheduledelivery sd 
-                                        ON o.ordernumber = sd.ordernumber 
-                                        WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
-                                        $resultDeliveryDateDiffNow = mysqli_query($dbc,$queryDeliveryDateDiffNow);
-                                        $rowDeliveryDateDiffNow = mysqli_fetch_array($resultDeliveryDateDiffNow,MYSQLI_ASSOC);
+                                    // for($i = 0; $i < sizeof($deliveryexpected); $i++)
+                                    // {
+                                    //     // to check countdown till delivery
+                                    //     $queryDeliveryDateDiffNow = "SELECT order_status, DATEDIFF(CURDATE(),sd.delivery_Date) 
+                                    //     AS datedifferenceNow
+                                    //     FROM orders o
+                                    //     JOIN scheduledelivery sd 
+                                    //     ON o.ordernumber = sd.ordernumber 
+                                    //     WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
+                                    //     $resultDeliveryDateDiffNow = mysqli_query($dbc,$queryDeliveryDateDiffNow);
+                                    //     $rowDeliveryDateDiffNow = mysqli_fetch_array($resultDeliveryDateDiffNow,MYSQLI_ASSOC);
 
-                                        if($rowDeliveryDateDiffNow['order_status'] == "Delivered")
-                                        {
+                                    //     if($rowDeliveryDateDiffNow['order_status'] == "Delivered")
+                                    //     {
                                 ?>
-                                            <p><font color = "green">This order has successfully been delivered!</font></p>
+                                            <!-- <p><font color = "green">This order has successfully been delivered!</font></p> -->
                                 <?php
-                                        }
-                                        else{
-                                            if($rowDeliveryDateDiffNow['datedifferenceNow'] > -4 && $rowDeliveryDateDiffNow['datedifferenceNow'] < 1)
-                                            {
-                                                $datedifferenceNow =  abs($rowDeliveryDateDiffNow['datedifferenceNow']);
-                                                $orders = "order's";
-                                                echo '<p><font color = "blue">This '.$orders.' delivery date is due in '.$datedifferenceNow.' days.</font></p>';
-                                            }
-                                            else if($rowDeliveryDateDiffNow['datedifferenceNow'] > 0)
-                                            {
-                                                $datedifferenceNow =  abs($rowDeliveryDateDiffNow['datedifferenceNow']);
-                                                $orders = "order's";
-                                                echo '<p><font color = "red">This order is late by '.$datedifferenceNow.' Days.</font></p>';
-                                            }
+                                    //     }
+                                    //     else{
+                                    //         if($rowDeliveryDateDiffNow['datedifferenceNow'] > -4 && $rowDeliveryDateDiffNow['datedifferenceNow'] < 1)
+                                    //         {
+                                    //             $datedifferenceNow =  abs($rowDeliveryDateDiffNow['datedifferenceNow']);
+                                    //             $orders = "order's";
+                                    //             echo '<p><font color = "blue">This '.$orders.' delivery date is due in '.$datedifferenceNow.' days.</font></p>';
+                                    //         }
+                                    //         else if($rowDeliveryDateDiffNow['datedifferenceNow'] > 0)
+                                    //         {
+                                    //             $datedifferenceNow =  abs($rowDeliveryDateDiffNow['datedifferenceNow']);
+                                    //             $orders = "order's";
+                                    //             echo '<p><font color = "red">This order is late by '.$datedifferenceNow.' Days.</font></p>';
+                                    //         }
 
-                                            // to check date difference from expected date
-                                            $queryDeliveryDateDiff = "SELECT DATEDIFF(sd.delivery_Date,o.expected_date) 
-                                            AS datedifference
-                                            FROM orders o
-                                            JOIN scheduledelivery sd 
-                                            ON o.ordernumber = sd.ordernumber 
-                                            WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
-                                            $resultDeliveryDateDiff = mysqli_query($dbc,$queryDeliveryDateDiff);
-                                            $rowDeliveryDateDiff = mysqli_fetch_array($resultDeliveryDateDiff,MYSQLI_ASSOC);
+                                    //         // to check date difference from expected date
+                                    //         $queryDeliveryDateDiff = "SELECT DATEDIFF(sd.delivery_Date,o.expected_date) 
+                                    //         AS datedifference
+                                    //         FROM orders o
+                                    //         JOIN scheduledelivery sd 
+                                    //         ON o.ordernumber = sd.ordernumber 
+                                    //         WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
+                                    //         $resultDeliveryDateDiff = mysqli_query($dbc,$queryDeliveryDateDiff);
+                                    //         $rowDeliveryDateDiff = mysqli_fetch_array($resultDeliveryDateDiff,MYSQLI_ASSOC);
 
-                                            if($rowDeliveryDateDiff['datedifference'] > 0)
-                                            {
-                                                $datedifference =  $rowDeliveryDateDiff['datedifference'];
-                                                echo '<p><font color = "#ffc430">This order will be '.$datedifference.' day(s) late from the Expected Delivery Date.</font></p>';
-                                            }
-                                        }
-                                    }
+                                    //         if($rowDeliveryDateDiff['datedifference'] > 0)
+                                    //         {
+                                    //             $datedifference =  $rowDeliveryDateDiff['datedifference'];
+                                    //             echo '<p><font color = "#ffc430">This order will be '.$datedifference.' day(s) late from the Expected Delivery Date.</font></p>';
+                                    //         }
+                                    //     }
+                                    // }
                                     
                                 ?>
                                 </div>
                             <form class="form-horizontal form-label-center" method="GET">                              
-                                <div class="col-md-6 col-sm-6 col-xs-12 " >
-                                    <div class="x_panel" >
-                                    <center><font color = "#2a5eb2"><h3>Delivery Receipt Details </h1>
-                                                </h3></font></center>
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 uniquedivA" >
+                                    <div class="x_panel">
+                                    <div>
+                                        <div class = "col-md-6">
+                                            <font color = "black" style= "text-align:left"><h3>DR - 1</h3></font>
+                                        </div>
+                                        <div align ="right">
+                                            <button type="button"  class="btn btn-round btn-info btn-md" style = "vertical-align:middle">Finish this Delivery</button>  
+                                        </div>
+                                    </div>
                                     <div class="ln_solid"></div>
 
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Delivery Receipt Number </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id = "drNumber" class="form-control" readonly="readonly" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Expected Date</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id = "drexpectedDate" class="form-control" readonly="readonly" >
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -179,14 +181,8 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id = "drDate" class="form-control" readonly="readonly" >
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Destination</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id = "drDestination" class="form-control" readonly="readonly" >
-                                        </div>
-                                    </div>
 
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Customer Name</label>
@@ -195,77 +191,66 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Destination</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" id = "drDestination" class="form-control" readonly="readonly" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Current Status</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id = "drStatus" class="form-control" readonly="readonly">
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Expected Date</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" id = "drexpectedDate" class="form-control" readonly="readonly" >
+                                        </div>
+                                    </div>
+                                    
 
                                     
                                     <br><br>
                                     <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Total Weight</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <input   type="number" id = "drTotalWeight" class="form-control" readonly="readonly" style="text-align:right;">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Total Amount</label>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                            <input   type="text" id = "drTotal" class="form-control" readonly="readonly" placeholder="Read-Only Input" style="text-align:right;">
+                                            <input   type="number" id = "drTotal" class="form-control" readonly="readonly" style="text-align:right;">
                                         </div>
                                     </div>
 
                                     </div>
                                 </div>
-
-                                <div class="col-md-6 col-sm-6 col-xs-12" >
-                                    <div class="x_panel" >
-
-                                    <center><h3>Items in This Order</h1>
-                                    
-                                    </h3></center>
-                                    <div class="ln_solid"></div>
-
-                                            <div class="row" >
-                                                <div class="col-md-12 col-sm-12 col-xs-12"  >
-                                                    <table  id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
-                                                        <thead>
-                                                            <tr role="row">
-                                                                <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 263px;">Product</th>
-                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Pieces</th>
-                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Price per piece</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tr role='row' class='odd'>
-                                                                                                                                            
-                                                            </tr>
-
-                                                        <tbody>
-                                                        
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            
-                                    </div> <!--END XPanel-->
-                                </div> <!--END Class Colmd-->
-
                                 <div class = "clearfix"></div>  
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right ">
+                                        <button type="" class="btn btn-primary btn-lg"><i class="fa fa-truck"></i> Deploy Truck</button> 
+                                        <button type="" class="btn btn-success btn-lg"><i class="fa fa-truck"></i> Truck has Returned</button> 
+                                        <!-- lagyan ng onclick enable disable -->
                                     <?php
-                                        if($rowDeliveryDateDiffNow['order_status'] == "Delivered" || $rowDeliveryDateDiffNow['order_status'] == "Cancelled")
-                                        {
+                                        // if($rowDeliveryDateDiffNow['order_status'] == "Delivered" || $rowDeliveryDateDiffNow['order_status'] == "Cancelled")
+                                        // {
                                     ?>
-                                            <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
+                                            <!-- <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
                                             <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" disabled>Finish Delivery <span class="caret"></span></button>
                                             <ul role="menu" class="dropdown-menu">
                                             <li><a href="#"  onclick = "finishDeliver()">Without Damages</a>
                                             </li>
                                             <li><a href="damage_delivery.php">With Damages</a>
                                             </li>
-                                            </ul>
+                                            </ul> -->
                                     <?php
-                                        }
-                                        else{
+                                        // }
+                                        // else{
                                     ?>
-                                            <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
+                                            <!-- <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
                                             <div class="btn-group">
                                                 <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" >Finish Delivery <span class="caret"></span></button>
                                                     <ul role="menu" class="dropdown-menu">
@@ -276,25 +261,18 @@
                                                             <a href="javascript:;"  onclick = "post_to_dmg_delivery_page()">With Damages</a>
                                                         </li>
                                                     </ul>
-                                            </div>
+                                            </div> -->
                                     <?php
-                                        }
+                                        // }
                                     ?>
                                         </div>
                                     </div>
-
-                                   
-
-                                    
-                            </form>
-
+                                </form>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-            
 </body>
 
 <!-- /page content -->
