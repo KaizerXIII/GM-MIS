@@ -67,12 +67,12 @@
                         <div class="x_panel" id="printDR">
                             <div class="x_title">
                                 <div class="col-md-10 col-sm-10 col-xs-12">
-                                    <font color = "black"><h1>Bulk Delivery - [
+                                    <font color = "black"><h1>[ZCV-513] - June 13, 2019 Delivery
                                     <?php
                                         // Replace with Bulk Order Table
                                     ?>
 
-                                    ]</h1></font> 
+                                    </h1></font> 
                                 </div>
                                 <div class="col-md-2 col-sm-2 col-xs-12" align="right">
                                     <?php
@@ -84,8 +84,14 @@
 
                                 
                             </div>
-                            Truck number ZCV-513 is out for delivery. 
-                            Truck number ZCV-513 is idle.
+                            <?php
+
+                            ?>
+                            <font color = "red">Truck number ZCV-513 is out for delivery.</font> 
+                            <?php
+
+                            ?>
+                            <font color = "green">Truck number ZCV-513 is idle.</font>
                             <div class="col-md-12 col-sm-12 col-xs-12" >
                             <?php
                                     // $GET_ID_DELIVERY = $_SESSION['get_dr_number_from_deliveries'];
@@ -162,28 +168,14 @@
                                     <div class="x_panel">
                                     <div>
                                         <div class = "col-md-6">
-                                            <font color = "black" style= "text-align:left"><h3>DR - 1</h3></font>
+                                            <font color = "black" style= "text-align:left" size = "6">DR - 1</font>
                                         </div>
-                                        <div align ="right">
-                                            <button type="button"  class="btn btn-round btn-info btn-md" style = "vertical-align:middle">Finish this Delivery</button>  
+                                        <div align = "right">
+                                            <button type="button" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
                                         </div>
+                                        
                                     </div>
                                     <div class="ln_solid"></div>
-
-                                    <!-- <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Delivery Receipt Number </label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id = "drNumber" class="form-control" readonly="readonly" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Delivery Date</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id = "drDate" class="form-control" readonly="readonly" >
-                                        </div>
-                                    </div> -->
-
-
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Customer Name</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -230,42 +222,11 @@
                                 <div class = "clearfix"></div>  
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
-                                        <div class="col-md-12 col-sm-12 col-xs-12" align = "right ">
-                                        <button type="" class="btn btn-primary btn-lg"><i class="fa fa-truck"></i> Deploy Truck</button> 
-                                        <button type="" class="btn btn-success btn-lg"><i class="fa fa-truck"></i> Truck has Returned</button> 
+                                        <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
+                                        <button type="button" class="btn btn-primary btn-lg" onclick = "changeOut();" id = "deploy" style = "display:block"><i class="fa fa-truck"></i> Deploy Truck</button> 
+                                        <button type="button" class="btn btn-success btn-lg" onclick = "changeIn();" id = "undeploy" style = "display:block"><i class="fa fa-truck"></i> Truck has Returned</button> 
                                         <!-- lagyan ng onclick enable disable -->
-                                    <?php
-                                        // if($rowDeliveryDateDiffNow['order_status'] == "Delivered" || $rowDeliveryDateDiffNow['order_status'] == "Cancelled")
-                                        // {
-                                    ?>
-                                            <!-- <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
-                                            <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" disabled>Finish Delivery <span class="caret"></span></button>
-                                            <ul role="menu" class="dropdown-menu">
-                                            <li><a href="#"  onclick = "finishDeliver()">Without Damages</a>
-                                            </li>
-                                            <li><a href="damage_delivery.php">With Damages</a>
-                                            </li>
-                                            </ul> -->
-                                    <?php
-                                        // }
-                                        // else{
-                                    ?>
-                                            <!-- <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
-                                            <div class="btn-group">
-                                                <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" >Finish Delivery <span class="caret"></span></button>
-                                                    <ul role="menu" class="dropdown-menu">
-                                                        <li>
-                                                            <a href="#"  onclick = "finishDeliver()">Without Damages</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;"  onclick = "post_to_dmg_delivery_page()">With Damages</a>
-                                                        </li>
-                                                    </ul>
-                                            </div> -->
-                                    <?php
-                                        // }
-                                    ?>
-                                        </div>
+                                    </div>
                                     </div>
                                 </form>
                             </div>
@@ -556,7 +517,7 @@ echo '</script>';
         $this.val(parseFloat($this.val()).toFixed(2));
           
       }); //Sets the Decimal
-    </script>
+</script>
 
 </body>
 
