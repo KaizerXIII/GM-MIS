@@ -51,10 +51,9 @@
                 <div class="right_col" role="main">
                     <div class="">
                         <div class="page-title">
-                            <div class="title_left">
-                                <h1>Create Order</h1>
-                            </div>
+                            <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER TRADING CLIENT ORDER FORM</h1><br>
                         </div>
+            <br><br><br><br>
 
                         <div class="clearfix"></div>
 
@@ -86,7 +85,7 @@
                                         <form class="form-horizontal form-label-left" method="POST">
 
                                             <div class="form-group">
-                                                <h1><font color = "black"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Client:</label></font></h1>
+                                                <font color = "black" size = "6"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Client:</label></font>
                                                 <div class="col-md-2 col-sm-2 col-xs-12" style = "align: left;">
                                                     <select class="form-control col-md-12 col-xs-12" id="clientID" name="clientID">
                                                 <?php
@@ -462,14 +461,14 @@
                 </div> -->
                 
                 <div class="form-group">
-                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                        <button type="button" class="btn btn-primary" align="center" name="next" data-toggle="modal" data-target=".bs-example-modal-lg" onclick ="checkCart()">Next</button>
-                        <button type="Reset" class="btn btn-danger" onclick="destroyTable();">Reset</button>
-
+                    <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
+                        <button type="Reset" class="btn btn-danger btn-lg btn-round" onclick="destroyTable();">Reset</button>
+                        <button type="button" class="btn btn-primary btn-lg btn-round" align="center" name="next" data-toggle="modal" data-target=".bs-example-modal-md" onclick ="checkCart()">Next Step <i class = "fa fa-arrow-right"></i></button>
+                    </div>
             <!-- Add Order2 Modal -->
             
-            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id ="finalizeOrder" >
-              <div class="modal-dialog modal-lg" >
+            <div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true" id ="finalizeOrder" >
+              <div class="modal-dialog modal-md" >
                 <div class="modal-content" >
 
                   <div class="modal-header">
@@ -482,7 +481,7 @@
 
 
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment Type</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2">Payment Type</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="btn btn-default dropdown-toggle" name="paymentID" id = "paymentID" onchange = "setLoanDown();">
                             <?php
@@ -500,14 +499,14 @@
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Loan Downpayment</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2">Loan Downpayment</label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <input type="number" id="loanpayment" style = "text-align:right" disabled class="form-control col-md-7 col-xs-12">
                             <!-- Loan downpayment can be 0. If set to the total value of order, the order payment status will automatically be set to PAID. -->
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >For Delivery?<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2" >For Delivery?<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <button type="button" name ="YesDeliv" class="btn btn-round btn-success" onclick = "toggleDeliveryDate(); " value = "Deliver" id = "Yesbutton" style = "display:block" >Yes</button>
@@ -530,11 +529,11 @@
 
                     <div id = "ifYes" style = "display:block">
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" >Expected Date<span class="required">*</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2" >Expected Date<span class="required">*</span>
                             </label>
                             
                             <div class="col-md-2 col-sm-6 col-xs-12 input-group date">
-                                <input id="expectedDate" name="getExpectedDelivery" class="form-control col-md-7 col-xs-12 deliveryDate" data-validate-length-range="6" data-validate-words="2" name="name1" type="date" min="<?php echo date("Y-m-d", strtotime("+1days")); ?>">
+                                <input id="expectedDate" name="getExpectedDelivery" class=" btn btn-default form-control col-md-7 col-xs-12 col-md-offset-1 deliveryDate" data-validate-length-range="6" data-validate-words="2" name="name1" type="date" min="<?php echo date("Y-m-d", strtotime("+1days")); ?>">
                                 <!-- <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span> -->
@@ -554,7 +553,7 @@
                     </div>
                 
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >For Fabrication?<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2" >For Fabrication?<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <button type="button" class="btn btn-round btn-primary" onclick = "toggleFabrication()" value = "YesFab" id = "YesbuttonFab" style = "display:none" >Yes</button>
@@ -563,7 +562,7 @@
                     </div>
 
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Is This Order Paid?<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2" >Is This Order Paid?<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="btn btn-default dropdown-toggle" name = "payment_status" id = "payment_status" onchange = "changebuttoncolor()" required="required">
@@ -576,11 +575,11 @@
 
                     <div class="ln_solid"></div>
                     <div class="form-group">
-                      <div class="col-md-6 col-md-offset-3">
+                      <div class="col-md-12" align = "right">
                         <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         <!--   -->
-                        <input id="send" name ="viewOrderButton" type="submit" class="btn btn-success" style="visibility:visible" onclick="doAction()" value ="Submit" required="required"></input>
-                        <input type="button" class="btn btn-primary" id="fabricationpage" style="visibility:hidden"  onclick="nextpageWithFabrication()" value ="Next Step"></input> 
+                        <input id="send" name ="viewOrderButton" type="submit" class="btn btn-success" onclick="doAction()" value ="Submit" required="required"></input>
+                        <input type="button" class="btn btn-primary" id="fabricationpage" disabled  onclick="nextpageWithFabrication()" value ="Next Step"></input> 
                                   
                       </div>
                     </div>
@@ -929,8 +928,8 @@
 
             function toggleFabrication()
             {
-                submitbtn.style.visibility = "visible";
-                nextbtn.style.visibility = "hidden";
+                submitbtn.disabled = false;
+                nextbtn.disabled = true;
                 yesbuttonfab.style.display = "none";
                 nobuttonfab.style.display = "block";
 
@@ -951,8 +950,9 @@
             }
             function toggleFabrication1()
             {
-                submitbtn.style.visibility = "hidden";
-                nextbtn.style.visibility = "visible"
+                
+                submitbtn.disabled = true;
+                nextbtn.disabled = false;
                 yesbuttonfab.style.display = "block";
                 nobuttonfab.style.display = "none";
 
@@ -1167,6 +1167,24 @@ function nextpageNOFabrication()
         // Not sure what to to with this, paki check nalang mamats.
     }
 </script>
+
+<!-- Style for page title -->
+<style>
+        
+        @font-face {
+        font-family: "Couture Bold";
+        src: url("css/fonts/couture-bld.otf");
+        }
+        
+        h1 {
+            font-family: 'COUTURE Bold', Arial, sans-serif;
+            font-weight:normal;
+            font-style:normal;
+            font-size: 50px;
+            color: #1D2B51;
+            }
+
+</style>    
 
     </body>
 </html>

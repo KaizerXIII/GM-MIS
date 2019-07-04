@@ -9,7 +9,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>GM - Order Form </title>
+        <title>GM - Tiles Request Form </title>
 
         <!-- Bootstrap -->
         <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,7 @@
                 <div class="right_col" role="main">
                     <div class="">
                         <div class="page-title">
-                            <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER DEPOT TILES INVENTORY</h1><br>
+                            <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER DEPOT TILES REQUEST FORM</h1><br>
                         </div>
             <br><br><br><br>
 
@@ -1167,6 +1167,7 @@ function nextpageNOFabrication()
     }
 </script>
 
+<!-- Style for page title -->
 <style>
         
         @font-face {
@@ -1182,7 +1183,7 @@ function nextpageNOFabrication()
             color: #1D2B51;
             }
 
-    </style>    
+</style>    
 
     </body>
 </html>
