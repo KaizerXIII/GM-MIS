@@ -1,5 +1,5 @@
 <?php
-$dbc=mysqli_connect('localhost','root','Rane0708!','depotdb');
+$dbc=mysqli_connect('localhost','root','1234','movedb');
 
 
 if (!$dbc) {
