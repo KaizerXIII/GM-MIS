@@ -100,11 +100,15 @@
                                     $result1=mysqli_query($dbc,$sql1);
                                     while($row1=mysqli_fetch_array($result1,MYSQLI_ASSOC))
                                     { 
+                                      if($row1['fab_status'] == "No Fabrication" || $row1['fab_status'] == "Finished Fabrication")
+                                      {
                                         echo'<option value="';
                                         echo $row1['ordernumber'];
                                         echo'">';
                                         echo $row1['ordernumber'], " | " ,$row1['client_name'];
                                         echo'</option>';
+                                      }
+                                        
                                     } 
                                                                    
                                 ?> <!-- PHP END [ Getting the OR Number from DB ]-->                                                   
@@ -167,7 +171,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Truck Weight Capacity: 
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="truckWeight" name = "truckWeight" class="date-picker form-control col-md-7 col-xs-12" type="text" readonly="readonly">
+                          <input style="text-align:right;" id="truckWeight" name = "truckWeight" class="date-picker form-control col-md-7 col-xs-12" type="text" readonly="readonly">
                         </div>
                       </div>
 
@@ -186,7 +190,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Weight: 
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="totalorderWeight" class="date-picker form-control col-md-7 col-xs-12" type="text" readonly="readonly">
+                          <input style="text-align:right;" id="totalorderWeight" class="date-picker form-control col-md-7 col-xs-12" type="text" readonly="readonly">
                         </div>
                       </div>  
 
@@ -231,7 +235,7 @@
                           </div>         
                         </div> <!--END XPanel-->
                     </div> <!--END Class Colmd-->
-                    <div class="col-md-6 col-sm-6 col-xs-12" >
+                    <div class="col-md-6 col-sm-6 col-xs-12" id="item_fab">
                     <div class="x_panel" >
                       <center><h3>Fabricated Product Request</h1></h3></center>
                         <div class="ln_solid"></div>
@@ -242,10 +246,12 @@
                            </div>
                             <div class="col-md-12 col-sm-12 col-xs-12"  >
                               <br>
-                              <h2>Order Number: OR-1 | <font color = "blue">Fabricating</font> OR <font color = "red">Disapproved</font> OR <font color = "green">Finished</font></h2>
+                              <h2><span id = "current_or">Order Number: OR-1 </span></h2>
+                              <h2><span id = "fab_status">Current Status:  </span></h2>
+                              <!-- <font color = "blue">Fabricating</font> OR <font color = "red">Disapproved</font> OR <font color = "green">Finished</font> -->
                             </div>
                             <div class ="col-md-12 col-sm-12 col-xs-12">
-                              <font size = "3"> Description: A big brown table</font>
+                              <span id = "description"><font size = "3"> Description: A big brown table</font></span>
                             </div>
                           </div>         
                         </div> <!--END XPanel-->
@@ -449,7 +455,7 @@
 <!-- Custom Theme Scripts -->
 <script src="../build/js/custom.min.js"></script>
 <script type="text/javascript">
-                                    
+    
                                     
     <?php
     
@@ -476,6 +482,7 @@
     $quantity = array();
     $pricePerItem = array();
     $totalPrice = array();
+    $itemweight = array();
     
     $fabricationStatus = array();
     $paymentStatus = array();
@@ -485,6 +492,8 @@
 
     $driverFirstNameFromHTML = array();
     $driverLastNameFromHTML = array();
+
+    $fab_desc = array();
     
     // $SQL_ORDERS_STATUS = "SELECT * FROM orders WHERE orderstatus = 'Deliver'";
     // $RESULT_ORDER_STATUS = mysqli_query($dbc,$SQL_ORDERS_STATUS);
@@ -501,27 +510,33 @@
 
     $result=mysqli_query($dbc,$sql);                                      
     while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-    {                                                                                     
-        $orderNumber[] = $row['ordernumber'];
-        $customerName[] = $row['client_name'];  
-        $itemName[] = $row['item_name'];
-        $quantity[] = $row['item_qty'];
-        $pricePerItem[] =  number_format(($row['item_price']),2);  //place decimals
-        // $totalPrice[] = $row['item_qty'] * $row['item_price'];
-        $totalPrice[] =  number_format(($row['totalamt']),2);
-
-        $fabricationStatus[] = $row['fabrication_status'];
-        $paymentStatus[] = $row['payment_status'];
-
-        $FORMATTED_DATE = date('F j, Y',strtotime($row['expected_date'])); //Formats date 
-
-        $ExpectedDateFromHTML[] = $FORMATTED_DATE;
-        $locationFromHTML[] = $row['client_city'];
+    {   
+        if($row['fab_status'] == "No Fabrication" || $row['fab_status'] == "Finished Fabrication")
+        {
+          $orderNumber[] = $row['ordernumber'];
+          $customerName[] = $row['client_name'];  
+          $itemName[] = $row['item_name'];
+          $quantity[] = $row['item_qty'];
+          $pricePerItem[] =  number_format(($row['item_price']),2);  //place decimals
+          // $totalPrice[] = $row['item_qty'] * $row['item_price'];
+          $totalPrice[] =  number_format(($row['totalamt']),2);
+          $itemweight[] = $row['item_weight'];
+  
+          $fabricationStatus[] = $row['fab_status'];
+          $paymentStatus[] = $row['payment_status'];
+  
+          $FORMATTED_DATE = date('F j, Y',strtotime($row['expected_date'])); //Formats date 
+  
+          $ExpectedDateFromHTML[] = $FORMATTED_DATE;
+          $locationFromHTML[] = $row['client_city'];
+        }                                                                               
+        
                                                         
     }
-
+    
     $truckID = array();
     $destinationID = array();
+    $truckcap = array();
     $sql1 = "SELECT * FROM destination
     JOIN trucktable ON trucktable.truckID = destination.truckID
     join driver ON driver.truckID = trucktable.truckID;";
@@ -532,7 +547,18 @@
         $destinationID[] = $row1['DestinationName'];
         $driverFirstNameFromHTML[]  = $row1['driverFirstName'];
         $driverLastNameFromHTML[]  = $row1['driverLastName'];
+        $truckcap[] = $row1['weightCap'];
     }
+
+    for($i = 0; $i < sizeof($orderNumber); $i++)
+    {
+      $SQL_GET_FAB_DESC = "SELECT * FROM joborderfabrication WHERE order_number = '$orderNumber[$i]'";
+      $RESULT_GET_FAB_DESC = mysqli_query($dbc,$SQL_GET_FAB_DESC);
+      $ROW_RESULT_GET_FAB_DESC = mysqli_fetch_array($RESULT_GET_FAB_DESC,MYSQLI_ASSOC);
+
+      $fab_desc[] =  $ROW_RESULT_GET_FAB_DESC['fab_description'];
+    }
+
     
     echo "var itemNameFromPHP = ".json_encode($itemName).";"; 
     echo "var cusNameFromPHP = ".json_encode($customerName).";"; 
@@ -540,6 +566,7 @@
     echo "var quantityNumFromPHP = ".json_encode($quantity).";";
     echo "var PriceNumFromPHP = ".json_encode($pricePerItem).";";
     echo "var totalNumFromPHP = ".json_encode($totalPrice).";";
+    echo "var itemweightFromPHP = ".json_encode($itemweight).";";
 
     echo "var fabricationStatusFromPHP = ".json_encode($fabricationStatus).";";
     echo "var paymentStatusFromPHP = ".json_encode($paymentStatus).";";
@@ -549,16 +576,19 @@
 
     echo "var truckPlateFromPHP = ".json_encode($truckID).";";
     echo "var DestinationFromPHP = ".json_encode($destinationID).";";
+    echo "var TruckCapFromPHP = ".json_encode($truckcap).";";
 
     echo "var driverFirstNameFromPHP = ".json_encode($driverFirstNameFromHTML).";";
     echo "var driverLastNameFromPHP = ".json_encode($driverLastNameFromHTML).";";
 
+    echo "var fabdescFromPHP = ".json_encode($fab_desc).";";
+
     echo 'var table = document.getElementById("datatable");'; 
     echo 'table.oldHTML=table.innerHTML;';
-
+    
     echo  " dropdown.onchange = function(){";
         echo 'table.innerHTML=table.oldHTML;'; //returns to the first state of the Table;
-        
+        echo "var current_weight = 0; ";
     echo  " for (var i = 0; i < ".sizeof($orderNumber)."; i++) {  ";                                                                               
         echo  "  if(dropdown.value == orderNumFromPHP[i])";
             echo  "  {";                                 
@@ -569,19 +599,25 @@
 
                 // Added total weight
                 // echo  " totalweightBox.value = '400' + 'kg'";
-
-            
+               
+                echo "current_weight = current_weight + itemweightFromPHP[i] * quantityNumFromPHP[i];";
                 echo  " for (var j = 0; j < ".sizeof($truckID)."; j++) {  "; 
                 echo  "  if(locationFromPHP[i] == DestinationFromPHP[j])"; //checks if location is same as TruckDestinatrion
                 echo  "  {";
                     echo  " truckPlateBox.value = truckPlateFromPHP[j];";
                     echo  " driverBox.value = driverFirstNameFromPHP[j] + ' ' +driverLastNameFromPHP[j];";
-                    echo  " truckweightBox.value = '2150kg'";
+                    echo  " truckweightBox.value = TruckCapFromPHP[j] + ' KG';";
+                    echo  " totalweightBox.value = current_weight + ' KG';";
                 echo  "  }"; 
             echo  "  }"; // end 2nd forloop
-            
+            echo 'if(fabricationStatusFromPHP[i] == "No Fabrication"){ $("#item_fab").hide(); }';//END IF
+              echo 'else{  $("#item_fab").show();';
+              echo '$("#current_or").text("Order Number: " + dropdown.value);';
+              echo '$("#fab_status").text("Current Status: " + fabricationStatusFromPHP[i]);';
+              echo '$("#description").text("Description: " + fabdescFromPHP[i]);';
+              echo '}'; //END ELSE
             echo  "var newRow = document.getElementById('datatable').insertRow();";
-            echo  'newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td> <td>" +quantityNumFromPHP[i]+ "</td> <td align = right> ₱ "+PriceNumFromPHP[i]+"</td></tr>";';
+            echo  'newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td> <td align = right>" +quantityNumFromPHP[i]+ "</td> <td align = right> ₱ "+PriceNumFromPHP[i]+"</td></tr>";';
                                             
             echo  "  }"; //End IF
             
