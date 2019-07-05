@@ -141,7 +141,7 @@
                           <input type="text" name="replacementQty"  id = "replacementQty" oninput ="validate(this)" required="required" class="form-control col-md-7 col-xs-12" disabled/> 
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                          <button class = "btn btn-success btn-sm" id = "addReplace" disabled onclick="revertdisable();">Add</button>
+                          <button class = "btn btn-success btn-sm" id = "addReplace" disabled onclick="revertdisable()">Add</button>
                         </div> 
                       </div>
                       <!-- END FOR REPLACE ITEM  -->
@@ -331,13 +331,20 @@
               var current_replacement_item_qty = $("#replacementQty").val();  
  
               var item_does_not_exist = true;
+              if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0)
+              {                                                            
+                
               $("#datatable_replenish tbody tr td.dmg_item_name").each(function(i){
-              console.log('Table Value = '+$(this).text());
-              if(current_damaged_item ==$(this).text() )
+              
+              if(current_damaged_item ==$(this).text())
               {
                 item_does_not_exist = false;
                 $(this).next().text(parseInt($(this).next().text())+parseInt(current_damaged_item_qty)); //Gets the NEXT DOM value after the current selected class
 
+                $(this).nextAll().eq(2).text(
+                  parseInt($(this).nextAll().eq(2).text()) + 
+                  parseInt(current_damaged_item_qty)
+                );
                 $("#select_damaged_item :selected").attr({
                 "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
                   });
@@ -352,38 +359,34 @@
               }
               
               }); //END JQUERY
-             if(item_does_not_exist)
-             {
-              if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0)
-                {                                                            
-                
-                  var damage_table_replenish = document.getElementById('datatable_replenish').insertRow();  
-                                        
-                  damage_table_replenish.innerHTML = "<tr> <td class = 'dmg_item_name'>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td> <td>"+current_damaged_item+" <td>"+current_damaged_item_qty+"</td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";    
-                  
-                  $("#select_damaged_item :selected").attr({
-                    "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
-                  });
-
-                  $("#damaged_item_name").attr({
-                    "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
-                  });
-
-                  $("#damaged_item_name").val("");  //Resets input for qty 
-
-                  $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
-                  
-                                                
-                }
-                else
+                if(item_does_not_exist)
                 {
-                    alert("Please Fill up all required fields correctly!");
-                }
-             }
                 
-              
-              
-                                                                                                                                                                                                                                            
+                      var damage_table_replenish = document.getElementById('datatable_replenish').insertRow();  
+                                            
+                      damage_table_replenish.innerHTML = "<tr> <td class = 'dmg_item_name'>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td> <td>"+current_damaged_item+" <td>"+current_damaged_item_qty+"</td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";    
+                      
+                      $("#select_damaged_item :selected").attr({
+                        "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
+                      });
+
+                      $("#damaged_item_name").attr({
+                        "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                      });
+
+                      $("#damaged_item_name").val("");  //Resets input for qty 
+
+                      $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
+                      
+                                                    
+                    
+                }
+            }
+            else
+            {
+                alert("Please Fill up all required fields correctly!");
+            }
+
             })// END JQUERY
         });//END FUNCTION
 
@@ -395,48 +398,86 @@
 
               var current_replacement_item = $("#replacementName :selected").text();   
               var current_replacement_item_qty = $("#replacementQty").val();  
+              
+              var replacement_item_does_not_exist = true;
+          if(current_replacement_item != '' && current_replacement_item_qty != '' && current_replacement_item_qty != 0)
+            {  
+              $("#datatable_replenish tbody tr td.replace_item").each(function(i){
+                
+              if(current_replacement_item.trim() == $(this).text().trim()) //Trim to remove all other BS inorder to compare properly
+              {                      
+                replacement_item_does_not_exist = false;
+                $(this).next().text(parseInt($(this).next().text())+parseInt(current_replacement_item_qty)); //Gets the NEXT DOM value after the current selected class
 
-              if(current_replacement_item != '' && current_replacement_item_qty != '' && current_replacement_item_qty != 0)
-              {                                                            
-                                                                                    
-                var damage_table = document.getElementById('datatable_replenish').insertRow();                          
-                damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_replacement_item_qty+" </td> <td class=replace_item> "+current_replacement_item+" </td> <td class = replace_qty > "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                $(this).prev().text(
+                  parseInt($(this).prev().text()) + 
+                  parseInt(current_replacement_item_qty)
+                );
+
                 $("#select_damaged_item :selected").attr({
-                  "value":  $("#select_damaged_item :selected").val() - current_replacement_item_qty   //Subtracts the value from input 
-                });
+                    "value":  $("#select_damaged_item :selected").val() - current_replacement_item_qty   //Subtracts the value from input 
+                  });
 
-                $("#replacementQty").attr({
-                  "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
-                });
+                  $("#replacementQty").attr({
+                    "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                  });
 
-                $("#replacementQty").val("");  //Resets input for qty 
+                  $("#replacementQty").val("");  //Resets input for qty 
 
-                $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
+                  $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
+              }             
+            }); //END JQUERY
+
+              if(replacement_item_does_not_exist)
+              {                                                                                                                                                            
+                  var damage_table = document.getElementById('datatable_replenish').insertRow();                          
+                  damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_replacement_item_qty+" </td> <td class=replace_item> "+current_replacement_item+" </td> <td class = replace_qty > "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                  $("#select_damaged_item :selected").attr({
+                    "value":  $("#select_damaged_item :selected").val() - current_replacement_item_qty   //Subtracts the value from input 
+                  });
+
+                  $("#replacementQty").attr({
+                    "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                  });
+
+                  $("#replacementQty").val("");  //Resets input for qty 
+
+                  $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
+               
               }
-              else
-              {
-                  alert("Please Fill up all required fields correctly!");
-              }
+            }
+          else
+          {
+              alert("Please Fill up all required fields correctly!");
+          }  
                                                                                                                                   
             })// END JQUERY
         });//END FUNCTION
 
         $(document).ready(function(){
             $("#datatable_replenish").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
-              var closest_tr = $(this).closest('tr').find('.dmg_item_name').text();
-              var closest_tr_qty = $(this).closest('tr').find('.dmg_item_qty').text();
-                console.log(closest_tr);            
-                console.log("current selected = "+$(this).text());
-                
+              var closest_tr = $(this).closest('tr').find('td:nth-child(1)').text();
+              var closest_tr_qty = $(this).closest('tr').find('td:nth-child(2)').text(); 
+
+              var tr_replace_name = $(this).closest('tr').find('td:nth-child(3)').text();
+              var tr_replace_qty = $(this).closest('tr').find('td:nth-child(4)').text();               
+
+              
                 $("#select_damaged_item option:contains("+closest_tr+")").attr({
                   "value":  parseInt($("#select_damaged_item option:contains("+closest_tr+")").val()) + parseInt(closest_tr_qty)    //adds the value when the row is removed 
                 });
-
+ 
                 $("#damaged_item_name").attr({
                   "max": $("#select_damaged_item :selected").val() //replaces the max value with added value of input
                 });
                 
-                $("#damaged_item_name").val("");     //Resets the input for qty    
+                $("#damaged_item_name").val("");     //Resets the input for qty
+
+                $("#replacementQty").attr({
+                    "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                  });
+
+                $("#replacementQty").val("");  //Resets input for qty     
 
                 $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );           
                    

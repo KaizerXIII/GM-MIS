@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>View Inventory</title>
+    <title>GM Depot - View Inventory</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -41,7 +41,7 @@
           <div class="">
             <div class="page-title">
               <div>
-                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER DEPOT TILES INVENTORY</h1><br>
+                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER DEPOT - TILES INVENTORY</h1><br>
               </div>
             </div>
             <br><br><br><br>
@@ -61,69 +61,51 @@
                      <table id="datatable-fixed-header" class="table table-striped table-bordered">
                       <thead>
                         <tr>
-                          <th>SKU</th>
-                          <th>Item Name</th>                       
-                          <th>Item Count</th>
-                          <th>Supplier</th>
-                          <th>Price</th>
-                          <th>Warehouse Location</th>                         
+                          <th>Depot SKU</th>
+                          <th>Depot Item Name</th>                       
+                          <th>Depot Item Count</th>                         
+                          <th>Depot Price</th>                                                 
                           <th>Last Update</th>
                           <th> Action </th>
                           
                         </tr>
                       </thead>
                       <tbody>
-                        <?php
-                            // REVAMP THIS TO GET TILES ONLY FROM DEPOT DB
+                        <?php                            
                             require_once('DataFetchers/mysql_connect.php');
-                            $query = "SELECT * FROM items_trading;";
-                            $result=mysqli_query($dbc,$query);
-                            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                            {
-                                    $queryItemType = "SELECT itemtype FROM ref_itemtype WHERE itemtype_id =" . $row['itemtype_id'] . ";";
-                                    $resultItemType = mysqli_query($dbc,$queryItemType);
-                                    $rowItemType=mysqli_fetch_array($resultItemType,MYSQLI_ASSOC);
-                                    $itemType = $rowItemType['itemtype'];
-                                
-                                    $queryWarehouse = "SELECT warehouse FROM warehouses WHERE warehouse_id =" . $row['warehouse_id'] . ";";
-                                    $resultWarehouse = mysqli_query($dbc,$queryWarehouse);
-                                    $rowWarehouse=mysqli_fetch_array($resultWarehouse,MYSQLI_ASSOC);
-                                    $warehouse = $rowWarehouse['warehouse'];
-
-                                    $querySupplierName = "SELECT supplier_name FROM suppliers WHERE supplier_id =" . $row['supplier_id'] . ";";
-                                    $resultSupplierName = mysqli_query($dbc,$querySupplierName);
-                                    $rowSupplierName=mysqli_fetch_array($resultSupplierName,MYSQLI_ASSOC);
-                                    $supplierName = $rowSupplierName['supplier_name'];
-                                    
-                                
-                                    echo '<tr>';
-                                    echo '<td><b>';
-                                    echo $row['sku_id'];
-                                    echo '</td>';
-                                    echo '<td><b>';
-                                    echo $row['item_name'];
-                                    echo '</td>';                                  
-                                    echo '<td>';
-                                    echo $row['item_count'];
-                                    echo '</td>';
-                                    echo '<td>';
-                                    echo $supplierName;
-                                    echo '</td>';
-                                    echo '<td>';
-                                    echo  'Php'." ".number_format($row['price'], 2);
-                                    echo '</td>';
-                                    echo '<td>';
-                                    echo $warehouse;
-                                    echo '</td>';
-                                    echo '<td>';
-                                    echo $row['last_restock'];
-                                    echo '</td>';
-                                    echo '<td align = "center">';
-                                    echo '<a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'"><i onclick = "teit()"class="fa fa-wrench" > </a>'; 
-                                    // 
-                                    echo '</td>';
-                                    
-                                    echo '</tr>';
+                            $GET_DEPOT = "SELECT * 
+                            FROM mydb.items_trading
+                            JOIN depotdb.gm_products
+                            ON gm_products.UnitName = items_trading.item_name
+                            JOIN depotdb.gm_inventorystocks
+                            ON gm_inventorystocks.ProductID = gm_products.ProductID";
+                            $RESULT_GET_DEPOT=mysqli_query($dbc,$GET_DEPOT);
+                            while($ROW_RESULT_GET_DEPOT=mysqli_fetch_array($RESULT_GET_DEPOT,MYSQLI_ASSOC))
+                            {                                                                   
+                              echo '<tr>';
+                              echo '<td><b>';
+                              echo $ROW_RESULT_GET_DEPOT['SKU'];
+                              echo '</td>';
+                              echo '<td><b>';
+                              echo $ROW_RESULT_GET_DEPOT['UnitName'];
+                              echo '</td>';                                  
+                              echo '<td align = right>';
+                              echo number_format($ROW_RESULT_GET_DEPOT['StockOnHand'], 0);
+                              echo '</td>';
+                              
+                              echo '<td align = right>';
+                              echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['Price'], 2);
+                              echo '</td>';
+                              
+                              echo '<td>';
+                              echo $ROW_RESULT_GET_DEPOT['LastModified'];
+                              echo '</td>';
+                              echo '<td align = "center">';
+                              echo '<i onclick = "teit()"class="fa fa-wrench" >'; 
+                              // 
+                              echo '</td>';
+                              
+                              echo '</tr>';
                                     
                             }
                         ?>  

@@ -70,24 +70,37 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>
-                          </td>
-                          <td>
-                          </td>
-                          <td>
-                          </td>
-                          <td align = "right">
-                            192921912
-                          </td>
-                          <td>
-                          </td>
-                          <td align = "center">
-                          <i class="fa fa-wrench"></i> 
-                          </td>
-
-                        </tr>
-                        <?php
+                      <?php                            
+                            require_once('DataFetchers/mysql_connect.php');
+                            $GET_DEPOT = "SELECT * 
+                            FROM mydb.depot_request";                           
+                            $RESULT_GET_DEPOT=mysqli_query($dbc,$GET_DEPOT);
+                            while($ROW_RESULT_GET_DEPOT=mysqli_fetch_array($RESULT_GET_DEPOT,MYSQLI_ASSOC))
+                            {                                                                   
+                              echo '<tr>';
+                                echo '<td> Depot OR - ';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_id'];
+                                echo '</td>';
+                                echo '<td>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_date'];
+                                echo '</td>';                                  
+                                echo '<td align = right>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_expected_date'];
+                                echo '</td>';
+                                
+                                echo '<td align = right>';
+                                echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['total_payment'], 2);
+                                echo '</td>';                               
+                                echo '<td>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_status'];
+                                echo '</td>';
+                                echo '<td align = "center">';
+                                echo '<i class="fa fa-wrench" >'; 
+                                echo '</td>';
+                              
+                              echo '</tr>';
+                                    
+                            }
                         ?>  
                       </tbody>
                     </table><br>

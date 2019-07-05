@@ -661,7 +661,7 @@
                                     console.log("Current Stock = " +current_stock);
                                     console.log("estinamted_total =  "+ estinamted_total);
 
-                                    if(estinamted_total > current_stock)  //checks if estimated total is greater than current stocks
+                                    if(estinamted_total > current_stock && ((estinamted_total - current_stock) <= 0))  //checks if estimated total is greater than current stocks
                                     {
                                         alert("Cannot exceed Current Stock!");
                                         item_does_not_exist = false; //item does exist
