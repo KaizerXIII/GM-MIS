@@ -9,7 +9,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>GM - Order Form </title>
+        <title>GM - Tiles Request Form </title>
 
         <!-- Bootstrap -->
         <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,7 @@
                 <div class="right_col" role="main">
                     <div class="">
                         <div class="page-title">
-                            <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER TRADING CLIENT ORDER FORM</h1><br>
+                            <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER DEPOT TILES REQUEST FORM</h1><br>
                         </div>
             <br><br><br><br>
 
@@ -65,16 +65,17 @@
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h3> 
+                                            OR - 1?
                                             <?php
-                                                $queryTogetMaxOR = " SELECT count(ordernumber)+1 as TOTALOR FROM orders";
-                                                $resultOfQuery=mysqli_query($dbc,$queryTogetMaxOR);
-                                                $row = mysqli_fetch_array($resultOfQuery,MYSQLI_ASSOC);
+                                                // $queryTogetMaxOR = " SELECT count(ordernumber)+1 as TOTALOR FROM orders";
+                                                // $resultOfQuery=mysqli_query($dbc,$queryTogetMaxOR);
+                                                // $row = mysqli_fetch_array($resultOfQuery,MYSQLI_ASSOC);
 
-                                                $CurrentOR = "OR - ".$row['TOTALOR'];                                                           
-                                                echo "<b>".$CurrentOR."</b>";
-                                                $orderNumber = $CurrentOR;
+                                                // $CurrentOR = "OR - ".$row['TOTALOR'];                                                           
+                                                // echo "<b>".$CurrentOR."</b>";
+                                                // $orderNumber = $CurrentOR;
 
-                                               //
+                                               //REPLACE WITH NEW TABLE OR GENERATOR????
                                             ?>
                                         </h3>
                                         <div class="clearfix"></div>
@@ -84,8 +85,8 @@
 
                                         <form class="form-horizontal form-label-left" method="POST">
 
-                                            <div class="form-group">
-                                                <font color = "black" size = "6"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Client:</label></font>
+                                            <!-- <div class="form-group">
+                                                <h1><font color = "black"><label class="control-label col-md-11 col-sm-11 col-xs-12" style = "text-align: left;">Select Client:</label></font></h1>
                                                 <div class="col-md-2 col-sm-2 col-xs-12" style = "align: left;">
                                                     <select class="form-control col-md-12 col-xs-12" id="clientID" name="clientID">
                                                 <?php
@@ -102,7 +103,7 @@
                                                 </div>
                                                 
                                             </div>
-                                            <hr>
+                                            <hr> -->
                                             <div class="form-group">
                                                 <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
                                                         <thead>
@@ -461,10 +462,10 @@
                 </div> -->
                 
                 <div class="form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                        <button type="Reset" class="btn btn-danger btn-lg btn-round" onclick="destroyTable();">Reset</button>
+                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3" align = "right">
                         <button type="button" class="btn btn-primary btn-lg btn-round" align="center" name="next" data-toggle="modal" data-target=".bs-example-modal-md" onclick ="checkCart()">Next Step <i class = "fa fa-arrow-right"></i></button>
                     </div>
+
             <!-- Add Order2 Modal -->
             
             <div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true" id ="finalizeOrder" >
@@ -473,7 +474,7 @@
 
                   <div class="modal-header">
               
-                    <h4 class="modal-title" id="myModalLabel">Finalize Order</h4>
+                    <h4 class="modal-title" id="myModalLabel">Finalize Request</h4>
                   </div>
 
                   <div class = "modal-body">
@@ -498,24 +499,23 @@
                             </select>
                         </div>
                     </div>
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2">Loan Downpayment</label>
+                    <!-- <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Loan Downpayment</label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <input type="number" id="loanpayment" style = "text-align:right" disabled class="form-control col-md-7 col-xs-12">
-                            <!-- Loan downpayment can be 0. If set to the total value of order, the order payment status will automatically be set to PAID. -->
                         </div>
-                    </div>
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2" >For Delivery?<span class="required">*</span>
+                    </div> -->
+                    <!-- <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >For Delivery?<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <button type="button" name ="YesDeliv" class="btn btn-round btn-success" onclick = "toggleDeliveryDate(); " value = "Deliver" id = "Yesbutton" style = "display:block" >Yes</button>
                             <button type="button" name ="NoDeliv" class="btn btn-round btn-default" onclick = "toggleDeliveryDate1();" value = "PickUp" id = "Nobutton" style = "display:none">No</button>
-                            
+                             -->
                             <?php 
                             // Session is defaulted to Deliver
-                                $_SESSION['DeliveryStatus'] = "Deliver";
-                                $_SESSION['FabricationStatus'] = "No Fabrication";
+                                // $_SESSION['DeliveryStatus'] = "Deliver";
+                                // $_SESSION['FabricationStatus'] = "No Fabrication";
                                 // echo $_SESSION['DeliveryStatus'] = 0;
                                                         
                                 
@@ -523,9 +523,9 @@
                                 // echo "<script type='text/javascript'>alert('$message');</script>";
                             ?>
                           
-                        </div>
+                        <!-- </div>
                         <div class="result" style = "display:none"></div>  
-                    </div>
+                    </div> -->
 
                     <div id = "ifYes" style = "display:block">
                         <div class="item form-group">
@@ -552,17 +552,17 @@
                         </div>
                     </div>
                 
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2" >For Fabrication?<span class="required">*</span>
+                    <!-- <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >For Fabrication?<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <button type="button" class="btn btn-round btn-primary" onclick = "toggleFabrication()" value = "YesFab" id = "YesbuttonFab" style = "display:none" >Yes</button>
                             <button type="button" class="btn btn-round btn-default" onclick = "toggleFabrication1()" value = "NoFab" id = "NobuttonFab" style = "display:block">No</button>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2" >Is This Order Paid?<span class="required">*</span>
+                    <!-- <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Is This Order Paid?<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="btn btn-default dropdown-toggle" name = "payment_status" id = "payment_status" onchange = "changebuttoncolor()" required="required">
@@ -571,15 +571,15 @@
                                 <option value="Unpaid"  id = "unpaidoption">Unpaid</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="ln_solid"></div>
                     <div class="form-group">
                       <div class="col-md-12" align = "right">
                         <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         <!--   -->
-                        <input id="send" name ="viewOrderButton" type="submit" class="btn btn-success" onclick="doAction()" value ="Submit" required="required"></input>
-                        <input type="button" class="btn btn-primary" id="fabricationpage" disabled  onclick="nextpageWithFabrication()" value ="Next Step"></input> 
+                        <input id="send" name ="viewOrderButton" type="submit" class="btn btn-success" style="visibility:visible" onclick="doAction()" value ="Submit" required="required"></input>
+                        <!-- <input type="button" class="btn btn-primary" id="fabricationpage" style="visibility:hidden"  onclick="nextpageWithFabrication()" value ="Next Step"></input>  -->
                                   
                       </div>
                     </div>
@@ -928,8 +928,8 @@
 
             function toggleFabrication()
             {
-                submitbtn.disabled = false;
-                nextbtn.disabled = true;
+                submitbtn.style.visibility = "visible";
+                nextbtn.style.visibility = "hidden";
                 yesbuttonfab.style.display = "none";
                 nobuttonfab.style.display = "block";
 
@@ -950,9 +950,8 @@
             }
             function toggleFabrication1()
             {
-                
-                submitbtn.disabled = true;
-                nextbtn.disabled = false;
+                submitbtn.style.visibility = "hidden";
+                nextbtn.style.visibility = "visible"
                 yesbuttonfab.style.display = "block";
                 nobuttonfab.style.display = "none";
 

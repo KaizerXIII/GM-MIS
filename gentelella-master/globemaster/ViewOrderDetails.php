@@ -361,7 +361,7 @@
                                                 {
                                         ?>
                                                 <button name = "confirmButton" type="button" class="btn btn-success" style = "display:none" onclick ="FinishOrder()">Finish</button>
-                                                <button type="button" class="btn btn-warning"  style = "display:block" onclick="cancelWarning()">Cancel Order</button>
+                                                <button type="button" class="btn btn-warning"  style = "display:block" disabled onclick="cancelWarning()">Cancel Order</button>
                                         <?php
                                                 }
                                                 else if($statohs == "Cancelled" || $statohs == "Finished Order")
