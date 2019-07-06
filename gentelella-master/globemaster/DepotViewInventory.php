@@ -33,7 +33,7 @@
       <div class="main_container">
         
             <?php
-                require_once("nav.php");    
+                require_once("navDepot.php");    
             ?>
         
         <!-- page content -->

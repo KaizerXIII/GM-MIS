@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>GM MIS | Order Details</title>
+    <title>GM MIS | Request Details</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,7 +35,7 @@
     <div class="container body">
         <div class="main_container">
                     <?php
-                        require_once("nav.php");    
+                        require_once("navDepot.php");    
                     ?>
         </div><!--END Main Container?-->
                 <!-- page content -->
