@@ -76,6 +76,7 @@
                           //Gets all the required Information from table based on the ID
                           $SQL_GET_SO_FROM_DB = "SELECT supply_order_id,
                           CAST(supply_order_date AS DATE) as SD,
+                          CAST(supply_order_date AS DATETIME) as SDT,
                            CAST(supply_order_expdate AS DATE) as SXD,
                             CAST(DATE_ADD(supply_order_expdate, INTERVAL 14 DAY) AS DATE) AS EXP_RANGE,
                              supply_order_total_quantity,
@@ -96,44 +97,184 @@
                     echo'    <b><font color = "black">Expected Date of Arrival: </font></b>',  $ROW_RESULT_GET_FROM_DB['SXD'],' to ',  $ROW_RESULT_GET_FROM_DB['EXP_RANGE'] ;
                     echo'</div> ';
                     ?>
-                    <div align = "right">Change shipment status: <button type="button" class="btn btn-round btn-primary btn-xs">Arrived at China Port</button> 
-                    OR <button type="button" class="btn btn-round btn-primary btn-xs">Shipped from China Port</button> 
-                    OR <button type="button" class="btn btn-round btn-primary btn-xs">Arrived at Philippines Port</button></div>
-                    OR <button type="button" class="btn btn-round btn-success btn-xs">On the way to warehouse</button>
-                    <div class = "col-md-12" align = "center" style="z-index: 1">
-                        <ul class="progressbar">
-                            <li class="active" >Purchased</li>
-                            <li>Shipping</li>
-                            <li>Delivered</li>
-                        </ul>
-                    </div> 
+                    <!-- STATUSES ARE
+                                        Purchased
+                                      China
+                                    Shipped
+                                  Philippines
+                                Arrived 
+                              -->
+                    <div align = "right">Change shipment status: 
+                      <?php
+                        if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased")
+                        {
+                      ?>
+                      <button type="button" class="btn btn-round btn-primary btn-xs">Arrived at China Port</button> 
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
+                        {
+                      ?>
+                      <button type="button" class="btn btn-round btn-primary btn-xs">Shipped from China Port</button> 
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped")
+                        {
+                      ?>
+                      <button type="button" class="btn btn-round btn-primary btn-xs">Arrived at Philippines Port</button></div>
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines")
+                        {
+                      ?>
+                      <button type="button" class="btn btn-round btn-success btn-xs">On the way to warehouse</button>
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                        {
+                      ?>
+                      <button type="button" class="btn btn-round btn-success btn-xs" disabled>On the way to warehouse</button>
+                      <?php
+                        }
+                      ?>
+                      <?php
+                        if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
+                        {
+                      ?>
+                        <div class = "col-md-12" align = "center" style="z-index: 1">
+                            <ul class="progressbar">
+                                <li class="active" >Purchased</li>
+                                <li >Shipping</li>
+                                <li>Delivered</li>
+                            </ul>
+                        </div> 
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines")
+                        {
+                      ?>
+                        <div class = "col-md-12" align = "center" style="z-index: 1">
+                          <ul class="progressbar">
+                              <li class="active" >Purchased</li>
+                              <li class="active" >Shipping</li>
+                              <li>Delivered</li>
+                          </ul>
+                        </div> 
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                        {
+                      ?>
+                        <div class = "col-md-12" align = "center" style="z-index: 1">
+                          <ul class="progressbar">
+                              <li class="active" >Purchased</li>
+                              <li class="active" >Shipping</li>
+                              <li class="active" >Delivered</li>
+                          </ul>
+                        </div> 
+                      <?php
+                        }
+                      ?>
+                    <div class="clearfix"></div>
                         <br>
-                        <table border="0" style="width: 50%;" align = "center" frame="box">
+                      <?php
+                        if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased")
+                        {
+                      ?>
+                      
+                      <table border="0" style="width: 50%;" align = "center" frame="box">
                         <tr>
-                          <th>03 Jun 2019 - 14:18</th>
-                          <th>Your package has been shipped with LEX PH with tracking number LPT0000009649313.To track your parcel, click on our Tracking Page</th>
-                        </tr>
-                        <tr>
-                          <td>January</td>
-                          <td>$100</td>
-                        </tr>
-                        <tr>
-                          <td>February</td>
-                          <td>$80</td>
+                          <th><?php echo $ROW_RESULT_GET_FROM_DB['SDT'];?></th>
+                          <th>An order has been made by the CEO, the ordered item(s) will soon be on its way to the China port.</th>
                         </tr>
                       </table>
-                            <!-- <div class = "col-md-2">
-                                <span class = "text"> 
-                                    03 Jun 2019 - 14:18
-                                </span>
-                            </div>
-                            <div class = "col-md-10">
-                                <span class = "text"> 
-                                    Your package has been shipped with LEX PH with tracking number LPT0000009649313.To track your parcel, click on our Tracking Page
-                                </span>
-                            </div> -->
-                    <div class="clearfix"></div>
-                        <center><font color = "#4192f4">View Details</font></center>
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
+                        {
+                      ?>
+                      <table border="0" style="width: 50%;" align = "center" frame="box">
+                        <tr>
+                          <th>echo china update here.</th>
+                          <th>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</th>
+                        </tr>
+                        <tr>
+                          <td><?php echo $ROW_RESULT_GET_FROM_DB["SDT"];?></td>
+                          <td>An order has been made by the CEO, the ordered item(s) will soon be on its way to the China Port.</td>
+                        </tr>
+                      </table> 
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped")
+                        {
+                      ?>
+                      <table border="0" style="width: 50%;" align = "center" frame="box">
+                        <tr>
+                          <th>echo shipped update here.</th>
+                          <th>The ordered item(s) are on its way to the Philippines' port.</th>
+                        </tr>
+                        <tr>
+                          <td>echo china update here.</td>
+                          <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
+                        </tr>
+                        <tr>
+                          <td><?php echo $ROW_RESULT_GET_FROM_DB["SDT"];?></td>
+                          <td>An order has been made by the CEO, the ordered item(s) will soon be on its way to the China Port.</td>
+                        </tr>
+                      </table> 
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines")
+                        {
+                      ?>
+                      <table border="0" style="width: 50%;" align = "center" frame="box">
+                        <tr>
+                          <th>echo philippines update here.</th>
+                          <th>The ordered item(s) have arrived at the Philippine port. The items will soon be on its way to their respective warehouses.</th>
+                        </tr>
+                        <tr>
+                          <td>echo shipped update here.</td>
+                          <td>The ordered item(s) are on its way to the Philippine port.</td>
+                        </tr>
+                        <tr>
+                          <td>echo china update here.</td>
+                          <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
+                        </tr>
+                        <tr>
+                          <td><?php echo $ROW_RESULT_GET_FROM_DB["SDT"];?></td>
+                          <td>An order has been made by the CEO, the ordered item(s) will soon be on its way to the China Port.</td>
+                        </tr>
+                      </table> 
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                        {
+                      ?>
+                      <table border="0" style="width: 50%;" align = "center" frame="box">
+                        <tr>
+                          <th>echo arrived update here.</th>
+                          <th>The ordered item(s) have arrived to the Globe Master warehouses.</th>
+                        </tr>
+                        <tr>
+                          <td>echo philippines update here.</td>
+                          <td>The ordered item(s) have arrived at the Philippine port. The items will soon be on its way to their respective warehouses.</td>
+                        </tr>
+                        <tr>
+                          <td>echo shipped update here.</td>
+                          <td>The ordered item(s) are on its way to the Philippine port.</td>
+                        </tr>
+                        <tr>
+                          <td>echo china update here.</td>
+                          <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
+                        </tr>
+                        <tr>
+                          <td><?php echo $ROW_RESULT_GET_FROM_DB["SDT"];?></td>
+                          <td>An order has been made by the CEO, the ordered item(s) will soon be on its way to the China Port.</td>
+                        </tr>
+                      </table> 
+                      <?php
+                        }
+                      ?>
                     </div>
                     <form method = "POST" action = "SupplierOrderDetails_Damage.php">
                         <div>                    
@@ -179,8 +320,8 @@
                                 $count ++;
                             }
                            
-                            echo $_SESSION['list_of_items'][0];
-                            echo $_SESSION['list_of_qty'][0];
+                            // echo $_SESSION['list_of_items'][0];
+                            // echo $_SESSION['list_of_qty'][0];
                            
                             ?>      
                             
