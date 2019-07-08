@@ -90,12 +90,28 @@
                                 
                                 echo '<td align = right>';
                                 echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['total_payment'], 2);
-                                echo '</td>';                               
-                                echo '<td>';
-                                echo $ROW_RESULT_GET_DEPOT['depot_request_status'];
                                 echo '</td>';
+                                if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Order in Progress")
+                                {                                
+                                  echo '<td>';
+                                  echo "<font color = orange>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Requisition Approved")
+                                {
+                                  echo '<td>';
+                                  echo "<font color = green>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else
+                                {
+                                  echo '<td>';
+                                  echo "<font color = red>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+     
                                 echo '<td align = "center">';
-                                echo '<i class="fa fa-wrench" >'; 
+                                echo '<a href = "ViewDepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
                                 echo '</td>';
                               
                               echo '</tr>';

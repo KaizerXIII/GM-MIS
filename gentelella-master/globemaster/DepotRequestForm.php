@@ -67,17 +67,15 @@
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h3> 
-                                            OR - 1?
+                                           
                                             <?php
-                                                // $queryTogetMaxOR = " SELECT count(ordernumber)+1 as TOTALOR FROM orders";
-                                                // $resultOfQuery=mysqli_query($dbc,$queryTogetMaxOR);
-                                                // $row = mysqli_fetch_array($resultOfQuery,MYSQLI_ASSOC);
+                                                $GET_DEPOT = "SELECT max(depot_request_id) as MAX_OR
+                                                FROM mydb.depot_request";                           
+                                                $RESULT_GET_DEPOT=mysqli_query($dbc,$GET_DEPOT);
+                                                $ROW_GET_DEPOT = mysqli_fetch_array($RESULT_GET_DEPOT,MYSQLI_ASSOC);
 
-                                                // $CurrentOR = "OR - ".$row['TOTALOR'];                                                           
-                                                // echo "<b>".$CurrentOR."</b>";
-                                                // $orderNumber = $CurrentOR;
-
-                                               //REPLACE WITH NEW TABLE OR GENERATOR????
+                                                $CurrentOR = "Depot OR - ".$ROW_GET_DEPOT['MAX_OR'];                                                           
+                                                echo $CurrentOR;
                                             ?>
                                         </h3>
                                         <div class="clearfix"></div>

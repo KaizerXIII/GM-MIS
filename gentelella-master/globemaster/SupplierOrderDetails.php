@@ -276,7 +276,7 @@
                         }
                       ?>
                     </div>
-                    <form method = "POST" action = "SupplierOrderDetails_Damage.php">
+                    <form method = "POST" action = "SupplierOrderDetails_Damage.php?so_id=<?php echo $_SESSION['supply_order_id'] ?>">
                         <div>                    
                         <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="50%" align = "center">
                           <thead>
@@ -308,7 +308,7 @@
                                     echo '<td>'.$row['supply_arrived_quantity'].'</td>';
                                     echo '<td align = "center">';
                                     echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.'><i class = "fa fa-wrench"></i> Edit</button>';
-                                    echo '<button type="button" class="btn btn-round btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-smnewitem" id="restock_page">Restock</button>';
+                                    echo '<button type="button" class="btn btn-round btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-smnewitem" id="restock_page">Create Inventory </button>';
                                     echo '</td>    ';      
                                 echo '</tr> '; 
                                 // echo $stringname;
@@ -335,7 +335,7 @@
                         <div class = "clearfix"></div>
                         <div class = "ln_solid"></div>
                         <div align = "right">
-                          <button type="submit" class="btn btn-round btn-success" name = "restock_items">Proceed <i class = "fa fa-arrow-right"></i></button>
+                          <button type="submit" class="btn btn-round btn-success" name = "restock_items" id = "proceed">Proceed <i class = "fa fa-arrow-right"></i></button>
                         </div>
                       </form>
                     </div>
@@ -570,6 +570,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
+    
 
     <script> 
 
