@@ -2,6 +2,7 @@
     session_start();
     require_once('mysql_connect.php');
 
+
     $GET_ITEMS_ID = $_POST['post_item_id'];
     $GET_ITEMS_QTY = $_POST['post_item_qty'];
     $GET_TOTAL_PRICE = $_POST['post_total_price'];
@@ -44,35 +45,7 @@
             VALUES('$GET_DOR','$GET_ITEMS_ID[$i]','$GET_ITEMS_QTY[$i]','$DEPOT_ITEM_REFERENCE','$TRADING_PRICE');";
             $RESULT_INSERT_TO_DETAILS =  mysqli_query($dbc,$SQL_INSERT_TO_DETAILS);
             
-            $SQL_UPDATE_ITEMS_TRADING = "UPDATE mydb.items_trading
-            SET item_count = (item_count - '$GET_ITEMS_QTY[$i]'),
-            last_update = now()
-            WHERE item_id = '$GET_ITEMS_ID[$i]'";
-            $RESULT_UPDATE_ITEMS_TRADING = mysqli_query($dbc,$SQL_UPDATE_ITEMS_TRADING);
-            if(!$RESULT_UPDATE_ITEMS_TRADING)
-            {
-                echo "Something Went Wrong at Items Trade";
-            }
-            else
-            {
-
-            }
-
-            $SQL_UPDATE_DEPOT = "UPDATE depotdb.gm_products
-            JOIN depotdb.gm_inventorystocks
-            ON gm_inventorystocks.ProductID = gm_products.ProductID
-            SET StockOnHand = (StockOnHand + '$GET_ITEMS_QTY[$i]'),
-            LastModified = now()
-            WHERE UnitName = '$DEPOT_ITEM_REFERENCE'";
-            $RESULT_UPDATE_DEPOT = mysqli_query($dbc,$SQL_UPDATE_DEPOT);
-            if(!$SQL_UPDATE_DEPOT)
-            {
-                echo "Something Went Wrong at Depot";
-            }
-            else
-            {
-
-            }
+           
         }
     }
     

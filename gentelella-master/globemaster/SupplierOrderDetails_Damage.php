@@ -81,15 +81,11 @@
                                     <div class="x_title">
                                         <h3> 
                                             <?php
-                                                $queryTogetMaxOR = " SELECT count(supply_order_id)+1 as TOTALOR FROM supply_order";
-                                                $resultOfQuery=mysqli_query($dbc,$queryTogetMaxOR);
-                                                $row = mysqli_fetch_array($resultOfQuery,MYSQLI_ASSOC);
-
-                                                $CurrentOR = "SR - ".$row['TOTALOR'];                                                           
-                                                echo "<b>".$CurrentOR."</b>";
-                                                $orderNumber = $CurrentOR;
-
-                                               //CHANGE TO SUPPLIER ORDER NUMBER IN THE FUTURE
+                                                if(isset($_GET['so_id']))
+                                                {
+                                                    $GET_SO_ID = $_GET['so_id'];
+                                                    echo "SR - ".$GET_SO_ID;
+                                                }
                                             ?>
                                         </h3>
                                         <div class="clearfix"></div>
@@ -149,66 +145,11 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <tr>
-                                                            <!-- <td>Granite A</td>
-                                                            <td align = "right">10</td>
-                                                            <td align = "right">30%</td>
-                                                            <td align = "center"></td> -->
+                                                        <tr>                                                       
                                                         </tr>
 
-                                                        <?php
+                                                        
 
-                                                            // require_once('DataFetchers/mysql_connect.php');
-                                                            // $SQL_ITEM_LIST = "SELECT * FROM items_trading;";
-                                                            // $result1=mysqli_query($dbc,$SQL_ITEM_LIST);
-
-                                                            // $itemCountArray = array();
-                                                            // while($row=mysqli_fetch_array($result1,MYSQLI_ASSOC) )
-                                                            // {
-                                                            //     $queryItemType = "SELECT itemtype FROM ref_itemtype WHERE itemtype_id =" . $row['itemtype_id'] . ";";
-                                                            //     $resultItemType = mysqli_query($dbc,$queryItemType);
-                                                            //     $rowItemType=mysqli_fetch_array($resultItemType,MYSQLI_ASSOC);
-                                                            //     $itemType = $rowItemType['itemtype'];
-
-                                                            //     $queryWarehouse = "SELECT warehouse FROM warehouses WHERE warehouse_id =" . $row['warehouse_id'] . ";";
-                                                            //     $resultWarehouse = mysqli_query($dbc,$queryWarehouse);
-                                                            //     $rowWarehouse=mysqli_fetch_array($resultWarehouse,MYSQLI_ASSOC);
-                                                            //     $warehouse = $rowWarehouse['warehouse'];
-
-                                                            //     $querySupplierName = "SELECT supplier_name FROM suppliers WHERE supplier_id =" . $row['supplier_id'] . ";";
-                                                            //     $resultSupplierName = mysqli_query($dbc,$querySupplierName);
-                                                            //     $rowSupplierName=mysqli_fetch_array($resultSupplierName,MYSQLI_ASSOC);
-                                                            //     $supplierName = $rowSupplierName['supplier_name'];
-
-                                                                    
-                                                            //     echo '<tr class ="tableRow">';
-                                                            //         echo '<td  id = ',$row['item_id'],' >';
-                                                            //         echo $row['item_name'];
-                                                            //         echo '</td>';
-                                                            //         echo '<td>';
-                                                            //         echo $itemType;
-                                                            //         echo '</td>';
-                                                            //         echo '<td>';
-                                                            //         echo $row['item_count'];
-                                                            //         echo '</td>';
-
-                                                                   
-                                                            //         echo '<td align = right>';
-                                                            //         echo  "N/A";
-                                                            //         echo '</td>';
-
-                                                                                                                            
-                                                            //         echo '<td >';
-                                                            //         echo '<input  style="text-align:right;" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="0" max ="1000" value="" placeholder ="0"></input>';
-                                                            //         echo '</td>';
-
-                                                            //         echo '<td align = center >';
-                                                            //         echo '<button type="button" class="btn btn-round btn-success" name ="add" value ="',$row['item_id'],'" > + </button>';
-                                                            //         echo '</td>';
-
-                                                            //     echo '</tr>';                                                                                  
-                                                            // }
-                                                        ?>  
                                                         </tbody>
                                                         <script type="text/javascript">
                                                             function validate(obj) {
@@ -241,10 +182,7 @@
                                                                     
                                                                 }
                                                                
-                                                            })// END JQUERY
-
-                                                           
-                                                            
+                                                            })// END JQUERY                                                                                                                     
                                                         });//END FUNCTION
                                                         $(document).ready(function(){
                                                             $("#datatable-checkbox").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
