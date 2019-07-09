@@ -48,6 +48,18 @@
             </div>
             <br><br><br><br>
             <div class="clearfix"></div>
+            
+            <?php
+              $dt = new DateTime;
+              if (isset($_GET['year']) && isset($_GET['week'])) {
+                  $dt->setISODate($_GET['year'], $_GET['week']);
+              } else {
+                  $dt->setISODate($dt->format('o'), $dt->format('W'));
+              }
+              $year = $dt->format('o');
+              $week = $dt->format('W');
+            ?>
+            <!-- Compute current week -->
 
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
@@ -55,9 +67,26 @@
                   <div class="x_title col-md-12">
                       <div class="form-group">
                         <!-- CLICK ARROWS FOR NEXT WEEK/PREVIOUS WEEK -->
-                        <font size = "4" color = "green"><center> <i class="fa fa-arrow-left fa-lg"></i>For the week of:   <span id="first_date" style="color:green"> wlao</span>
-                         To <span id="second_date" style="color:green"> walolo  wlao</span>
-                        <i class="fa fa-arrow-right fa-lg"></i> </center></font>
+                        <font size = "4" color = "green"><center> 
+                          <a href="<?php echo $_SERVER['PHP_SELF'].'?week='.($week-1).'&year='.$year; ?>">
+                          <i class="fa fa-arrow-left fa-lg"></i> Previous Week</a> <!--Previous week-->
+                          For the week of:   <span id="first_date" style="color:green"> 
+                        
+                        <?php
+                            // do {
+                            //   echo $dt->format('F d, Y');
+                            //   $dt->modify('+1 day');
+                            // } while ($week == $dt->format('W') && $dt->format('l') != "Sunday" && $dt->format('l') != "Tuesday" && $dt->format('l') != "Wednesday"
+                            // && $dt->format('l') != "Thursday" && $dt->format('l') != "Friday" && $dt->format('l') != "Saturday");
+                        ?>
+                        </span>
+                         To 
+                         <span id="second_date" style="color:green">
+                      
+                      
+                          </span>
+                          <a href="<?php echo $_SERVER['PHP_SELF'].'?week='.($week+1).'&year='.$year; ?>">Next Week  <!--Next week-->
+                        <i class="fa fa-arrow-right fa-lg"></i> </a></center></font>
                       </div>
                  
                     <div class="clearfix"></div>
@@ -127,17 +156,17 @@
                   </div>
                   </div>
                   <!-- END DATE PICKER -->
+
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th></th>
-                          <th>Monday | 01/01/19</th>
-                          <th>Tuesday </th>
-                          <th>Wednesday |</th>
-                          <th>Thursday |</th>
-                          <th>Friday |</th>                                                   
-                          <th>Saturday |</th>
-                          <!-- <th></th> -->
+                          <?php 
+                            do {
+                              echo "<th>" . $dt->format('l') . " | " . $dt->format('F d, Y') . "</td>\n";
+                              $dt->modify('+1 day');
+                            } while ($week == $dt->format('W') && $dt->format('l') != "Sunday");
+                          ?>
                         </tr>
                       </thead>
                       <tbody>
