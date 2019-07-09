@@ -38,6 +38,11 @@
     @media print
     {
     .noprint {display:none;}
+    footer, header,.nav, #choose_btn, #go_back{ display:none; } /*Removes elements before print, use [#idname] to find ID and [.class] to find class */
+
+    }
+    @page :footer {
+        display: none
     }
 
     @media screen
@@ -88,10 +93,8 @@
                                     ]</h1></font> 
                                 </div>
                                 <div class="col-md-2 col-sm-2 col-xs-12" align="right">
-                                    <?php
-                                        include("print.php");
-                                    ?>                                       
-                                        <button type="" class="btn btn-primary btn-lg noprint" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</button>                                    
+                                         
+                                        <button type="button" id = "print_btn" class="btn btn-primary btn-lg noprint"><i class="fa fa-print"></i> Print</button>                                    
                                 </div>                              
                                 <div class="clearfix"></div>
 
@@ -168,8 +171,8 @@
                                     
                                 ?>
                                 </div>
-                            <form class="form-horizontal form-label-center" method="GET">                              
-                                <div class="col-md-6 col-sm-6 col-xs-12 " >
+                            <form class="form-horizontal form-label-center" method="GET" >                              
+                                <div class="col-md-6 col-sm-6 col-xs-12 " style="display: table-row;">
                                     <div class="x_panel" >
                                     <center><font color = "#2a5eb2"><h3>Delivery Receipt Details </h1>
                                                 </h3></font></center>
@@ -223,8 +226,8 @@
                                         </div>
                                     </div>
 
-                                    </div>
                                 </div>
+                            </div>
 
                                 <div class="col-md-6 col-sm-6 col-xs-12" >
                                     <div class="x_panel" >
@@ -348,8 +351,8 @@
                                         if($rowDeliveryDateDiffNow['order_status'] == "Delivered" || $rowDeliveryDateDiffNow['order_status'] == "Cancelled")
                                         {
                                     ?>
-                                            <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
-                                            <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" disabled>Finish Delivery <span class="caret"></span></button>
+                                            <button type="button" id="go_back" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
+                                            <button data-toggle="dropdown" id ="choose_btn" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" disabled>Finish Delivery <span class="caret"></span></button>
                                             <ul role="menu" class="dropdown-menu">
                                                 <li>
                                                     <a href="#"  onclick = "finishDeliver()">Without Damages</a>
@@ -362,9 +365,9 @@
                                         }
                                         else{
                                     ?>
-                                            <button type="button" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
+                                            <button type="button"  id="go_back" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
                                             <div class="btn-group">
-                                                <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" >Finish Delivery <span class="caret"></span></button>
+                                                <button data-toggle="dropdown" id ="choose_btn" type="button" class="btn btn-success dropdown-toggle" aria-expanded = "false" >Finish Delivery <span class="caret"></span></button>
                                                     <ul role="menu" class="dropdown-menu">
                                                         <li>
                                                             <a href="#"  onclick = "finishDeliver()">Without Damages</a>
@@ -629,10 +632,9 @@ echo '</script>';
 </script>
 
 <script>
-    function printW()
-    {
+    $('#print_btn').on('click', function(e){      
         window.print();
-    }
+    })    
 </script>
 <script>
     function finishDeliver()
