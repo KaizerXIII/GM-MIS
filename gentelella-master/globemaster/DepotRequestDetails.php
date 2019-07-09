@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>GM MIS | Request Details</title>
+    <title>GM Depot | Request Details</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,6 +29,28 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+     <!-- JQUERY Required Scripts -->
+     <script type="text/javascript" src="js/script.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <style type="text/css">
+
+    @media print
+    {
+    #print_btn {display:none;}
+    footer, header,.nav,  #progress_bar{ display:none; } /*Removes elements before print, use [#idname] to find ID and [.class] to find class */
+
+    }
+    @page :footer {
+        display: none
+    }
+
+    @media screen
+    {
+    
+    }
+
+    </style>
 </head>
 
 <body class="nav-md">
@@ -47,25 +69,57 @@
                         <div class="x_panel" >
                             <div class="x_title col-md-12">
                                 <div class = "col-md-6">
-                                    <font size = "5"><b>Request Number: </b>
+                                    <font size = "5" color = "black"><b>Request Number: 
+                                    <span id ="requisition_order_number">
+                                    <?php 
+                                       if(isset($_GET['depot_or']))
+                                       {
+                                        $_SESSION['get_depot_or'] = $_GET['depot_or'];
+                                        echo '<font color = "black">'.$_SESSION['get_depot_or'].'</font>';
+                                       }
+                                       else
+                                       {
+                                        echo '<font color = "black">'.$_SESSION['get_depot_or'].'</font>';
+                                       }
+                                    ?>                                   
+                                    </span></b>
                                     <!-- insert request number here -->
                                     </font>
                                 </div>
                                 <div class = "col-md-6" align = "right">
-                                <button type = "button" class = "btn btn-primary btn-lg"><i class = "fa fa-print"></i> Print</button>
+                                    <button id = "print_btn" type = "button" class = "btn btn-primary btn-lg"><i class = "fa fa-print"></i> Print</button>
                                 </div>
+                                <script>
+                                    $('#print_btn').on('click', function(e){
+                                        window.print();
+                                    })
+                                </script>
                                 <div class="clearfix"></div>
                             </div> <!--END Xtitle-->
                             <div class="x_content">
                             <div>
-                                <font color = "black">Request Date:</font>
-                                    echo expected date here
-                                <br>
-                                <font color = "black">Expected Date:</font>
-                                    echo expected date here
+                            <?php
+                                $CURRENT_REQUEST_OR = $_SESSION['get_depot_or'];
+                                $SQL_GET_DEPOT_DETAILS = "SELECT * 
+                                FROM mydb.depot_request
+                                JOIN mydb.depot_request_details
+                                ON depot_request.depot_request_id = depot_request_details.depot_request_number
+                                WHERE depot_request_id = '$CURRENT_REQUEST_OR';";
+                                $RESULT_GET_DEPOT_DETAILS =  mysqli_query($dbc,$SQL_GET_DEPOT_DETAILS);
+                                $ROW_RESULT_GET_DEPOT_DETAILS=mysqli_fetch_array($RESULT_GET_DEPOT_DETAILS,MYSQLI_ASSOC);
+
+                                $REQUESTED_DATE = strtotime($ROW_RESULT_GET_DEPOT_DETAILS['depot_request_date']);
+                                $EXPECTED_DATE = strtotime($ROW_RESULT_GET_DEPOT_DETAILS['depot_expected_date']);
+
+                                $FORMATTED_REQUESTED_DATE = date("M/d/y g:i A", $REQUESTED_DATE);
+                                $FORMATTED_EXPECTED_DATE = date("M/d/y g:i A", $EXPECTED_DATE);
+                                echo '<font color = "black">REQUEST DATE: '.$FORMATTED_REQUESTED_DATE.' </font>';                                                                           
+                                echo '<br>';
+                                echo '<font color = "black">EXPECTED DATE: '.$FORMATTED_EXPECTED_DATE.' </font>';
+                            ?>              
                             </div>
-                            <div class = "clearfix"></div>
-                                <div class = "col-md-12" align = "center" style="z-index: 1">
+                            <div class = "clearfix" ></div>
+                                <div class = "col-md-12" align = "center" style="z-index: 1" id = "progress_bar">
                                 <ul class="progressbar">
                                     <li class="active" >Requested</li>
                                     <li>Approved</li>
@@ -73,69 +127,7 @@
                                 </ul>
                                 </div> 
                             <div class = "clearfix"></div>
-
-
-                            <?php
-                                // $GET_OR_FROM_SESSION_1 = $_SESSION['order_number_from_view'];
-                                // $SQL_SELECT_FROM_ORDER_ORDERSTATUS_1 = "SELECT * FROM orders WHERE ordernumber = '$GET_OR_FROM_SESSION_1'";
-                                // $RESULT_SELECT_ORDERSTATUS_1 = mysqli_query($dbc,$SQL_SELECT_FROM_ORDER_ORDERSTATUS_1);
-                                // while($ROW_RESULT_SELECT_STATUS_1=mysqli_fetch_array($RESULT_SELECT_ORDERSTATUS_1,MYSQLI_ASSOC))
-                                // {
-                                //     $statows = $ROW_RESULT_SELECT_STATUS_1['order_status'];
-                                //     $fabstatows = $ROW_RESULT_SELECT_STATUS_1['fab_status'];
-                                //     if($statows == "PickUp") //order status
-                                //     {
-                            ?>
-                                    <!-- <p><font color = "black">This order is to be picked up by the customer.</font></p> -->
-                            <?php
-                                        // if($fabstatows == "Under Fabrication" || $fabstatows == "For Fabrication") //fabrication status
-                                        // {
-                            ?>
-                                    <!-- <p><font color = "#ADD8E6">This order is still staged for fabrication, and is not yet ready for pickup.</font></p> -->
-                            <?php
-                                        // }
-                                        // else if($fabstatows == "Disapproved")
-                                        // {
-                            ?>
-                                    <!-- <p><font color = "red">This order's fabrication request has been disapproved. Please inform the customer about the disapproval.</font></p> -->
-                            <?php
-                                        // }
-                                        // else if($fabstatows == "Finished Fabrication")
-                                        // {
-                            ?>
-                                    <!-- <p><font color = "green">This order's fabrication request is finished! The items are ready to be picked up by the customer. Please inform the customer about this.</font></p> -->
-                            <?php
-                                        // }
-                                        // else if($fabstatows == "No Fabrication")
-                                        // {
-                            ?>
-                                    <!-- <p><font color = "blue">The items are ready to be picked up by the customer. Please inform the customer about this.</font></p> -->
-                            <?php
-                                    //     }
-                                    // }
-                                    // else if($statows == "Order In Progress" || $statows == "Deliver")
-                                    // {
-                            ?>
-                                    <!-- <p><font color = "black">This order is currently in progress.</font></p> -->
-                            <?php
-                                    // }
-                                    // else if($statows == "Cancelled")
-                                    // {
-                            ?>
-                                    <!-- <p><font color = "red">This order is cancelled.</font></p> -->
-                            <?php 
-                                    // }
-                                    // else if($statows == "Delivered")
-                                    // {
-                            ?>
-                                    <!-- <p><font color = "green">This order is completed.</font></p>  -->
-                            <?php
-                                //     }
-                                // }
-                            ?>
-                           
-                          
-                                <form class="form-horizontal form-label-center" method="POST">
+                             <form class="form-horizontal form-label-center" method="POST">
 
                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" >
                                     <br><br>
@@ -143,8 +135,6 @@
                                             
                                              <center><h3><font color = "black">Items Requested</font></h3></center>
                                              <div class="ln_solid"></div>   
-
-                                             <!-- recently damaged table -->
                                              <div class="row">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                 
@@ -153,10 +143,32 @@
                                                         <table id ="damageTable" class="table">
                                                             <thead>
                                                                 <tr>    
-                                                                <th>Item Name</th>
-                                                                <th>Quantity</th>
-                                                                
+                                                                    <th>Trading Item Name</th>
+                                                                    <th>Depot Reference Name</th>
+                                                                    <th>Quantity</th>                                                               
                                                                 </tr>
+                                                                <?php
+                                                                        $GET_STATUS;
+                                                                        $SQL_GET_DEPOT_ITEM_DETAILS = "SELECT * 
+                                                                        FROM mydb.depot_request
+                                                                        JOIN mydb.depot_request_details
+                                                                        ON depot_request.depot_request_id = depot_request_details.depot_request_number
+                                                                        JOIN items_trading
+                                                                        ON items_trading.item_id = depot_request_details.requested_item_name
+                                                                        WHERE depot_request_id = '$CURRENT_REQUEST_OR';";
+                                                                        $RESULT_GET_DEPOT_ITEM_DETAILS =  mysqli_query($dbc,$SQL_GET_DEPOT_ITEM_DETAILS);
+                                                                        while($ROW_RESULT_GET_DEPOT_ITEM_DETAILS=mysqli_fetch_array($RESULT_GET_DEPOT_ITEM_DETAILS,MYSQLI_ASSOC))
+                                                                        {
+                                                                            $GET_STATUS = $ROW_RESULT_GET_DEPOT_ITEM_DETAILS['depot_request_status'];
+                                                                            echo '<tr>';
+                                                                                echo '<td>'.$ROW_RESULT_GET_DEPOT_ITEM_DETAILS['sku_id'].'</td>';
+                                                                                echo '<td>'.$ROW_RESULT_GET_DEPOT_ITEM_DETAILS['depot_reference_name'].'</td>';
+                                                                                echo '<td>'.$ROW_RESULT_GET_DEPOT_ITEM_DETAILS['requested_item_qty'].'</td>';
+                                                                            echo '</tr>';
+
+                                                                        }
+
+                                                                    ?>
                                                             </thead>
                                                             <tbody>                                                      
                                                             </tbody>

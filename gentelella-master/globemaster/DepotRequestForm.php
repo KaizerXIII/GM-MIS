@@ -257,10 +257,8 @@
                             </label>
                             
                             <div class="col-md-2 col-sm-6 col-xs-12 input-group date">
-                                <input id="expectedDate" name="getExpectedDelivery" class=" btn btn-default form-control col-md-7 col-xs-12 col-md-offset-1 deliveryDate" data-validate-length-range="6" data-validate-words="2" name="name1" type="date" min="<?php echo date("Y-m-d", strtotime("+1days")); ?>">
-                                <!-- <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span> -->
+                                <input id="expectedDate" name="getExpectedDelivery" class=" btn btn-default form-control col-md-7 col-xs-12 col-md-offset-1 deliveryDate" data-validate-length-range="6" data-validate-words="2" name="name1" type="date" min="<?php echo date("Y-m-d", strtotime("+1days")); ?>" value = "<?php echo date("Y-m-d", strtotime("+1days")); ?>">
+                               
                                 <style>
                                     .deliveryDate {
                                         -moz-appearance:textfield;
@@ -613,7 +611,12 @@ function checkCart()
         else
         {
             // alert("OK!"); 
-            console.log("TR Length = " +$('#cart tr').length );
+            // console.log("TR Length = " +$('#cart tr').length );
+           
+            console.log("Date Today = " +today );
+           
+
+           
         }
     });
 }

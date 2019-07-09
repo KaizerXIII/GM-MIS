@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>GM - View Depot Requests</title>
+    <title>GM Depot - View Requests</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,6 +26,24 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <style type="text/css">
+
+@media print
+{
+.noprint {display:none;}
+footer, header,.nav{ display:none; } /*Removes elements before print, use [#idname] to find ID and [.class] to find class */
+
+}
+@page :footer {
+    display: none
+}
+
+@media screen
+{
+
+}
+
+</style>
   </head>
 
   <body class="nav-md">
@@ -41,7 +59,7 @@
           <div class="">
             <div class="page-title">
               <div>
-                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER DEPOT TILE REQUESTS</h1><br>
+                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBEMASTER DEPOT - TILE REQUESTS</h1><br>
               </div>
             </div>
             <br><br><br><br>
@@ -49,22 +67,16 @@
               <div class="clearfix"></div>
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                  <div class="x_content">
-                    <!-- <p class="text-muted font-13 m-b-30">
-                      
-                        <button type="button" class="btn btn-success" onclick="window.location.href='newOrderForm.php'"><i class="fa fa-plus" onclick =""></i> Create Order </button>
-                      
-                    </p><br> -->
-					
+                  <div class="x_content">                  					
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th>Order Number</th>
-                          <!-- <th>Client Name</th> -->
+                         
                           <th>Request Date</th>
                           <th>Expected Date</th>
                           <th>Total Amount</th>
-                          <!-- <th>Payment Type</th> -->
+                          
                           <th>Status</th>
                           <th></th>
                         </tr>
@@ -91,11 +103,26 @@
                                 echo '<td align = right>';
                                 echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['total_payment'], 2);
                                 echo '</td>';                               
-                                echo '<td>';
-                                echo $ROW_RESULT_GET_DEPOT['depot_request_status'];
-                                echo '</td>';
+                                if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Order in Progress")
+                                {                                
+                                  echo '<td>';
+                                  echo "<font color = orange>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Requisition Approved")
+                                {
+                                  echo '<td>';
+                                  echo "<font color = green>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else
+                                {
+                                  echo '<td>';
+                                  echo "<font color = red>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
                                 echo '<td align = "center">';
-                                echo '<i class="fa fa-wrench" >'; 
+                                echo '<a href = "DepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
                                 echo '</td>';
                               
                               echo '</tr>';
