@@ -69,7 +69,7 @@
                           }
                           else
                           {                        
-                             
+                            $_SESSION['supply_order_id'];
                           }
                           $CURRENT_SO_ID_NUMBER = $_SESSION['supply_order_id']; //Stores the value of SO ID
 
@@ -98,45 +98,106 @@
                     echo'</div> ';
                     ?>
                     <!-- STATUSES ARE
-                                        Purchased
-                                      China
-                                    Shipped
-                                  Philippines
-                                Arrived 
-                              -->
+                                Purchased
+                              China
+                            Shipped
+                          Philippines
+                        OTW
+                      Arrived 
+                    -->
+                    <form action = "<?php echo $_SERVER['PHP_SELF']; ?>" id="" data-parsley-validate class="form-horizontal form-label-left" method = "POST">
                     <div align = "right">Change shipment status: 
                       <?php
                         if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased")
                         {
                       ?>
-                      <button type="button" class="btn btn-round btn-primary btn-xs">Arrived at China Port</button> 
+                      <button type = "submit" id = "ArrivChina" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivChina" onclick = "ChangeChina(this);" class="btn btn-round btn-primary btn-xs">Arrived at China Port</button> 
                       <?php
                         }
                         else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
                         {
                       ?>
-                      <button type="button" class="btn btn-round btn-primary btn-xs">Shipped from China Port</button> 
+                      <button type = "submit" id = "ShipChina" value = "Shipped" name = "ShipChina" type="button" class="btn btn-round btn-primary btn-xs">Shipped from China Port</button> 
                       <?php
                         }
                         else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped")
                         {
                       ?>
-                      <button type="button" class="btn btn-round btn-primary btn-xs">Arrived at Philippines Port</button></div>
+                      <button type = "submit" id = "ArrivPH" value = "Philippines" name = "ArrivPH" type="button" class="btn btn-round btn-primary btn-xs">Arrived at Philippines Port</button></div>
                       <?php
                         }
                         else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines")
                         {
                       ?>
-                      <button type="button" class="btn btn-round btn-success btn-xs">On the way to warehouse</button>
+                      <button type = "submit" id = "OTWPH" value = "OTW" name = "OTWPH" type="button" class="btn btn-round btn-success btn-xs">On the way to warehouse</button>
                       <?php
                         }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
                         {
                       ?>
-                      <button type="button" class="btn btn-round btn-success btn-xs" disabled>On the way to warehouse</button>
+                      <button type = "submit" id = "OTWPH" value = "OTW" type="button" class="btn btn-round btn-success btn-xs" disabled>On the way to warehouse</button>
                       <?php
-                        }
+                        }   
+                            if(isset($_POST['ShipChina']))
+                            {
+                              $UPDATE_SET_STATUS_SHIPPED = "UPDATE supply_order
+                              SET supply_order.supply_order_status  = 'Shipped'";
+                              $RESULT_UPDATE_SET_STATUS_SHIPPED=mysqli_query($dbc,$UPDATE_SET_STATUS_SHIPPED);
+                              if(!$RESULT_UPDATE_SET_STATUS_SHIPPED) 
+                              {
+                                  die('Error: ' . mysqli_error($dbc));
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Error: Order status has not been updated.");';
+                                  echo '</script>';
+                              } 
+                              else 
+                              {
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Order status updated!");';
+                                  echo '</script>';
+                              }        
+                            }
+                            else if(isset($_POST['ArrivPH']))
+                            {
+                              $UPDATE_SET_STATUS_PHILIPPINES = "UPDATE supply_order
+                              SET supply_order.supply_order_status  = 'Philippines'";
+                              $RESULT_UPDATE_SET_STATUS_PHILIPPINES=mysqli_query($dbc,$UPDATE_SET_STATUS_PHILIPPINES);
+                              if(!$RESULT_UPDATE_SET_STATUS_PHILIPPINES) 
+                              {
+                                  die('Error: ' . mysqli_error($dbc));
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Error: Order status has not been updated.");';
+                                  echo '</script>';
+                              } 
+                              else 
+                              {
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Order status updated!");';
+                                  echo '</script>';
+                              }        
+                            }
+                            else if(isset($_POST['OTWPH']))
+                            {
+                              $UPDATE_SET_STATUS_ONTHEWAY = "UPDATE supply_order
+                              SET supply_order.supply_order_status  = 'OTW'";
+                              $RESULT_UPDATE_SET_STATUS_ONTHEWAY=mysqli_query($dbc,$UPDATE_SET_STATUS_ONTHEWAY);
+                              if(!$RESULT_UPDATE_SET_STATUS_ONTHEWAY) 
+                              {
+                                  die('Error: ' . mysqli_error($dbc));
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Error: Order status has not been updated.");';
+                                  echo '</script>';
+                              } 
+                              else 
+                              {
+                                  echo '<script language="javascript">';
+                                  echo 'alert("Order status updated!");';
+                                  echo '</script>';
+                              }        
+                            }
+
                       ?>
+                      </form>
                       <?php
                         if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
                         {
@@ -150,7 +211,7 @@
                         </div> 
                       <?php
                         }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines")
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW")
                         {
                       ?>
                         <div class = "col-md-12" align = "center" style="z-index: 1">
@@ -247,6 +308,33 @@
                       </table> 
                       <?php
                         }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW")
+                        {
+                      ?>
+                      <table border="0" style="width: 50%;" align = "center" frame="box">
+                        <tr>
+                          <th>echo OTW update here.</th>
+                          <th>The ordered item(s) are on the way to their respective warehouses.</th>
+                        </tr>
+                        <tr>
+                          <td>echo philippines update here.</td>
+                          <td>The ordered item(s) have arrived at the Philippine port. The items will soon be on its way to their respective warehouses.</td>
+                        </tr>
+                        <tr>
+                          <td>echo shipped update here.</td>
+                          <td>The ordered item(s) are on its way to the Philippine port.</td>
+                        </tr>
+                        <tr>
+                          <td>echo china update here.</td>
+                          <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
+                        </tr>
+                        <tr>
+                          <td><?php echo $ROW_RESULT_GET_FROM_DB["SDT"];?></td>
+                          <td>An order has been made by the CEO, the ordered item(s) will soon be on its way to the China Port.</td>
+                        </tr>
+                      </table> 
+                      <?php
+                        }
                         else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
                         {
                       ?>
@@ -254,6 +342,10 @@
                         <tr>
                           <th>echo arrived update here.</th>
                           <th>The ordered item(s) have arrived to the Globe Master warehouses.</th>
+                        </tr>
+                        <tr>
+                          <td>echo OTW update here.</td>
+                          <td>The ordered item(s) are on the way to their respective warehouses.</td>
                         </tr>
                         <tr>
                           <td>echo philippines update here.</td>
@@ -740,5 +832,38 @@
         border-width: 2px;
     }
     </style>
+    <script>
+      function ChangeChina(obj)
+      {
+        if(confirm("Have all the items in the order arrived in the China Port?"))
+        {
+          console.log(obj.value);
+
+          var SET_STATUS_CHINA = "China";
+          var SET_SUPPLY_ORDER_NUMBER = obj.value
+
+          request = $.ajax
+          ({
+              url:"ajax/set_China.php",
+              type:"POST",
+              data:
+              {post_status_china: SET_STATUS_CHINA, //startdata
+              post_supply_order_number: SET_SUPPLY_ORDER_NUMBER
+              }, //enddata
+              success: function(data, textStatus)
+              {
+                alert("All of the ordered items of SR - " + SET_SUPPLY_ORDER_NUMBER + " have arrived in the China Port!");
+                var test = window.location.href("/SupplierOrderDetails.php?so_id="+SET_SUPPLY_ORDER_NUMBER);
+                alert(test);
+              }//end success
+            });//end ajax
+        }//end if
+        else
+        {
+
+        }//end else
+      }
+    </script>
+
   </body>
 </html>
