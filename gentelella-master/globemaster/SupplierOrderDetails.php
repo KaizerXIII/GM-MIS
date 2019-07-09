@@ -69,7 +69,7 @@
                           }
                           else
                           {                        
-                             
+                            $_SESSION['supply_order_id'];
                           }
                           $CURRENT_SO_ID_NUMBER = $_SESSION['supply_order_id']; //Stores the value of SO ID
 
