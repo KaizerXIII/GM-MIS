@@ -86,7 +86,26 @@
                           echo ' <td>' .$row['SD'].'</td>'; 
                           echo ' <td>' .$row['SXD']. '  to  ' .$row['EXP_RANGE'].'</td>'; 
                           // echo ' <td>'.$row['supply_order_total_quantity'].'</td>'; 
-                          echo ' <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>'.$row['supply_order_status'].'</button></td>'; 
+
+                      //start status if/else PHP
+                        if($row['supply_order_status'] == "Purchased" || $row['supply_order_status'] == "China")
+                        {
+                      ?>
+                         <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Purchased</button></td>
+                      <?php
+                        }
+                        else if($row['supply_order_status'] == "Shipped" || $row['supply_order_status'] == "Philippines" || $row['supply_order_status'] == "OTW")
+                        {
+                      ?>
+                        <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Shipping</button></td>
+                      <?php
+                        }
+                        else if($row['supply_order_status'] == "Arrived")
+                        {
+                      ?>
+                        <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Delivered</button></td>
+                      <?php
+                        } //end progressbar if/else PHP
                           echo ' <td align = "center"><a href="SupplierOrderDetails.php?so_id='.$SO_ID.'"><i class = "fa fa-wrench"></i></a></td>'; 
                           echo '</tr>'; 
                         }
