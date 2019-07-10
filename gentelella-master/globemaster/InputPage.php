@@ -114,7 +114,7 @@
                           <script>
                             function getConfirmation() 
                             {
-                              var retVal = confirm("Do you want to continue ?");
+                              var retVal = confirm("Do you want to continue?");
                                 if( retVal == true ) 
                                 {                                   
                                     return true;
@@ -141,7 +141,7 @@
               <div class="col-md-5 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Input Target Sales for NEXT Month</h2>                   
+                    <h2>Input Target Sales for next Month</h2>                   
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -194,7 +194,51 @@
                 </div>
               </div>
             </div>
-           
+            <div class="clearfix"></div>
+            
+            <div class="row">
+              <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Input Warehouse Capacity: </h2>                   
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method = "POST">
+
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Bulacan Branch:  <span class="required">* </span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="number" id="bulacan" name = "targetSales"required="required" class="form-control col-md-7 col-xs-12" min="0">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12">EDSA Branch:  <span class="required">* </span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="number" id="bulacan" name = "targetSales"required="required" class="form-control col-md-7 col-xs-12" min="0">
+                        </div>
+                      </div>
+                                
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-12 col-sm-6 col-xs-12 col-md-offset-3">
+                          <button class="btn btn-danger" type="button">Cancel</button>
+						              <button class="btn btn-primary" type="reset">Reset</button>
+                          <button type="submit" class="btn btn-success" name = "submitNextMonthSales" onclick="">Submit</button>
+
+                          <!-- input warehouse cap here -->
+
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           
            

@@ -90,6 +90,7 @@
                           <th>Item Name Reference</th>
                           <th>Damaged Percentage</th>
                           <th>Item Quantity</th>
+                          <th>Source of Damage</th>
                           <th>Total Loss</th>
                           <!-- <th>Date Occured </th> -->
                          
@@ -114,6 +115,7 @@
                             echo '<td align = "right">';
                             echo $row['item_quantity'];
                             echo '</td>';
+                            echo '<td>Employee</td>';
                             echo '<td align = "right">';
                             echo '₱'." ".number_format($row['total_loss'], 2);
                             echo '</td>';
