@@ -74,10 +74,12 @@
                         
                         <?php
                             // do {
-                            //   echo $dt->format('F d, Y');
-                            //   $dt->modify('+1 day');
-                            // } while ($week == $dt->format('W') && $dt->format('l') != "Sunday" && $dt->format('l') != "Tuesday" && $dt->format('l') != "Wednesday"
-                            // && $dt->format('l') != "Thursday" && $dt->format('l') != "Friday" && $dt->format('l') != "Saturday");
+                            //   if($dt->format('l') != "Sunday")
+                            //   {
+                            //     echo $dt->format('F d, Y');
+                            //     $dt->modify('+1 day');
+                            //   }
+                            // } while ($week == $dt->format('W'));
                         ?>
                         </span>
                          To 
