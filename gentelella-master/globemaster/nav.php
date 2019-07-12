@@ -126,7 +126,7 @@ if(!(isset($_SESSION['usertype']))){
                   echo "<li><a><i class='fa fa-car'></i> Deliveries <span class='fa fa-chevron-down'></span></a>";
                   echo   "<ul class='nav child_menu'>";
                   if($user == 'CEO' or $user == 'SALES' or $user == 'Superuser'){
-                  echo    "<li><a href='Deliveries.php'>View Deliveries</a></li>";
+                  echo    "<li><a href='Deliveries.php'>View Delivery Receipts</a></li>";
                 }
                 if($user == 'SALES' or $user == 'Superuser'){
                   echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
@@ -148,7 +148,7 @@ if(!(isset($_SESSION['usertype']))){
                   if ($user == 'INV' or $user == 'Superuser'){
                   echo    "<li><a>View Fabrication Orders <span class='fa fa-chevron-down'></span></a>";
                   echo       "<ul class='nav child_menu'>";
-                  echo         "<li><a href='FabricationApproval.php'> Fabrication Approval </a></li>";
+                  echo         "<li><a href='FabricationApproval.php'>Fabrication Approval</a></li>";
                   echo         "<li><a href='FabricationFinished.php'>Finished Fabrication</a></li>";
                   echo       "</ul>";
                   echo    "</li>";

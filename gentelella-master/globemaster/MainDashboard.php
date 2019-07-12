@@ -61,35 +61,116 @@
           <!-- top tiles -->
           <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-plus"></i> Recently Added Items</span>
-              <div class="count">10</div>
-              <span class="count_bottom"><i class="green"></i><a href = "#" class = "blue">Click for more!</a></span>
+              <span class="count_top"><i class="fa fa-ticket"></i> Total Depot Requests</span>
+              <!-- Insert count of depot requests here -->
+<?php
+              $SQL_COUNT_ALL_DEPOT_REQUEST_INPROGRESS = "SELECT COUNT(*) as COUNTREQUESTS FROM depot_request
+                                                          WHERE depot_request_status = 'Order in Progress';";
+                      $RESULT_COUNT_ALL_DEPOT_REQUEST_INPROGRESS  = mysqli_query($dbc, $SQL_COUNT_ALL_DEPOT_REQUEST_INPROGRESS);
+                      $ROWRESULT_ORDER_IN_PROGRESS=mysqli_fetch_array($RESULT_COUNT_ALL_DEPOT_REQUEST_INPROGRESS,MYSQLI_ASSOC);
+?>
+              <div class="count blue"><?php echo $ROWRESULT_ORDER_IN_PROGRESS['COUNTREQUESTS']; ?></div>
+              <span class="count_bottom"><i class="green"></i><a href = "ViewDepotRequests.php" class = "blue">Click for more!</a></span>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-thumbs-o-down"></i> Returned Items</span>
-              <div class="count">2</div>
-              <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>2 </i> Added From Last Week</span>
+              <span class="count_top"><i class="fa fa-thumbs-o-down"></i> Unfinished Fabrications</span>
+              <!-- Insert count of unfinished fabrications here -->
+
+<?php
+              $SQL_COUNT_ALL_UNFINISHED_FABS = "SELECT COUNT(*) as COUNTFABS FROM orders
+                                                          WHERE fab_status = 'Under Fabrication' OR fab_status = 'For Fabrication';";
+                      $RESULT_COUNT_ALL_UNFINISHED_FABS  = mysqli_query($dbc, $SQL_COUNT_ALL_UNFINISHED_FABS);
+                      $ROWRESULT_UNFINISHED_FABS=mysqli_fetch_array($RESULT_COUNT_ALL_UNFINISHED_FABS,MYSQLI_ASSOC);
+?>
+              <div class="count red"><?php echo $ROWRESULT_UNFINISHED_FABS['COUNTFABS']; ?></div>
+              <span class="count_bottom"><i class="green"></i><a href = "FabricationApproval.php" class = "blue">View Fabrication Summary</a></span>
+              <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>2 </i> Added From Last Week</span> -->
             </div><br>
-            <!-- <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"> 
-              <span class="count_top"><i class="fa fa-user"></i> Total Males</span>
-              <div class="count green">2,500</div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"> 
+              <span class="count_top"><i class="fa fa-truck"></i> Orders to be Delivered Today</span>
+              <!-- Insert count of deliveries for today -->
+
+<?php
+              $SQL_COUNT_ALL_DELIVERIES = "SELECT COUNT(*) as COUNTDELIVERIES FROM orders
+                                                          WHERE delivery_date = CURDATE();";
+                      $RESULT_COUNT_ALL_DELIVERIESS  = mysqli_query($dbc, $SQL_COUNT_ALL_DELIVERIES);
+                      $ROWRESULT_DELIVERIES=mysqli_fetch_array($RESULT_COUNT_ALL_DELIVERIESS,MYSQLI_ASSOC);
+?>             
+              <div class="count green"><?php echo $ROWRESULT_DELIVERIES['COUNTDELIVERIES']; ?></div>
+              <span class="count_bottom"><i class="green"></i><a href = "ViewTruckCap.php" class = "blue">View all Deliveries </a></span>
+              <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
-              <div class="count">4,567</div>
+              <span class="count_top"><i class="fa fa-money"></i> Total Unpaid Client Orders</span>
+              <!-- Insert total count of unpaid client orders here -->
+
+<?php
+              $SQL_COUNT_ALL_UNPAID = "SELECT SUM(total_unpaid) as COUNTUNPAID FROM clients";
+                      $RESULT_COUNT_ALL_UNPAID = mysqli_query($dbc, $SQL_COUNT_ALL_UNPAID);
+                      $ROWRESULT_UNPAID=mysqli_fetch_array($RESULT_COUNT_ALL_UNPAID,MYSQLI_ASSOC);
+?>          
+            <div class="count"><font color = "orange">₱ <?php echo $ROWRESULT_UNPAID['COUNTUNPAID']; ?></font></div>
               <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
-              <div class="count">2,315</div>
+              <span class="count_top"><i class="fa fa-user"></i> Total Current Late Deliveries</span>
+              <!-- Insert total late deliveries as of today -->
+
+<?php
+              $SQL_COUNT_ALL_LATE_DELIVERIES = "SELECT COUNT(*) as COUNTLATEDELIVERIES FROM orders
+                                                          WHERE delivery_date < CURDATE();";
+                      $RESULT_COUNT_ALL_LATE_DELIVERIESS  = mysqli_query($dbc, $SQL_COUNT_ALL_LATE_DELIVERIES);
+                      $ROWRESULT_LATE_DELIVERIES=mysqli_fetch_array($RESULT_COUNT_ALL_LATE_DELIVERIESS,MYSQLI_ASSOC);
+?>           
+              <div class="count red"><?php echo $ROWRESULT_LATE_DELIVERIES['COUNTLATEDELIVERIES']; ?></div>
               <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+              <!-- Insert comparison with last week if possible -->
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Connections</span>
-              <div class="count">7,325</div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div> -->
+              <span class="count_top"><i class="fa fa-user"></i> Total Losses for this Month</span>
+              <!-- Insert total losses due to damages -->
+
+<?php
+              $SQL_COUNT_ALL_LOSSES = "SELECT IFNULL(SUM(total_loss), 0) AS SUMLOSS FROM damage_item
+                                                          WHERE MONTH(last_update) = MONTH(CURDATE());";
+                      $RESULT_COUNT_ALL_LOSSES  = mysqli_query($dbc, $SQL_COUNT_ALL_LOSSES);
+                      $ROWRESULT_ALL_LOSSES=mysqli_fetch_array($RESULT_COUNT_ALL_LOSSES,MYSQLI_ASSOC);
+?>     
+              <div class="count"><font color = "darkred">₱ <?php echo $ROWRESULT_ALL_LOSSES['SUMLOSS']; ?></font></div>
+              <!-- insert comparison with last month here -->
+
+<?php
+              $SQL_COUNT_ALL_LOSSES_COMPARISON = "SELECT IFNULL(SUM(total_loss), 0) AS SUMLOSS FROM damage_item
+                                            WHERE MONTH(last_update) = MONTH(CURDATE() - INTERVAL 1 MONTH);";
+                      $RESULT_COUNT_ALL_LOSSES_COMPARISON  = mysqli_query($dbc, $SQL_COUNT_ALL_LOSSES_COMPARISON);
+                      $ROWRESULT_ALL_LOSSES_COMPARISON = mysqli_fetch_array($RESULT_COUNT_ALL_LOSSES_COMPARISON,MYSQLI_ASSOC); 
+               
+              $PERCENTAGEOFLOSS = 0;
+              if($ROWRESULT_ALL_LOSSES_COMPARISON['SUMLOSS'] != 0)
+              {
+                $PERCENTAGEOFLOSS = ($ROWRESULT_ALL_LOSSES['SUMLOSS']/$ROWRESULT_ALL_LOSSES_COMPARISON['SUMLOSS'])*100;
+              }       
+              else 
+              {
+                $PERCENTAGEOFLOSS = 0;
+              }               
+
+?>             
+              <span class="count_bottom">
+                <?php if ($PERCENTAGEOFLOSS >= 0) 
+                {
+                ?>
+                <i class="green"><i class="fa fa-sort-asc"></i>
+                <?php
+                }
+                else if ($PERCENTAGEOFLOSS < 0)
+                {
+                ?>
+                <i class="red"><i class="fa fa-sort-desc"></i>
+                <?php 
+                }
+                echo $PERCENTAGEOFLOSS; ?>%</i> From last month | <a href = "Damage Report.php" class = "blue">View Report</a></span>
+            </div> 
           </div> 
           <!-- /top tiles -->
             

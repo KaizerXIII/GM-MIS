@@ -341,16 +341,16 @@
                                     echo '<td class = supply_qty'.$count.'>'.$row['supply_item_quantity'].'</td>';
                                     echo '<td>'.$row['supply_arrived_quantity'].'</td>';
                                     echo '<td align = "center">';
+                                    echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.'><i class = "fa fa-wrench"></i> Edit</button>';
                                     if(strpos($row['supply_item_name'], "*NEW ITEM*") != false)
                                     {
-                                    echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.'><i class = "fa fa-wrench"></i> Edit</button>';
-                                    }
                                     echo '<button type="button" class="btn btn-round btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-smnewitem" id="restock_page">Create Inventory </button>';
-                                    echo '</td>    ';      
+                                    }
+                                    echo '</td>';      
                                 echo '</tr> '; 
                                 // echo $stringname;
 
-                               
+                                
                                 array_push($_SESSION['list_of_items'], $stringname);
                                 array_push($_SESSION['list_of_qty'], $qty);
                                 
