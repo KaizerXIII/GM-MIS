@@ -61,35 +61,64 @@
           <!-- top tiles -->
           <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-plus"></i> Recently Added Items</span>
-              <div class="count">10</div>
-              <span class="count_bottom"><i class="green"></i><a href = "#" class = "blue">Click for more!</a></span>
+              <span class="count_top"><i class="fa fa-ticket"></i> Total Depot Requests</span>
+              <!-- Insert count of depot requests here -->
+<?php
+              $SQL_COUNT_ALL_DEPOT_REQUEST_INPROGRESS = "SELECT COUNT(*) as COUNTREQUESTS FROM depot_request
+                                                          WHERE depot_request_status = 'Order in Progress';";
+                      $RESULT_COUNT_ALL_DEPOT_REQUEST_INPROGRESS  = mysqli_query($dbc, $SQL_COUNT_ALL_DEPOT_REQUEST_INPROGRESS);
+                      $ROWRESULT_ORDER_IN_PROGRESS=mysqli_fetch_array($RESULT_COUNT_ALL_DEPOT_REQUEST_INPROGRESS,MYSQLI_ASSOC);
+?>
+              <div class="count blue"><?php echo $ROWRESULT_ORDER_IN_PROGRESS['COUNTREQUESTS']; ?></div>
+              <span class="count_bottom"><i class="green"></i><a href = "ViewDepotRequests.php" class = "blue">Click for more!</a></span>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-thumbs-o-down"></i> Returned Items</span>
-              <div class="count">2</div>
-              <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>2 </i> Added From Last Week</span>
+              <span class="count_top"><i class="fa fa-thumbs-o-down"></i> Unfinished Fabrications</span>
+              <!-- Insert count of unfinished fabrications here -->
+
+<?php
+              $SQL_COUNT_ALL_UNFINISHED_FABS = "SELECT COUNT(*) as COUNTFABS FROM orders
+                                                          WHERE fab_status = 'Under Fabrication' OR fab_status = 'For Fabrication';";
+                      $RESULT_COUNT_ALL_UNFINISHED_FABS  = mysqli_query($dbc, $SQL_COUNT_ALL_UNFINISHED_FABS);
+                      $ROWRESULT_UNFINISHED_FABS=mysqli_fetch_array($RESULT_COUNT_ALL_UNFINISHED_FABS,MYSQLI_ASSOC);
+?>
+              <div class="count red"><?php echo $ROWRESULT_UNFINISHED_FABS['COUNTFABS']; ?></div>
+              <span class="count_bottom"><i class="green"></i><a href = "FabricationApproval.php" class = "blue">View Fabrication Summary</a></span>
+              <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>2 </i> Added From Last Week</span> -->
             </div><br>
-            <!-- <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"> 
-              <span class="count_top"><i class="fa fa-user"></i> Total Males</span>
-              <div class="count green">2,500</div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"> 
+              <span class="count_top"><i class="fa fa-truck"></i> Orders to be Delivered Today</span>
+              <!-- Insert count of deliveries for today -->
+
+<?php
+              $SQL_COUNT_ALL_DELIVERIES = "SELECT COUNT(*) as COUNTDELIVERIES FROM orders
+                                                          WHERE delivery_date = CURDATE();";
+                      $RESULT_COUNT_ALL_DELIVERIESS  = mysqli_query($dbc, $SQL_COUNT_ALL_DELIVERIES);
+                      $ROWRESULT_DELIVERIES=mysqli_fetch_array($RESULT_COUNT_ALL_DELIVERIESS,MYSQLI_ASSOC);
+?>             
+              <div class="count green"><?php echo $ROWRESULT_DELIVERIES['COUNTDELIVERIES']; ?></div>
+              <span class="count_bottom"><i class="green"></i><a href = "ViewTruckCap.php" class = "blue">View all Deliveries </a></span>
+              <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
+              <span class="count_top"><i class="fa fa-user"></i> Total Unpaid Client Orders</span>
+              <!-- Insert total count of unpaid client orders here -->
               <div class="count">4,567</div>
               <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
+              <span class="count_top"><i class="fa fa-user"></i> Total Current Late Deliveries</span>
+              <!-- Insert total late deliveries as of today -->
               <div class="count">2,315</div>
               <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+              <!-- Insert comparison with last week if possible -->
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Connections</span>
+              <span class="count_top"><i class="fa fa-user"></i> Total Losses for this Month</span>
+              <!-- Insert total losses due to damages -->
               <div class="count">7,325</div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div> -->
+              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last month</span>
+            </div> 
           </div> 
           <!-- /top tiles -->
             
