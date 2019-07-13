@@ -111,7 +111,7 @@
                                                                     <th>Depot Reference Name</th>
                                                                     <th>Quantity</th>
                                                                     <?php
-                                                                    $GET_STATUS;
+                                                                        $GET_STATUS;
                                                                         $SQL_GET_DEPOT_ITEM_DETAILS = "SELECT * 
                                                                         FROM mydb.depot_request
                                                                         JOIN mydb.depot_request_details

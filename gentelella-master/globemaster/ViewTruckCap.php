@@ -30,6 +30,8 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- JQUERY Required Scripts -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
   </head>
 
   <body class="nav-md">
@@ -187,7 +189,7 @@
                                 echo $rowofResult['truckmodel']." | ".$rowofResult['truckplate'];
                                 echo '</td>';  
                                 echo '<td align = "right">';
-                                echo '350kg out of 2500kg | <font color = "#42d9f4">2150kg available</font>';
+                                echo '350kg out of 2500kg | <font color = "#42d9f4">'.$rowofResult['weightCap'].' kg available</font>';
                                 echo '</td>'; 
                                 echo '<td align = "right">';
                                 echo $rowofResult['weightCap'];
@@ -238,8 +240,7 @@
                       <thead>
                         <tr>
                           <th>B.D.</th>
-                          <th>Delivery Date</th>
-                          <th>Driver</th>
+                          <th>Delivery Date</th>                         
                           <th>Truck #</th>                                                 
                           <th>Delivery Status</th>
                           <th>Time Out</th>
@@ -249,21 +250,34 @@
                       </thead>
                       <tbody>
                         <!-- Gawa nalang bagong table sa mysql for bulk orders para matrack time in and time out. tapos palagyan rin bagong column sa trucks table para malaman kung in or out yung truck. -->
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td align = "center"><a href = "#"><i class = "fa fa-wrench"></i></a></td>
-                        </tr>
-                        
+                        <?php
+                        $SQL_GET_BULK_ORDER = "SELECT * FROM bulk_order";
+                        $RESULT_GET_BULK_ORDER = mysqli_query($dbc,$SQL_GET_BULK_ORDER);
+                        while($ROW_GET_BULK_ORDER = mysqli_fetch_array($RESULT_GET_BULK_ORDER,MYSQLI_ASSOC))
+                        {
+                          echo '<tr>';
+                          echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_id'].'</td>'; 
+                          echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_date'].'</td>';                         
+                          echo '<td>'.$ROW_GET_BULK_ORDER['truck_assigned'].'</td>'; 
+                          echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_status'].'</td>'; 
+                          echo '<td></td>'; 
+                          echo '<td></td>'; 
+                          echo '<td align = "center"><a><span class = "bulk_details"><i class = "fa fa-wrench"></i></a></span></td>';
+                          echo '</tr>';
+                        }
+
+                        ?>
                       </tbody>
                     </table>
                     </form>
-					
+					<script>
+            $('.bulk_details').on('click', function(e){
+              var row = $(this).closest('tr');
+              var current_id = row.find('td:first').text();
+              window.location.href= "BulkDeliveryDetails.php?bulk_id="+current_id;
+            })
+
+          </script>
 					
                   </div>
                 </div>

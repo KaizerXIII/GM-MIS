@@ -88,11 +88,11 @@
                       <thead>
                         <tr>
                           <th>Item Name Reference</th>
-                          <th>Damaged Percentage</th>
+                          <!-- <th>Damaged Percentage</th> -->
                           <th>Item Quantity</th>
                           <th>Source of Damage</th>
                           <th>Total Loss</th>
-                          <!-- <th>Date Occured </th> -->
+                          <th>Date Occured </th>
                          
                         </tr>
                       </thead>
@@ -109,19 +109,19 @@
                             echo '<td>';
                             echo $row['item_name'];
                             echo '</td>';
-                            echo '<td align = "right">';
-                            echo $row['damage_percentage'],"%";
-                            echo '</td>';
+                            // echo '<td align = "right">';
+                            // echo $row['damage_percentage'],"%";
+                            // echo '</td>';
                             echo '<td align = "right">';
                             echo $row['item_quantity'];
                             echo '</td>';
-                            echo '<td>Employee</td>';
+                            echo '<td>'.$row['dmg_source'].'</td>';
                             echo '<td align = "right">';
                             echo '₱'." ".number_format($row['total_loss'], 2);
                             echo '</td>';
-                            // echo '<td>';
-                            // echo $row['last_update'];
-                            // echo '</td>';
+                            echo '<td>';
+                            echo $row['last_update'];
+                            echo '</td>';
                           echo '</tr>';
                         }
 

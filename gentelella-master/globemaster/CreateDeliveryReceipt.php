@@ -127,7 +127,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Delivery Date:
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input class="form-control deliveryDate"  type="date"  id="deliveryDate" name="deliveryDate"  min="<?php echo date("Y-m-d", strtotime("+1days")); ?>" required/>
+                          <input class="form-control deliveryDate"  type="date"  id="deliveryDate" name="deliveryDate"  min="<?php echo date("Y-m-d", strtotime("+1days")); ?>"required/>
                             <style>
                                     .deliveryDate {
                                         -moz-appearance:textfield;
@@ -262,123 +262,30 @@
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12" align="right">
                           <button class="btn btn-primary" type="button">Go Back</button>
-                          <button type="submit" name = "submitDeliveryReceipt" class="btn btn-success" onclick = "confirmSubmit()">Submit</button>
+                          <button type="button" name = "submitDeliveryReceipt" id = "submit_receipt" class="btn btn-success">Submit</button>
 
                            <?php
-                            require_once('DataFetchers/mysql_connect.php');
-                            if(isset($_POST['submitDeliveryReceipt']))
-                                {         
+                            // require_once('DataFetchers/mysql_connect.php');
+                            // if(isset($_POST['submitDeliveryReceipt']))
+                            //     {         
                                                              
-                                        $deliveryReceipt;
-
-                                        $ACTUAL_DELIVERY_DATE = $_POST['deliveryDate'];
-                                        $EXPECTED_DATE_FROM_HTML = $_POST['expectedDate'];
-
-                                        $SQL_FORMATTED_DATE = date('Y-m-d', strtotime($ACTUAL_DELIVERY_DATE));
-                                       
-                                        $driverFromHTML = $_POST['driverName'];
-                                        $truckPlateFromHTML = $_POST['truckPlate'];
-                                        $customerNameFromHTML = $_POST['customerName'];
-                                        $destinationFromHTML = $_POST['locationFromClient'];
-
-                                        $SelectOrderNumber = $_POST['selectItemtype'];
-
-                                        $query = "SELECT count(delivery_Receipt) as Count FROM scheduledelivery;";
-                                        $resultofQuery = mysqli_query($dbc, $query);
-                                        while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
-                                        {
-                                            $deliveryReceipt = "DR - ".($rowofResult['Count'] + 1); //Get The Delivery Receipt
-                                        };
                                         
-                                        //<-----------------------------------------[ QUERY FOR PRIMARY KEY]---------------------------------------->
-                                        // $queryItemID = "SELECT count(SchedID)+1 as Count FROM scheduledelivery; ";
-                                        // $resultItemID = mysqli_query($dbc,$queryItemID);
-                                        // $rowResultItemID = mysqli_fetch_assoc($resultItemID);
-                                        // $SchedID = $rowResultItemID['Count']; // Get SchedID and Add 1 for DR - | Extra Query Kase ayaw gawin Auto increment , ambobo talaga
-                                        //<-----------------------------------------[ QUERY FOR PRIMARY KEY]---------------------------------------->   
-                                       
-                                        // $orderNumArray = array();
-                                        // $queryOrderDetails = "SELECT * FROM orders
-                                        // join order_details ON orders.ordernumber = order_details.ordernumber 
-                                        // WHERE order_status = 'Deliver'";
-                                        // $resultOrderDetails = mysqli_query($dbc,$queryOrderDetails);
-                                        // while($rowResult = mysqli_fetch_array($resultOrderDetails))
+
+                                        // if(!$RESULT_ORDER_TABLE) 
                                         // {
-                                        //     $orderNumArray[] = $rowResult['ordernumber'];
-                                        // };
-                                        if(strtotime($ACTUAL_DELIVERY_DATE) < strtotime($EXPECTED_DATE_FROM_HTML) )
-                                        {
-                                            $DELIVER_STATUS = "Order In Progress";
-                                            echo "Order In Progress?";
-                                        }
-                                       
-                                        else
-                                        {
-                                            $DELIVER_STATUS = "Late Delivery";
-                                            
-                                            echo "Late Delivery";
-                                        }
-    
-                                        $INSERT_TO_SCHED_DELIVER_TABLE = "INSERT INTO scheduledelivery(
-                                            
-                                            delivery_Receipt,
-                                            ordernumber,
-                                            delivery_Date,
-                                            driver,
-                                            truck_Number,
-                                            customer_Name,
-                                            Destination,
-                                            delivery_status)
-                                            
-                                            VALUES(
-                                            '$deliveryReceipt',
-                                            '$SelectOrderNumber',
-                                            '$SQL_FORMATTED_DATE',
-                                            '$driverFromHTML',
-                                            '$truckPlateFromHTML',
-                                            '$customerNameFromHTML',
-                                            '$destinationFromHTML',
-                                            '$DELIVER_STATUS');"; //Insert Required Element from HTML to DB
-    
-                                        $RESULT_INSERT_TO_SCHED_DELIVERY_TABLE = mysqli_query($dbc,$INSERT_TO_SCHED_DELIVER_TABLE);
-                                        if(!$RESULT_INSERT_TO_SCHED_DELIVERY_TABLE) 
-                                        {
-                                            die('Error: ' . mysqli_error($dbc));
-                                            echo '<script language="javascript">';
-                                            echo 'alert("Error In Insert");';
-                                            echo '</script>';
-                                        } 
-                                        else 
-                                        {
-                                            // echo '<script language="javascript">';
-                                            // echo 'alert("Insert Successfull");';
-                                            // echo '</script>';                                           
-                                        }
-
-                                        // $SchedID++; //Add +1 to Primary to Avoid Error on Duplicate key : Stupid kase ayaw gawin Auto incrememt, napaka BOBITO!
-                                        $deliveryReceipt++;
-
-                                        $UPDATE_ORDERS_TABLE = "UPDATE orders
-                                        SET orders.order_status  = ('$DELIVER_STATUS')                                       
-                                        WHERE ordernumber ='$SelectOrderNumber';";
-
-                                        $RESULT_ORDER_TABLE = mysqli_query($dbc,$UPDATE_ORDERS_TABLE);
-
-                                        if(!$RESULT_ORDER_TABLE) 
-                                        {
-                                            die('Error: ' . mysqli_error($dbc));
-                                            echo '<script language="javascript">';
-                                            echo 'alert("Error In Update");';
-                                            echo '</script>';
-                                        } 
-                                        else 
-                                        {
-                                            echo '<script language="javascript">';
-                                            echo 'alert("Create Delivery Receipt Successful");';
-                                            echo '</script>';
-                                            header("Location: Deliveries.php");
-                                        }                                                                                   
-                                    }// END IF ISSET        
+                                        //     die('Error: ' . mysqli_error($dbc));
+                                        //     echo '<script language="javascript">';
+                                        //     echo 'alert("Error In Update");';
+                                        //     echo '</script>';
+                                        // } 
+                                        // else 
+                                        // {
+                                        //     echo '<script language="javascript">';
+                                        //     echo 'alert("Create Delivery Receipt Successful");';
+                                        //     echo '</script>';
+                                        //     header("Location: Deliveries.php");
+                                        // }                                                                                   
+                                    // }// END IF ISSET        
                             ?>
                         </div>
                       </div>
@@ -456,7 +363,7 @@
 <script src="../build/js/custom.min.js"></script>
 <script type="text/javascript">
     
-                                    
+    $("#item_fab").hide();                   
     <?php
     
     require_once('DataFetchers/mysql_connect.php');
@@ -591,7 +498,8 @@
         echo "var current_weight = 0; ";
     echo  " for (var i = 0; i < ".sizeof($orderNumber)."; i++) {  ";                                                                               
         echo  "  if(dropdown.value == orderNumFromPHP[i])";
-            echo  "  {";                                 
+            echo  "  {"; 
+                        echo '$("#item_fab").hide();';              
                 echo  " textBox.value = cusNameFromPHP[i];";               
                 echo  " totalPriceBox.value = '₱ '+ totalNumFromPHP[i];";
                 echo  " ExpectedDateBox.value = expectedDateFromPHP[i];";
@@ -600,7 +508,7 @@
                 // Added total weight
                 // echo  " totalweightBox.value = '400' + 'kg'";
                
-                echo "current_weight = current_weight + itemweightFromPHP[i] * quantityNumFromPHP[i];";
+                echo "current_weight = current_weight + (itemweightFromPHP[i] * quantityNumFromPHP[i]);";
                 echo  " for (var j = 0; j < ".sizeof($truckID)."; j++) {  "; 
                 echo  "  if(locationFromPHP[i] == DestinationFromPHP[j])"; //checks if location is same as TruckDestinatrion
                 echo  "  {";
@@ -610,12 +518,18 @@
                     echo  " totalweightBox.value = current_weight + ' KG';";
                 echo  "  }"; 
             echo  "  }"; // end 2nd forloop
-            echo 'if(fabricationStatusFromPHP[i] == "No Fabrication"){ $("#item_fab").hide(); }';//END IF
+
+              echo 'if(fabricationStatusFromPHP[i] == "No Fabrication"){ $("#item_fab").hide(); ';
+              echo '$("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+3days")).'"); ';
+              echo '}'; //END IF
+
               echo 'else{  $("#item_fab").show();';
+              echo '$("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+6days")).'"); ';
               echo '$("#current_or").text("Order Number: " + dropdown.value);';
               echo '$("#fab_status").text("Current Status: " + fabricationStatusFromPHP[i]);';
               echo '$("#description").text("Description: " + fabdescFromPHP[i]);';
               echo '}'; //END ELSE
+
             echo  "var newRow = document.getElementById('datatable').insertRow();";
             echo  'newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td> <td align = right>" +quantityNumFromPHP[i]+ "</td> <td align = right> ₱ "+PriceNumFromPHP[i]+"</td></tr>";';
                                             
@@ -629,10 +543,47 @@
 </script> <!-- Script to add Order Details from DB with PHP inside --> 
            
 <script>
-    function confirmSubmit()
+ $('#submit_receipt').on('click', function(e){
+   if($('#orderNumberDropdown :selected').val() == "")
+   {
+      alert("No Order Receipt Selected!");
+   }
+   else
+   {
+    if(confirm("Do you want to create a delivery receipt for this order?"))
     {
-     confirm("Do you want to create a delivery receipt for this order?");
+      request = $.ajax({
+      url: "ajax/create_delivery_receipt.php",
+      type: "POST",
+      data: {
+        post_delivery_date: $('#deliveryDate').val(),
+        post_expected_date: $('#expectedDate').val(),
+        post_driver_name: $('#driverName').val(),
+        post_truck_plate: $('#truckPlate').val(),
+        post_customer_name: $('#customerName').val(),
+        post_destination: $('#locationFromClient').val(),
+        post_selected_or: $('#orderNumberDropdown :selected').val(),
+        post_order_weight: $('#totalorderWeight').val(),
+        post_truck_cap: $('#truckWeight').val()
+                                
+      },
+      success: function(data, textStatus)
+      {
+          alert("Successful");
+          // window.location.href= "ViewDepotRequests.php";
+          
+
+      }//End Success
+      
+      }); // End ajax 
     }
+    else
+    {
+      alert("Action: Cancelled");
+    }
+   }
+    
+  })  
 </script>
 
 
