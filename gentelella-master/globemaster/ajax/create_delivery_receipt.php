@@ -29,7 +29,7 @@
     echo $SelectOrderNumber."\n";
     echo $GET_TOTAL_WEIGHT."\n";
     echo $GET_TRUCK_CAP."\n";
-    echo $GET_TRUCK_CAP - $GET_TOTAL_WEIGHT;
+    echo $GET_TRUCK_CAP - $GET_TOTAL_WEIGHT."\n";
 
     $query = "SELECT count(delivery_Receipt) as Count, delivery_status FROM scheduledelivery;";
     $resultofQuery = mysqli_query($dbc, $query);
@@ -39,7 +39,20 @@
         $DELIVERY_STATUS = $rowofResult['delivery_status'];
     };
 
-    $SQL_CHK_BULK_TABLE = "SELECT * FROM bulk_order WHERE bulk_order_date = '$SQL_FORMATTED_DATE';"; 
+    if(strtotime($ACTUAL_DELIVERY_DATE) < strtotime($EXPECTED_DATE_FROM_HTML) )
+    {
+        $DELIVER_STATUS = "Order In Progress";
+        echo "Order In Progress?";
+    }
+    
+    else
+    {
+        $DELIVER_STATUS = "Late Delivery";
+        
+        echo "Late Delivery \n";
+    }
+    echo "Current DR: ".$deliveryReceipt."\n";
+    $SQL_CHK_BULK_TABLE = "SELECT * FROM bulk_order WHERE bulk_order_date = '$SQL_FORMATTED_DATE' AND truck_assigned ='$truckPlateFromHTML';"; 
     $RESULT_CHK_BULK_TABLE =  mysqli_query($dbc,$SQL_CHK_BULK_TABLE);
     
     if(mysqli_num_rows($RESULT_CHK_BULK_TABLE)==0) //CHecks Bulk Orders if Date = The set deliv date
@@ -61,21 +74,23 @@
         $GET_BO_NUM = "SELECT max(bulk_order_id) as BULK_ORDER_ID FROM bulk_order"; //Gets the latest inserted Bulk Order ID 
         $RESULT_GET_BO = mysqli_query($dbc,$GET_BO_NUM);
         $ROW_GET_BO = mysqli_fetch_assoc($RESULT_GET_BO);
-        $CURRENT_BO_ID = $ROW_GET_BO['bulk_order_id'];
+        $CURRENT_BO_ID = $ROW_GET_BO['BULK_ORDER_ID'];
 
-        // $INSERT_TO_BULK_DETAILS = "INSERT INTO bulk_order_details(
-        //     reference_bulk_or,
-        //     bulk_order_details_dr,
-        //     dr_weight, 
-        //     dr_status,
-        //     time_in,
-        //     time_out)
-            
-        //     VALUES(
-        //     '$CURRENT_BO_ID',
-        //     '$deliveryReceipt',
-        //     '$GET_TOTAL_WEIGHT',
-        //     '$DELIVERY_STATUS')";
+        $INSERT_TO_BULK_DETAILS = "INSERT INTO bulk_order_details(
+            reference_bulk_or,
+            bulk_order_details_dr,
+            dr_weight, 
+            dr_status,time_in,time_out)          
+            VALUES(
+            '$CURRENT_BO_ID',
+            '$deliveryReceipt',
+            '$GET_TOTAL_WEIGHT',
+            '$DELIVERY_STATUS',null,null)";
+        $RESULT_INSERT_BULK_DETAILS =  mysqli_query($dbc,$INSERT_TO_BULK_DETAILS);
+        if(!$RESULT_INSERT_BULK_DETAILS)
+        {
+            echo "Insert: Error in Details \n";
+        }
         
     }
     else
@@ -85,20 +100,26 @@
 
         $SQL_UPDATE_BULK_ORDER = "UPDATE bulk_order SET current_truck_cap = (current_truck_cap - '$GET_TOTAL_WEIGHT') WHERE bulk_order_id = '$CURRENT_BULK_ID'";
         $RESULT_UPDATE_BULK_TABLE =  mysqli_query($dbc,$SQL_UPDATE_BULK_ORDER);
+
+        $INSERT_TO_BULK_DETAILS = "INSERT INTO bulk_order_details(
+            reference_bulk_or,
+            bulk_order_details_dr,
+            dr_weight, 
+            dr_status,
+            time_in,time_out)            
+            VALUES(
+            '$CURRENT_BULK_ID',
+            '$deliveryReceipt',
+            '$GET_TOTAL_WEIGHT',
+            '$DELIVERY_STATUS',null,null)";
+        $RESULT_INSERT_BULK_DETAILS =  mysqli_query($dbc,$INSERT_TO_BULK_DETAILS);
+        if(!$RESULT_INSERT_BULK_DETAILS)
+        {
+            echo "Update: Error in Details \n";
+        }
          
     }              
-    if(strtotime($ACTUAL_DELIVERY_DATE) < strtotime($EXPECTED_DATE_FROM_HTML) )
-    {
-        $DELIVER_STATUS = "Order In Progress";
-        echo "Order In Progress?";
-    }
     
-    else
-    {
-        $DELIVER_STATUS = "Late Delivery";
-        
-        echo "Late Delivery";
-    }
 
     // $INSERT_TO_SCHED_DELIVER_TABLE = "INSERT INTO scheduledelivery(
         

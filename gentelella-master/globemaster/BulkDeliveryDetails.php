@@ -90,6 +90,16 @@
                                         $FORMAT_DATE = date("F d, Y", $GET_DATE);
 
                                         echo '<font color = "black"><h1>['.$ROW_GET_BO['truck_assigned'].'] - '.$FORMAT_DATE.' Delivery';
+
+                                        $BULK_DETAIL_ARRAY = array();
+                                        $GET_BULK_DETAIL = "SELECT * FROM bulk_order_details WHERE reference_bulk_or = '$CURRENT_BO'";
+                                        $RESULT_GET_BULK_DETAIL = mysqli_query($dbc,$GET_BULK_DETAIL);
+                                        while($ROW_GET_BULK_DETAIL = mysqli_fetch_array($RESULT_GET_BULK_DETAIL,MYSQLI_ASSOC))
+                                        {
+                                            $BULK_DETAIL_ARRAY[]=$ROW_GET_BULK_DETAIL['bulk_order_details_dr'];
+                                        }
+
+                                      
                                     ?>
 
                                     </h1></font> 
@@ -195,6 +205,26 @@
 <!-- /footer content -->
 </div>
 </div>
+<?php
+
+for($i = 1 ; $i < sizeof($BULK_DETAIL_ARRAY); $i++)
+{
+    $GET_DR_DETAILS = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$BULK_DETAIL_ARRAY[$i]'";
+    $RESULT_DR_DETAILS  = mysqli_query($dbc,$GET_DR_DETAILS);
+    $ROW_RESULT_DR_DETAILS = mysqli_fetch_assoc($RESULT_DR_DETAILS);
+
+    echo "<script>";
+        echo "$('#drCusName').val('".$ROW_RESULT_DR_DETAILS['customer_Name']." ');";
+        echo "$('#drDestination').val('".$ROW_RESULT_DR_DETAILS['Destination']." ');";
+        echo "$('#drStatus').val('".$ROW_RESULT_DR_DETAILS['delivery_status']." ');";
+        echo "$('#drexpectedDate').val('".$ROW_RESULT_DR_DETAILS['delivery_Date']." ');";
+        echo "$('#drTotalWeight').val('".$ROW_RESULT_DR_DETAILS['customer_Name']." ');";
+        echo "$('#drTotal').val('".$ROW_RESULT_DR_DETAILS['customer_Name']." ');";
+        echo "$('#dr_form').clone().appendTo('#dr_panel');";
+    echo "</script>";
+
+}
+?>
 
 <!-- jQuery -->
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
