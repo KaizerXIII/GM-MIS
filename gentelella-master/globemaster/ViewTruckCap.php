@@ -205,19 +205,11 @@
                                 echo '</td>';  
                                 echo '<td align = "right">';
                                 echo $rowofResult['weightCap'];
-                                echo '</td>';
-                                // echo '<td align = "center">';
-                                // echo '<a href ="Delivery Receipt.php?deliver_number='.$rowofResult['delivery_Receipt'].'&order_number='.$rowofResult['ordernumber'].' "> <i class="fa fa-wrench"></i> </a>';
-                                // echo '</td>';
+                                echo '</td>';                              
                               echo "</tr>";
                               $count++;
                               
-                                // if(isset($_POST["delivrow".$count ]))
-                                // {
-                                //   echo $_POST["delivrow".$count ];  
-                                // }
-                                // $_SESSION['GET_DEV'] = "delivrow".$count;
-                              // echo $_POST["delivRow',$count,'"];
+                              
                             };
                           ?>
                         </tr>
@@ -256,7 +248,7 @@
                         while($ROW_GET_BULK_ORDER = mysqli_fetch_array($RESULT_GET_BULK_ORDER,MYSQLI_ASSOC))
                         {
                           echo '<tr>';
-                          echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_id'].'</td>'; 
+                          echo '<td bd_id = '.$ROW_GET_BULK_ORDER['bulk_order_id'].'> B.D - '.$ROW_GET_BULK_ORDER['bulk_order_id'].'</td>'; 
                           echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_date'].'</td>';                         
                           echo '<td>'.$ROW_GET_BULK_ORDER['truck_assigned'].'</td>'; 
                           echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_status'].'</td>'; 
@@ -273,7 +265,7 @@
 					<script>
             $('.bulk_details').on('click', function(e){
               var row = $(this).closest('tr');
-              var current_id = row.find('td:first').text();
+              var current_id = row.find('td:first').attr('bd_id');
               window.location.href= "BulkDeliveryDetails.php?bulk_id="+current_id;
             })
 

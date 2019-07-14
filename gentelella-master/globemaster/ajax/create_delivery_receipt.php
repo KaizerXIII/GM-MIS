@@ -121,47 +121,49 @@
     }              
     
 
-    // $INSERT_TO_SCHED_DELIVER_TABLE = "INSERT INTO scheduledelivery(
+    $INSERT_TO_SCHED_DELIVER_TABLE = "INSERT INTO scheduledelivery(
         
-    //     delivery_Receipt,
-    //     ordernumber,
-    //     delivery_Date,
-    //     driver,
-    //     truck_Number,
-    //     customer_Name,
-    //     Destination,
-    //     delivery_status)
+        delivery_Receipt,
+        ordernumber,
+        delivery_weight,
+        delivery_Date,
+        driver,
+        truck_Number,
+        customer_Name,
+        Destination,
+        delivery_status)
         
-    //     VALUES(
-    //     '$deliveryReceipt',
-    //     '$SelectOrderNumber',
-    //     '$SQL_FORMATTED_DATE',
-    //     '$driverFromHTML',
-    //     '$truckPlateFromHTML',
-    //     '$customerNameFromHTML',
-    //     '$destinationFromHTML',
-    //     '$DELIVER_STATUS');"; //Insert Required Element from HTML to DB
+        VALUES(
+        '$deliveryReceipt',
+        '$SelectOrderNumber',
+        '$GET_TOTAL_WEIGHT',
+        '$SQL_FORMATTED_DATE',
+        '$driverFromHTML',
+        '$truckPlateFromHTML',
+        '$customerNameFromHTML',
+        '$destinationFromHTML',
+        '$DELIVER_STATUS');"; //Insert Required Element from HTML to DB
 
-    // $RESULT_INSERT_TO_SCHED_DELIVERY_TABLE = mysqli_query($dbc,$INSERT_TO_SCHED_DELIVER_TABLE);
-    // if(!$RESULT_INSERT_TO_SCHED_DELIVERY_TABLE) 
-    // {
-    //     die('Error: ' . mysqli_error($dbc));
-    //     echo '<script language="javascript">';
-    //     echo 'alert("Error In Insert");';
-    //     echo '</script>';
-    // } 
-    // else 
-    // {
+    $RESULT_INSERT_TO_SCHED_DELIVERY_TABLE = mysqli_query($dbc,$INSERT_TO_SCHED_DELIVER_TABLE);
+    if(!$RESULT_INSERT_TO_SCHED_DELIVERY_TABLE) 
+    {
+        die('Error: ' . mysqli_error($dbc));
+        echo '<script language="javascript">';
+        echo 'alert("Error In Insert");';
+        echo '</script>';
+    } 
+    else 
+    {
                             
-    // }
+    }
 
-    // // $SchedID++; //Add +1 to Primary to Avoid Error on Duplicate key : Stupid kase ayaw gawin Auto incrememt, napaka BOBITO!
-    // $deliveryReceipt++;
+    // $SchedID++; //Add +1 to Primary to Avoid Error on Duplicate key : Stupid kase ayaw gawin Auto incrememt, napaka BOBITO!
+    $deliveryReceipt++;
 
-    // $UPDATE_ORDERS_TABLE = "UPDATE orders
-    // SET orders.order_status  = ('$DELIVER_STATUS')                                       
-    // WHERE ordernumber ='$SelectOrderNumber';";
-    // $RESULT_ORDER_TABLE = mysqli_query($dbc,$UPDATE_ORDERS_TABLE);
+    $UPDATE_ORDERS_TABLE = "UPDATE orders
+    SET orders.order_status  = ('$DELIVER_STATUS')                                       
+    WHERE ordernumber ='$SelectOrderNumber';";
+    $RESULT_ORDER_TABLE = mysqli_query($dbc,$UPDATE_ORDERS_TABLE);
    
 
  //<-----------------------------------------[ QUERY FOR PRIMARY KEY]---------------------------------------->

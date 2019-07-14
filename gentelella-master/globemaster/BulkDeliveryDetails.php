@@ -130,7 +130,7 @@
                                     <div class="x_panel" id = "dr_form">
                                     <div>
                                         <div class = "col-md-6">
-                                            <font color = "black" style= "text-align:left" size = "6">DR - 1</font>
+                                            <span id = "dr_number"></span>
                                         </div>
                                         <div align = "right">
                                             <button type="button" id="finish_delivery" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
@@ -169,13 +169,13 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Total Weight</label>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                            <input   type="number" id = "drTotalWeight" class="form-control" readonly="readonly" style="text-align:right;">
+                                            <input   type="text" id = "drTotalWeight" class="form-control" readonly="readonly" style="text-align:right;">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Total Amount</label>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                            <input   type="number" id = "drTotal" class="form-control" readonly="readonly" style="text-align:right;">
+                                            <input   type="text" id = "drTotal" class="form-control" readonly="readonly" style="text-align:right;">
                                         </div>
                                     </div>
 
@@ -206,28 +206,51 @@
 </div>
 </div>
 <?php
-
-for($i = 1 ; $i < sizeof($BULK_DETAIL_ARRAY); $i++)
+ echo "<script>";
+for($i = 0 ; $i < sizeof($BULK_DETAIL_ARRAY); $i++)
 {
     $GET_DR_DETAILS = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$BULK_DETAIL_ARRAY[$i]'";
     $RESULT_DR_DETAILS  = mysqli_query($dbc,$GET_DR_DETAILS);
     $ROW_RESULT_DR_DETAILS = mysqli_fetch_assoc($RESULT_DR_DETAILS);
 
-    echo "<script>";
-        echo "$('#drCusName').val('".$ROW_RESULT_DR_DETAILS['customer_Name']." ');";
-        echo "$('#drDestination').val('".$ROW_RESULT_DR_DETAILS['Destination']." ');";
-        echo "$('#drStatus').val('".$ROW_RESULT_DR_DETAILS['delivery_status']." ');";
-        echo "$('#drexpectedDate').val('".$ROW_RESULT_DR_DETAILS['delivery_Date']." ');";
-        echo "$('#drTotalWeight').val('".$ROW_RESULT_DR_DETAILS['customer_Name']." ');";
-        echo "$('#drTotal').val('".$ROW_RESULT_DR_DETAILS['customer_Name']." ');";
-        echo "$('#dr_form').clone().appendTo('#dr_panel');";
-    echo "</script>";
+    $GET_TOTAL_AMT = "SELECT * FROM orders
+    JOIN scheduledelivery
+    ON orders.ordernumber = scheduledelivery.ordernumber
+    WHERE scheduledelivery.delivery_Receipt = '$BULK_DETAIL_ARRAY[$i]' ";
+    $RESULT_TOTAL_AMT  = mysqli_query($dbc,$GET_TOTAL_AMT);
+    $ROW_RESULT_TOTAL_AMT = mysqli_fetch_assoc($RESULT_TOTAL_AMT);
+    
+    $FORMATTED_TOTAL = number_format($ROW_RESULT_TOTAL_AMT['totalamt'],2,".",",");
+   echo 'console.log("'.$ROW_RESULT_DR_DETAILS['delivery_Receipt'].'");';
+   echo "$('#dr_number').html('<font color =black style=text-align:left size=6>".$ROW_RESULT_DR_DETAILS['delivery_Receipt']."</font>');";//Sets the values of input 
+   echo "$('#drCusName').val('".$ROW_RESULT_DR_DETAILS['customer_Name']." ');";
+   echo "$('#drDestination').val('".$ROW_RESULT_DR_DETAILS['Destination']." ');";
+   echo "$('#drStatus').val('".$ROW_RESULT_DR_DETAILS['delivery_status']." ');";
+   echo "$('#drexpectedDate').val('".$ROW_RESULT_DR_DETAILS['delivery_Date']." ');";
+   echo "$('#drTotalWeight').val(".$ROW_RESULT_DR_DETAILS['delivery_weight']."+' KG');";
+   echo "$('#drTotal').val('₱ '+ '".trim($FORMATTED_TOTAL)."');";
+
+   echo "$('#finish_delivery').attr('dr_number','".$ROW_RESULT_DR_DETAILS['delivery_Receipt']."');";
+   echo "$('#finish_delivery').attr('or_number','".$ROW_RESULT_DR_DETAILS['ordernumber']."');";
+
+   echo "$('#dr_form').clone().appendTo('#dr_panel');";  //Clones the form to accomodate all DR's
+        
+   
 
 }
+echo "$('#dr_form').remove();";  //Removes the Original Form to prevent dups
+echo "</script>";
 ?>
+<script>
 
+$('.btn.btn-round.btn-info.btn-md').on('click',function(e){
+    var current_dr = $(this).attr('dr_number');
+    var current_or = $(this).attr('or_number');
+    window.location.href= "Delivery Receipt.php?deliver_number="+ current_dr +"&order_number="+ current_or +".php";
+})
+</script>
 <!-- jQuery -->
-<script src="../vendors/jquery/dist/jquery.min.js"></script>
+<script src="../vendors/jquery/dist/jquery.min.js">  </script>
 <!-- Bootstrap -->
 <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- FastClick -->
@@ -285,15 +308,16 @@ for($i = 1 ; $i < sizeof($BULK_DETAIL_ARRAY); $i++)
 <script src="../build/js/custom.min.js"></script>
 
 
-L<script>
+<script>
 $(document).ready(function() {
     for(var i = 0; i < 5; i++)
     {
         // var cloned = $('#dr_form').clone().appendTo('#dr_panel'); //Clones the Div and appends to the targetted container
         
     }
+    // $('#drTotal').val('₱ '+parseInt(400.00));
 });
-    
+
 </script>
 </body>
 

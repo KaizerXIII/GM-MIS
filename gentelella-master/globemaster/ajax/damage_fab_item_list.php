@@ -8,7 +8,7 @@
     for($i = 0; $i < sizeof($_SESSION['qty_from_fab']); $i++)
     {
       
-        $SQL_GET_PRICE = "SELECT price FROM items_trading WHERE item_name = '$ITEM_NAME[$i]' ";
+        $SQL_GET_PRICE = "SELECT price,item_count FROM items_trading WHERE item_name = '$ITEM_NAME[$i]' ";
         $RESULT_GET_PRICE=mysqli_query($dbc,$SQL_GET_PRICE);
 
         $ROW_RESULT_GET_PRICE=mysqli_fetch_assoc($RESULT_GET_PRICE);
@@ -17,7 +17,7 @@
 
         $ITEM_QTY[$i];
         $ITEM_NAME[$i];
-        echo'<option value = "'.$ITEM_QTY[$i].'" price = "'.$ITEM_PRICE.'">'.$ITEM_NAME[$i].' | ₱'.$ITEM_PRICE.'</option>'; //Temporary option value = ITEM_QTY     
+        echo'<option current_stock = "'.$ROW_RESULT_GET_PRICE['item_count'].'" value = "'.$ITEM_QTY[$i].'" price = "'.$ITEM_PRICE.'">'.$ITEM_NAME[$i].' | ₱'.$ITEM_PRICE.'</option>'; //Temporary option value = ITEM_QTY     
     }
 
     
