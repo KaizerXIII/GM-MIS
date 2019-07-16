@@ -186,7 +186,7 @@
                             $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
                             while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
                             {
-                              $TRUCK_PLATE_ARRAY[]=$rowofResult['truckplate'];
+                             
                               $TRUCK_STATIC_CAP[] = $rowofResult['weightCap'];
                               echo " <tr>";
                                 echo '<td value="',$rowofResult['truckplate'],'"  "> ';            
@@ -194,22 +194,22 @@
                                 echo '</td>';  
                                 echo '<td align = "right">';
                                 // echo '350kg out of 2500kg | <font color = "#42d9f4">'.$rowofResult['weightCap'].' kg available</font>';
-                                // echo $rowofResult['weightCap'];
+                                echo $rowofResult['weightCap'];
                                 echo '</td>'; 
                                 echo '<td align = "right">';
-                                // echo $rowofResult['weightCap'];
+                                echo $rowofResult['weightCap'];
                                 echo '</td>';  
                                 echo '<td align = "right">';
-                                // echo $rowofResult['weightCap'];
+                                echo $rowofResult['weightCap'];
                                 echo '</td>';  
                                 echo '<td align = "right">';
-                                // echo $rowofResult['weightCap'];
+                                echo $rowofResult['weightCap'];
                                 echo '</td>';  
                                 echo '<td align = "right">';
-                                // echo $rowofResult['weightCap'];
+                                echo $rowofResult['weightCap'];
                                 echo '</td>';  
                                 echo '<td align = "right">';
-                                // echo $rowofResult['weightCap'];
+                                echo $rowofResult['weightCap'];
                                 echo '</td>';                              
                               echo "</tr>";                                                        
                               
@@ -221,9 +221,10 @@
                             {
                               $BULK_DATE_ARRAY[] = $ROW_RESULT_BULK_CAP['bulk_order_date'];
                               $TRUCK_CAP_ARRAY[]=$ROW_RESULT_BULK_CAP['current_truck_cap'];
+                              $TRUCK_PLATE_ARRAY[]=$ROW_RESULT_BULK_CAP['truck_assigned'];
                             }
                             echo "<script>";
-                            echo "var TRUCK_PLATE = [];";                          
+                            echo "var TRUCK_PLATE = [];";
                             echo "var CURRENT_WEEK = [];";
 
                             echo "var BULK_DATE = ".json_encode($BULK_DATE_ARRAY).";"; 
@@ -231,38 +232,42 @@
                             echo "var TRUCK_PLATE_DB = ".json_encode($TRUCK_PLATE_ARRAY).";";
                             echo "var TRUCK_STATIC_CAP = ".json_encode($TRUCK_STATIC_CAP).";";  
 
-                            echo "$('#datatable-responsive th[date_id]').each(function(index){ ";
-                              echo "CURRENT_WEEK.push($(this).attr('date_id'));";
-                              echo "if($(this).attr('date_id') == BULK_DATE[index]){";
-                                echo "console.log($(this).attr('date_id'));";  
-                              echo "}";//END IF 
-                              echo "$('#datatable-responsive tbody tr td[value]').each(function(){ ";
-                                echo "TRUCK_PLATE.push($(this).attr('value'));";
-                                // echo "console.log($(this).attr('value'));";                                            
-  
-                              echo '});';  // End Jquery Each TD 
+                            echo "$('#datatable-responsive tbody tr td[value]').each(function(){ ";
+                              echo "TRUCK_PLATE.push($(this).attr('value'));";
+                              // echo "console.log($(this).attr('value'));";                                            
 
-                            echo '});';  // End Jquery Each TH 
+                            echo '});';  // End Jquery Each TD 
+
+                            // echo "$('#datatable-responsive th[date_id]').each(function(index){ ";
+                            //   echo "CURRENT_WEEK.push($(this).attr('date_id'));";
+                            //   echo "var LENGTH = BULK_DATE.length -1;";
+                            //   echo "if(BULK_DATE[index] == $(this).attr('date_id')){";
+                            //     echo "console.log(BULK_DATE[index]);";
+                            //     echo "return true;";                               
+                            //   echo"}";//END IF
+                              
+                            // echo '});';  // End Jquery Each TH 
                            
-                            echo "for(var i = 0; i < CURRENT_WEEK.length; i++){";                                                      
+                           
+                            // echo "for(var i = 0; i < CURRENT_WEEK.length; i++){";                                                      
 
+                             
                               
-                              
-                                // echo "console.log(TRUCK_CAP[i]);";
-                                // echo "$('<td align = right>'+TRUCK_CAP[i]+'</td>').appendTo('#datatable-responsive tbody tr');";
-                                echo "if(BULK_DATE[i].value == CURRENT_WEEK[i].value && TRUCK_PLATE[i].value == TRUCK_PLATE_DB[i].value){";
-                                  echo "$('#datatable-responsive tbody tr td:nth-child('+i+'):not(:first-child)').each(function(i){";
+                            //     // echo "console.log(TRUCK_CAP[i]);";
+                            //     // echo "$('<td align = right>'+TRUCK_CAP[i]+'</td>').appendTo('#datatable-responsive tbody tr');";
+                            //     echo "if(BULK_DATE[i].value == CURRENT_WEEK[i].value && TRUCK_PLATE[i].value == TRUCK_PLATE_DB[i].value){";
+                            //       echo "$('#datatable-responsive tbody tr td:nth-child('+i+'):not(:first-child)').each(function(i){";
                                     
-                                    echo "$(this).text(TRUCK_CAP[i]);";
+                            //         echo "$(this).text(TRUCK_CAP[i]);";
                                   
-                                  echo "});"; //End Each nth-child
-                                echo '}';//End if 
+                            //       echo "});"; //End Each nth-child
+                            //     echo '}';//End if 
                                 
-                                echo "else{";
-                                  echo "$('<td align =right>TRUCK_STATIC_CAP[i]</td>').appendTo('#datatable-responsive tbody tr');";
-                                echo "}";//End Else
+                            //     echo "else{";
+                            //       echo "$('<td align =right>TRUCK_STATIC_CAP[i]</td>').appendTo('#datatable-responsive tbody tr');";
+                            //     echo "}";//End Else
                                                                                                                                                   
-                            echo "}"; //End For
+                            // echo "}"; //End For
                             echo "</script>";  
 
                           
@@ -382,7 +387,64 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 
+    <script>
+// var current_length = $('#datatable-responsive th[date_id]').length;
+// $('#datatable-responsive th[date_id]').each(function(index){ 
     
+    
+//     if($(this).attr('date_id')==BULK_DATE[index])
+//     {
+     
+//       $('#datatable-responsive tbody tr td[value]').each(function(e){
+//         if($(this).attr('value')==TRUCK_PLATE_DB[e])
+//         {
+          
+//           var table = $("#datatable-responsive")[0];
+//           var cell = table.rows[e+1].cells[index];
+//           cell.innerHTML = TRUCK_CAP[e];
+
+//         }
+//       })
+//       return true;                              
+//     }//END IF
+//      CURRENT_WEEK.push($(this).attr('date_id'));
+//   }); // End Jquery Each TH 
+var CURRENT_WEEK = [];
+$('#datatable-responsive th[date_id]').each(function(index){ 
+  CURRENT_WEEK.push($(this).attr('date_id'));
+ 
+  if(BULK_DATE[index] == $(this).attr('date_id')){
+    console.log(BULK_DATE[index]);
+    return true;                               
+  }//END IF
+  
+});  // End Jquery Each TH   
+
+$.each( BULK_DATE, function( key, value ) {
+    var index = $.inArray( value, CURRENT_WEEK );
+    if( index != -1 ) {
+        console.log( index );
+    }
+});
+for(var i = 0; i < CURRENT_WEEK.length; i++)
+{
+  for(var j = 0; j < TRUCK_PLATE.length; j++)
+  {
+     if(BULK_DATE[j].value == CURRENT_WEEK[i].value && TRUCK_PLATE[j].value == TRUCK_PLATE_DB[j].value)
+     {
+       console.log("DB TP: "+ TRUCK_PLATE_DB[j]);
+       console.log("HTML TP: "+ TRUCK_PLATE[j]);
+      var table = $("#datatable-responsive tbody")[0];
+      var cell = table.rows[i+1].cells[j+1];
+      cell.innerHTML = TRUCK_CAP[j];
+     }
+   
+  } //END 2nd FOR        
+} //END 1st FOR
+
+  </script>                
+
+  
 
     <!-- Custom Fonts -->
     <style>
