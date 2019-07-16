@@ -105,7 +105,7 @@
                           <div class="col-md-4 col-sm-6 col-xs-12">
                             <input type="text" name="damaged_item_name" id="damaged_item_name" required="required" oninput ="validate(this)" class="form-control col-md-7 col-xs-12"/>';
                           </div>                                                                      
-                        
+                          <h2><span id = "replenish_stock" >Replenish Item Stock: </span></h2>
                       </div>
                       <!-- Two buttons to choose for replenish or replace -->
                       <div class="form-group">
@@ -182,12 +182,69 @@
                       
                       </div><div class="form-group" align = "right">
                         <!-- <div class="col-md-6 col-sm-6 col-xs-12"> -->
-                          <button name="submitBtn" class="btn btn-success" type="button" id= "add_button">Submit</button>
+                          <button name="submitBtn" class="btn btn-success" type="button" id= "submit_dmg">Submit</button>
                           <button class="btn btn-primary" type="reset">Reset</button>
                           <button class="btn btn-danger" type="cancel">Cancel</button>
                         <!-- </div>z -->
                       </div>
+                    <script>  
+                    $('#submit_dmg').on('click', function(e){
+                      var dmg_name_array = new Array();
+                      var dmg_qty_array = new Array();
+                      var replace_name_array = new Array();
+                      var replace_qty_array = new Array();
 
+                      $('#datatable_replenish tbody tr:not(:first-child)').each(function(){
+                        var dmg_name = $(this).closest('tr').find('td:first').text().split('|')[0];
+                        var dmg_qty = $(this).closest('tr').find('td:nth-child(2)').text();
+                        
+                        var replace_name = $(this).closest('tr').find('td:nth-child(3)').text().split('|')[0];
+                        var replace_qty = $(this).closest('tr').find('td:nth-child(4)').text();
+
+                        dmg_name_array.push(dmg_name);
+                        dmg_qty_array.push(dmg_qty);
+                        replace_name_array.push(replace_name);
+                        replace_qty_array.push(replace_qty);
+
+                       
+                      });
+
+                      if(confirm("Submit Damage items?"))
+                      {
+                        request = $.ajax({
+                        url: "ajax/dmg_type_fab.php",
+                        type: "POST",
+                        data: {
+                          post_dmg_item: dmg_name_array,
+                          post_dmg_qty: dmg_qty_array,
+                          post_replace_item: replace_name_array,
+                          post_replace_qty: replace_qty_array                                                 
+                        },
+                        success: function(data, textStatus)
+                        {
+                          alert("Damages have been successfully Replaced and Recorded!");
+                           if(confirm("Go back to Fabrication Approval?"))
+                           {
+                            window.location.href= "FabricationApproval.php";
+                           }
+                           else
+                           {
+                             window.location.href= "damage_fabrication.php";
+                           }
+                            
+                            
+
+                        }//End Success
+                        
+                        }); // End ajax 
+                      }
+                      else
+                      {
+                        alert("Action: Cancelled");
+                      }
+                    })
+
+                    </script>
                    
                       
                     </form>
@@ -268,6 +325,9 @@
     </script>
 
     <script> 
+    <?php
+
+    ?>
                               
         $(document).on('change', '#select_damaged_item', function() {
          
@@ -277,6 +337,7 @@
             });
             
           $("#stocks").text("Selected Item Qty: " + $(this).val());  //Set the current stocks of the items in dropdown
+          $('#replenish_stock').text("Replenish Item Stock: " + $("#select_damaged_item :selected").attr("current_stock")); 
 
           $("#damaged_item_name").val("");
             
@@ -331,7 +392,7 @@
               var current_replacement_item_qty = $("#replacementQty").val();  
  
               var item_does_not_exist = true;
-              if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0)
+              if($("#damaged_item_name").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_name").val() != 0 || $("#damaged_item_name").val() > parseInt($('#replenish_stock').text()))
               {                                                            
                 
               $("#datatable_replenish tbody tr td.dmg_item_name").each(function(i){
@@ -418,6 +479,10 @@
                     "value":  $("#select_damaged_item :selected").val() - current_replacement_item_qty   //Subtracts the value from input 
                   });
 
+                $("#damaged_item_name").attr({
+                      "max": $("#select_damaged_item :selected").val() 
+                  });
+
                   $("#replacementQty").attr({
                     "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
                   });
@@ -434,6 +499,9 @@
                   damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_replacement_item_qty+" </td> <td class=replace_item> "+current_replacement_item+" </td> <td class = replace_qty > "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
                   $("#select_damaged_item :selected").attr({
                     "value":  $("#select_damaged_item :selected").val() - current_replacement_item_qty   //Subtracts the value from input 
+                  });
+                  $("#damaged_item_name").attr({
+                      "max": $("#select_damaged_item :selected").val() 
                   });
 
                   $("#replacementQty").attr({

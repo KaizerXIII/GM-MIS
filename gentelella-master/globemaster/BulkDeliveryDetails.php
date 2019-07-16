@@ -29,12 +29,15 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+     <!-- JQUERY Required Scripts -->
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
 
     <style type="text/css">
 
     @media print
     {
     .noprint {display:none;}
+    footer, header,.nav, #deploy, #undeploy, #finish_delivery{ display:none; }
     }
 
     @media screen
@@ -67,9 +70,36 @@
                         <div class="x_panel" id="printDR">
                             <div class="x_title">
                                 <div class="col-md-10 col-sm-10 col-xs-12">
-                                    <font color = "black"><h1>[ZCV-513] - June 13, 2019 Delivery
+                                   
                                     <?php
-                                        // Replace with Bulk Order Table
+                                        if(isset($_GET['bulk_id']))
+                                        {
+                                            $_SESSION['current_bulk_id']=$_GET['bulk_id'];
+                                        }
+                                        else
+                                        {
+                                            $_SESSION['current_bulk_id'];
+                                        }
+                                        $CURRENT_BO =  $_SESSION['current_bulk_id'];
+
+                                        $GET_BO_NUM = "SELECT * FROM bulk_order WHERE bulk_order_id ='$CURRENT_BO'"; 
+                                        $RESULT_GET_BO = mysqli_query($dbc,$GET_BO_NUM);
+                                        $ROW_GET_BO = mysqli_fetch_assoc($RESULT_GET_BO);
+
+                                        $GET_DATE = strtotime($ROW_GET_BO['bulk_order_date']);
+                                        $FORMAT_DATE = date("F d, Y", $GET_DATE);
+
+                                        echo '<font color = "black"><h1>['.$ROW_GET_BO['truck_assigned'].'] - '.$FORMAT_DATE.' Delivery';
+
+                                        $BULK_DETAIL_ARRAY = array();
+                                        $GET_BULK_DETAIL = "SELECT * FROM bulk_order_details WHERE reference_bulk_or = '$CURRENT_BO'";
+                                        $RESULT_GET_BULK_DETAIL = mysqli_query($dbc,$GET_BULK_DETAIL);
+                                        while($ROW_GET_BULK_DETAIL = mysqli_fetch_array($RESULT_GET_BULK_DETAIL,MYSQLI_ASSOC))
+                                        {
+                                            $BULK_DETAIL_ARRAY[]=$ROW_GET_BULK_DETAIL['bulk_order_details_dr'];
+                                        }
+
+                                      
                                     ?>
 
                                     </h1></font> 
@@ -93,82 +123,14 @@
                             ?>
                             <font color = "green">Truck number ZCV-513 is idle.</font>
                             <div class="col-md-12 col-sm-12 col-xs-12" >
-                            <?php
-                                    // $GET_ID_DELIVERY = $_SESSION['get_dr_number_from_deliveries'];
-                                    // $deliveryexpected = array();
-                                    // $deliverydate = array();
-                                    // $datetoday = date("Y-m-d");
-                                    // $queryDeliveryDate = "SELECT * FROM orders o
-                                    // JOIN scheduledelivery sd 
-                                    // ON o.ordernumber = sd.ordernumber 
-                                    // WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
-                                    // $resultDeliveryDate = mysqli_query($dbc,$queryDeliveryDate);
-                                  
-                                    // while($rowDeliveryDate = mysqli_fetch_array($resultDeliveryDate,MYSQLI_ASSOC))
-                                    // {
-                                    //     $deliveryexpected[] = $rowDeliveryDate['expected_date'];
-                                    //     $deliverydate[] = $rowDeliveryDate['delivery_Date'];
-                                    // }
-                                   
-                                  
-                                    // for($i = 0; $i < sizeof($deliveryexpected); $i++)
-                                    // {
-                                    //     // to check countdown till delivery
-                                    //     $queryDeliveryDateDiffNow = "SELECT order_status, DATEDIFF(CURDATE(),sd.delivery_Date) 
-                                    //     AS datedifferenceNow
-                                    //     FROM orders o
-                                    //     JOIN scheduledelivery sd 
-                                    //     ON o.ordernumber = sd.ordernumber 
-                                    //     WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
-                                    //     $resultDeliveryDateDiffNow = mysqli_query($dbc,$queryDeliveryDateDiffNow);
-                                    //     $rowDeliveryDateDiffNow = mysqli_fetch_array($resultDeliveryDateDiffNow,MYSQLI_ASSOC);
-
-                                    //     if($rowDeliveryDateDiffNow['order_status'] == "Delivered")
-                                    //     {
-                                ?>
-                                            <!-- <p><font color = "green">This order has successfully been delivered!</font></p> -->
-                                <?php
-                                    //     }
-                                    //     else{
-                                    //         if($rowDeliveryDateDiffNow['datedifferenceNow'] > -4 && $rowDeliveryDateDiffNow['datedifferenceNow'] < 1)
-                                    //         {
-                                    //             $datedifferenceNow =  abs($rowDeliveryDateDiffNow['datedifferenceNow']);
-                                    //             $orders = "order's";
-                                    //             echo '<p><font color = "blue">This '.$orders.' delivery date is due in '.$datedifferenceNow.' days.</font></p>';
-                                    //         }
-                                    //         else if($rowDeliveryDateDiffNow['datedifferenceNow'] > 0)
-                                    //         {
-                                    //             $datedifferenceNow =  abs($rowDeliveryDateDiffNow['datedifferenceNow']);
-                                    //             $orders = "order's";
-                                    //             echo '<p><font color = "red">This order is late by '.$datedifferenceNow.' Days.</font></p>';
-                                    //         }
-
-                                    //         // to check date difference from expected date
-                                    //         $queryDeliveryDateDiff = "SELECT DATEDIFF(sd.delivery_Date,o.expected_date) 
-                                    //         AS datedifference
-                                    //         FROM orders o
-                                    //         JOIN scheduledelivery sd 
-                                    //         ON o.ordernumber = sd.ordernumber 
-                                    //         WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
-                                    //         $resultDeliveryDateDiff = mysqli_query($dbc,$queryDeliveryDateDiff);
-                                    //         $rowDeliveryDateDiff = mysqli_fetch_array($resultDeliveryDateDiff,MYSQLI_ASSOC);
-
-                                    //         if($rowDeliveryDateDiff['datedifference'] > 0)
-                                    //         {
-                                    //             $datedifference =  $rowDeliveryDateDiff['datedifference'];
-                                    //             echo '<p><font color = "#ffc430">This order will be '.$datedifference.' day(s) late from the Expected Delivery Date.</font></p>';
-                                    //         }
-                                    //     }
-                                    // }
-                                    
-                                ?>
+                            
                                 </div>
-                            <form class="form-horizontal form-label-center" method="GET">                              
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 uniquedivA" >
-                                    <div class="x_panel">
+                            <form class="form-horizontal form-label-center" method="POST">                              
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 uniquedivA" id="dr_panel">
+                                    <div class="x_panel" id = "dr_form">
                                     <div>
                                         <div class = "col-md-6">
-                                            <font color = "black" style= "text-align:left" size = "6">DR - 1</font>
+                                            <span id = "dr_number"></span>
                                         </div>
                                         <div align = "right">
                                         <?php
@@ -176,7 +138,8 @@
                                             $RESULT_GET_DELIVERY_STATUS = mysqli_query($dbc,$SQL_GET_DELIVERY_STATUS);
                                             $ROW_DELIVERY_STATUS = mysqli_fetch_array($RESULT_GET_DELIVERY_STATUS, MYSQLI_ASSOC);
                                         ?>
-                                            <button type="button" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
+                                            <!-- <button type="button" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button>  -->
+                                            <button type="button" id="finish_delivery" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
                                         </div>
                                         
                                     </div>
@@ -212,13 +175,13 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Total Weight</label>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                            <input   type="number" id = "drTotalWeight" class="form-control" readonly="readonly" style="text-align:right;">
+                                            <input   type="text" id = "drTotalWeight" class="form-control" readonly="readonly" style="text-align:right;">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Total Amount</label>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                            <input   type="number" id = "drTotal" class="form-control" readonly="readonly" style="text-align:right;">
+                                            <input   type="text" id = "drTotal" class="form-control" readonly="readonly" style="text-align:right;">
                                         </div>
                                     </div>
 
@@ -228,8 +191,8 @@
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                                        <button type="button" class="btn btn-primary btn-lg" onclick = "changeOut();" id = "deploy" style = "display:block"><i class="fa fa-truck"></i> Deploy Truck</button> 
-                                        <button type="button" class="btn btn-success btn-lg" onclick = "changeIn();" id = "undeploy" style = "display:block"><i class="fa fa-truck"></i> Truck has Returned</button> 
+                                        <button type="button" class="btn btn-primary btn-lg"  id = "deploy" ><i class="fa fa-truck"></i> Deploy Truck</button> 
+                                        <button type="button" class="btn btn-success btn-lg" id = "undeploy" ><i class="fa fa-truck"></i> Truck has Returned</button> 
                                         <!-- lagyan ng onclick enable disable -->
                                     </div>
                                     </div>
@@ -248,9 +211,52 @@
 <!-- /footer content -->
 </div>
 </div>
+<?php
+ echo "<script>";
+for($i = 0 ; $i < sizeof($BULK_DETAIL_ARRAY); $i++)
+{
+    $GET_DR_DETAILS = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$BULK_DETAIL_ARRAY[$i]'";
+    $RESULT_DR_DETAILS  = mysqli_query($dbc,$GET_DR_DETAILS);
+    $ROW_RESULT_DR_DETAILS = mysqli_fetch_assoc($RESULT_DR_DETAILS);
 
+    $GET_TOTAL_AMT = "SELECT * FROM orders
+    JOIN scheduledelivery
+    ON orders.ordernumber = scheduledelivery.ordernumber
+    WHERE scheduledelivery.delivery_Receipt = '$BULK_DETAIL_ARRAY[$i]' ";
+    $RESULT_TOTAL_AMT  = mysqli_query($dbc,$GET_TOTAL_AMT);
+    $ROW_RESULT_TOTAL_AMT = mysqli_fetch_assoc($RESULT_TOTAL_AMT);
+    
+    $FORMATTED_TOTAL = number_format($ROW_RESULT_TOTAL_AMT['totalamt'],2,".",",");
+   echo 'console.log("'.$ROW_RESULT_DR_DETAILS['delivery_Receipt'].'");';
+   echo "$('#dr_number').html('<font color =black style=text-align:left size=6>".$ROW_RESULT_DR_DETAILS['delivery_Receipt']."</font>');";//Sets the values of input 
+   echo "$('#drCusName').val('".$ROW_RESULT_DR_DETAILS['customer_Name']." ');";
+   echo "$('#drDestination').val('".$ROW_RESULT_DR_DETAILS['Destination']." ');";
+   echo "$('#drStatus').val('".$ROW_RESULT_DR_DETAILS['delivery_status']." ');";
+   echo "$('#drexpectedDate').val('".$ROW_RESULT_DR_DETAILS['delivery_Date']." ');";
+   echo "$('#drTotalWeight').val(".$ROW_RESULT_DR_DETAILS['delivery_weight']."+' KG');";
+   echo "$('#drTotal').val('₱ '+ '".trim($FORMATTED_TOTAL)."');";
+
+   echo "$('#finish_delivery').attr('dr_number','".$ROW_RESULT_DR_DETAILS['delivery_Receipt']."');";
+   echo "$('#finish_delivery').attr('or_number','".$ROW_RESULT_DR_DETAILS['ordernumber']."');";
+
+   echo "$('#dr_form').clone().appendTo('#dr_panel');";  //Clones the form to accomodate all DR's
+        
+   
+
+}
+echo "$('#dr_form').remove();";  //Removes the Original Form to prevent dups
+echo "</script>";
+?>
+<script>
+
+$('.btn.btn-round.btn-info.btn-md').on('click',function(e){
+    var current_dr = $(this).attr('dr_number');
+    var current_or = $(this).attr('or_number');
+    window.location.href= "Delivery Receipt.php?deliver_number="+ current_dr +"&order_number="+ current_or +".php";
+})
+</script>
 <!-- jQuery -->
-<script src="../vendors/jquery/dist/jquery.min.js"></script>
+<script src="../vendors/jquery/dist/jquery.min.js">  </script>
 <!-- Bootstrap -->
 <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- FastClick -->
@@ -307,223 +313,18 @@
 <!-- Custom Theme Scripts -->
 <script src="../build/js/custom.min.js"></script>
 
-  <?php    
 
-require_once('DataFetchers/mysql_connect.php');
-
-
-$DR_NUM_FROM_VIEW = $_SESSION['get_dr_number_from_deliveries'];
-
-$orderNumberArray = array();
-$itemName = array();
-$quantity = array();
-$pricePerItem = array();
-$totalPrice = array();
-$expected_date = array();
-
-$SchedDelivOrderNumber = array(); 
-$SchedDelivDR = array();
-$SchedDelivDate = array();
-$SchedDelivDestination = array();
-$SchedDelivCusName = array();
-$SchedDelivStatus = array();
-
-
-$sqlToGetTableValue = "SELECT * FROM scheduledelivery";
-$resultofQuery2 = mysqli_query($dbc, $sqlToGetTableValue);
-while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
-{
-    $OR_FROM_SCHED_DELIV_TABLE =  $rowofResult2['ordernumber'];
-
-    $QUERY_GET_OR_FROM_ORDERS = "SELECT * FROM orders
-    WHERE ordernumber = '$OR_FROM_SCHED_DELIV_TABLE'";
-    
-    $RESULT_GET_OR = mysqli_query($dbc, $QUERY_GET_OR_FROM_ORDERS);
-    while($ROW_RESULT_GET_OR=mysqli_fetch_array($RESULT_GET_OR,MYSQLI_ASSOC))
+<script>
+$(document).ready(function() {
+    for(var i = 0; i < 5; i++)
     {
-        $totalPrice[] = number_format(($ROW_RESULT_GET_OR['totalamt']),2);
-        $FORMATTED_EXPECTED_DATE = date('F j, Y',strtotime($ROW_RESULT_GET_OR['expected_date'])); //Formats date 
-        $expected_date[]= $FORMATTED_EXPECTED_DATE;
-    }
-
-    $queryToGetItemList = "SELECT * FROM order_details
-    WHERE ordernumber = '$OR_FROM_SCHED_DELIV_TABLE'";
-    $resultofQuery1 = mysqli_query($dbc, $queryToGetItemList);
-    while($rowofResult1=mysqli_fetch_array($resultofQuery1,MYSQLI_ASSOC))
-    {
-        $orderNumberArray[] = $rowofResult1['ordernumber']; //Compare this 
-        $itemName[] = $rowofResult1['item_name'];
-        $quantity[] = $rowofResult1['item_qty'];
-        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);
+        // var cloned = $('#dr_form').clone().appendTo('#dr_panel'); //Clones the Div and appends to the targetted container
         
-       
     }
-    
+    // $('#drTotal').val('₱ '+parseInt(400.00));
+});
 
-    $FORMATTED_DELIV_DATE = date('F j, Y',strtotime($rowofResult2['delivery_Date'])); //Formats date 
-   
-    $SchedDelivOrderNumber[] = $rowofResult2['ordernumber']; //To this
-    $SchedDelivDR[] = $rowofResult2['delivery_Receipt'];
-    $SchedDelivDate[] = $FORMATTED_DELIV_DATE;
-    $SchedDelivDestination[] = $rowofResult2['Destination'];
-    $SchedDelivCusName[] = $rowofResult2['customer_Name'];
-    $SchedDelivStatus[] =  $rowofResult2['delivery_status'];
-}
-    echo '<script text/javascript>';
-    echo "var deliverNumberfromHTML = document.getElementById('drNumber');";
-    echo "var expectedDatefromHTML = document.getElementById('drexpectedDate');";
-    echo "var deliverDatefromHTML = document.getElementById('drDate');";
-    echo "var deliverDestinationfromHTML = document.getElementById('drDestination');";
-    echo "var deliverCusNamefromHTML = document.getElementById('drCusName');";
-    echo "var deliverStatusfromHTML = document.getElementById('drStatus');";
-    echo "var deliverTotalfromHTML = document.getElementById('drTotal');";  //Gets HTML elements (Textbox)
-
-    echo "var DR_NUM_FROM_PHP = ".json_encode($DR_NUM_FROM_VIEW).";";
-    
-    echo "var drDateFromPHP = ".json_encode($SchedDelivDate).";";
-    echo "var drDesFromPHP = ".json_encode($SchedDelivDestination).";";
-    echo "var drCusFromPHP = ".json_encode($SchedDelivCusName).";";
-    echo "var drStatFromPHP = ".json_encode($SchedDelivStatus).";";
-    echo "var DRFromPHP = ".json_encode($SchedDelivDR).";"; 
-    echo "var drExpectedDateFromPHP = ".json_encode($expected_date).";";
-    echo "var OrderNumberFromSchedDeliver = ".json_encode($SchedDelivOrderNumber).";";//Values from Sched Delivery Table
-
-
-    echo "var ItemNameFromPHP = ".json_encode($itemName).";"; 
-    echo "var ItemQuantityFromPHP = ".json_encode($quantity).";"; 
-    echo "var ItemPriceFromPHP = ".json_encode($pricePerItem).";"; 
-    echo "var ItemTotalFromPHP = ".json_encode($totalPrice).";"; 
-    echo "var OrderNumberFromOrderDetails = ".json_encode($orderNumberArray).";"; //Values from order_details table
-   
-
-    echo 'var GetDR = localStorage.getItem("DRfromDeliveriesPage");'; //Gets the text to compare fron Deliveries.php
-
-        echo 'for(var i = 0; i < DRFromPHP.length ; i++){';   
-            
-           
-            echo 'if(DR_NUM_FROM_PHP.trim() == DRFromPHP[i].trim()) {';
-                // echo 'if(){';
-                echo 'console.log("Value From Receipts.php = " + DRFromPHP[i]);';
-                echo 'console.log("Value from Delvieries.php = " + GetDR);';
-            
-                echo 'deliverNumberfromHTML.value = DRFromPHP[i];';
-                echo 'deliverDatefromHTML.value = drDateFromPHP[i];';
-                echo 'deliverDestinationfromHTML.value = drDesFromPHP[i];';
-                echo 'deliverCusNamefromHTML.value = drCusFromPHP[i];';
-                echo 'deliverStatusfromHTML.value = drStatFromPHP[i];';
-                echo 'deliverTotalfromHTML.value = "₱ "+ ItemTotalFromPHP[i];';
-                echo 'expectedDatefromHTML.value = drExpectedDateFromPHP[i];';
-                echo 'var count = OrderNumberFromOrderDetails.length ;';
-
-                echo 'while(count >= 0){';
-                    
-                    echo 'console.log("OR From Sched = " + OrderNumberFromSchedDeliver[i]);';
-                    
-
-                    echo 'if(OrderNumberFromSchedDeliver[i] == OrderNumberFromOrderDetails[count]) {';
-
-                        echo  "var newRow = document.getElementById('datatable').insertRow();";
-                        echo  'newRow.innerHTML = "<tr><td class= item_name>" +ItemNameFromPHP[count]+ "</td> <td class=item_qty align = right>" +ItemQuantityFromPHP[count]+ "</td><td align = right> ₱ " +ItemPriceFromPHP[count]+ "</td></tr>";';
-                        // echo 'localStorage.removeItem("DRfromDeliveriesPage");';
-                        echo 'count--;';
-                        echo 'continue;';                    
-
-                    echo '  }'; // End 2nd IF     
-                    echo 'count--;';        
-                echo '}'; //End While
-            echo '  }'; // End 1st IF  
-        echo ' }';// END FOR
-echo '</script>';
-?> <!-- PHP END -->
-         
-<script>
-    var current_name_array = [];
-    var current_qty_array = [];
-    $("#datatable .item_name").each(function() 
-    {
-        current_name_array.push( $(this).text());
-        console.log(current_name_array);
-    });
-
-    $("#datatable .item_qty").each(function() 
-    {
-        current_qty_array.push($(this).text());
-        console.log(current_qty_array);
-    });
-
-    function post_to_dmg_delivery_page()
-    {        
-            request = $.ajax({
-            url: "ajax/post_to_dmg_delivery.php",
-            type: "POST",
-                data:{
-                    post_item_name: current_name_array, //Never forget to get the Value from the <INPUTS>
-                    post_item_qty: current_qty_array                   
-                },
-                success: function(data)
-                {                 
-                    window.location.href = "damage_delivery.php";                    
-                }//End Scucess                       
-            }); // End ajax     
-        }
-</script> <!-- scripts to get the values in the table of delivery-->
-<script>
-// To Clear localstorage =temporary
-    function clearLocalStorage()  
-    {
-        localStorage.clear();
-    }
 </script>
-
-<script>
-    function printW()
-    {
-        window.print();
-    }
-</script>
-<script>
-    function finishDeliver()
-    {
-        if(confirm("Do you want to finish this delivery?"))
-        {
-            if(confirm("Are you sure?"))
-            {                              
-                request = $.ajax({
-                url: "ajax/finish_delivery.php",
-                type: "POST",
-                data: {
-                    post_dr_number: "<?php echo $_SESSION['get_dr_number_from_deliveries'];?>",
-                    post_or_number:  "<?php echo $_SESSION['get_or_number_from_deliveries'];?>"
-                },
-                    success: function(data)
-                    {
-                        alert("Delivery Complete!");
-                        window.location.href = "Delivery Receipt.php";                         
-                    }//End Scucess               
-                }); // End ajax    
-            }   
-            else
-            {
-                alert("Action: Cancelled");
-            }
-        }
-        else
-        {
-            alert("Action: Cancelled");
-        }       
-    }
-</script>
-
- <script>
-      $("#drTotal").change(function()
-      {
-      
-        var $this = $(this);
-        $this.val(parseFloat($this.val()).toFixed(2));
-          
-      }); //Sets the Decimal
-</script>
-
 </body>
 
 </html>

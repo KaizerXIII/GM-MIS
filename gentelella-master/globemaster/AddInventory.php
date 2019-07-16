@@ -301,18 +301,30 @@
      function getType(selectItemType)    
      {
       var dropdownValue = selectItemType.value;
+      var item = document.getElementById('itemName');
        for (var i = 0; i < PrefixFromPHP.length; i++)
        {
          if(itemTypeFromPHP[i] == dropdownValue)
          {
-          var item = document.getElementById('itemName');
-          item.value = PrefixFromPHP[i]+" ";
-          console.log(PrefixFromPHP[i]);
+         
+          item.value = PrefixFromPHP[i]+" ";                         
          }
+         
        }
       
      
      }
+     $('#select_item_type').on('change', function(e){
+        if($(this).val() == "Tiles")
+          {
+            $('#warehouse_id').val("EDSA DEPOT");
+          }
+          else
+          {
+            $('#warehouse_id').val("BULACAN");
+            
+          }
+      })
     </script>
 
      <script>
