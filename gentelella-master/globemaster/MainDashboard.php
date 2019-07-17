@@ -140,7 +140,7 @@
                 <i class="red"><i class="fa fa-sort-desc"></i>
                 <?php 
                 }
-                echo $PERCENT_INC_DEC; ?>%</i> 
+                echo number_format($PERCENT_INC_DEC, 2, '.', ','); ?>%</i> 
               <?php if ($PERCENT_INC_DEC > 0) 
                 {
                 ?>
@@ -334,63 +334,63 @@
                   <?php
                     }
                  
-                    if($user == 'CEO' || $user == 'CFO' || $user == 'MKT' || $user == 'Superuser')
-                    {
+                    // if($user == 'CEO' || $user == 'CFO' || $user == 'MKT' || $user == 'Superuser')
+                    // {
                          
 
-                         //LOSSES FOR A MONTH
+                    //      //LOSSES FOR A MONTH
                  
-                        echo '<div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="x_panel">
-                                      <h2><center><i class="fa fa-sort-amount-desc"></i><b> Losses</b></h2>
-                                    <div class="clearfix"></div>
-                                  <div class="x_content">
+                    //     echo '<div class="col-md-6 col-sm-6 col-xs-12">
+                    //             <div class="x_panel">
+                    //                   <h2><center><i class="fa fa-sort-amount-desc"></i><b> Losses</b></h2>
+                    //                 <div class="clearfix"></div>
+                    //               <div class="x_content">
 
-                                    <table class="table table-bordered">
-                                      <thead>
-                                        <tr>
-                                          <th>Item</th>
-                                          <th>Damage Percent</th>
-                                          <th>Quantity</th>
-                                          <th>Total Loss</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>';
+                    //                 <table class="table table-bordered">
+                    //                   <thead>
+                    //                     <tr>
+                    //                       <th>Item</th>
+                    //                       <th>Damage Percent</th>
+                    //                       <th>Quantity</th>
+                    //                       <th>Total Loss</th>
+                    //                     </tr>
+                    //                   </thead>
+                    //                   <tbody>';
                         
-                            require_once('DataFetchers/mysql_connect.php');
-                            $query = "SELECT item_name, damage_percentage * 10, item_quantity, total_loss, last_update FROM damage_item WHERE DATEDIFF(NOW(), last_update) / 31 < 1";
-                            $result=mysqli_query($dbc,$query);
-                            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                            {
+                    //         require_once('DataFetchers/mysql_connect.php');
+                    //         $query = "SELECT item_name, damage_percentage * 10, item_quantity, total_loss, last_update FROM damage_item WHERE DATEDIFF(NOW(), last_update) / 31 < 1;";
+                    //         $result11=mysqli_query($dbc,$query);
+                    //         while($row=mysqli_fetch_array($result11,MYSQLI_ASSOC))
+                    //         {
 
                                     
                                 
-                                    echo '<tr>';
-                                    echo '<td>';
-                                    echo $row['item_name'];
-                                    echo '</td>';
-                                    echo '<td><b>';
-                                    echo $row['damage_percentage * 10'];
-                                    echo '%';
-                                    echo '</b></td>';
-                                    echo '<td>';
-                                    echo $row['item_quantity'];
-                                    echo '</td>';
-                                    echo '<td><b>';
-                                    echo  'Php'." ".number_format($row['total_loss'], 2);
-                                    echo '</b></td>';
-                                    echo '</tr>';
+                    //                 echo '<tr>';
+                    //                 echo '<td>';
+                    //                 echo $row['item_name'];
+                    //                 echo '</td>';
+                    //                 echo '<td><b>';
+                    //                 echo $row['damage_percentage * 10'];
+                    //                 echo '%';
+                    //                 echo '</b></td>';
+                    //                 echo '<td>';
+                    //                 echo $row['item_quantity'];
+                    //                 echo '</td>';
+                    //                 echo '<td><b>';
+                    //                 echo  'Php'." ".number_format($row['total_loss'], 2);
+                    //                 echo '</b></td>';
+                    //                 echo '</tr>';
                                     
-                            } 
-                     echo '</tbody>';
-                    echo '</table>';
+                    //         } 
+                    //  echo '</tbody>';
+                    // echo '</table>';
                         
-                             echo '</div>
-                        </div>
-                      </div>';
+                    //          echo '</div>
+                    //     </div>
+                    //   </div>';
                      
-                    echo '<div class="clearfix"></div>';  
-                    }
+                    // echo '<div class="clearfix"></div>';  
+                    // }
                  
                  
                     if($user == 'CFO' || $user == 'SALES' || $user == 'MKT' || $user == 'Superuser')

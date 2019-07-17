@@ -31,6 +31,89 @@
     <link href="../build/css/custom.min.css" rel="stylesheet">
     <!-- JQUERY -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
+    
+<!-- image modal style -->
+<style>
+          /* Style the Image Used to Trigger the Modal */
+          #myImg {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+          }
+
+          #myImg:hover {opacity: 0.7;}
+
+          /* The Modal (background) */
+          .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+          }
+
+          /* Modal Content (Image) */
+          .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+          }
+
+          /* Caption of Modal Image (Image Text) - Same Width as the Image */
+          #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+          }
+
+          /* Add Animation - Zoom in the Modal */
+          .modal-content, #caption { 
+            animation-name: zoom;
+            animation-duration: 0.6s;
+          }
+
+          @keyframes zoom {
+            from {transform:scale(0)} 
+            to {transform:scale(1)}
+          }
+
+          /* The Close Button */
+          .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+          }
+
+          .close:hover,
+          .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+                    }
+
+          /* 100% Image Width on Smaller Screens */
+          @media only screen and (max-width: 700px){
+            .modal-content {
+              width: 100%;
+            }
+          }
+</style>
 
   </head>
 
@@ -203,6 +286,7 @@
                     <tr>    
                       <th>Amount Paid</th>
                       <th>Payment Date</th>
+                      <th>Payment Proof</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -226,6 +310,9 @@
                         echo '<td align = right>';
                           echo $ROW_ALL_FROM_PAYMENT['payment_date'];
                         echo '</td>';
+                        echo '<td align = center>';
+                          echo '<img id="myImg" alt = "samplepic" src = "https://www.bgehome.com/wp-content/uploads/2018/10/UnderstandingYourBill-1-v3.jpg" width = "80px" height = "100px">';
+                        echo '</td>';
                       echo '</tr>';
                     }
                     ?>
@@ -242,6 +329,15 @@
       <div class="col-md-6 col-sm-6 col-xs-12">
           <input placeholder = "Please input payment here" type="number" step = "any" name="client_payment" id = "payment" class="form-control" style="text-align:right" oninput ="validate(this)" min ="1" max = <?php echo $_SESSION['SET_MAX_BY_TOTAL_UNPAID'];?>
           >
+      </div>
+  </div>  
+  <div class="form-group">
+      <label class="control-label col-md-2 col-sm-2 col-xs-12">Payment Proof</label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+          <input placeholder = "Please input payment here" type="file" name="file_reference" id="fileToUpload" required="required">
+          <br>
+          <p>Please choose a file no more than 25MB in size.
+          <p><font color = "red">File types are limited to (.jpg, .png).</font></p>
       </div>
   </div>  
 </div> 
@@ -330,6 +426,23 @@
         <!-- /footer content -->
       </div>
     </div>
+
+
+<!-- Image Modal -->
+<div id="myModal" class="modal">
+
+  <!-- The Close Button -->
+  <span class="close" onclick = "closemodal();">&times;</span>
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img01">
+
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
+</div>
+
+
+
     <script type="text/javascript">
       function validate(obj) {
           obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max
@@ -466,6 +579,31 @@
         }//END IF ISSET
         
         ?>
+
+
+
+<script>
+  // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById("myImg");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    img.onclick = function(){
+      modal.style.display = "block";
+      modalImg.src = this.src;
+      captionText.innerHTML = this.alt;
+    }
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    function closemodal() { 
+      modal.style.display = "none";
+    }
+</script>
 
   </body>
 </html>

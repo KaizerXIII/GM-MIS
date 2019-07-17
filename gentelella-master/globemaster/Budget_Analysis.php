@@ -82,7 +82,7 @@
                         $expectedsales = $row1['nextMonthSales'];
                       ?>
 
-                        <canvas id="mybarChart" width="350" height="180">></canvas>
+                        <canvas id="mybarChart" width="350" height="180"></canvas>
                       </div>
                     </div>
                     <p><font color = "lightblue">Drag the slider to change expected sales values.</font></p>

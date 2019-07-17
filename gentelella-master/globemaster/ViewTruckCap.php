@@ -38,7 +38,30 @@
     <div class="container body">
       <div class="main_container">
             <?php
-              require_once("nav.php");    
+              require_once("nav.php"); 
+              
+              $dto = new DateTime();
+
+
+              $year1 = $dto->format('o');
+              $week1 = $dto->format('W');
+
+
+
+              // if(isset($_GET['startdate']) && isset($_GET['enddate']))
+              // {
+              // }
+              // else
+              // {
+
+              // }
+              // return $ret;
+
+              
+
+
+// echo "<script>console.log($r);</script>";
+            // echo $ret['week_start'];
             ?>
       </div>
         <!-- page content -->
@@ -52,14 +75,39 @@
             <div class="clearfix"></div>
             
             <?php
+            
+
               $dt = new DateTime;
               if (isset($_GET['year']) && isset($_GET['week'])) {
                   $dt->setISODate($_GET['year'], $_GET['week']);
               } else {
                   $dt->setISODate($dt->format('o'), $dt->format('W'));
+    
               }
               $year = $dt->format('o');
               $week = $dt->format('W');
+              
+              // $ret['week_start'] = $dt->setISODate($year, $week)->format('Y-m-d');
+              // $ret['week_end'] = $dt->modify('+6 days')->format('Y-m-d');
+              // $r = print_r($ret);
+
+              // do {
+              //   echo "<th date_id = ". $dt->format('Y-m-d')." >" . $dt->format('l') . " | " . $dt->format('F d, Y') . "</td>\n";
+              //   $dt->modify('+1 day');
+              // } while ($week == $dt->format('W') && $dt->format('l') != "Sunday");
+
+              // while($week == $dt->format('W') && $dt->format('l') != "Sunday")
+              // {
+              //   $ctr = 0;
+              //   $datearray = array();
+              //   $datarraydata = $dt->format('Y-m-d');
+              //   array_push($datearray, $datarraydata);
+              //   echo "<script>console.log( $datearray[$ctr]);</script>";
+              //   print_r($datearray);  
+              //   echo $dt->format('l');
+              //   $dt->modify('+1 day');
+              //   $ctr++;
+              // }
             ?>
             <!-- Compute current week -->
 
@@ -70,7 +118,7 @@
                       <div class="form-group">
                         <!-- CLICK ARROWS FOR NEXT WEEK/PREVIOUS WEEK -->
                         <font size = "4" color = "green"><center> 
-                          <a href="<?php echo $_SERVER['PHP_SELF'].'?week='.($week-1).'&year='.$year; ?>">
+                          <a href="<?php echo $_SERVER['PHP_SELF'].'?week='.($week-1).'&year='.$year;?>">
                           <i class="fa fa-arrow-left fa-lg"></i> Previous Week</a> <!--Previous week-->
                           For the week of:   <span id="first_date" style="color:green"> 
                         
@@ -166,17 +214,35 @@
                         <tr>
                           <th></th>
                           <?php 
+                            // for($i = 0; $i <= sizeof($datearray); $i++)
+                            // {
+                            //   print_r($datearray);
+                            //   echo "<th>". $datearray[$i] . "</th>\n";
+                            // }
+                            $i = 0;
                             do {
                               echo "<th date_id = ". $dt->format('Y-m-d')." >" . $dt->format('l') . " | " . $dt->format('F d, Y') . "</td>\n";
+                              // for($i=0; $i<=6; $i++)
+                              // {
+                                
+                                $DATES[$i] = $dt->format('Y-m-d');
+
+                                $i++;
+                              // }
                               $dt->modify('+1 day');
-                            } while ($week == $dt->format('W') && $dt->format('l') != "Sunday");
+                            } while ($week == $dt->format('W') && $dt->format('l') != "Sunday" && $i<7);
+
                           ?>
                         </tr>
                       </thead>
                       <tbody>
                           <?php 
                            
-                           
+                            
+                           print_r($DATES);
+
+                           $_GET['startdate'] = $DATES[0];
+                           $_GET['enddate'] = $DATES[5];
                             $BULK_DATE_ARRAY = array();
                             $TRUCK_PLATE_ARRAY = array();
                             $TRUCK_CAP_ARRAY = array();
