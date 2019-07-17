@@ -168,14 +168,9 @@
                                                             $("#item_name_list").on('click', function(e){
                                                                 if(e.offsetY < 0)
                                                                 {
-                                                                    var current_selected = $(this).find(":selected").text();
-                                                                    
-
+                                                                    var current_selected = $(this).find(":selected").text();                                                                 
                                                                     var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
-                                                                    damage_table.innerHTML = "<tr> <td title='This item currently have: "+$(this).val()+" pieces'>" + current_selected + "</td> <td> <input type='number' min = '0' max ='"+$(this).val()+"' oninput ='validate(this)'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";
-                                                                    //console.log("New Row MUST BE Inserted");
-                                                                    // alert("Works");
-                                                                    // console.log($(this).find(":selected").text());
+                                                                    damage_table.innerHTML = "<tr> <td title='This item currently have: "+$(this).val()+" pieces'>" + current_selected + "</td> <td> <input type='number' min = '0' max ='"+$(this).val()+"' oninput ='validate(this)'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";          
                                                                 }
                                                                 else
                                                                 {
@@ -320,7 +315,14 @@
     <script>
         function confirmAdd()
         {
-            confirm("Are you sure you want to add the items to the inventory?");
+            if(confirm("Are you sure you want to add the items to the inventory?"))
+            {
+                
+            }
+            else
+            {
+                alert("Action: Cancelled");
+            }
         }
     </script>
       <script type="text/javascript">

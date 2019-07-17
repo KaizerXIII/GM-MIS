@@ -27,7 +27,7 @@
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
     <!-- JQUERY Required Scripts -->
-    <script type="text/javascript" src="js/script.js"></script>
+    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
 
@@ -198,7 +198,7 @@
                       ?>
                       <table border="0" style="width: 50%;" align = "center" frame="box">
                         <tr>
-                          <th>echo china update here.</th>
+                          <th><?php $date = date('Y-m-d H:i:s'); echo $date?></th>
                           <th>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</th>
                         </tr>
                         <tr>
@@ -213,11 +213,11 @@
                       ?>
                       <table border="0" style="width: 50%;" align = "center" frame="box">
                         <tr>
-                          <th>echo shipped update here.</th>
+                          <th><?php $date = date('Y-m-d H:i:s'); echo $date?></th>
                           <th>The ordered item(s) are on its way to the Philippines' port.</th>
                         </tr>
                         <tr>
-                          <td>echo china update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
                         </tr>
                         <tr>
@@ -232,15 +232,15 @@
                       ?>
                       <table border="0" style="width: 50%;" align = "center" frame="box">
                         <tr>
-                          <th>echo philippines update here.</th>
+                          <th><?php $date = date('Y-m-d H:i:s'); echo $date?></th>
                           <th>The ordered item(s) have arrived at the Philippine port. The items will soon be on its way to their respective warehouses.</th>
                         </tr>
                         <tr>
-                          <td>echo shipped update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>The ordered item(s) are on its way to the Philippine port.</td>
                         </tr>
                         <tr>
-                          <td>echo china update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
                         </tr>
                         <tr>
@@ -255,19 +255,19 @@
                       ?>
                       <table border="0" style="width: 50%;" align = "center" frame="box">
                         <tr>
-                          <th>echo OTW update here.</th>
+                          <th><?php $date = date('Y-m-d H:i:s'); echo $date?></th>
                           <th>The ordered item(s) are on the way to their respective warehouses.</th>
                         </tr>
                         <tr>
-                          <td>echo philippines update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>The ordered item(s) have arrived at the Philippine port. The items will soon be on its way to their respective warehouses.</td>
                         </tr>
                         <tr>
-                          <td>echo shipped update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>The ordered item(s) are on its way to the Philippine port.</td>
                         </tr>
                         <tr>
-                          <td>echo china update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
                         </tr>
                         <tr>
@@ -336,7 +336,7 @@
                               
                               
                                 echo '<tr>';
-                                    echo '<td ><input type="hidden" name = "item_name" value = "'.$row['supply_item_name'].'">'.$row['supply_item_name'].'</td>';
+                                    echo '<td sp_itm_nm ="'.$row['supply_item_name'].'"><input type="hidden" name = "item_name" value = "'.$row['supply_item_name'].'">'.$row['supply_item_name'].'</td>';
                                     echo '<td>'.$row['supplier_name'].'</td>';
                                     echo '<td class = supply_qty'.$count.'>'.$row['supply_item_quantity'].'</td>';
                                     echo '<td>'.$row['supply_arrived_quantity'].'</td>';
@@ -344,7 +344,7 @@
                                     echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.'><i class = "fa fa-wrench"></i> Edit</button>';
                                     if(strpos($row['supply_item_name'], "*NEW ITEM*") != false)
                                     {
-                                    echo '<button type="button" class="btn btn-round btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-smnewitem" id="restock_page">Create Inventory </button>';
+                                      echo '<button type="button" class="btn btn-round btn-success btn-xs create" data-toggle="modal" data-target=".bs-example-modal-smnewitem" identifier = "create_iv_btn">Create Inventory </button>';
                                     }
                                     echo '</td>';      
                                 echo '</tr> '; 
@@ -372,7 +372,11 @@
                         <div class = "clearfix"></div>
                         <div class = "ln_solid"></div>
                         <div align = "right">
-                          <button type="submit" class="btn btn-round btn-success" name = "restock_items" id = "proceed">Proceed <i class = "fa fa-arrow-right"></i></button>
+
+                          <button type="button" class="btn btn-round btn-success" id = "no_dmg_proceed">Proceed w/o Damage  <i class = "fa fa-arrow-right"></i></button>
+                       
+                          <button type="submit" class="btn btn-round btn-success" name = "restock_items" id = "proceed">Proceed w/ Damage <i class = "fa fa-arrow-right"></i></button>
+                            
                         </div>
                       </form>
                     </div>
@@ -458,27 +462,27 @@
         </script>   
       </form>   
       <!-- large modal for edit supply qty-->
-<div class="modal fade bs-example-modal-smnewitem" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade bs-example-modal-smnewitem" tabindex="-1" role="dialog" aria-hidden="true" id ="modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel2">Edit Arrived Quantity</h4>
+        <h4 class="modal-title" id="myModalLabel2">Add to Inventory</h4>
       </div>
       <div class="modal-body">
         
       <form method="POST" class="form-horizontal form-label-left" id = "item_detail" >
         
-      <span><h4>Add temporary item <?php echo $stringname;?> to the inventory.</h4></span>
+      <span id = "create_item_info"></span>
       <br>
       <div class="form-group">
         <label class="control-label col-md-4 col-sm-3 col-xs-12">Item Category <span class="required">*</span>
         </label>
         <div class="col-md-6 col-sm-6 col-xs-12">
 
-        <select name="selectItemtype" id="select_item_type" required="required" class="form-control col-md-7 col-xs-12" onchange="getType(this)">
+        <select name="selectItemtype" id="select_item_type" required="required" class="form-control col-md-7 col-xs-12" >
         <option value = "">Choose...</option>
           <?php
                 require_once('DataFetchers/mysql_connect.php');
@@ -549,21 +553,21 @@
         <label class="control-label col-md-4 col-sm-3 col-xs-12">Threshold Amount <span class="required">*</span>
         </label>
         <div class="col-md-6 col-sm-6 col-xs-12">
-          <input name="threshold" id ="threshold_amount" class="form-control col-md-7 col-xs-12" required="required" type="number" min = "0" max ="9999">
+          <input style="text-align:right;" name="threshold" id ="threshold_amount" class="form-control col-md-7 col-xs-12" required="required" type="number" min = "0" max ="9999">
         </div>
       </div>
       <div class="form-group">
         <label class="control-label col-md-4 col-sm-3 col-xs-12">Unit Price <span class="required">*</span>
         </label>
         <div class="col-md-6 col-sm-6 col-xs-12">
-          <input name="price" id="item_price" class="form-control col-md-7 col-xs-12" required="required" type="number" step="0.01" placeholder = "1000.00">
+          <input style="text-align:right;" name="price" id="item_price" class="form-control col-md-7 col-xs-12" required="required" type="number" step="0.01" placeholder = "1000.00">
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4 col-sm-3 col-xs-12">Item Weight<span class="required">*</span>
+        <label  class="control-label col-md-4 col-sm-3 col-xs-12">Item Weight<span class="required">*</span>
         </label>
         <div class="col-md-6 col-sm-6 col-xs-12">
-          <input name="item_weight" id="item_weight" class="form-control col-md-7 col-xs-12" required="required" type="number" step="0.01" placeholder = "100 KG">
+          <input style="text-align:right;" name="item_weight" id="item_weight" class="form-control col-md-7 col-xs-12" required="required" type="number" step="0.01" placeholder = "100 KG">
         </div>
       </div>
       <div class="form-group" align = "right">
@@ -577,6 +581,85 @@
   </div>
 </div>   
 <!-- Large Modal end --> 
+<script>
+$('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
+  $('#create_item_info').html("<h4>Add Item Information of [ "+ $(this).closest('tr').find('td:first').text()+" ] to the inventory.</h4>");
+  var cell = $(this).closest('tr').find('td:first').text();
+  var cell_attr = $(this).closest('tr').find('td:first');
+  var btn = $(this).closest('tr').find('td:nth-child(5)').children().eq(1);
+
+  $('#supplier_id').val($(this).closest('tr').find('td:nth-child(2)').text());
+  console.log("td:2: " + $(this).closest('tr').find('td:nth-child(2)').text());
+  console.log("create_item_info: " + $('#create_item_info').text());
+
+  
+  var add_btn = document.getElementById("add_button");    
+        add_btn.onclick = function()
+        {
+          var  SET_SKU_ID = document.getElementById("sku_id").value;
+          var  SET_ITEM_NAME = document.getElementById("itemName").value;
+          var  SET_ITEM_PRICE = document.getElementById("item_price").value;
+          var  SET_ITEM_THRESHOLD = document.getElementById("threshold_amount").value;
+          var  SET_WAREHOUSE_ID = document.getElementById("warehouse_id").value;
+          var  SET_TYPE_ID = document.getElementById("select_item_type").value;
+          var  SET_SUPPLIER = document.getElementById("supplier_id").value;
+          var  SET_ITEM_WEIGHT = document.getElementById("item_weight").value; 
+
+          var NEW_ITEM_NAME =  "<?php echo $stringname;?>";
+
+          if(!SET_SKU_ID || !SET_ITEM_NAME || !SET_ITEM_PRICE || !SET_ITEM_THRESHOLD || !SET_WAREHOUSE_ID || !SET_TYPE_ID || !SET_SUPPLIER) //Checker
+          {
+            alert("Please Fill Up All Input");
+          }
+          else
+          {
+            if(confirm("Confirmation: Add New Item to Inventory?"))
+            {
+              request = $.ajax({
+                    url: "ajax/add_inventory.php",
+                    type: "POST",
+                    data: {
+                      post_sku_id: SET_SKU_ID,
+                      post_item_name: SET_ITEM_NAME,
+                      post_item_price: SET_ITEM_PRICE,
+                      post_item_threshold: SET_ITEM_THRESHOLD,
+                      post_warehouse_id: SET_WAREHOUSE_ID,
+                      post_type_id: SET_TYPE_ID,
+                      post_supplier_id: SET_SUPPLIER,
+                      post_item_weight: SET_ITEM_WEIGHT
+                    }, //{Variable name, variable value}
+                    success: function(data) 
+                    { //To test data
+                      
+                        if(cell = $('#create_item_info').text())
+                        {
+                          cell_attr.html(data);
+                       
+                          btn.css('display', 'none');
+                          $('#modal').modal('toggle');
+                          alert("Item Added Successfully!");
+                        }                                    
+                        // window.location.href = "SupplierOrderDetails.php";
+                    }//End Success
+                  
+                });//End Ajax
+               
+            }
+            else
+            {
+              alert("Action: Cancelled");                      
+            }
+          }    
+        } //End onclikc   
+  
+})
+</script>
+
+<script>
+$('#no_dmg_proceed').on('click', function(e){
+
+})
+</script>
 
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -607,6 +690,44 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
+    <script>
+    $('#no_dmg_proceed').on('click', function(e){
+      var restock_item_array = Array();
+      var restock_qty_array = Array();
+      $('#datatable-responsive tbody tr').each(function(e){
+        restock_item_array.push($(this).find('td:first').text());
+        restock_qty_array.push($(this).find('td:nth-child(4)').text());
+        console.log($(this).find('td:first').text());
+      })
+      if(confirm("Are you sure you want to add the items to the inventory?"))
+      {
+        request = $.ajax({
+        url: "ajax/restock_all_items.php",
+        type: "POST",
+        data: {post_item_name: selected_item_name,
+        post_item_qty: $('#arrived').val()
+                          
+        },
+          success: function(data, textStatus)
+          {
+           alert("Update Successful!");
+           window.location.href = "SupplierOrderDetails.php";
+
+           $('#arrived').attr({
+            "max": data //Replaces the max for input using the current selected item qty
+          });
+           
+          }//End Scucess
+        
+        }); // End ajax  
+      }
+      else
+      {
+          alert("Action: Cancelled");
+      }
+
+    })
+    </script>
     
 
     <script> 
@@ -647,54 +768,18 @@
     
     <!-- Confirm add to inventory -->
     <script>
-      var add_btn = document.getElementById("add_button");    
-        add_btn.onclick = function()
-        {
-          var  SET_SKU_ID = document.getElementById("sku_id").value;
-          var  SET_ITEM_NAME = document.getElementById("itemName").value;
-          var  SET_ITEM_PRICE = document.getElementById("item_price").value;
-          var  SET_ITEM_THRESHOLD = document.getElementById("threshold_amount").value;
-          var  SET_WAREHOUSE_ID = document.getElementById("warehouse_id").value;
-          var  SET_TYPE_ID = document.getElementById("select_item_type").value;
-          var  SET_SUPPLIER = document.getElementById("supplier_id").value;
-          var  SET_ITEM_WEIGHT = document.getElementById("item_weight").value; 
-
-          if(!SET_SKU_ID || !SET_ITEM_NAME || !SET_ITEM_PRICE || !SET_ITEM_THRESHOLD || !SET_WAREHOUSE_ID || !SET_TYPE_ID || !SET_SUPPLIER) //Checker
+    $('#select_item_type').on('change', function(e){
+        if($(this).val() == "Tiles")
           {
-            alert("Please Fill Up All Input");
+            $('#warehouse_id').val("EDSA DEPOT");
           }
           else
           {
-            if(confirm("Confirmation: Add New Item to Inventory?"))
-            {
-              request = $.ajax({
-                    url: "ajax/add_inventory.php",
-                    type: "POST",
-                    data: {
-                      post_sku_id: SET_SKU_ID,
-                      post_item_name: SET_ITEM_NAME,
-                      post_item_price: SET_ITEM_PRICE,
-                      post_item_threshold: SET_ITEM_THRESHOLD,
-                      post_warehouse_id: SET_WAREHOUSE_ID,
-                      post_type_id: SET_TYPE_ID,
-                      post_supplier_id: SET_SUPPLIER,
-                      post_item_weight: SET_ITEM_WEIGHT
-                    }, //{Variable name, variable value}
-                    success: function(data) 
-                    { //To test data
-                        alert(data);
-                        window.location.href = "ViewInventory.php";  
-                    }//End Success
-                  
-                });//End Ajax
-                alert("Item Added Successfully!");
-            }
-            else
-            {
-              alert("Action: Cancelled");
-            }
-          }    
-        } //End onclikc   
+            $('#warehouse_id').val("BULACAN");
+            
+          }
+      })
+     
     </script>
 
     <!-- Custom Fonts -->

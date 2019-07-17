@@ -105,7 +105,7 @@
                                   echo '<center><button type="button" class="btn btn-round btn-success btn-sm" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
                                   echo '</td>';
                                 }
-                                else if($rowofResult['delivery_status'] == "Order In Progress")
+                                else if($rowofResult['delivery_status'] == "Order In Progress" || $rowofResult['delivery_status'] == "Late Delivery")
                                 {
                                   echo '<td>';
                                   echo '<center><button type="button" class="btn btn-round btn-primary btn-sm" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';

@@ -208,6 +208,18 @@
                             $totalProcuredquery = "SELECT sum(quantity) as TotalProcured, item_id FROM restock_detail WHERE item_id = '$id' ;";
                             $resultforTotal =  mysqli_query($dbc, $totalProcuredquery);
                             $row2 = mysqli_fetch_array($resultforTotal,MYSQLI_ASSOC);
+
+                            $GET_INV_OUT = "SELECT SUM(item_qty) AS Total_Sold  
+                            FROM mydb.orders
+                            JOIN scheduledelivery
+                            ON scheduledelivery.ordernumber = orders.ordernumber
+                            JOIN order_details
+                            ON order_details.ordernumber = orders.ordernumber
+                            WHERE order_details.item_id = '$id' AND ((orders.order_status = 'PickUp' AND orders.payment_status = 'Paid')
+                            OR (orders.payment_status = 'Paid' AND (orders.order_status = 'Delivered' OR orders.order_status = 'Late Delivery')));";
+                            $RESULT_INV_OUT = mysqli_query($dbc, $GET_INV_OUT);
+                            $ROW_RESULT_INV_OUT = mysqli_fetch_array($RESULT_INV_OUT,MYSQLI_ASSOC);
+
                             echo '<tr>';
                               echo ' <td> '.$row['sku_id']. '</td>';
                               echo ' <td>'.$row['item_name'].' </td>';
@@ -215,7 +227,7 @@
                               echo ' <td align="right">'.$row['item_count'].' </td>';
                               echo ' <td align="left">'.$row['warehouse'].' </td>';
                               echo ' <td align="right">'.$row2['TotalProcured'].' </td>';
-                              echo ' <td align="right">'.$row2['TotalProcured'].' </td>';
+                              echo ' <td align="right">'.$ROW_RESULT_INV_OUT['Total_Sold'].' </td>';
                             echo '</tr>';
                           }
                         ?>                
