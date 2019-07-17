@@ -35,8 +35,6 @@
     $ITEM_ID = $rowResultItemID['item_id']+1;
     $SUPPLIER_ID = $rowSupplierID['supplier_id'];
 
-   
-
     $SQL_ADD_INVENTORY = "INSERT INTO items_trading (item_id, sku_id, item_name, itemtype_id, item_count, last_restock, last_update, threshold_amt, warehouse_id, supplier_id, price,onDiscount, current_eoq, item_weight)
     Values(
     '$ITEM_ID',
@@ -56,15 +54,19 @@
     if(!$RESULT_ADD_INVENTORY) 
     {
         die('Error: ' . mysqli_error($dbc));
-
         echo ("Unsuccessful");
     } 
     else 
-    {
-        
-        // echo ("Items Added Successfully");
-        
-        
+    {      
+        // echo ("Items Added Successfully");        
     }              
-  
+    
+    $GET_LAST_ENTRY = "SELECT * 
+    FROM items_trading 
+    ORDER BY item_id DESC
+    LIMIT 1";
+    $RESULT_LAST_ENTRY = mysqli_query($dbc,$GET_LAST_ENTRY);                                
+    $ROW_RESULT_LAST_ENTRY = mysqli_fetch_assoc($RESULT_LAST_ENTRY); //Query For getting itemtypeID
+
+    echo '<td sp_itm_nm ="'.$ROW_RESULT_LAST_ENTRY['item_name'].'"><input type="hidden" name = "item_name" value = "'.$ROW_RESULT_LAST_ENTRY['item_name'].'">'.$ROW_RESULT_LAST_ENTRY['item_name'].'</td>';
 ?>

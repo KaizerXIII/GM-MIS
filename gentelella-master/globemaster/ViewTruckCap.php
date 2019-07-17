@@ -279,9 +279,37 @@
                                 echo '</td>';                              
                               echo "</tr>";                                                        
                               
-                            };
+                            };                            
+                            
+                            // $start_date = date_range here
+                            // $end_date = 
+                            // $date_range =
+                            // []                            
+                            // $trucks = get all trucks
+                            // $truck_names
+                            // $truck_array =();
+                            // foreach trucks(){
+                            //   $tem-array = []
+                            //   foreach date in daterange{
+                            //     $temp-array.add(  select * from bulkdelivery truck = truck and date == date *from url)
+                            //   }
+                            //   truck_array.add($temp_array)
+                            // }
 
-                            $GET_BULK_CAP = "SELECT * FROM bulk_order";
+                            // <tr>
+                            // <th>truck_name</>
+                            // foreach(date_rate as date){
+                            //   <th>$date</th>
+                            // }
+                            // </tr> 
+                            // for($i;$i<truck_array.size;$i++){
+                            //   <td>$trucks_names[i]</td>
+                            //   $foreach($truck_array[i] as truck_array_entry){
+                            //     <td>$truck_array_entry</td>
+                            //   }
+                            // }     
+                            // </tr>
+                              $GET_BULK_CAP = "SELECT * FROM bulk_order";
                             $RESULT_BULK_CAP = mysqli_query($dbc, $GET_BULK_CAP);;
                             while($ROW_RESULT_BULK_CAP = mysqli_fetch_array($RESULT_BULK_CAP,MYSQLI_ASSOC))
                             {

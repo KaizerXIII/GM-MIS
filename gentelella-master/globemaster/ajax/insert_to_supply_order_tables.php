@@ -82,8 +82,8 @@
             $CURRENT_ITEM_NAME =  $ROW_RESULT_SELECT_NEW_ITEM['new_item_name'];
 
             //Inserts to details 
-            $SQL_INSERT_TO_SUPPLY_DETAILS = "INSERT INTO supply_order_details (supply_order_id, supply_item_name, supply_item_quantity, supplier_name) 
-            VALUES ('$CURRENT_SO', '$CURRENT_ITEM_NAME', '$CURRENT_ITEM_QTY','$CURRENT_SUPPLIER_NAME');";
+            $SQL_INSERT_TO_SUPPLY_DETAILS = "INSERT INTO supply_order_details (supply_order_id, supply_item_name, supply_item_quantity,supply_arrived_quantity, supplier_name) 
+            VALUES ('$CURRENT_SO', '$CURRENT_ITEM_NAME', '$CURRENT_ITEM_QTY','0','$CURRENT_SUPPLIER_NAME');";
             $RESULT_INSERT_TO_DETAILS = mysqli_query($dbc,$SQL_INSERT_TO_SUPPLY_DETAILS);
 
             
@@ -100,11 +100,11 @@
             VALUES ('$CURRENT_SO', '$CURRENT_ITEM_NAME', '$CURRENT_ITEM_QTY','$CURRENT_SUPPLIER_NAME');";
             $RESULT_INSERT_TO_DETAILS =  mysqli_query($dbc,$SQL_INSERT_TO_SUPPLY_DETAILS);
         }      
-        // echo "Value of ID Array = ", $CURRENT_ID,"\n";
-        // echo "Value of QTY Array = ",$CURRENT_ITEM_QTY,"\n";
-        // echo "Current item Name = ",$CURRENT_ITEM_NAME,"\n";
-        // echo "\n";
-        //Checker
+        echo "Value of ID Array = ", $CURRENT_ID,"\n";
+        echo "Value of QTY Array = ",$CURRENT_ITEM_QTY,"\n";
+        echo "Current item Name = ",$CURRENT_ITEM_NAME,"\n";
+        echo "\n";
+        
        
     }
 
