@@ -184,11 +184,11 @@
                                         </div> <!--END XPanel-->
                                     </div> <!--END Class Colmd-->
                                           
-                                    <div class="col-md-6 col-sm-6 col-xs-12" >                                  
+                                    <!-- <div class="col-md-6 col-sm-6 col-xs-12" >                                  
                                         <div class="x_panel" >
 
                                             <center><font color = "#09961e"><h3><i class="fa fa-cubes"></i>Restocking</h3></font></center>
-                                            <div class="ln_solid"></div>
+                                            <div class="ln_solid"></div> -->
 
                                             <!-- <div class="form-group">
                                                 <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-1">
@@ -197,7 +197,7 @@
                                                 </div>
                                             </div> -->
                                             
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <br>
                                                 <label class="control-label col-md-4 col-sm-4 col-xs-12">Restock Amount:</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -209,8 +209,7 @@
 
                                             <div class="form-group">
                                                 <div class="col-md-12 col-sm-12 col-xs-12" align = "center">
-                                                <!--  -->
-                                                    <button type="button" class="btn btn-success"  id = "updatestock" name ="restockBtn" onclick = "insert_and_update_restock()" >Update</button>
+                                                    <button type="button" class="btn btn-success"  id = "updatestock" name ="restockBtn" onclick = "insert_and_update_restock()" >Update</button> -->
 
 
                                                    <script>
@@ -244,16 +243,16 @@
                                                    } // End Function
                                                    </script>
 
-                                            </div> <!-- Col MD -->
-                                        </div> <!-- FormGRP -->
+                                            <!-- </div> Col MD -->
+                                        <!-- </div> FormGRP -->
                                   
-                                </div> <!--END Xpanel -->
-                            </div><!--END Col MD-->
+                                <!-- </div> END Xpanel -->
+                            <!-- </div>END Col MD -->
 
                             <div class="col-md-6 col-sm-6 col-xs-12" >                                  
                                         <div class="x_panel" >
 
-                                            <center><font color = "#eda01c"><h3><i class="fa fa-tags"></i>Discounts</h3></font></center>
+                                            <center><font color = "#eda01c"><h3><i class="fa fa-tags"></i> Discounts</h3></font></center>
                                             <div class="ln_solid"></div>
 
                                             <!-- <div class="form-group">
@@ -285,10 +284,10 @@
 
                             <div class="clearfix"></div>
                             <br>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <!-- <div class="col-md-12 col-sm-12 col-xs-12">
                                 <button type="button" class="btn btn-round btn-danger" id = "unhideDamageDivbtn" onclick = "unhideDamageDiv();" style = "display:block"><i class="fa fa-eye"></i> Unhide Damaged Item Input</button>
                                 <button type="button" class="btn btn-round btn-dark" id = "hideDamageDivbtn" onclick = "hideDamageDiv();" style = "display:none"><i class="fa fa-eye-slash"></i> Hide Damaged Item Input</button>
-                            </div>
+                            </div> -->
                             <div style = "display:none" id="damageDiv"><!--  show/hide div-->
                              <div class="col-md-6 col-sm-6 col-xs-12" >
                                    
@@ -417,7 +416,7 @@
                                         
                                         <div class="ln_solid"></div>
                                             <button name = "confirmButton" type="button" class="btn btn-success" onclick ="generalAlert()">Confirm</button>
-                                            <button type="reset" class="btn btn-warning" onclick="clearLocalStorage()">Archive</button>
+                                            <!-- <button type="reset" class="btn btn-warning" onclick="clearLocalStorage()">Archive</button> -->
 
                                         </div><!--END Col MD-->
                                     

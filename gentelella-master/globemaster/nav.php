@@ -129,13 +129,19 @@ if(!(isset($_SESSION['usertype']))){
                   echo    "<li><a href='Deliveries.php'>View Delivery Receipts</a></li>";
                 }
                 if($user == 'SALES' or $user == 'Superuser'){
-                  echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                  if(date("Hi") > "1500")
+                  {
+                    echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                  }
+                  elseif(date("Hi") < "1500")
+                  {
+                    echo    "<li><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
+                  }
                 }
                   echo   "</ul>";
                   echo "</li>";
                         }
                   ?>
-
                   <?php
                      if($user == 'MKT' or $user == 'SALES' or $user == 'INV' or $user == 'Superuser'){
                   
@@ -579,4 +585,11 @@ if(!(isset($_SESSION['usertype']))){
             }
           </script>          
 
+
+<script>
+  function alertTime()
+  {
+    alert("Deliveries are not allowed after 3PM! You can set another delivery tomorrow.");
+  }
+</script>
           

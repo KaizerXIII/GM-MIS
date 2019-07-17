@@ -133,6 +133,12 @@
                                             <span id = "dr_number"></span>
                                         </div>
                                         <div align = "right">
+                                        <?php
+                                            $SQL_GET_DELIVERY_STATUS = "SELECT * FROM scheduledelivery;";
+                                            $RESULT_GET_DELIVERY_STATUS = mysqli_query($dbc,$SQL_GET_DELIVERY_STATUS);
+                                            $ROW_DELIVERY_STATUS = mysqli_fetch_array($RESULT_GET_DELIVERY_STATUS, MYSQLI_ASSOC);
+                                        ?>
+                                            <!-- <button type="button" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button>  -->
                                             <button type="button" id="finish_delivery" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
                                         </div>
                                         

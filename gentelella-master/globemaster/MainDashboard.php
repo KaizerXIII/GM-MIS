@@ -60,6 +60,11 @@
         <div class="right_col" role="main">
           <!-- top tiles -->
           <div class="row tile_count">
+<?php
+  if($user == 'SALES' || $user == 'Superuser')
+  {
+
+?>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-ticket"></i> Total Depot Requests</span>
               <!-- Insert count of depot requests here -->
@@ -72,6 +77,9 @@
               <div class="count blue"><?php echo $ROWRESULT_ORDER_IN_PROGRESS['COUNTREQUESTS']; ?></div>
               <span class="count_bottom"><i class="green"></i><a href = "ViewDepotRequests.php" class = "blue">Click for more!</a></span>
             </div>
+<?php
+  }
+?>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-thumbs-o-down"></i> Unfinished Fabrications</span>
               <!-- Insert count of unfinished fabrications here -->
@@ -108,12 +116,48 @@
               $SQL_COUNT_ALL_UNPAID = "SELECT SUM(total_unpaid) as COUNTUNPAID FROM clients";
                       $RESULT_COUNT_ALL_UNPAID = mysqli_query($dbc, $SQL_COUNT_ALL_UNPAID);
                       $ROWRESULT_UNPAID=mysqli_fetch_array($RESULT_COUNT_ALL_UNPAID,MYSQLI_ASSOC);
+
+              $SQL_COUNT_ALL_PAID_THIS_MONTH = "SELECT IFNULL(SUM(payment_amount), 0) as PAYAMOUNT FROM unpaidaudit
+                                                          WHERE MONTH(payment_date) = MONTH(CURDATE());";
+                      $RESULT_COUNT_ALL_UNPAID_THIS_MONTH = mysqli_query($dbc, $SQL_COUNT_ALL_PAID_THIS_MONTH);
+                      $ROWRESULT_UNPAID_THIS_MONTH=mysqli_fetch_array($RESULT_COUNT_ALL_UNPAID_THIS_MONTH,MYSQLI_ASSOC);
+
+              $DIFF_PREV_MONTH = $ROWRESULT_UNPAID['COUNTUNPAID'] - $ROWRESULT_UNPAID_THIS_MONTH['PAYAMOUNT'];
+              $DIFF_THIS_PREV_MONTH = $ROWRESULT_UNPAID['COUNTUNPAID'] - $DIFF_PREV_MONTH;
+              $PERCENT_INC_DEC = ($DIFF_THIS_PREV_MONTH/$ROWRESULT_UNPAID['COUNTUNPAID']) * 100; //to compute for the percentage of increase or decrease
 ?>          
             <div class="count"><font color = "orange">₱ <?php echo $ROWRESULT_UNPAID['COUNTUNPAID']; ?></font></div>
-              <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
+              <span class="count_bottom">
+              <?php if ($PERCENT_INC_DEC > 0) 
+                {
+                ?>
+                <i class="green"><i class="fa fa-sort-asc"></i>
+                <?php
+                }
+                else if ($PERCENT_INC_DEC <= 0)
+                {
+                ?>
+                <i class="red"><i class="fa fa-sort-desc"></i>
+                <?php 
+                }
+                echo $PERCENT_INC_DEC; ?>%</i> 
+              <?php if ($PERCENT_INC_DEC > 0) 
+                {
+                ?>
+                Increase
+                <?php
+                }
+                else if ($PERCENT_INC_DEC <= 0)
+                {
+                ?>
+                Decrease
+                <?php 
+                }
+              ?>
+                from Last Month</span>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Current Late Deliveries</span>
+              <span class="count_top"><i class="fa fa-close"></i> Total Current Late Deliveries</span>
               <!-- Insert total late deliveries as of today -->
 
 <?php
@@ -123,8 +167,8 @@
                       $ROWRESULT_LATE_DELIVERIES=mysqli_fetch_array($RESULT_COUNT_ALL_LATE_DELIVERIESS,MYSQLI_ASSOC);
 ?>           
               <div class="count red"><?php echo $ROWRESULT_LATE_DELIVERIES['COUNTLATEDELIVERIES']; ?></div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-              <!-- Insert comparison with last week if possible -->
+              <span class="count_bottom"><i class="green"></i><a href = "Delivery Report.php" class = "blue">View Report </a></span>
+              <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Losses for this Month</span>
@@ -177,7 +221,7 @@
              <div class="row">
                  <?php
             
-                    if($user == 'SALES' || $user == 'CEO' || $user == 'MKT')
+                    if($user == 'SALES' || $user == 'CEO' || $user == 'MKT' || $user == 'Superuser')
                     {
                         //INVENTORY BELOW THRESHOLD
                         
@@ -193,7 +237,7 @@
                                           <th>SKU</th>
                                           <th>Item Name</th>
                                           <th>Amount In Stock</th>
-                                          <th>Threshold Status</th>
+                                          <th>Action</th>
                                         </tr>
                                       </thead>
                                       <tbody>';
@@ -211,16 +255,16 @@
                                     echo '<td>';
                                     echo $row['item_name'];
                                     echo '</td>';
-                                    echo '<td>';
-                                    echo $row['item_count'];
+                                    echo '<td align = "right">';
+                                    echo $row['item_count']." pieces";
                                     echo '</td>';
                                     if($row['diff'] >= 50)
                                     {
-                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-danger">Restock now</button></a></center></td>';
+                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><i class = "fa fa-wrench"></i></a></center></td>';
                                     }
                                     else
                                     {
-                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-warning">Restock now</button></a></center></td>';
+                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><i class = "fa fa-wrench"></i></a></center></td>';
                                     }
                                     echo '</td>';
                                     echo '</tr>';
@@ -233,8 +277,64 @@
                         </div>
                       </div>';
                     }
+
+                    if($user == 'SALES' || $user == 'CEO' || $user == 'MKT' || $user == 'Superuser')
+                    {
+                      //DEPOT REQUEST SUMMARY
+                    ?>
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                    <h2><center><i class="fa fa-cubes"></i><b>  DEPOT REQUESTS SUMMARY</b></h2>  
+                                    <div class="clearfix"></div>
+                                  <div class="x_content">
+
+                                    <table class="table table-bordered">
+                                      <thead>
+                                        <tr>
+                                          <th>Request Number</th>
+                                          <th>Request Date</th>
+                                          <th>Expected Date</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>';
+
+                      <?php 
+                            $SQL_GET_DEPOT_REQUEST = "SELECT * FROM depot_request";
+                            $RESULT_GET_DEPOT_REQUEST=mysqli_query($dbc,$SQL_GET_DEPOT_REQUEST);
+                            while($ROW_DEPOT_REQUEST=mysqli_fetch_array($RESULT_GET_DEPOT_REQUEST,MYSQLI_ASSOC))
+                            {
+                      ?>
+                                    <tr>
+                                      <td><?php echo $ROW_DEPOT_REQUEST['depot_request_id']; ?></td>
+                                      <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_request_date'])); ?></td>
+                                      <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_expected_date'])); ?></td>
+                                      <td align = "center"><i class = "fa fa-wrench"></i></td>
+                                    </tr>
+                      <?php      
+                            } 
+                      ?>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                                    <!-- if($row['diff'] >= 50)
+                                    {
+                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-danger">Restock now</button></a></center></td>';
+                                    }
+                                    else
+                                    {
+                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-warning">Restock now</button></a></center></td>';
+                                    }
+                                    echo '</td>';
+                                    echo '</tr>'; -->
+
+                  <?php
+                    }
                  
-                    if($user == 'CEO' || $user == 'CFO' || $user == 'MKT')
+                    if($user == 'CEO' || $user == 'CFO' || $user == 'MKT' || $user == 'Superuser')
                     {
                          
 
@@ -293,13 +393,13 @@
                     }
                  
                  
-                    if($user == 'CFO' || $user == 'SALES' || $user == 'MKT')
+                    if($user == 'CFO' || $user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
                     {
                         //UNPAID ORDERS
                  
                         echo '<div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="x_panel">
-                                      <h2><center><i class="fa fa-minus-circle"></i><b>  UNPAID ORDERS</b></h2>
+                                      <h2><center><i class="fa fa-money"></i><b>  UNPAID ORDERS</b></h2>
                                     <div class="clearfix"></div>
                                   <div class="x_content">
 
@@ -332,8 +432,8 @@
                                     echo '<td>';
                                     echo $clientName;
                                     echo '</td>';
-                                    echo '<td>';
-                                    echo  'Php'." ".number_format($row['totalamt'], 2);
+                                    echo '<td align = "right">';
+                                    echo  '₱'.number_format($row['totalamt'], 2);
                                     echo '</td>';
                                     echo '</tr>';
                                     
@@ -347,7 +447,7 @@
                        
                     }
                  
-                    if($user == 'SALES' || $user == 'MKT')
+                    if($user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
                     {
                         if($user != 'MKT')
                         {
@@ -358,7 +458,7 @@
                  
                         echo '<div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="x_panel">
-                                      <h2><center><i class="fa fa-car"></i><b>  ORDERS NEARING DELIVERY</b></h2>
+                                      <h2><center><i class="fa fa-truck"></i><b>  ORDERS NEARING DELIVERY</b></h2>
                                     <div class="clearfix"></div>
                                   <div class="x_content">
 
@@ -410,7 +510,7 @@
                       </div>';
                     }
                  
-                 if($user == 'INV' || $user == 'SALES')
+                 if($user == 'INV' || $user == 'SALES' || $user == 'Superuser')
                  {
                     
                         //FABRICATION APPROVALS
@@ -460,14 +560,14 @@
                      
                     }
                  
-                 if($user == 'INV' || $user == 'CEO')
+                 if($user == 'INV' || $user == 'CEO' || $user == 'Superuser')
                  {
                     
                         //RECOMMEND INVENTORY DISCOUNT
                  
                         echo '<div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="x_panel">
-                                      <h2><center><i class="fa fa-toggle-down"></i><b>  RECOMMENDED ITEMS FOR DISCOUNT</b></h2>
+                                      <h2><center><i class="fa fa-percent"></i><b>  RECOMMENDED ITEMS FOR DISCOUNT</b></h2>
                                     <div class="clearfix"></div>
                                   <div class="x_content">
 
