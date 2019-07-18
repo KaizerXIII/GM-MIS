@@ -106,47 +106,7 @@
                         Receiving
                       Arrived 
                     -->
-                    <form action = "<?php echo $_SERVER['PHP_SELF']; ?>" id="" data-parsley-validate class="form-horizontal form-label-left" method = "POST">
-                    <div align = "right">Change shipment status: 
-                      <?php //start button if/else PHP
-                        if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased")
-                        {
-                      ?>
-                      <button type = "submit" id = "ArrivChina" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivChina" onclick = "ChangeChina(this);" class="btn btn-round btn-primary btn-xs">Arrived at China Port</button> 
-                      <?php
-                        }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
-                        {
-                      ?>
-                      <button type = "submit" id = "ShipChina" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ShipChina" onclick = "ChangeShipped(this);" class="btn btn-round btn-primary btn-xs">Shipped from China Port</button> 
-                      <?php
-                        }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped")
-                        {
-                      ?>
-                      <button type = "submit" id = "ArrivPH" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivPH" onclick = "ChangePhilippines(this);" class="btn btn-round btn-primary btn-xs">Arrived at Philippines Port</button></div>
-                      <?php
-                        }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines")
-                        {
-                      ?>
-                      <button type = "submit" id = "OTWPH" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "OTWPH" onclick = "ChangeOTW(this);" class="btn btn-round btn-success btn-xs">On the way to warehouse</button>
-                      <?php 
-                        }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW")
-                        {
-                      ?>
-                      <button type = "submit" id = "ArrivedReceive" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivRcv" onclick = "ChangeAR(this);" class="btn btn-round btn-success btn-xs">Order Arrived - Receiving</button>
-                      <?php
-                        }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
-                        {
-                      ?>
-                      <button type = "" id = "" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = ""  class="btn btn-round btn-success btn-xs" disabled = "disabled">Order has Arrived</button>
-                      <?php
-                        } //end button if/else PHP
-                      ?> 
-                      </form>
+                    
                       <?php //start progresbar if/else PHP
                         if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
                         {
@@ -353,11 +313,52 @@
                       ?>
                     </div>
 
-                    <!-- <div class = "clearfix"></div>
+                    <div class = "clearfix"></div>
                       <div align = "center">
-                            asdasd
+                      <form action = "<?php echo $_SERVER['PHP_SELF']; ?>" id="" data-parsley-validate class="form-horizontal form-label-left" method = "POST">
+                        <div align = "center"><b><font color = "black">UPDATE SHIPMENT STATUS</font></b> <br>
+                          <?php //start button if/else PHP
+                            if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased")
+                            {
+                          ?>
+                          <button type = "submit" id = "ArrivChina" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivChina" onclick = "ChangeChina(this);" class="btn btn-round btn-primary btn-md">Arrived at China Port</button> 
+                          <?php
+                            }
+                            else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
+                            {
+                          ?>
+                          <button type = "submit" id = "ShipChina" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ShipChina" onclick = "ChangeShipped(this);" class="btn btn-round btn-primary btn-md">Shipped from China Port</button> 
+                          <?php
+                            }
+                            else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped")
+                            {
+                          ?>
+                          <button type = "submit" id = "ArrivPH" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivPH" onclick = "ChangePhilippines(this);" class="btn btn-round btn-primary btn-md">Arrived at Philippines Port</button></div>
+                          <?php
+                            }
+                            else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines")
+                            {
+                          ?>
+                          <button type = "submit" id = "OTWPH" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "OTWPH" onclick = "ChangeOTW(this);" class="btn btn-round btn-success btn-md">On the way to warehouse</button>
+                          <?php 
+                            }
+                            else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW")
+                            {
+                          ?>
+                          <button type = "submit" id = "ArrivedReceive" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivRcv" onclick = "ChangeAR(this);" class="btn btn-round btn-success btn-md">Order Arrived - Receiving</button>
+                          <?php
+                            }
+                            else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                            {
+                          ?>
+                          <button type = "" id = "" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = ""  class="btn btn-round btn-success btn-md" disabled = "disabled">Order has Arrived</button>
+                          <?php
+                            } //end button if/else PHP
+                          ?> 
+                        </form>
+                        </div>
                       </div>
-                    <div class = "clearfix"></div> -->
+                    <div class = "clearfix"></div>
 
 
                     <form method = "POST" action = "SupplierOrderDetails_Damage.php?so_id=<?php echo $_SESSION['supply_order_id'] ?>">
