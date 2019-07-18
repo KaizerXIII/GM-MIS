@@ -191,8 +191,8 @@
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                                        <button type="button" class="btn btn-primary btn-lg"  id = "deploy" ><i class="fa fa-truck"></i> Deploy Truck</button> 
-                                        <button type="button" class="btn btn-success btn-lg" id = "undeploy" ><i class="fa fa-truck"></i> Truck has Returned</button> 
+                                        <button type="button" class="btn btn-primary btn-lg"  id = "deploy" value ="Deploy"><i class="fa fa-truck"></i> Deploy Truck</button> 
+                                        <button type="button" class="btn btn-success btn-lg" id = "return" value ="Return"><i class="fa fa-truck"></i> Truck has Returned</button> 
                                         <!-- lagyan ng onclick enable disable -->
                                     </div>
                                     </div>
@@ -315,14 +315,54 @@ $('.btn.btn-round.btn-info.btn-md').on('click',function(e){
 
 
 <script>
-$(document).ready(function() {
-    for(var i = 0; i < 5; i++)
+$('#deploy').on('click', function(e){
+    var status = $(this).val();
+    if(confirm("Deploy Truck?"))
     {
-        // var cloned = $('#dr_form').clone().appendTo('#dr_panel'); //Clones the Div and appends to the targetted container
-        
+        request = $.ajax({
+        url: "ajax/deploy_return_truck.php",
+        type: "POST",
+        data: {
+            post_truck_status: status,
+            post_bulk_id: "<?php echo $_SESSION['current_bulk_id'];?>"
+                                                    
+        },
+        success: function(data)
+        {
+            alert("Truck have been successfully Deployed!");            
+        }//End Success
+   
+        }); // End ajax 
     }
-    // $('#drTotal').val('₱ '+parseInt(400.00));
-});
+    else
+    {
+    alert("Action: Cancelled");
+    }
+})
+$('#return').on('click', function(e){
+    var status = $(this).val();
+    if(confirm("Confirm truck has returned?"))
+    {
+        request = $.ajax({
+        url: "ajax/deploy_return_truck.php",
+        type: "POST",
+        data: {
+            post_truck_status: status,
+            post_bulk_id: "<?php echo $_SESSION['current_bulk_id'];?>"
+                                                    
+        },
+        success: function(data)
+        {
+            alert("Truck has Returned!");            
+        }//End Success
+   
+        }); // End ajax 
+    }
+    else
+    {
+    alert("Action: Cancelled");
+    }
+})
 
 </script>
 </body>

@@ -80,12 +80,12 @@
             reference_bulk_or,
             bulk_order_details_dr,
             dr_weight, 
-            dr_status,time_in,time_out)          
+            dr_status)          
             VALUES(
             '$CURRENT_BO_ID',
             '$deliveryReceipt',
             '$GET_TOTAL_WEIGHT',
-            '$DELIVERY_STATUS',null,null)";
+            '$DELIVERY_STATUS')";
         $RESULT_INSERT_BULK_DETAILS =  mysqli_query($dbc,$INSERT_TO_BULK_DETAILS);
         if(!$RESULT_INSERT_BULK_DETAILS)
         {
@@ -105,13 +105,13 @@
             reference_bulk_or,
             bulk_order_details_dr,
             dr_weight, 
-            dr_status,
-            time_in,time_out)            
+            dr_status
+            )            
             VALUES(
             '$CURRENT_BULK_ID',
             '$deliveryReceipt',
             '$GET_TOTAL_WEIGHT',
-            '$DELIVERY_STATUS',null,null)";
+            '$DELIVERY_STATUS')";
         $RESULT_INSERT_BULK_DETAILS =  mysqli_query($dbc,$INSERT_TO_BULK_DETAILS);
         if(!$RESULT_INSERT_BULK_DETAILS)
         {

@@ -29,7 +29,10 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+     <!-- JQUERY Required Scripts -->
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
 </head>
+
 
 <body class="nav-md">
     <div class="container body">
@@ -105,7 +108,7 @@
                                         echo'<option value="';
                                         echo $row1['ordernumber'];
                                         echo'">';
-                                        echo $row1['ordernumber'], " | " ,$row1['client_name'];
+                                        echo $row1['ordernumber'], " | " ,$row1['expected_date'];
                                         echo'</option>';
                                       }
                                         
@@ -139,6 +142,7 @@
                                         margin: 0;
                                     }
                             </style> <!-- To Remove the Up/Down Arrows from Date Selection -->
+                           
                         </div>
                       </div>
 
@@ -246,7 +250,7 @@
                            </div>
                             <div class="col-md-12 col-sm-12 col-xs-12"  >
                               <br>
-                              <h2><span id = "current_or">Order Number: OR-1 </span></h2>
+                              <h2><span id = "current_or">Order Number: </span></h2>
                               <h2><span id = "fab_status">Current Status:  </span></h2>
                               <!-- <font color = "blue">Fabricating</font> OR <font color = "red">Disapproved</font> OR <font color = "green">Finished</font> -->
                             </div>
@@ -262,31 +266,7 @@
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12" align="right">
                           <button class="btn btn-primary" type="button">Go Back</button>
-                          <button type="button" name = "submitDeliveryReceipt" id = "submit_receipt" class="btn btn-success">Submit</button>
-
-                           <?php
-                            // require_once('DataFetchers/mysql_connect.php');
-                            // if(isset($_POST['submitDeliveryReceipt']))
-                            //     {         
-                                                             
-                                        
-
-                                        // if(!$RESULT_ORDER_TABLE) 
-                                        // {
-                                        //     die('Error: ' . mysqli_error($dbc));
-                                        //     echo '<script language="javascript">';
-                                        //     echo 'alert("Error In Update");';
-                                        //     echo '</script>';
-                                        // } 
-                                        // else 
-                                        // {
-                                        //     echo '<script language="javascript">';
-                                        //     echo 'alert("Create Delivery Receipt Successful");';
-                                        //     echo '</script>';
-                                        //     header("Location: Deliveries.php");
-                                        // }                                                                                   
-                                    // }// END IF ISSET        
-                            ?>
+                          <button type="button" name = "submitDeliveryReceipt" id = "submit_receipt" class="btn btn-success">Submit</button>                        
                         </div>
                       </div>
 
@@ -490,7 +470,14 @@
 
     echo "var fabdescFromPHP = ".json_encode($fab_desc).";";
 
-    echo 'var table = document.getElementById("datatable");'; 
+    
+        
+    echo  " };";  //End function   
+                                                        
+?> //PHP END                        
+</script> <!-- Script to add Order Details from DB with PHP inside -->
+<script>
+echo 'var table = document.getElementById("datatable");'; 
     echo 'table.oldHTML=table.innerHTML;';
     
     echo  " dropdown.onchange = function(){";
@@ -520,27 +507,40 @@
             echo  "  }"; // end 2nd forloop
 
               echo 'if(fabricationStatusFromPHP[i] == "No Fabrication"){ $("#item_fab").hide(); ';
-              echo '$("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+3days")).'"); ';
-              echo '}'; //END IF
+                if(date("l", strtotime("+3days"))=='Sunday')
+                {
+                  echo '$("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+4days")).'"); ';
+                }
+                else
+                {
+                 $("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+3days")).'"); ';
+                } 
+              
+              }'; //END IF
 
-              echo 'else{  $("#item_fab").show();';
-              echo '$("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+6days")).'"); ';
-              echo '$("#current_or").text("Order Number: " + dropdown.value);';
-              echo '$("#fab_status").text("Current Status: " + fabricationStatusFromPHP[i]);';
-              echo '$("#description").text("Description: " + fabdescFromPHP[i]);';
-              echo '}'; //END ELSE
+             else{  $("#item_fab").show();';
+                if(date("l", strtotime("+6days"))=='Sunday')
+                {
+                  echo '$("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+7days")).'"); ';
+                }
+                else
+                {
+                  ("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+6days")).'"); ';
+                } 
+              
+              $("#current_or").text("Order Number: " + dropdown.value);';
+              $("#fab_status").text("Current Status: " + fabricationStatusFromPHP[i]);';
+             $("#description").text("Description: " + fabdescFromPHP[i]);';
+              }'; //END ELSE
 
-            echo  "var newRow = document.getElementById('datatable').insertRow();";
-            echo  'newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td> <td align = right>" +quantityNumFromPHP[i]+ "</td> <td align = right> ₱ "+PriceNumFromPHP[i]+"</td></tr>";';
+            var newRow = document.getElementById('datatable').insertRow();";
+            newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td> <td align = right>" +quantityNumFromPHP[i]+ "</td> <td align = right> ₱ "+PriceNumFromPHP[i]+"</td></tr>";';
                                             
-            echo  "  }"; //End IF
+             } //End IF
             
             
-        echo  "  };"; //END 1st Forloop
-        
-    echo  " };";  //End function                                                        
-?> //PHP END                        
-</script> <!-- Script to add Order Details from DB with PHP inside --> 
+        }; //END 1st Forloop
+<script>
            
 <script>
  $('#submit_receipt').on('click', function(e){
@@ -585,7 +585,20 @@
     
   })  
 </script>
+ <script>
+  var warning = $('<p>').text('Error you cannot select a weekend')
+  $('#deliveryDate').change(function(e) {
 
+        var d = new Date(e.target.value)
+        if(d.getDay() === 6 || d.getDay() === 5) {
+          alert('No Sunday Delivery!');
+          $('#deliveryDate').after(warning);
+        } else {
+          warning.remove() 
+        
+      }
+  })
+</script>
 
 
 </body>

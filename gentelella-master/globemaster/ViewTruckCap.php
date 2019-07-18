@@ -245,7 +245,7 @@
                           <?php 
                            
                             
-                           print_r($DATES);
+                          //  print_r($DATES);
 
                           //  $_GET['startdate'] = $DATES[0];
                           //  $_GET['enddate'] = $DATES[5];
@@ -255,6 +255,7 @@
                             $TRUCK_STATIC_CAP = array();
 
                             $TRUCKS_FROM_TRUCKTABLE = array();
+                            $TRUCK_MODEL = array();
 
                             $querytogetDBTable = "SELECT * FROM trucktable";
                             $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
@@ -263,32 +264,19 @@
                              
                               $TRUCK_STATIC_CAP[] = $rowofResult['weightCap'];
                               $TRUCKS_FROM_TRUCKTABLE[] = $rowofResult['truckplate'];
-                              // echo " <tr>";
-                              //   echo '<td value="',$rowofResult['truckplate'],'"  "> ';            
-                              //   echo $rowofResult['truckmodel']." | ".$rowofResult['truckplate'];
-                              //   echo '</td>';  
-                              //   echo '<td align = "right">';
-                              //   // echo '350kg out of 2500kg | <font color = "#42d9f4">'.$rowofResult['weightCap'].' kg available</font>';
-                              //   echo $rowofResult['weightCap'];
-                              //   echo '</td>'; 
-                              //   echo '<td align = "right">';
-                              //   echo $rowofResult['weightCap'];
-                              //   echo '</td>';  
-                              //   echo '<td align = "right">';
-                              //   echo $rowofResult['weightCap'];
-                              //   echo '</td>';  
-                              //   echo '<td align = "right">';
-                              //   echo $rowofResult['weightCap'];
-                              //   echo '</td>';  
-                              //   echo '<td align = "right">';
-                              //   echo $rowofResult['weightCap'];
-                              //   echo '</td>';  
-                              //   echo '<td align = "right">';
-                              //   echo $rowofResult['weightCap'];
-                              //   echo '</td>';                              
-                                                                                      
-                              
+                              $TRUCK_MODEL[]=$rowofResult['truckmodel'];   
                             }; 
+
+                            $GET_BULK_CAP = "SELECT * FROM bulk_order";
+                            $RESULT_BULK_CAP = mysqli_query($dbc, $GET_BULK_CAP);;
+                            while($ROW_RESULT_BULK_CAP = mysqli_fetch_array($RESULT_BULK_CAP,MYSQLI_ASSOC))
+                            {
+                              $BULK_DATE_ARRAY[] = $ROW_RESULT_BULK_CAP['bulk_order_date'];
+                              $TRUCK_CAP_ARRAY[]=$ROW_RESULT_BULK_CAP['current_truck_cap'];
+                              $TRUCK_PLATE_ARRAY[]=$ROW_RESULT_BULK_CAP['truck_assigned'];
+                            }
+
+
                             $TRUCK_ARRAY = array();
                             foreach($TRUCKS_FROM_TRUCKTABLE as $truck_plate)
                             {
@@ -304,26 +292,25 @@
                               }      
                               $TRUCK_ARRAY[] =  $TEMP_ARRAY;                     
                             }
-                           
+                            
+                          
                             for($i=0; $i<sizeof($TRUCK_ARRAY);$i++){
                               echo "<tr>";
-                              echo '<td>'.$TRUCKS_FROM_TRUCKTABLE[$i].'</td>';
-                              foreach($TRUCK_ARRAY[$i] as $truck_array_entry){
-                                echo '<td>'.$truck_array_entry.'</td>';
-                                
-                              }
+                              echo '<td>'.$TRUCK_MODEL[$i] .' | '.$TRUCKS_FROM_TRUCKTABLE[$i].'</td>';
+                              
+                              
+                              foreach($TRUCK_ARRAY[$i] as $key=>$truck_array_entry){
+                              
+                                  echo '<td align = right>'.$truck_array_entry.' KG </td>';                                                                
+                                                                            
+                              }   
+                                                                                                                  
                               echo "</tr>";
-                            }     
+                            } 
+                             
                            
                             
-                              $GET_BULK_CAP = "SELECT * FROM bulk_order";
-                            $RESULT_BULK_CAP = mysqli_query($dbc, $GET_BULK_CAP);;
-                            while($ROW_RESULT_BULK_CAP = mysqli_fetch_array($RESULT_BULK_CAP,MYSQLI_ASSOC))
-                            {
-                              $BULK_DATE_ARRAY[] = $ROW_RESULT_BULK_CAP['bulk_order_date'];
-                              $TRUCK_CAP_ARRAY[]=$ROW_RESULT_BULK_CAP['current_truck_cap'];
-                              $TRUCK_PLATE_ARRAY[]=$ROW_RESULT_BULK_CAP['truck_assigned'];
-                            }
+                          
                            
                             
                           ?>
@@ -352,7 +339,7 @@
                           <th>Delivery Status</th>
                           <th>Time Out</th>
                           <th>Time In</th>
-                          <th></th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -364,20 +351,16 @@
                         $RESULT_GET_BULK_ORDER = mysqli_query($dbc,$SQL_GET_BULK_ORDER);
                         while($ROW_GET_BULK_ORDER = mysqli_fetch_array($RESULT_GET_BULK_ORDER,MYSQLI_ASSOC))
                         {
+                          $TIME_OUT = date("H:i:s",strtotime($ROW_GET_BULK_ORDER['time_out']));
+                          $TIME_IN = date("H:i:s",strtotime($ROW_GET_BULK_ORDER['time_in']));
                           echo '<tr>';
                           echo '<td bd_id = '.$ROW_GET_BULK_ORDER['bulk_order_id'].'> B.D - '.$ROW_GET_BULK_ORDER['bulk_order_id'].'</td>'; 
                           echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_date'].'</td>';                         
                           echo '<td>'.$ROW_GET_BULK_ORDER['truck_assigned'].'</td>'; 
                           echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_status'].'</td>'; 
-                          echo '<td></td>';
-                          if($ROW_GET_BULK_ORDER['Availability']== "Available")
-                          {
-                            echo '<td> 07:00:00 </td>';
-                          }
-                          else
-                          {
-                            echo '<td></td>';
-                          } 
+                          echo '<td align = right>'.$TIME_OUT.'</td>'; 
+                          echo '<td align = right>'.$TIME_IN.'</td>'; 
+                          
                            
                           echo '<td align = "center"><a><span class = "bulk_details"><i class = "fa fa-wrench"></i></a></span></td>';
                           echo '</tr>';
