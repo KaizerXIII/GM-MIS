@@ -155,7 +155,7 @@
 
                       
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Client Location: 
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Client Address: 
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="locationFromClient" name = "locationFromClient" class="date-picker form-control col-md-7 col-xs-12" type="text" readonly="readonly">
@@ -381,6 +381,7 @@
     $driverLastNameFromHTML = array();
 
     $fab_desc = array();
+    $client_address = array();
     
     // $SQL_ORDERS_STATUS = "SELECT * FROM orders WHERE orderstatus = 'Deliver'";
     // $RESULT_ORDER_STATUS = mysqli_query($dbc,$SQL_ORDERS_STATUS);
@@ -416,6 +417,8 @@
   
           $ExpectedDateFromHTML[] = $FORMATTED_DATE;
           $locationFromHTML[] = $row['client_city'];
+
+          $client_address[] =$row['client_address'];
         }                                                                               
         
                                                         
@@ -446,7 +449,21 @@
       $fab_desc[] =  $ROW_RESULT_GET_FAB_DESC['fab_description'];
     }
 
+    $BULK_DATE = array();
+    $DATE_TRUCK_CAP = array();
+    $BULK_TRUCK_PLATE = array();
+
+    $GET_BULK_INFO = "SELECT * FROM bulk_order";
+    $RESULT_BULK_INFO = mysqli_query($dbc,$GET_BULK_INFO);
     
+    while($ROW_RESULT_BULK_INFO = mysqli_fetch_array($RESULT_BULK_INFO,MYSQLI_ASSOC))
+    {
+      $BULK_DATE[] = $ROW_RESULT_BULK_INFO['bulk_order_date'];
+      $DATE_TRUCK_CAP[] = $ROW_RESULT_BULK_INFO['current_truck_cap']; 
+      $BULK_TRUCK_PLATE[] = $ROW_RESULT_BULK_INFO['truck_assigned']; 
+    }
+
+    // echo "console.log(".$BULK_DATE[0].");";
     echo "var itemNameFromPHP = ".json_encode($itemName).";"; 
     echo "var cusNameFromPHP = ".json_encode($customerName).";"; 
     echo "var orderNumFromPHP = ".json_encode($orderNumber).";";
@@ -469,78 +486,122 @@
     echo "var driverLastNameFromPHP = ".json_encode($driverLastNameFromHTML).";";
 
     echo "var fabdescFromPHP = ".json_encode($fab_desc).";";
+    echo "var client_address_PHP = ".json_encode($client_address).";";
+
+    echo "var current_truck_cap_PHP = ".json_encode($DATE_TRUCK_CAP).";";
+    echo "var bulk_date_PHP = ".json_encode($BULK_DATE).";";
+    echo "var bulk_truck_plate_PHP = ".json_encode($BULK_TRUCK_PLATE).";";
 
     
-        
-    echo  " };";  //End function   
+        echo "console.log(bulk_date_PHP[4]);"
+      
                                                         
 ?> //PHP END                        
 </script> <!-- Script to add Order Details from DB with PHP inside -->
 <script>
-echo 'var table = document.getElementById("datatable");'; 
-    echo 'table.oldHTML=table.innerHTML;';
+var dropdown = document.getElementById("orderNumberDropdown");
+var table = document.getElementById("datatable");
+console.log(bulk_date_PHP[4]);
+    table.oldHTML=table.innerHTML;
+    $('#deliveryDate').on('change',function(e){
+          var myDate = new Date($(this).val())         
+          var day = myDate.getDate();
+          var month = myDate.getMonth() + 1;
+          var year = myDate.getFullYear();
+          if (day < 10) {
+              day = "0" + day;
+          }
+          if (month < 10) {
+              month = "0" + month;
+          }
+          FORMATTED_DELIV_DATE = year + '-' + month + '-' + day;
+
+          console.log(FORMATTED_DELIV_DATE);
+      
+            for(var q = 0; q < bulk_date_PHP.length; q++)
+            {
+              console.log("Deliv Date: "+ FORMATTED_DELIV_DATE);
+              console.log("Bulk Date: "+ bulk_date_PHP[q]);          
+              if(FORMATTED_DELIV_DATE == bulk_date_PHP[q] && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
+              {
+                
+                truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
+              }
+              else
+              {
+                truckweightBox.value = TruckCapFromPHP[q] + ' KG';
+              }
+            }
+          })
+    dropdown.onchange = function(){
+        table.innerHTML=table.oldHTML; //returns to the first state of the Table
+        var current_weight = 0;
     
-    echo  " dropdown.onchange = function(){";
-        echo 'table.innerHTML=table.oldHTML;'; //returns to the first state of the Table;
-        echo "var current_weight = 0; ";
-    echo  " for (var i = 0; i < ".sizeof($orderNumber)."; i++) {  ";                                                                               
-        echo  "  if(dropdown.value == orderNumFromPHP[i])";
-            echo  "  {"; 
-                        echo '$("#item_fab").hide();';              
-                echo  " textBox.value = cusNameFromPHP[i];";               
-                echo  " totalPriceBox.value = '₱ '+ totalNumFromPHP[i];";
-                echo  " ExpectedDateBox.value = expectedDateFromPHP[i];";
-                echo  " locationBox.value = locationFromPHP[i];"; 
+        
+    for (var i = 0; i < <?php echo sizeof($orderNumber);?>; i++) 
+    {                                                                               
+         if(dropdown.value == orderNumFromPHP[i])
+          { 
+              $("#item_fab").hide();             
+              textBox.value = cusNameFromPHP[i];               
+              totalPriceBox.value = '₱ '+ totalNumFromPHP[i];
+              ExpectedDateBox.value = expectedDateFromPHP[i];
+              locationBox.value = client_address_PHP[i] + ' - ' + locationFromPHP[i]; 
 
-                // Added total weight
-                // echo  " totalweightBox.value = '400' + 'kg'";
-               
-                echo "current_weight = current_weight + (itemweightFromPHP[i] * quantityNumFromPHP[i]);";
-                echo  " for (var j = 0; j < ".sizeof($truckID)."; j++) {  "; 
-                echo  "  if(locationFromPHP[i] == DestinationFromPHP[j])"; //checks if location is same as TruckDestinatrion
-                echo  "  {";
-                    echo  " truckPlateBox.value = truckPlateFromPHP[j];";
-                    echo  " driverBox.value = driverFirstNameFromPHP[j] + ' ' +driverLastNameFromPHP[j];";
-                    echo  " truckweightBox.value = TruckCapFromPHP[j] + ' KG';";
-                    echo  " totalweightBox.value = current_weight + ' KG';";
-                echo  "  }"; 
-            echo  "  }"; // end 2nd forloop
-
-              echo 'if(fabricationStatusFromPHP[i] == "No Fabrication"){ $("#item_fab").hide(); ';
-                if(date("l", strtotime("+3days"))=='Sunday')
+            // Added total weight
+            // echo  " totalweightBox.value = '400' + 'kg'";
+            
+            current_weight = current_weight + (itemweightFromPHP[i] * quantityNumFromPHP[i]);
+              for (var j = 0; j < <?php echo sizeof($truckID);?>; j++) 
+              {  
+                if(locationFromPHP[i] == DestinationFromPHP[j]) //checks if location is same as TruckDestination
                 {
-                  echo '$("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+4days")).'"); ';
+                    truckPlateBox.value = truckPlateFromPHP[j];
+                    driverBox.value = driverFirstNameFromPHP[j] + ' ' +driverLastNameFromPHP[j];              
+                    totalweightBox.value = current_weight + ' KG';
+                }
+              } // end 2nd forloop     
+
+              if(fabricationStatusFromPHP[i] == "No Fabrication")
+              { 
+                $("#item_fab").hide(); 
+                if("<?php echo date("l", strtotime("+3days")); ?>"=="Sunday")
+                {
+                  $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+4days"));?>");
                 }
                 else
                 {
-                 $("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+3days")).'"); ';
+                 $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+3days"));?>"); 
                 } 
               
-              }'; //END IF
+              } //END IF
 
-             else{  $("#item_fab").show();';
+             else
+             {  
+                $("#item_fab").show();
+                
                 if(date("l", strtotime("+6days"))=='Sunday')
                 {
-                  echo '$("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+7days")).'"); ';
+                  $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+7days"));?>");
                 }
                 else
                 {
-                  ("#deliveryDate").attr("value", "'.date("Y-m-d", strtotime("+6days")).'"); ';
+                  $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+6days"));?>");
                 } 
               
-              $("#current_or").text("Order Number: " + dropdown.value);';
-              $("#fab_status").text("Current Status: " + fabricationStatusFromPHP[i]);';
-             $("#description").text("Description: " + fabdescFromPHP[i]);';
-              }'; //END ELSE
+                $("#current_or").text("Order Number: " + dropdown.value);
+                $("#fab_status").text("Current Status: " + fabricationStatusFromPHP[i]);
+                $("#description").text("Description: " + fabdescFromPHP[i]);
+              } //END ELSE
 
-            var newRow = document.getElementById('datatable').insertRow();";
-            newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td> <td align = right>" +quantityNumFromPHP[i]+ "</td> <td align = right> ₱ "+PriceNumFromPHP[i]+"</td></tr>";';
+            var newRow = document.getElementById('datatable').insertRow();
+            newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td> <td align = right>" +quantityNumFromPHP[i]+ "</td> <td align = right> ₱ "+PriceNumFromPHP[i]+"</td></tr>";
                                             
              } //End IF
-            
-            
+                   
         }; //END 1st Forloop
-<script>
+      };  //End function 
+</script>
            
 <script>
  $('#submit_receipt').on('click', function(e){
@@ -586,12 +647,13 @@ echo 'var table = document.getElementById("datatable");';
   })  
 </script>
  <script>
-  var warning = $('<p>').text('Error you cannot select a weekend')
+  var warning = $('<p>').text('Error: No Sunday Delivery!')
   $('#deliveryDate').change(function(e) {
 
         var d = new Date(e.target.value)
-        if(d.getDay() === 6 || d.getDay() === 5) {
+        if(d.getDay() === 0) {
           alert('No Sunday Delivery!');
+          $("#deliveryDate").val("");
           $('#deliveryDate').after(warning);
         } else {
           warning.remove() 
