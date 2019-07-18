@@ -78,7 +78,7 @@
                   </div>
                   <div class="x_content">
                  
-                  <h1  ><font size = "6px">  Current Report as of: 
+                  <h1  ><font size = "6px">  Choose Report Range: 
                   
                     <div id="report_range" class="btn btn-primary btn-lg" >
                           <span></span> <b class="caret"></b>      
@@ -139,13 +139,14 @@
                                 
                                
                               }    
+                              $date =$row['order_date'];
                             echo '<tr>';
                               echo ' <td> '.$row['item_name']. '</td>';
                               echo ' <td> '.$ITEM_TYPE_NAME. '</td>';
                               echo ' <td>'.$row['client_name'].' </td>';
                               echo ' <td align="right">'.$itemQty.' </td>';
                               echo ' <td align="right"> ₱ '.number_format($row['totalamt'], 2, '.', ',').' </td>';
-                              echo ' <td>'.$row['order_date'].' </td>';
+                              echo ' <td>'.date('Y-m-d',strtotime($date)).' </td>';
                               
                             echo '</tr>';
                           }
@@ -244,8 +245,9 @@
 
       $(function() {
         
+        var current_time = moment().valueOf();
         var start = moment("2019-01-01 00:00:00");
-        var end = moment("2019-01-31 00:00:00");
+        var end = moment(current_time);
 
         function cb(start, end) {
           $('#report_range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -258,7 +260,7 @@
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            
             'This Month': [moment().startOf('month'), moment().endOf('month')],
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
           }

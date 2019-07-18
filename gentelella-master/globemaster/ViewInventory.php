@@ -62,11 +62,11 @@
                       <thead>
                         <tr>
                           <th>SKU</th>
-                          <th>Item Name</th>                       
+                          <th>Item Name</th>                                                
+                          <th>Supplier</th>                         
+                          <th>Warehouse Location</th> 
                           <th>Item Count</th>
-                          <th>Supplier</th>
-                          <th>Price</th>
-                          <th>Warehouse Location</th>                         
+                          <th>Price</th>                       
                           <th>Last Update</th>
                           <th> Action </th>
                           
@@ -103,17 +103,19 @@
                                     echo '<td><b>';
                                     echo $row['item_name'];
                                     echo '</td>';                                  
-                                    echo '<td>';
-                                    echo $row['item_count'];
-                                    echo '</td>';
+                                    
                                     echo '<td>';
                                     echo $supplierName;
                                     echo '</td>';
-                                    echo '<td>';
-                                    echo  'Php'." ".number_format($row['price'], 2);
-                                    echo '</td>';
+                                    
                                     echo '<td>';
                                     echo $warehouse;
+                                    echo '</td>';
+                                    echo '<td align = "right">';
+                                    echo $row['item_count'];
+                                    echo '</td>';
+                                    echo '<td align = "right">';
+                                    echo  '₱ '." ".number_format($row['price'], 2);
                                     echo '</td>';
                                     echo '<td>';
                                     echo $row['last_restock'];

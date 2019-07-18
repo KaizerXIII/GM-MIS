@@ -196,7 +196,22 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12" for="first-name">Delivery Personnel <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-            <input type="text" id="deliverypersonnel" required="required" class="form-control col-md-7 col-xs-12">
+            <select id="deliverypersonnel" name = "deliverypersonnel" required="required" class="form-control col-md-7 col-xs-12" style=" width:250px";>
+                <option value="">Choose... </option>
+                    <?php
+                        require_once('DataFetchers/mysql_connect.php');
+                        $query = "SELECT * FROM mydb.delivery_personnel";                                         
+                        $resultofQuery =  mysqli_query($dbc, $query);
+                        while($row=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
+                        {
+                            echo '<option value="'.$row['dp_name'].'"> '.$row['dp_name'].'</option> ';
+                        }
+
+                                    
+                    ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
+                                                                
+            </select>
+            
             </div>
         </div>
       </div>

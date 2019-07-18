@@ -53,29 +53,51 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h1><font size = "6px"> Damaged Items Report as of: 
+                  <h1>Filter Damage Source: 
+                      <select id="dmg_source" name = "dmg_source" style=" width:250px";>
+                            <option value="">Choose... </option>
+                                <?php
+                                    require_once("print.php"); 
+                                    require_once('DataFetchers/mysql_connect.php');
+                                    $query = "SELECT * FROM damage_item GROUP by dmg_source";                                                       
+                                    $resultofQuery =  mysqli_query($dbc, $query);
 
-                    <div id="report_range" class="btn btn-primary btn-lg" >
-                          <span></span> <b class="caret"></b>      
-                    </div>
+                                    while($row=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
+                                    {
+                                      echo '<option value="'.$row['dmg_source'].'">'.$row['dmg_source'].'</option> ';
+                                    }
 
-                    <!-- <button type="submit" class="btn btn-primary btn-lg" style="float: right;"  data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-filter"></i> Filter this Report</button> -->
-                  </font></h1>
+                                               
+                                ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
+                                <option value="All">All </option>                                               
+                        </select>
+                      </h1>
+
+                      <div class="clearfix"></div>
+                      <h1><font size = "6px"> Damaged Items Report as of: 
+
+                      <div id="report_range" class="btn btn-primary btn-lg" >
+                            <span></span> <b class="caret"></b>      
+                      </div>
+
+                      <!-- <button type="submit" class="btn btn-primary btn-lg" style="float: right;"  data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-filter"></i> Filter this Report</button> -->
+                      </font></h1>
 
 
 
-                    <?php 
-                       
-                        $sqlToViewTotalLoss = "SELECT SUM(total_loss) AS accumulated_loss FROM damage_item";
-                        $resultOfSqlTotalLoss =  mysqli_query($dbc,$sqlToViewTotalLoss);
-                        while($rowTotalLoss=mysqli_fetch_array($resultOfSqlTotalLoss,MYSQLI_ASSOC))
-                        {
-                    ?>
+                      <?php 
+                        
+                          $sqlToViewTotalLoss = "SELECT SUM(total_loss) AS accumulated_loss FROM damage_item";
+                          $resultOfSqlTotalLoss =  mysqli_query($dbc,$sqlToViewTotalLoss);
+                          while($rowTotalLoss=mysqli_fetch_array($resultOfSqlTotalLoss,MYSQLI_ASSOC))
+                          {
+                      ?>
+
+                          <label id ="total_loss" ><b><font color = "black" size = "5px">Current Report - Total Losses: [ <?php echo '₱ '."".number_format($rowTotalLoss['accumulated_loss'], 2);?> ]</font></b></label>
+                      <?php
+                          }
+                      ?>
                     
-                        <label id ="total_loss" ><b><font color = "black" size = "5px">Current Report - Total Losses: [ <?php echo '₱ '."".number_format($rowTotalLoss['accumulated_loss'], 2);?> ]</font></b></label>
-                    <?php
-                        }
-                    ?>
                     
                     
                     <div class="clearfix"></div>
@@ -261,9 +283,9 @@
           
 
         $(function() {
-          
+          var current_time = moment().valueOf();
           var start = moment("2019-01-01 00:00:00");
-          var end = moment("2019-01-31 00:00:00");
+          var end = moment(current_time);
 
           function cb(start, end) {
             $('#report_range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -276,7 +298,7 @@
               'Today': [moment(), moment()],
               'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
               'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-              'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+              
               'This Month': [moment().startOf('month'), moment().endOf('month')],
               'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
@@ -342,5 +364,17 @@
         return n ;
       }
     </script>
+
+<script>  //Filter Table based on Warehouse                   
+      var get_select_value = document.getElementById("dmg_source");
+      get_select_value.onchange = function()
+      {
+        console.log(get_select_value.value); 
+        var getTable = $('#datatable-buttons').DataTable();
+        
+        getTable.columns(2).search(get_select_value.value).draw();
+        //Get the col of table and searches IF it contains the [VALUE] inside () then draws the table accordingly 
+      }                                                                          
+</script> 
   </body>
 </html>

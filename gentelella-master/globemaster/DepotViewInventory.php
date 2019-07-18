@@ -63,10 +63,11 @@
                         <tr>
                           <th>Depot SKU</th>
                           <th>Depot Item Name</th>                       
-                          <th>Depot Item Count</th>                         
+                          <th>Depot Item Count</th>
+                          <th>Threshold</th>                         
                           <th>Depot Price</th>                                                 
                           <th>Last Update</th>
-                          <th> Action </th>
+                          <!-- <th> Action </th> -->
                           
                         </tr>
                       </thead>
@@ -92,7 +93,9 @@
                               echo '<td align = right>';
                               echo number_format($ROW_RESULT_GET_DEPOT['StockOnHand'], 0);
                               echo '</td>';
-                              
+                              echo '<td align = right>';
+                              echo number_format('500', 0);
+                              echo '</td>';
                               echo '<td align = right>';
                               echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['Price'], 2);
                               echo '</td>';
@@ -100,10 +103,9 @@
                               echo '<td>';
                               echo $ROW_RESULT_GET_DEPOT['LastModified'];
                               echo '</td>';
-                              echo '<td align = "center">';
-                              echo '<i onclick = "teit()"class="fa fa-wrench" >'; 
-                              // 
-                              echo '</td>';
+                              // echo '<td align = "center">';
+                              // echo '<i class="fa fa-wrench" >'; 
+                              // echo '</td>';
                               
                               echo '</tr>';
                                     

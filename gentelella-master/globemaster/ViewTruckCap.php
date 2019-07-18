@@ -212,26 +212,32 @@
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
-                          <th></th>
+                          <th>Truck List</th>
                           <?php 
                             // for($i = 0; $i <= sizeof($datearray); $i++)
                             // {
                             //   print_r($datearray);
                             //   echo "<th>". $datearray[$i] . "</th>\n";
                             // }
+                            
                             $i = 0;
                             do {
-                              echo "<th date_id = ". $dt->format('Y-m-d')." >" . $dt->format('l') . " | " . $dt->format('F d, Y') . "</td>\n";
+                              // echo "<th date_id = ". $dt->format('Y-m-d')." >" . $dt->format('l') . " | " . $dt->format('F d, Y') . "</td>\n";
                               // for($i=0; $i<=6; $i++)
                               // {
                                 
                                 $DATES[$i] = $dt->format('Y-m-d');
 
+                               
                                 $i++;
                               // }
                               $dt->modify('+1 day');
                             } while ($week == $dt->format('W') && $dt->format('l') != "Sunday" && $i<7);
-
+                            
+                            foreach($DATES as $date){
+                             
+                              echo "<th date_id = ".$date.">".date('l F d, Y',strtotime($date))."</th>";
+                             }
                           ?>
                         </tr>
                       </thead>
@@ -241,12 +247,14 @@
                             
                            print_r($DATES);
 
-                           $_GET['startdate'] = $DATES[0];
-                           $_GET['enddate'] = $DATES[5];
+                          //  $_GET['startdate'] = $DATES[0];
+                          //  $_GET['enddate'] = $DATES[5];
                             $BULK_DATE_ARRAY = array();
                             $TRUCK_PLATE_ARRAY = array();
                             $TRUCK_CAP_ARRAY = array();
                             $TRUCK_STATIC_CAP = array();
+
+                            $TRUCKS_FROM_TRUCKTABLE = array();
 
                             $querytogetDBTable = "SELECT * FROM trucktable";
                             $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
@@ -254,61 +262,60 @@
                             {
                              
                               $TRUCK_STATIC_CAP[] = $rowofResult['weightCap'];
-                              echo " <tr>";
-                                echo '<td value="',$rowofResult['truckplate'],'"  "> ';            
-                                echo $rowofResult['truckmodel']." | ".$rowofResult['truckplate'];
-                                echo '</td>';  
-                                echo '<td align = "right">';
-                                // echo '350kg out of 2500kg | <font color = "#42d9f4">'.$rowofResult['weightCap'].' kg available</font>';
-                                echo $rowofResult['weightCap'];
-                                echo '</td>'; 
-                                echo '<td align = "right">';
-                                echo $rowofResult['weightCap'];
-                                echo '</td>';  
-                                echo '<td align = "right">';
-                                echo $rowofResult['weightCap'];
-                                echo '</td>';  
-                                echo '<td align = "right">';
-                                echo $rowofResult['weightCap'];
-                                echo '</td>';  
-                                echo '<td align = "right">';
-                                echo $rowofResult['weightCap'];
-                                echo '</td>';  
-                                echo '<td align = "right">';
-                                echo $rowofResult['weightCap'];
-                                echo '</td>';                              
-                              echo "</tr>";                                                        
+                              $TRUCKS_FROM_TRUCKTABLE[] = $rowofResult['truckplate'];
+                              // echo " <tr>";
+                              //   echo '<td value="',$rowofResult['truckplate'],'"  "> ';            
+                              //   echo $rowofResult['truckmodel']." | ".$rowofResult['truckplate'];
+                              //   echo '</td>';  
+                              //   echo '<td align = "right">';
+                              //   // echo '350kg out of 2500kg | <font color = "#42d9f4">'.$rowofResult['weightCap'].' kg available</font>';
+                              //   echo $rowofResult['weightCap'];
+                              //   echo '</td>'; 
+                              //   echo '<td align = "right">';
+                              //   echo $rowofResult['weightCap'];
+                              //   echo '</td>';  
+                              //   echo '<td align = "right">';
+                              //   echo $rowofResult['weightCap'];
+                              //   echo '</td>';  
+                              //   echo '<td align = "right">';
+                              //   echo $rowofResult['weightCap'];
+                              //   echo '</td>';  
+                              //   echo '<td align = "right">';
+                              //   echo $rowofResult['weightCap'];
+                              //   echo '</td>';  
+                              //   echo '<td align = "right">';
+                              //   echo $rowofResult['weightCap'];
+                              //   echo '</td>';                              
+                                                                                      
                               
-                            };                            
-                            
-                            // $start_date = date_range here
-                            // $end_date = 
-                            // $date_range =
-                            // []                            
-                            // $trucks = get all trucks
-                            // $truck_names
-                            // $truck_array =();
-                            // foreach trucks(){
-                            //   $tem-array = []
-                            //   foreach date in daterange{
-                            //     $temp-array.add(  select * from bulkdelivery truck = truck and date == date *from url)
-                            //   }
-                            //   truck_array.add($temp_array)
-                            // }
+                            }; 
+                            $TRUCK_ARRAY = array();
+                            foreach($TRUCKS_FROM_TRUCKTABLE as $truck_plate)
+                            {
+                              $TEMP_ARRAY = array();
+                              foreach($DATES as $date)
+                              {
+                                $SQL_GET_TRUCK_FROM_BULK = "SELECT * FROM mydb.bulk_order
+                                WHERE (truck_assigned = '$truck_plate' AND bulk_order_date = '$date')";
+                                $RESULT_GET_TRUCK_FROM_BULK = mysqli_query($dbc, $SQL_GET_TRUCK_FROM_BULK);
+                                $ROW_RESULT_GET = mysqli_fetch_assoc($RESULT_GET_TRUCK_FROM_BULK);
 
-                            // <tr>
-                            // <th>truck_name</>
-                            // foreach(date_rate as date){
-                            //   <th>$date</th>
-                            // }
-                            // </tr> 
-                            // for($i;$i<truck_array.size;$i++){
-                            //   <td>$trucks_names[i]</td>
-                            //   $foreach($truck_array[i] as truck_array_entry){
-                            //     <td>$truck_array_entry</td>
-                            //   }
-                            // }     
-                            // </tr>
+                                $TEMP_ARRAY[] = $ROW_RESULT_GET['current_truck_cap'];                                                           
+                              }      
+                              $TRUCK_ARRAY[] =  $TEMP_ARRAY;                     
+                            }
+                           
+                            for($i=0; $i<sizeof($TRUCK_ARRAY);$i++){
+                              echo "<tr>";
+                              echo '<td>'.$TRUCKS_FROM_TRUCKTABLE[$i].'</td>';
+                              foreach($TRUCK_ARRAY[$i] as $truck_array_entry){
+                                echo '<td>'.$truck_array_entry.'</td>';
+                                
+                              }
+                              echo "</tr>";
+                            }     
+                           
+                            
                               $GET_BULK_CAP = "SELECT * FROM bulk_order";
                             $RESULT_BULK_CAP = mysqli_query($dbc, $GET_BULK_CAP);;
                             while($ROW_RESULT_BULK_CAP = mysqli_fetch_array($RESULT_BULK_CAP,MYSQLI_ASSOC))
@@ -317,54 +324,8 @@
                               $TRUCK_CAP_ARRAY[]=$ROW_RESULT_BULK_CAP['current_truck_cap'];
                               $TRUCK_PLATE_ARRAY[]=$ROW_RESULT_BULK_CAP['truck_assigned'];
                             }
-                            echo "<script>";
-                            echo "var TRUCK_PLATE = [];";
-                            echo "var CURRENT_WEEK = [];";
-
-                            echo "var BULK_DATE = ".json_encode($BULK_DATE_ARRAY).";"; 
-                            echo "var TRUCK_CAP = ".json_encode($TRUCK_CAP_ARRAY).";";
-                            echo "var TRUCK_PLATE_DB = ".json_encode($TRUCK_PLATE_ARRAY).";";
-                            echo "var TRUCK_STATIC_CAP = ".json_encode($TRUCK_STATIC_CAP).";";  
-
-                            echo "$('#datatable-responsive tbody tr td[value]').each(function(){ ";
-                              echo "TRUCK_PLATE.push($(this).attr('value'));";
-                              // echo "console.log($(this).attr('value'));";                                            
-
-                            echo '});';  // End Jquery Each TD 
-
-                            // echo "$('#datatable-responsive th[date_id]').each(function(index){ ";
-                            //   echo "CURRENT_WEEK.push($(this).attr('date_id'));";
-                            //   echo "var LENGTH = BULK_DATE.length -1;";
-                            //   echo "if(BULK_DATE[index] == $(this).attr('date_id')){";
-                            //     echo "console.log(BULK_DATE[index]);";
-                            //     echo "return true;";                               
-                            //   echo"}";//END IF
-                              
-                            // echo '});';  // End Jquery Each TH 
                            
-                           
-                            // echo "for(var i = 0; i < CURRENT_WEEK.length; i++){";                                                      
-
-                             
-                              
-                            //     // echo "console.log(TRUCK_CAP[i]);";
-                            //     // echo "$('<td align = right>'+TRUCK_CAP[i]+'</td>').appendTo('#datatable-responsive tbody tr');";
-                            //     echo "if(BULK_DATE[i].value == CURRENT_WEEK[i].value && TRUCK_PLATE[i].value == TRUCK_PLATE_DB[i].value){";
-                            //       echo "$('#datatable-responsive tbody tr td:nth-child('+i+'):not(:first-child)').each(function(i){";
-                                    
-                            //         echo "$(this).text(TRUCK_CAP[i]);";
-                                  
-                            //       echo "});"; //End Each nth-child
-                            //     echo '}';//End if 
-                                
-                            //     echo "else{";
-                            //       echo "$('<td align =right>TRUCK_STATIC_CAP[i]</td>').appendTo('#datatable-responsive tbody tr');";
-                            //     echo "}";//End Else
-                                                                                                                                                  
-                            // echo "}"; //End For
-                            echo "</script>";  
-
-                          
+                            
                           ?>
                         </tr>
                         
@@ -397,7 +358,9 @@
                       <tbody>
                         <!-- Gawa nalang bagong table sa mysql for bulk orders para matrack time in and time out. tapos palagyan rin bagong column sa trucks table para malaman kung in or out yung truck. -->
                         <?php
-                        $SQL_GET_BULK_ORDER = "SELECT * FROM bulk_order";
+                        $SQL_GET_BULK_ORDER = "SELECT * FROM bulk_order
+                        JOIN trucktable
+                        ON bulk_order.truck_assigned = trucktable.truckplate";
                         $RESULT_GET_BULK_ORDER = mysqli_query($dbc,$SQL_GET_BULK_ORDER);
                         while($ROW_GET_BULK_ORDER = mysqli_fetch_array($RESULT_GET_BULK_ORDER,MYSQLI_ASSOC))
                         {
@@ -406,8 +369,16 @@
                           echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_date'].'</td>';                         
                           echo '<td>'.$ROW_GET_BULK_ORDER['truck_assigned'].'</td>'; 
                           echo '<td>'.$ROW_GET_BULK_ORDER['bulk_order_status'].'</td>'; 
-                          echo '<td></td>'; 
-                          echo '<td></td>'; 
+                          echo '<td></td>';
+                          if($ROW_GET_BULK_ORDER['Availability']== "Available")
+                          {
+                            echo '<td> 07:00:00 </td>';
+                          }
+                          else
+                          {
+                            echo '<td></td>';
+                          } 
+                           
                           echo '<td align = "center"><a><span class = "bulk_details"><i class = "fa fa-wrench"></i></a></span></td>';
                           echo '</tr>';
                         }
@@ -480,66 +451,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-
-    <script>
-// var current_length = $('#datatable-responsive th[date_id]').length;
-// $('#datatable-responsive th[date_id]').each(function(index){ 
-    
-    
-//     if($(this).attr('date_id')==BULK_DATE[index])
-//     {
-     
-//       $('#datatable-responsive tbody tr td[value]').each(function(e){
-//         if($(this).attr('value')==TRUCK_PLATE_DB[e])
-//         {
-          
-//           var table = $("#datatable-responsive")[0];
-//           var cell = table.rows[e+1].cells[index];
-//           cell.innerHTML = TRUCK_CAP[e];
-
-//         }
-//       })
-//       return true;                              
-//     }//END IF
-//      CURRENT_WEEK.push($(this).attr('date_id'));
-//   }); // End Jquery Each TH 
-var CURRENT_WEEK = [];
-$('#datatable-responsive th[date_id]').each(function(index){ 
-  CURRENT_WEEK.push($(this).attr('date_id'));
- 
-  if(BULK_DATE[index] == $(this).attr('date_id')){
-    console.log(BULK_DATE[index]);
-    return true;                               
-  }//END IF
   
-});  // End Jquery Each TH   
-
-$.each( BULK_DATE, function( key, value ) {
-    var index = $.inArray( value, CURRENT_WEEK );
-    if( index != -1 ) {
-        console.log( index );
-    }
-});
-for(var i = 0; i < CURRENT_WEEK.length; i++)
-{
-  for(var j = 0; j < TRUCK_PLATE.length; j++)
-  {
-     if(BULK_DATE[j].value == CURRENT_WEEK[i].value && TRUCK_PLATE[j].value == TRUCK_PLATE_DB[j].value)
-     {
-       console.log("DB TP: "+ TRUCK_PLATE_DB[j]);
-       console.log("HTML TP: "+ TRUCK_PLATE[j]);
-      var table = $("#datatable-responsive tbody")[0];
-      var cell = table.rows[i+1].cells[j+1];
-      cell.innerHTML = TRUCK_CAP[j];
-     }
-   
-  } //END 2nd FOR        
-} //END 1st FOR
-
-  </script>                
-
-  
-
     <!-- Custom Fonts -->
     <style>
         

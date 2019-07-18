@@ -41,8 +41,8 @@
             $DEPOT_ITEM_REFERENCE = $ROW_RESULT_SQL_GET_DEPOT_REFERENCE['UnitName'];
             $TRADING_PRICE = $ROW_RESULT_SQL_GET_DEPOT_REFERENCE['price'];                   
 
-            $SQL_INSERT_TO_DETAILS = "INSERT INTO depot_request_details(depot_request_number, requested_item_name, requested_item_qty, depot_reference_name, price_each)
-            VALUES('$GET_DOR','$GET_ITEMS_ID[$i]','$GET_ITEMS_QTY[$i]','$DEPOT_ITEM_REFERENCE','$TRADING_PRICE');";
+            $SQL_INSERT_TO_DETAILS = "INSERT INTO depot_request_details(depot_request_number, requested_item_name, requested_item_qty, depot_reference_name, price_each,delivery_person)
+            VALUES('$GET_DOR','$GET_ITEMS_ID[$i]','$GET_ITEMS_QTY[$i]','$DEPOT_ITEM_REFERENCE','$TRADING_PRICE','N/A');";
             $RESULT_INSERT_TO_DETAILS =  mysqli_query($dbc,$SQL_INSERT_TO_DETAILS);
             
            

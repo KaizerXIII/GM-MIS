@@ -509,19 +509,7 @@
         <label class="control-label col-md-4 col-sm-3 col-xs-12">Choose Supplier <span class="required">*</span>
         </label>
         <div class="col-md-6 col-sm-6 col-xs-12">
-        <select name="supplier" id="supplier_id" required="required" class="form-control col-md-7 col-xs-12">
-        <option value = "">Choose...</option>
-            <?php
-                require_once('DataFetchers/mysql_connect.php');
-                $query = "SELECT * FROM suppliers";
-                $result=mysqli_query($dbc,$query);
-                
-                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                {
-                    echo '<option value = "'.$row['supplier_name'].'">'.$row['supplier_name'].'</option>';
-                }
-            ?>             
-            </select>
+          <input type="text" name="supplier_name" id="supplier_id" required="required" class="form-control col-md-7 col-xs-12"/>
         </div>
       </div><br><br>
       <div class="form-group">
@@ -583,13 +571,18 @@
 <!-- Large Modal end --> 
 <script>
 $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
+  var supplier_name = $(this).closest('tr').find('td:nth-child(2)').text();  
+  $("#supplier_id").val(supplier_name);
+  
   $('#create_item_info').html("<h4>Add Item Information of [ "+ $(this).closest('tr').find('td:first').text()+" ] to the inventory.</h4>");
+  
   var cell = $(this).closest('tr').find('td:first').text();
   var cell_attr = $(this).closest('tr').find('td:first');
   var btn = $(this).closest('tr').find('td:nth-child(5)').children().eq(1);
 
-  $('#supplier_id').val($(this).closest('tr').find('td:nth-child(2)').text());
-  console.log("td:2: " + $(this).closest('tr').find('td:nth-child(2)').text());
+  
+  
+  console.log("td:2: " + supplier_name);
   console.log("create_item_info: " + $('#create_item_info').text());
 
   

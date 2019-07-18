@@ -88,7 +88,7 @@
                     
                       
                           <div class="well" style="overflow: auto">
-                            <h1  ><font size = "6px">  Current Report as of: 
+                            <h1  ><font size = "6px">  Filter Range: 
                               <div id="report_range" class="btn btn-primary btn-lg" >
                                 <span></span> <b class="caret"></b>      
                               </div>
@@ -221,9 +221,10 @@
 
       $(function() {
         
+        var current_time = moment().valueOf();
         var start = moment("2019-01-01 00:00:00");
-        var end = moment("2019-01-31 00:00:00");
-
+        var end = moment(current_time);
+        
         function cb(start, end) {
           $('#report_range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         }
@@ -235,7 +236,7 @@
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            
             'This Month': [moment().startOf('month'), moment().endOf('month')],
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
           }
