@@ -98,11 +98,12 @@
                     echo'</div> ';
                     ?>
                     <!-- STATUSES ARE
-                                Purchased
-                              China
-                            Shipped
-                          Philippines
-                        OTW
+                                  Purchased
+                                China
+                              Shipped
+                            Philippines
+                          OTW
+                        Receiving
                       Arrived 
                     -->
                     <form action = "<?php echo $_SERVER['PHP_SELF']; ?>" id="" data-parsley-validate class="form-horizontal form-label-left" method = "POST">
@@ -130,12 +131,18 @@
                         {
                       ?>
                       <button type = "submit" id = "OTWPH" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "OTWPH" onclick = "ChangeOTW(this);" class="btn btn-round btn-success btn-xs">On the way to warehouse</button>
-                      <?php
+                      <?php 
                         }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW")
                         {
                       ?>
-                      <button type = "submit" id = "OTWPH" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "OTWPH" onclick = "ChangeOTW(this);" class="btn btn-round btn-success btn-xs" disabled = "disabled">On the way to warehouse</button>
+                      <button type = "submit" id = "ArrivedReceive" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivRcv" onclick = "ChangeAR(this);" class="btn btn-round btn-success btn-xs">Order Arrived - Receiving</button>
+                      <?php
+                        }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                        {
+                      ?>
+                      <button type = "" id = "" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = ""  class="btn btn-round btn-success btn-xs" disabled = "disabled">Order has Arrived</button>
                       <?php
                         } //end button if/else PHP
                       ?> 
@@ -165,7 +172,7 @@
                         </div> 
                       <?php
                         }
-                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving")
                         {
                       ?>
                         <div class = "col-md-12" align = "center" style="z-index: 1">
@@ -277,6 +284,37 @@
                       </table> 
                       <?php
                         }
+                        else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving")
+                        {
+                      ?>
+                      <table border="0" style="width: 50%;" align = "center" frame="box">
+                        <tr>
+                          <th><?php $date = date('Y-m-d H:i:s'); echo $date?></th>
+                          <th>The ordered item(s) have arrived to the Globe Master warehouses. The inventory personnel are receiving the ordered items. </th>
+                        </tr>
+                        <tr>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
+                          <td>The ordered item(s) are on the way to their respective warehouses.</td>
+                        </tr>
+                        <tr>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
+                          <td>The ordered item(s) have arrived at the Philippine port. The items will soon be on its way to their respective warehouses.</td>
+                        </tr>
+                        <tr>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
+                          <td>The ordered item(s) are on its way to the Philippine port.</td>
+                        </tr>
+                        <tr>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
+                          <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
+                        </tr>
+                        <tr>
+                          <td><?php echo $ROW_RESULT_GET_FROM_DB["SDT"];?></td>
+                          <td>An order has been made by the CEO, the ordered item(s) will soon be on its way to the China Port.</td>
+                        </tr>
+                      </table> 
+                      <?php
+                        }
                         else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
                         {
                       ?>
@@ -284,6 +322,10 @@
                         <tr>
                           <th>echo arrived update here.</th>
                           <th>The ordered item(s) have arrived to the Globe Master warehouses.</th>
+                        </tr>
+                        <tr>
+                          <td>echo Receiving update here.</td>
+                          <td>The ordered item(s) have arrived to the Globe Master warehouses. The inventory personnel are receiving the ordered items. </td>
                         </tr>
                         <tr>
                           <td>echo OTW update here.</td>
@@ -310,6 +352,14 @@
                         }
                       ?>
                     </div>
+
+                    <!-- <div class = "clearfix"></div>
+                      <div align = "center">
+                            asdasd
+                      </div>
+                    <div class = "clearfix"></div> -->
+
+
                     <form method = "POST" action = "SupplierOrderDetails_Damage.php?so_id=<?php echo $_SESSION['supply_order_id'] ?>">
                         <div>                    
                         <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="50%" align = "center">
@@ -342,7 +392,7 @@
                                     echo '<td>'.$row['supply_arrived_quantity'].'</td>';
                                     echo '<td align = "center">';
                                     echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.'><i class = "fa fa-wrench"></i> Edit</button>';
-                                    if(strpos($row['supply_item_name'], "*NEW ITEM*") != false)
+                                    if(strpos($row['supply_item_name'], "*NEW ITEM*") != false && $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving")
                                     {
                                       echo '<button type="button" class="btn btn-round btn-success btn-xs create" data-toggle="modal" data-target=".bs-example-modal-smnewitem" identifier = "create_iv_btn">Create Inventory </button>';
                                     }
@@ -373,10 +423,16 @@
                         <div class = "ln_solid"></div>
                         <div align = "right">
 
+                        <?php
+                          if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving")
+                          {
+                        ?>
                           <button type="button" class="btn btn-round btn-success" id = "no_dmg_proceed">Proceed w/o Damage  <i class = "fa fa-arrow-right"></i></button>
                        
                           <button type="submit" class="btn btn-round btn-success" name = "restock_items" id = "proceed">Proceed w/ Damage <i class = "fa fa-arrow-right"></i></button>
-                            
+                        <?php
+                          }
+                        ?>
                         </div>
                       </form>
                     </div>
@@ -981,6 +1037,40 @@ $('#no_dmg_proceed').on('click', function(e){
               success: function(data, textStatus)
               {
                 alert("All of the ordered items of SR - " + SET_SUPPLY_ORDER_NUMBER + " are on their way to their respective warehouses!");
+                var test = window.location.href("/SupplierOrderDetails.php?so_id="+SET_SUPPLY_ORDER_NUMBER);
+                alert(test);
+              }//end success
+            });//end ajax
+        }//end if
+        else
+        {
+
+        }//end else
+      }
+    </script>
+    <script>
+      function ChangeAR(obj)
+      {
+        var SET_SUPPLY_ORDER_NUMBER = obj.value;
+
+        if(confirm("Have all of the items in SR - " + SET_SUPPLY_ORDER_NUMBER + " arrived in their respective warehouses?"))
+        {
+          console.log(obj.value);
+
+          var SET_STATUS_AR = "Receiving";
+          var SET_SUPPLY_ORDER_NUMBER = obj.value;
+
+          request = $.ajax
+          ({
+              url:"ajax/set_AR.php",
+              type:"POST",
+              data:
+              {post_status_AR: SET_STATUS_AR, //startdata
+              post_supply_order_number: SET_SUPPLY_ORDER_NUMBER
+              }, //enddata
+              success: function(data, textStatus)
+              {
+                alert("All of the ordered items of SR - " + SET_SUPPLY_ORDER_NUMBER + " have arrived! The inventory personnel will now receive and check the items for damages.");
                 var test = window.location.href("/SupplierOrderDetails.php?so_id="+SET_SUPPLY_ORDER_NUMBER);
                 alert(test);
               }//end success
