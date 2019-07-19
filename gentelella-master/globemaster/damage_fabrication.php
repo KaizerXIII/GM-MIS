@@ -103,7 +103,7 @@
                         <!-- limit this to quantity available on order -->
                                                
                           <div class="col-md-4 col-sm-6 col-xs-12">
-                            <input type="text" name="damaged_item_name" id="damaged_item_name" required="required" oninput ="validate(this)" class="form-control col-md-7 col-xs-12"/>';
+                            <input type="text" name="damaged_item_name" id="damaged_item_name" required="required" oninput ="validate(this)" class="form-control col-md-7 col-xs-12"/>
                           </div>                                                                      
                           <h2><span id = "replenish_stock" >Replenish Item Stock: </span></h2>
                       </div>
@@ -112,7 +112,7 @@
                       <label class="control-label col-md-4 col-sm-3 col-xs-12"> <br>
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
-                          <button type="button" class="btn btn-round btn-primary" onclick="revertdisable()"; name = "replenish_btn" id = "replenish_btn">Replenish</button>
+                          <button type="button" class="btn btn-round btn-primary" onclick="revertdisable();" name = "replenish_btn" id = "replenish_btn">Replenish</button>
                           <button type="button" class="btn btn-round btn-warning" onclick="showreplace();">Replace</button>
                         </div>
                       </div>

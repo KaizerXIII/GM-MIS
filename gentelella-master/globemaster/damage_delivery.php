@@ -114,10 +114,39 @@
                       <label class="control-label col-md-4 col-sm-3 col-xs-12"> <br>
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
-                          <button type="button" id ="replacement_btn" class="btn btn-round btn-primary" >Replace With the Same Product</button>
-                          <!-- <button type="button" id ="discard_btn" class="btn btn-round btn-danger" >Discard Product from Order</button> -->
+                          <button type="button" id ="replacement_btn" onclick="revertdisable();" class="btn btn-round btn-primary" >Replenish</button>
+                          <button type="button" id ="replaceitem" class="btn btn-round btn-warning" onclick="showreplace();">Replace</button>
                         </div>
                       </div>
+                      <!-- FOR REPLACE ITEM -->
+                      <div class="form-group" >
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Replacement Item Name <span class="required">*</span>
+                        </label>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+
+                        <select name="replacementName" id = "replacementName" required="required" class="form-control col-md-7 col-xs-12" disabled>
+                        <option value = "">Choose...</option>
+                         <?php
+                                require_once('DataFetchers/mysql_connect.php');
+                                
+                            ?>
+ 
+                            </select>
+                        </div>
+                        <h2><span id = "replacement_stock" >Replacement Item Stock: </span></h2>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Quantity <span class="required">*</span>
+                        </label>
+                        <!-- limit this to quantity available on order -->
+                         <div class="col-md-3 col-sm-6 col-xs-12">
+                          <input type="text" name="replacementQty"  id = "replacementQty" oninput ="validate(this)" required="required" class="form-control col-md-7 col-xs-12" disabled/> 
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                          <button class = "btn btn-success btn-sm" id = "addReplace" disabled onclick="revertdisable()">Add</button>
+                        </div> 
+                      </div>
+                      <!-- END FOR REPLACE ITEM  -->
                    
 
                       <div class="clearfix"></div>
@@ -221,7 +250,25 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
   
-
+<!-- Show replacement script -->
+    <script>
+      var replaceName = document.getElementById('replacementName');
+      var replaceQty = document.getElementById('replacementQty');
+      var addReplace = document.getElementById('addReplace');
+      function showreplace()
+      {
+        replaceName.disabled = false;
+        replaceQty.disabled = false;
+        addReplace.disabled = false;
+      }
+      function revertdisable()
+      {
+        replaceName.disabled = true;
+        replaceQty.disabled = true;
+        addReplace.disabled = true;
+        // Baka need to ayusin kasi yung button na to mag aadd sa table.
+      }
+    </script>
 
     <script>
 
