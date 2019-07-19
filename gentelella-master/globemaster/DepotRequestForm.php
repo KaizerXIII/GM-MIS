@@ -110,6 +110,7 @@
                                                         <tr>
                                                             <th>Trading SKU</th>
                                                             <th>Depot Reference Name</th>
+                                                            <th>Depot Stock</th>
                                                                                                                    
                                                             <th>Trading Price</th>
                                                             <th>Trading Current Stock </th>
@@ -139,6 +140,9 @@
                                                                     echo '</td>'; 
                                                                     echo '<td >';
                                                                     echo $ROW_RESULT_GET_DEPOT['UnitName'];
+                                                                    echo '</td>';
+                                                                    echo '<td >';
+                                                                    echo $ROW_RESULT_GET_DEPOT['StockOnHand'];
                                                                     echo '</td>';                                                                          
                                                                     echo '<td align = right>';
                                                                     echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['price'], 2);

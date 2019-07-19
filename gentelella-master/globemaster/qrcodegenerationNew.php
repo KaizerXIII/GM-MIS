@@ -110,6 +110,7 @@
                           <th>Item Name</th>
                           <th>Item Type</th>
                           <th>Supplier</th>
+                          <th>Stock</th>
                           <th>Warehouse Location</th>
                           <th>Price</th>
                         </tr>
@@ -117,7 +118,7 @@
                       <tbody>
                         <?php 
                           require_once('DataFetchers\mysql_connect.php');
-                          $querytogetDBTable = "SELECT item_id, item_name, itemtype, supplier_name, warehouse, price, sku_id FROM items_trading g 
+                          $querytogetDBTable = "SELECT item_id, item_name, itemtype, item_count, supplier_name, warehouse, price, sku_id FROM items_trading g 
                           JOIN ref_itemtype f ON g.itemtype_id
                           JOIN suppliers s ON g.supplier_id
                           JOIN warehouses w ON g.warehouse_id
@@ -134,6 +135,7 @@
                           $warehouse = array();
                           $price = array();
                           $SKU = array();
+                          $stock = array();
                           
                           while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
                           {
@@ -144,6 +146,7 @@
                             $supplier[] = $rowofResult['supplier_name'];
                             $warehouse[] = $rowofResult['warehouse'];
                             $price[] = $rowofResult['price'];
+                            $stock[] = $rowofResult['item_count'];
                             echo " <tr>";
                               echo '<td id = "SKU" onclick = "SKUclick(this), OnQRDataChange()">';
                               echo $rowofResult['sku_id'];
@@ -157,6 +160,9 @@
                               echo '<td>';
                               echo $rowofResult['supplier_name'];
                               echo '</td>';  
+                              echo '<td>';
+                              echo $rowofResult['item_count'];
+                              echo '</td>';
                               echo '<td>';
                               echo $rowofResult['warehouse'];
                               echo '</td>';  
@@ -180,6 +186,7 @@
                  <input type='text' style='display:none' id='supplier' value = ''/>
                  <input type='text' style='display:none' id='warehouse' value = ''/>
                  <input type='text' style='display:none ' id='price' value = ''/>
+                 <input type='text' style='display:none ' id='stock' value = ''/>
                  <input type='text' style='display:none' id='combine' value = '' onchange = "OnQRDataChange()" onkeyup = "OnQRDataChange()"/>
                  
                  <!-- <div id = 'result'></div> -->
@@ -278,6 +285,8 @@
         var warehouse = <?php echo json_encode($warehouse); ?>;
         var price  = <?php echo json_encode($price); ?>;
         var sku = <?php echo json_encode($SKU); ?>;
+        var stock = <?php echo json_encode($stock); ?>;
+
         var itemidVal = document.getElementById("itemid");
         var skuVal = document.getElementById("itemsku");
         var itemnameVal = document.getElementById("itemname");
@@ -285,6 +294,7 @@
         var supplierVal = document.getElementById("supplier");
         var warehouseVal = document.getElementById("warehouse");
         var priceVal = document.getElementById("price");
+        var stockVal = document.getElementById("stock");
         var combineVal = document.getElementById("combine");
         // alert(obj.textContent);
         var varvar = obj.textContent;
@@ -298,10 +308,13 @@
             itemtypeVal.value = itemtype[i];
             supplierVal.value = supplier[i];
             warehouseVal.value = warehouse[i];
+            stockVal.value = stock[i];
             priceVal.value = price[i];
-            combineVal.value = "SKU: " + sku[i] + " | " + "Item Name: " + itemname[i] + " | " + "Item Type: " + itemtype[i] + " | " + "Supplier: " + supplier[i] + " | " + "Warehouse Location: " + warehouse[i] + " | " + "Item Price: " + price[i];
+            combineVal.value = "SKU: " + sku[i] + " | " + "Item Name: " + itemname[i] + " | " + "Item Type: " + itemtype[i] + " | " 
+            + "Supplier: " + supplier[i] + " | " + "Warehouse Location: " + warehouse[i] + " | " + "Item Price: " + price[i] + " | "
+            + "Item Stock: " + stock[i];
             // alert(combineVal);
-            var var_data = [sku[i], itemname[i], itemtype[i], supplier[i], warehouse[i], price[i]];
+            var var_data = [sku[i], itemname[i], itemtype[i], supplier[i], warehouse[i], price[i], stock[i]];
             // alert(var_data);
             $.ajax({
               url: 'qrcodegeneration.php',

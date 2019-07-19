@@ -156,14 +156,14 @@
                     {   
                 ?>
                         <button name = "confirmButton" id = "toggle_approve" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">Approve Request</button>
-                        <button type="button" id = "disapprove" class="btn btn-danger" >Disapprove Request</button>
+                        <!-- <button type="button" id = "disapprove" class="btn btn-danger" >Disapprove Request</button> -->
                 <?php
                     }
                     else
                     {                 
                 ?>
                         <button disabled name = "confirmButton" id = "toggle_approve" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">Approve Request</button>
-                        <button disabled type="button" id = "disapprove" class="btn btn-danger" >Disapprove Request</button>
+                        <!-- <button disabled type="button" id = "disapprove" class="btn btn-danger" >Disapprove Request</button> -->
                 <?php
                     }
                 ?>
