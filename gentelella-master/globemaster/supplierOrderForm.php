@@ -288,6 +288,7 @@
                                                         <tr>
                                                             <th>Item Name</th>
                                                             <th>Item Type</th>
+                                                            <th>Threshold</th>
                                                             <th>Stock</th>                       
                                                             <th>EOQ</th>
                                                             
@@ -308,6 +309,7 @@
                                                                 $resultItemType = mysqli_query($dbc,$queryItemType);
                                                                 $rowItemType=mysqli_fetch_array($resultItemType,MYSQLI_ASSOC);
                                                                 $itemType = $rowItemType['itemtype'];
+                                                                $itemthreshold = $row['threshold_amt'];
 
                                                                 $queryWarehouse = "SELECT warehouse FROM warehouses WHERE warehouse_id =" . $row['warehouse_id'] . ";";
                                                                 $resultWarehouse = mysqli_query($dbc,$queryWarehouse);
@@ -346,9 +348,28 @@
                                                                     echo '<td>';
                                                                     echo $itemType;
                                                                     echo '</td>';
-                                                                    echo '<td align = right class = ',$row['item_id'],'>';
-                                                                    echo $row['item_count'];
+                                                                    echo '<td align = "right">';
+                                                                    echo $itemthreshold;
                                                                     echo '</td>';
+                                                                    // mark stock as red if below threshold
+                                                                    if($row['item_count'] < $itemthreshold) 
+                                                                    {
+                                                                        echo '<td align = right class = ',$row['item_id'],'>';
+                                                                        echo '<font color = "red"><b>'.$row['item_count'].'</b></font>';
+                                                                        echo '</td>';
+                                                                    }
+                                                                    elseif($row['item_count'] <= ($itemthreshold + $itemthreshold*0.20))
+                                                                    {
+                                                                        echo '<td align = right class = ',$row['item_id'],'>';
+                                                                        echo '<font color = "yellow"><b>'.$row['item_count'].'</b></font>';
+                                                                        echo '</td>';
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        echo '<td align = right class = ',$row['item_id'],'>';
+                                                                        echo $row['item_count'];
+                                                                        echo '</td>';
+                                                                    }
 
                                                                    
                                                                     echo '<td align = right>';
