@@ -388,13 +388,13 @@
                               
                                 echo '<tr>';
                                     echo '<td sp_itm_nm ="'.$row['supply_item_name'].'"><input type="hidden" name = "item_name" value = "'.$row['supply_item_name'].'">'.$row['supply_item_name'].'</td>';
-                                    echo '<td>'.$row['supplier_name'].'</td>';
+                                    echo '<td >'.$row['supplier_name'].'</td>';
                                     echo '<td class = supply_qty'.$count.'>'.$row['supply_item_quantity'].'</td>';
                                     echo '<td>'.$row['supply_arrived_quantity'].'</td>';
                                     echo '<td align = "center">';
                                     if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
                                     {
-                                      echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.'><i class = "fa fa-wrench"></i> Edit</button>';
+                                      echo '<button type="button" class="btn btn-round btn-primary btn-xs edit_arrived" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.' supp_name = "'.$row['supplier_name'].'" ><i class = "fa fa-wrench"></i> Edit</button>';
                                     }
                                     else 
                                     {
@@ -761,19 +761,15 @@ $('#no_dmg_proceed').on('click', function(e){
         request = $.ajax({
         url: "ajax/restock_all_items.php",
         type: "POST",
-        data: {post_item_name: selected_item_name,
-        post_item_qty: $('#arrived').val()
+        data: {post_item_name: restock_item_array,
+        post_item_qty: restock_qty_array
                           
         },
           success: function(data, textStatus)
           {
-           alert("Update Successful!");
-           window.location.href = "SupplierOrderDetails.php";
-
-           $('#arrived').attr({
-            "max": data //Replaces the max for input using the current selected item qty
-          });
-           
+           alert("Restocking Successful!");
+           window.location.href = "SupplierOrderSummary.php";
+                  
           }//End Scucess
         
         }); // End ajax  
@@ -788,8 +784,12 @@ $('#no_dmg_proceed').on('click', function(e){
     
 
     <script> 
-
+    var supp_name;
+    $('.btn.btn-round.btn-primary.btn-xs.edit_arrived').on('click', function(e){
+      supp_name = $(this).attr('supp_name');
+    })
     $('#btn_save').on('click', function(e){
+     
       if(confirm("Confirm Arrival of Current Item?"))
       {
         request = $.ajax({
@@ -797,6 +797,7 @@ $('#no_dmg_proceed').on('click', function(e){
         type: "POST",
         data: {post_item_name: selected_item_name,
         post_item_qty: $('#arrived').val(),
+        post_item_supplier: supp_name,
         post_supply_OR: "<?php echo $CURRENT_SO_ID_NUMBER; ?>"                    
         },
           success: function(data, textStatus)

@@ -34,7 +34,7 @@
         <!-- Custom Theme Style -->
         <link href="../build/css/custom.min.css" rel="stylesheet">
         <!-- JQUERY Required Scripts -->
-        <script type="text/javascript" src="js/script.js"></script>
+        
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
@@ -100,7 +100,8 @@
                                                 <font color = "black" size = "5"><b>Select a Damaged Item:</b></font>
                                             </div> 
                                                 <div class="col-md-2 col-sm-2 col-xs-12">
-                                                    <select class="form-control col-md-12 col-xs-12" id="item_name_list" name="item_name_list"> 
+                                                    <select class="form-control col-md-12 col-xs-12" id="item_name_list" name="item_name_list">
+                                                    <option value ='1'> Choose... </option> 
                                                         <?php
 
                                                             require_once('DataFetchers/mysql_connect.php');
@@ -109,7 +110,11 @@
 
                                                             for($i = 0; $i < count($_SESSION['list_of_items']); $i++)
                                                             {
-                                                                $SQL_GET_ITEM_NAME="SELECT * FROM items_trading WHERE item_name = '$get_item_from_session[$i]'";
+                                                                $SQL_GET_ITEM_NAME="SELECT * 
+                                                                FROM items_trading 
+                                                                JOIN suppliers
+                                                                ON suppliers.supplier_id = items_trading.supplier_id
+                                                                WHERE item_name = '$get_item_from_session[$i]'";
                                                                 $RESULT_GET_ITEM_NAME=mysqli_query($dbc,$SQL_GET_ITEM_NAME);
                                                                 if(mysqli_num_rows($RESULT_GET_ITEM_NAME) == 0)
                                                                 {
@@ -117,7 +122,7 @@
                                                                     $RESULT_GET_NEW_ITEM_NAME=mysqli_query($dbc,$SQL_GET_NEW_ITEM_NAME);
                                                                     while($row=mysqli_fetch_array($RESULT_GET_NEW_ITEM_NAME,MYSQLI_ASSOC))
                                                                     {
-                                                                        echo "<option value=".$get_qty_from_session[$i]."> ".$row['new_item_name']."</option>";  
+                                                                        echo "<option value=".$get_qty_from_session[$i]."> ".$row['new_item_name']." | ".$row['new_item_supplier'] ."</option>";  
                                                                     }
 
                                                                 }
@@ -125,7 +130,7 @@
                                                                 {
                                                                     while($row=mysqli_fetch_array($RESULT_GET_ITEM_NAME,MYSQLI_ASSOC))
                                                                     {
-                                                                        echo "<option value=".$get_qty_from_session[$i]."> ".$row['item_name']."</option>";  
+                                                                        echo "<option value=".$get_qty_from_session[$i]."> ".$row['item_name'] ." | ".$row['supplier_name']."</option>";  
                                                                     }
                                                                 }
                                                                 
@@ -133,14 +138,15 @@
                                                                 
                                                         ?> 
                                                     </select>
+                                                    
                                                 </div>
+                                                <h2><span id = "current_item_qty" >Current Item Qty: </span></h2>
                                             <div class="form-group">
                                                 <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
                                                         <thead>
                                                         <tr>
                                                             <th>Item Name</th>
-                                                            <th>Quantity</th>
-                                                            <th>% of Damage</th>                       
+                                                            <th>Quantity</th>                      
                                                             <th>Action</th>
                                                         </tr>
                                                         </thead>
@@ -163,14 +169,16 @@
                                                         </script> <!-- To avoid the users input more than the current Max per item -->
 
                                                         <script type="text/javascript">
+                                                       
                                                         $(function()
-                                                        {
+                                                        {                                                                                                                    
                                                             $("#item_name_list").on('click', function(e){
                                                                 if(e.offsetY < 0)
                                                                 {
-                                                                    var current_selected = $(this).find(":selected").text();                                                                 
+                                                                    var current_selected = $(this).find(":selected").text().split("|")[0];                                                                 
                                                                     var damage_table = document.getElementById('datatable-checkbox').insertRow();                          
-                                                                    damage_table.innerHTML = "<tr> <td title='This item currently have: "+$(this).val()+" pieces'>" + current_selected + "</td> <td> <input type='number' min = '0' max ='"+$(this).val()+"' oninput ='validate(this)'> </td> <td> <input type='number' min = '1' max = '100' oninput='validate(this)'></td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";          
+                                                                    damage_table.innerHTML = "<tr> <td title='This item currently have: "+$(this).val()+" pieces' orig_qty = "+$(this).val()+">" + current_selected + "</td> <td> <input style=text-align:right; type='number' min = '0' max ='"+$(this).val()+"' oninput ='validate(this)'> </td> <td> <button type='button' class='delete_current_row' item_name = '"+current_selected+"'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";     
+                                                                    $(':selected').hide();     
                                                                 }
                                                                 else
                                                                 {
@@ -180,15 +188,31 @@
                                                             })// END JQUERY                                                                                                                     
                                                         });//END FUNCTION
                                                         $(document).ready(function(){
+                                                            var option_array = Array();
+                                                            $("#item_name_list option").each(function(i){
+                                                                option_array.push($(this).text().split("|")[0]);
+                                                            });
                                                             $("#datatable-checkbox").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
-                                                                $(this).closest('tr').remove();
-                                                                });
+                                                                var btn_attr = $(this).attr('item_name')
+                                                                var closest_tr =  $(this).closest('tr'); 
+                                                                $.each(option_array, function(index, val){
+                                                                    console.log(val);
+                                                                    if(val == btn_attr)
+                                                                    {
+                                                                        $("#item_name_list option").show();
+                                                                        closest_tr.remove();
+                                                                    }                                                           
+                                                                })                                                                                                                      
+                                                            });
 
-                                                        });  //Removes Row    
-
-                                                        $(document).on("click","select option",function() {console.log("nice to meet you, console ;-)"); });
-
+                                                        });  //Removes Row                                                         
                                                         </script> <!-- Script to add new rows per click of items in dropdown -->
+                                                        <script>
+                                                            $('#item_name_list').on('change', function(e){
+                                                                $('#current_item_qty').html("Current Item Qty: "+$(this).val());
+                                                                $('option:first-child').hide();
+                                                            })
+                                                        </script>
                                                     </table>
                                             </div>
                                             
@@ -199,7 +223,7 @@
                                             </div>           
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                        <button type="button" class="btn btn-primary" name="complete_order" onclick = "confirmAdd()">Finish Restocking</button>
+                        <button type="button" class="btn btn-primary" id="complete_order">Finish Restocking</button>
                     </div>
                 </div>
             </form>
@@ -216,7 +240,45 @@
           </div>
             <!-- /page content -->
         </div>
-
+<script>
+   var dmg_name = Array();
+   var dmg_qty = Array();
+   var orig_qty = Array();
+    $('#complete_order').on('click',function(e){
+    
+    $('#datatable-checkbox tbody tr:not(:first-child)').each(function(e){
+        dmg_name.push($(this).find('td:first').text());
+        orig_qty.push($(this).find('td:first').attr('orig_qty'));
+        dmg_qty.push($(this).find('td:nth-child(2)').find('input').val());
+        console.log($(this).find('td:first').attr('orig_qty'));
+       
+    });
+        // if(confirm("Confirm Damages and Restock Items?"))
+        // {
+        //     request = $.ajax({
+        //     url: "ajax/dmg_type_supplier.php",
+        //     type: "POST",
+        //     data: {
+        //     post_item_name: selected_item_name,
+        //     post_item_qty: $('#arrived').val(),
+        //     post_item_supplier: supp_name,
+        //     post_supply_OR:                    
+        //     },
+        //     success: function(data, textStatus)
+        //     {
+        //         alert("Update Successful!");
+        //         window.location.href = "SupplierOrderDetails.php";           
+        //     }//End Scucess
+            
+        //     }); // End ajax  
+        // }
+        // else
+        // {
+        //     alert("Action: Cancelled");
+            
+        // }
+    })
+</script>
 
         
         <!-- jQuery -->
@@ -300,31 +362,7 @@
     if ( window.history.replaceState ) {
         window.history.replaceState( null, null, window.location.href );
     }
-    </script>
-
-    <!-- Alert Box -->
-    <script>
-    function confirmalert()
-    {
-      confirm("Are you sure you want to enter the following data?");
-      window.location.reload();
-    }
-    </script>
-
-    <!-- Confirm Script -->
-    <script>
-        function confirmAdd()
-        {
-            if(confirm("Are you sure you want to add the items to the inventory?"))
-            {
-                
-            }
-            else
-            {
-                alert("Action: Cancelled");
-            }
-        }
-    </script>
+</script>  
       <script type="text/javascript">
         function validate(obj) {
             obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max
