@@ -65,7 +65,7 @@
           <div class="">
             <div class="page-title">
               <div>
-                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">DR-1 Damaged Item on Delivery</h1><br>
+                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px"><?php echo $_SESSION['get_dr_number_from_deliveries']; ?> Damaged Item on Delivery</h1><br>
                   <!-- Add actual OR num here -->
               </div>
             </div>
@@ -84,7 +84,7 @@
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
 
-                        <select name="select_dmg_item" id="select_dmg_item" required="required" class="form-control col-md-7 col-xs-12">
+                        <select name="select_damaged_item" id="select_damaged_item" required="required" class="form-control col-md-7 col-xs-12">
                         <option value = "">Choose...</option>
                          <?php
                                for($i = 0; $i < sizeof($_SESSION['qty_from_delivery']); $i++)
@@ -107,14 +107,14 @@
                          <div class="col-md-4 col-sm-6 col-xs-12">
                           <input type="number" id="damaged_item_qty" name="damaged_item_qty" oninput = "validate(this)" required="required" class="form-control col-md-7 col-xs-12"/> 
                         </div>
-                        
+                        <h2><span id = "replenish_stock" >Replenish Item Stock: </span></h2>
                       </div>
                       <!-- Two buttons to choose for replenish or replace -->
                       <div class="form-group">
                       <label class="control-label col-md-4 col-sm-3 col-xs-12"> <br>
                         </label>
                         <div class="col-md-4 col-sm-6 col-xs-12">
-                          <button type="button" id ="replacement_btn" onclick="revertdisable();" class="btn btn-round btn-primary" >Replenish</button>
+                          <button type="button" id ="replenish_btn" onclick="revertdisable();" class="btn btn-round btn-primary" >Replenish</button>
                           <button type="button" id ="replaceitem" class="btn btn-round btn-warning" onclick="showreplace();">Replace</button>
                           <!-- will only show when item to be replenished has no stock -->
                           <button type="button" id ="notifySales" class="btn btn-round btn-danger">Notify Sales</button>
@@ -168,12 +168,13 @@
                   </div>
                   <div class="x_content">
                    
-                    <table id="datatable" class="table table-striped table-bordered">
+                    <table id="datatable_replenish" class="table table-striped table-bordered">
                       <thead>
                         <tr>
-                          <th>Product Name</th>
-                          <th>Quantity</th>
-                          <th>Status</th>
+                          <th>Damaged Item Name</th>
+                          <th>Damaged Quantity</th>
+                          <th>Replacement Item Name</th>
+                          <th>Replacement Item Quantity</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -190,7 +191,7 @@
                       
                       </div><div class="form-group" align = "right">
                         <!-- <div class="col-md-6 col-sm-6 col-xs-12"> -->
-                          <button name="submitBtn" class="btn btn-success" type="button" id= "add_button" onclick = "confirmRedirectDelivery();">Submit</button>
+                          <button name="submitBtn" class="btn btn-success" type="button" id= "submit_dmg">Submit</button>
                           <button class="btn btn-danger" type="cancel">Cancel</button>
                         <!-- </div>z -->
                       </div>
@@ -215,6 +216,45 @@
         <!-- /footer content -->
       </div>
     </div>
+    <script>                             
+         $(document).on('change', '#select_damaged_item', function() {
+         
+
+          $("#damaged_item_qty").attr({
+              "max": $(this).val()         // values (or variables) here
+            });
+            
+          $("#stocks").text("Selected Item Qty: " + $(this).val());  //Set the current stocks of the items in dropdown
+          $('#replenish_stock').text("Replenish Item Stock: " + $("#select_damaged_item :selected").attr("current_stock")); 
+
+          $("#damaged_item_qty").val("");
+            
+          request = $.ajax({
+          url: "ajax/dmg_fab_replace_list.php",
+          type: "POST",
+          data:{
+              post_item_price: $("#select_damaged_item :selected").attr("price")
+            }, 
+            success: function(data) 
+            { 
+            
+            $("#replacementName").html(data);
+            $("#replacement_stock").text("Replacement Item Stock: ");                        
+            }//End Success                       
+          }); //End Ajax   
+          
+        });
+
+        $(document).on('change', '#replacementName', function() {
+          $("#replacementQty").attr({
+              "max": $("#select_damaged_item").val()         // values (or variables) here
+            });
+            $("#replacement_stock").text("Replacement Item Stock: " + $(this).val());  //Set the current stocks of the items in dropdown
+        });
+        
+        
+
+    </script><!-- Adds the max value based on ordered item-->
    
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -275,7 +315,7 @@
     <script>
 
     
-      $(document).on('change', '#select_dmg_item', function() {
+      $(document).on('change', '#select_damaged_item', function() {
         
           $("#damaged_item_qty").attr({
               "max": $(this).val()         // values (or variables) here
@@ -298,77 +338,213 @@
     </script> <!-- To avoid the users input more than the current Max per item -->
 
     <script>
+$(function()
+        {
+          
+            $("#replenish_btn").on('click', function(e){
+              
+              var current_damaged_item = $("#select_damaged_item :selected").text();   
+              var current_damaged_item_qty = $("#damaged_item_qty").val();  
 
-    $("#replacement_btn").on('click', function(e){
-          var current_damaged_item = $("#select_dmg_item :selected").text();   
-          var current_damaged_item_qty = $("#damaged_item_qty").val();  
-          if($("#damaged_item_qty").val() != '' && $("#select_dmg_item").val() != '' && $("#damaged_item_qty").val() != 0)
-          {                                                            
-                                                                                
-            var damage_table = document.getElementById('datatable').insertRow();                          
-            damage_table.innerHTML = "<tr> <td class = dmg_item_name>" + current_damaged_item + "</td> <td class = dmg_item_qty > "+current_damaged_item_qty+" </td>  <td> </td> <td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
-           
-            $("#select_dmg_item :selected").attr({
-              "value":  $("#select_dmg_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
-            });
+              var current_replacement_item = $("#replacementName :selected").text();   
+              var current_replacement_item_qty = $("#replacementQty").val();  
+ 
+              var item_does_not_exist = true;
+              if($("#damaged_item_qty").val() != '' && $("#select_damaged_item").val() != '' && $("#damaged_item_qty").val() != 0 || $("#damaged_item_qty").val() > parseInt($('#replenish_stock').text()))
+              {                                                            
+                
+              $("#datatable_replenish tbody tr td.dmg_item_name").each(function(i){
+              
+              if(current_damaged_item ==$(this).text())
+              {
+                item_does_not_exist = false;
+                $(this).next().text(parseInt($(this).next().text())+parseInt(current_damaged_item_qty)); //Gets the NEXT DOM value after the current selected class
 
-            $("#damaged_item_qty").attr({
-              "max": $("#select_dmg_item :selected").val()         //replaces the max value with subtravcted value
-            });
+                $(this).nextAll().eq(2).text(
+                  parseInt($(this).nextAll().eq(2).text()) + 
+                  parseInt(current_damaged_item_qty)
+                );
+                $("#select_damaged_item :selected").attr({
+                "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
+                  });
 
-            $("#damaged_item_qty").val("");  //Resets input for qty
+                  $("#damaged_item_qty").attr({
+                    "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                  });
 
-            $("#stocks").text("Ordered Quantity: " + $("#select_dmg_item :selected").val() );
-          }
+                  $("#damaged_item_qty").val("");  //Resets input for qty 
+
+                  $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
+              }
+              
+              }); //END JQUERY
+                if(item_does_not_exist)
+                {
+                
+                      var damage_table_replenish = document.getElementById('datatable_replenish').insertRow();  
+                                            
+                      damage_table_replenish.innerHTML = "<tr> <td class = 'dmg_item_name'>" + current_damaged_item + "</td> <td class = dmg_item_qty> "+current_damaged_item_qty+" </td> <td>"+current_damaged_item+" <td>"+current_damaged_item_qty+"</td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";    
+                      
+                      $("#select_damaged_item :selected").attr({
+                        "value":  $("#select_damaged_item :selected").val() - current_damaged_item_qty   //Subtracts the value from input 
+                      });
+
+                      $("#damaged_item_qty").attr({
+                        "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                      });
+
+                      $("#damaged_item_qty").val("");  //Resets input for qty 
+
+                      $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
+                      
+                                                    
+                    
+                }
+            }
+            else
+            {
+                alert("Please Fill up all required fields correctly!");
+            }
+
+            })// END JQUERY
+        });//END FUNCTION
+
+        $(function()
+        {
+            $("#addReplace").on('click', function(e){
+              var current_damaged_item = $("#select_damaged_item :selected").text();   
+              var current_damaged_item_qty = $("#damaged_item_qty").val();  
+
+              var current_replacement_item = $("#replacementName :selected").text();   
+              var current_replacement_item_qty = $("#replacementQty").val();  
+              
+              var replacement_item_does_not_exist = true;
+          if(current_replacement_item != '' && current_replacement_item_qty != '' && current_replacement_item_qty != 0)
+            {  
+              $("#datatable_replenish tbody tr td.replace_item").each(function(i){
+                
+              if(current_replacement_item.trim() == $(this).text().trim()) //Trim to remove all other BS inorder to compare properly
+              {                      
+                replacement_item_does_not_exist = false;
+                $(this).next().text(parseInt($(this).next().text())+parseInt(current_replacement_item_qty)); //Gets the NEXT DOM value after the current selected class
+
+                $(this).prev().text(
+                  parseInt($(this).prev().text()) + 
+                  parseInt(current_replacement_item_qty)
+                );
+
+                $("#select_damaged_item :selected").attr({
+                    "value":  $("#select_damaged_item :selected").val() - current_replacement_item_qty   //Subtracts the value from input 
+                  });
+
+                $("#damaged_item_qty").attr({
+                      "max": $("#select_damaged_item :selected").val() 
+                  });
+
+                  $("#replacementQty").attr({
+                    "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                  });
+
+                  $("#replacementQty").val("");  //Resets input for qty 
+
+                  $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
+              }             
+            }); //END JQUERY
+
+              if(replacement_item_does_not_exist)
+              {                                                                                                                                                            
+                  var damage_table = document.getElementById('datatable_replenish').insertRow();                          
+                  damage_table.innerHTML = "<tr> <td>" + current_damaged_item + "</td> <td> "+current_replacement_item_qty+" </td> <td class=replace_item> "+current_replacement_item+" </td> <td class = replace_qty > "+current_replacement_item_qty+" </td><td> <button type='button' class='delete_current_row'> <font color = 'red' size = '5'><i class='fa fa-close'></i></font> </button></td>";                                                         
+                  $("#select_damaged_item :selected").attr({
+                    "value":  $("#select_damaged_item :selected").val() - current_replacement_item_qty   //Subtracts the value from input 
+                  });
+                  $("#damaged_item_qty").attr({
+                      "max": $("#select_damaged_item :selected").val() 
+                  });
+
+                  $("#replacementQty").attr({
+                    "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                  });
+
+                  $("#replacementQty").val("");  //Resets input for qty 
+
+                  $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );
+               
+              }
+            }
           else
           {
               alert("Please Fill up all required fields correctly!");
-          }
-                                                                                                                              
-       
-    });//END FUNCTION
+          }  
+                                                                                                                                  
+            })// END JQUERY
+        });//END FUNCTION
 
-    $(document).ready(function(){
-      
+        $(document).ready(function(){
+            $("#datatable_replenish").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
+              var closest_tr = $(this).closest('tr').find('td:nth-child(1)').text();
+              var closest_tr_qty = $(this).closest('tr').find('td:nth-child(2)').text(); 
 
-            $("#datatable").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
-                var closest_tr = $(this).closest('tr').find('.dmg_item_name').text();
-                var closest_tr_qty = $(this).closest('tr').find('.dmg_item_qty').text();
+              var tr_replace_name = $(this).closest('tr').find('td:nth-child(3)').text();
+              var tr_replace_qty = $(this).closest('tr').find('td:nth-child(4)').text();               
+
+              
+                $("#select_damaged_item option:contains("+closest_tr+")").attr({
+                  "value":  parseInt($("#select_damaged_item option:contains("+closest_tr+")").val()) + parseInt(closest_tr_qty)    //adds the value when the row is removed 
+                });
+ 
+                $("#damaged_item_qty").attr({
+                  "max": $("#select_damaged_item :selected").val() //replaces the max value with added value of input
+                });
+                
+                $("#damaged_item_qty").val("");     //Resets the input for qty
+
+                $("#replacementQty").attr({
+                    "max": $("#select_damaged_item :selected").val()         //replaces the max value with subtravcted value
+                  });
+
+                $("#replacementQty").val("");  //Resets input for qty     
+
+                $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );           
+                   
+              
+              $(this).closest('tr').remove();
+              });//Removes Row    of [REPLACEMENT TABLE]
+
+        });  
+        
+        $(document).ready(function(){
+            $("#datatable_replacement").on('click','.delete_current_row',function(){ //Gets the [table name] on click OF [class inside table] 
+              var closest_tr = $(this).closest('tr').find('.dmg_item_name').text();
+              var closest_tr_qty = $(this).closest('tr').find('.replace_qty').text();
                 console.log(closest_tr);
 
-                $('#select_dmg_item').children('option:selected').each(function() {
+                $('#select_damaged_item').children('option:selected').each(function() {
                //Loops through all options and finds the item name 
-                    if($(this).text() == closest_tr)
-                    {
-                      $("#select_dmg_item :selected").attr({
-                        "value":  parseInt($("#select_dmg_item :selected").val()) + parseInt(closest_tr_qty)    //adds the value when the row is removed 
+                    
+                      $("#select_damaged_item :selected").attr({
+                        "value":  parseInt($("#select_damaged_item :selected").val()) + parseInt(closest_tr_qty)    //adds the value when the row is removed 
                       });
                       $("#damaged_item_qty").attr({
-                        "max": $("#select_dmg_item :selected").val() //replaces the max value with added value
+                        "max": $("#select_damaged_item :selected").val() //replaces the max value with added value
                       });
                       $("#damaged_item_qty").val("");     //Resets the input for qty 
 
-                      $("#stocks").text("Selected Item Qty: " + $("#select_dmg_item :selected").val() );              
-                    }
-                    else
-                    {
-
-                    }
+                      $("#stocks").text("Selected Item Qty: " + $("#select_damaged_item :selected").val() );              
+                   
                 });
-                $(this).closest('tr').remove(); //Removes the row clicked
-                
-                
-            });//END onclick
+              $(this).closest('tr').remove();
+              });
 
-           
-
-        });  //Removes Row    
-    </script>
+        });  //Removes Row    of [REPLENISH TABLE]
+        
+    </script><!-- Adds the Rows based on replinished or Replaced --> 
+    
     <script>
       function confirmRedirectDelivery()
       {
-        var r = confirm("Are you sure you want to submit this damaged item form?");
-        if(r == true)
+       
+        if(confirm("Are you sure you want to submit this damaged item form?"))
         {
           alert("This form has successfully been submitted. A new delivery receipt was created for the replacement item that will be delivered to the respective client.\n\nYou will be redirected to the deliveries summary screen to reschedule this order for another date of delivery.");
           window.location.href = "deliveries.php";
@@ -383,7 +559,72 @@
     </script>
     
     
-    
+    <script>
+    request = $.ajax({
+    url: "ajax/damage_delivery_item_list.php",
+    type: "POST",
+    data:{
+  
+      }, 
+      success: function(data) 
+      { 
+       $("#select_damaged_item").html(data);
+                          
+      }//End Success                       
+    }); //End Ajax   
+    </script>
+
+<script>  
+  $('#submit_dmg').on('click', function(e){
+    var dmg_name_array = new Array();
+    var dmg_qty_array = new Array();
+    var replace_name_array = new Array();
+    var replace_qty_array = new Array();
+
+    $('#datatable_replenish tbody tr:not(:first-child)').each(function(){
+      var dmg_name = $(this).closest('tr').find('td:first').text().split('|')[0];
+      var dmg_qty = $(this).closest('tr').find('td:nth-child(2)').text();
+      
+      var replace_name = $(this).closest('tr').find('td:nth-child(3)').text().split('|')[0];
+      var replace_qty = $(this).closest('tr').find('td:nth-child(4)').text();
+
+      dmg_name_array.push(dmg_name);
+      dmg_qty_array.push(dmg_qty);
+      replace_name_array.push(replace_name);
+      replace_qty_array.push(replace_qty);
+
+      
+    });
+
+    if(confirm("Submit Damaged items?"))
+    {
+      request = $.ajax({
+      url: "ajax/dmg_type_delivery.php",
+      type: "POST",
+      data: {
+        post_dmg_item: dmg_name_array,
+        post_dmg_qty: dmg_qty_array,
+        post_replace_item: replace_name_array,
+        post_replace_qty: replace_qty_array                                                 
+      },
+      success: function(data, textStatus)
+      {
+        alert("Damages have been successfully Recorded!");
+        window.location.href= "Deliveries.php";
+          
+          
+
+      }//End Success
+      
+      }); // End ajax 
+    }
+    else
+    {
+      alert("Please check the damaged items again.");
+    }
+  })
+
+  </script>
     
         
   </body>

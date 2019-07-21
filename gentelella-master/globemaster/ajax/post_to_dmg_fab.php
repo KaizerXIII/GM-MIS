@@ -5,7 +5,7 @@
 
     $_SESSION['name_from_fab'] = $_POST['post_item_name'];
     $_SESSION['qty_from_fab'] = $_POST['post_item_qty'];
-
+    $_SESSION['fab_current_or'] = $_POST['post_current_or'];
        
    
       

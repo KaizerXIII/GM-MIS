@@ -65,7 +65,7 @@
           <div class="">
             <div class="page-title">
               <div>
-                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">OR-1 Damaged Item on Fabrication</h1><br>
+                  <center><h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px"><?php echo $_SESSION['fab_current_or']; ?> Damaged Item on Fabrication</h1><br>
                   <!-- Add actual OR num here -->
               </div>
             </div>
@@ -325,9 +325,6 @@
     </script>
 
     <script> 
-    <?php
-
-    ?>
                               
         $(document).on('change', '#select_damaged_item', function() {
          

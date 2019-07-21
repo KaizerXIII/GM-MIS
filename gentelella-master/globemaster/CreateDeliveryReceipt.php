@@ -662,17 +662,10 @@ var table = document.getElementById("datatable");
                     alert("Truck Coding on Selected Date, Moving to Next Day");
                     $('#deliveryDate').attr("value", code);
                     $('#deliveryDate').val($('#deliveryDate').attr('value'));
-
                     set_weight();
-
-                  }
-
-                  
-                }
-                
-              
+                  }                 
+                }                             
               } //END IF
-
              else
              {  
                 $("#item_fab").show();
@@ -774,7 +767,7 @@ var table = document.getElementById("datatable");
       success: function(data, textStatus)
       {
           alert("Successful");
-          // window.location.href= "ViewDepotRequests.php";
+          window.location.href= "Deliveries.php";
           
 
       }//End Success

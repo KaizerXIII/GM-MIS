@@ -145,26 +145,7 @@
                                             <span id = "dr_number"></span>
                                         </div>
                                         <div align = "right">
-                                        <?php
-                                            $SQL_GET_DELIVERY_STATUS = "SELECT * FROM scheduledelivery;";
-                                            $RESULT_GET_DELIVERY_STATUS = mysqli_query($dbc,$SQL_GET_DELIVERY_STATUS);
-                                            $ROW_DELIVERY_STATUS = mysqli_fetch_array($RESULT_GET_DELIVERY_STATUS, MYSQLI_ASSOC);
-                                        ?>
-                                            <!-- <button type="button" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button>  -->
-                                            <?php
-                                                if($ROW_DELIVERY_STATUS['delivery_status'] == "Delivered")
-                                                {
-                                            ?>
-                                            <button type="button" id="finish_delivery" disabled = "disabled" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
-                                            <?php
-                                                }
-                                                else
-                                                {
-                                            ?>
-                                            <button type="button" id="finish_delivery" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
-                                            <?php
-                                                }
-                                            ?>
+                                        <button type="button" id="finish_delivery" disabled = "disabled" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
                                         </div>
                                         
                                     </div>
@@ -261,7 +242,15 @@ for($i = 0 ; $i < sizeof($BULK_DETAIL_ARRAY); $i++)
     ON orders.ordernumber = scheduledelivery.ordernumber
     WHERE scheduledelivery.delivery_Receipt = '$BULK_DETAIL_ARRAY[$i]' ";
     $RESULT_TOTAL_AMT  = mysqli_query($dbc,$GET_TOTAL_AMT);
-    $ROW_RESULT_TOTAL_AMT = mysqli_fetch_assoc($RESULT_TOTAL_AMT);
+    $ROW_RESULT_TOTAL_AMT = mysqli_fetch_assoc($RESULT_TOTAL_AMT);  
+    if($ROW_RESULT_TOTAL_AMT['delivery_status'] == "Delivered")
+    {
+        echo '$("#finish_delivery").prop("disabled", true);';
+    }
+    else
+    {
+        echo '$("#finish_delivery").prop("disabled", false);';
+    }
     
     $FORMATTED_TOTAL = number_format($ROW_RESULT_TOTAL_AMT['totalamt'],2,".",",");
    echo 'console.log("'.$ROW_RESULT_DR_DETAILS['delivery_Receipt'].'");';

@@ -137,7 +137,7 @@
                                         echo '<div class = "row"><h2><b>Order Number:</b> '. $ORDER_NUMBER[$i].'</h2></div>';
                                         
                                             echo '<div class = "row"><h3><b>Order Status:</b> '. $ORDER_STATUS[$i].'</h3></div>';
-                                            echo '<a class="current_anchored_row" href="javascript:" >Was an item damaged during production? Click here!</a>';
+                                            echo '<a class="current_anchored_row" href="javascript:" current_or = "'.$ORDER_NUMBER[$i].'">Was an item damaged during production? Click here!</a>';
                                             echo '<br><br><br>';
                                      
 
@@ -234,7 +234,8 @@
                               type: "POST",
                               data:{
                                   post_item_name: post_row_item_name, //IF FROM PHP ECHO NEVER FORGET THE "" 
-                                  post_item_qty: post_row_item_qty
+                                  post_item_qty: post_row_item_qty,
+                                  post_current_or: $(this).attr('current_or')
                                 }, 
                                 success: function(data) 
                                 { 
