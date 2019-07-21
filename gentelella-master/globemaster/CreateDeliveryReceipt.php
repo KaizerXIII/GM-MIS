@@ -491,17 +491,13 @@
     echo "var current_truck_cap_PHP = ".json_encode($DATE_TRUCK_CAP).";";
     echo "var bulk_date_PHP = ".json_encode($BULK_DATE).";";
     echo "var bulk_truck_plate_PHP = ".json_encode($BULK_TRUCK_PLATE).";";
-
-    
-        echo "console.log(bulk_date_PHP[4]);"
-      
-                                                        
+                                                                     
 ?> //PHP END                        
 </script> <!-- Script to add Order Details from DB with PHP inside -->
 <script>
 var dropdown = document.getElementById("orderNumberDropdown");
 var table = document.getElementById("datatable");
-console.log(bulk_date_PHP[4]);
+
     table.oldHTML=table.innerHTML;
     $('#deliveryDate').on('change',function(e){
           var myDate = new Date($(this).val())         
@@ -516,12 +512,12 @@ console.log(bulk_date_PHP[4]);
           }
           FORMATTED_DELIV_DATE = year + '-' + month + '-' + day;
 
-          console.log(FORMATTED_DELIV_DATE);
+          // console.log(FORMATTED_DELIV_DATE);
       
             for(var q = 0; q < bulk_date_PHP.length; q++)
             {
-              console.log("Deliv Date: "+ FORMATTED_DELIV_DATE);
-              console.log("Bulk Date: "+ bulk_date_PHP[q]);          
+              // console.log("Deliv Date: "+ FORMATTED_DELIV_DATE);
+              // console.log("Bulk Date: "+ bulk_date_PHP[q]);          
               if(FORMATTED_DELIV_DATE == bulk_date_PHP[q] && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
               {
                 
@@ -532,7 +528,7 @@ console.log(bulk_date_PHP[4]);
                 truckweightBox.value = TruckCapFromPHP[q] + ' KG';
               }
             }
-          })
+      })
     dropdown.onchange = function(){
         table.innerHTML=table.oldHTML; //returns to the first state of the Table
         var current_weight = 0;
@@ -568,11 +564,31 @@ console.log(bulk_date_PHP[4]);
                 if("<?php echo date("l", strtotime("+3days")); ?>"=="Sunday")
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+4days"));?>");
+                  
                 }
                 else
                 {
                  $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+3days"));?>"); 
-                } 
+
+                 for(var q = 0; q < bulk_date_PHP.length; q++)
+                  {                 
+                    console.log("Bulk Date = "+bulk_date_PHP[q]); 
+                    console.log("#Delive Date = "+$("#deliveryDate").attr('value'));
+                    console.log("Truck Plate PHP: "+ bulk_truck_plate_PHP[q]); 
+                    console.log("#Truck Plate: "+ $('#truckPlate').val());
+                   
+                    if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
+                    {                    
+                      truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
+                      break;
+                    }
+                    else
+                    {
+                      truckweightBox.value = TruckCapFromPHP[q] + ' KG';
+                    }
+                  }
+                }
+                
               
               } //END IF
 
