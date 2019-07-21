@@ -56,9 +56,9 @@ if(!(isset($_SESSION['usertype']))){
                 
                     echo "<h2><font face='Couture Bold'>Welcome, ";
                     echo "<br>";
+                    echo $row["usertype"];
+                    echo " | ";
                     echo $_SESSION["firstname"];
-                    echo " ";
-                    echo $_SESSION["lastname"];
                     echo "</font></h2>";
                   
         
@@ -80,26 +80,29 @@ if(!(isset($_SESSION['usertype']))){
                       <?php
                      
                      
-                      if($user == "CFO" or $user == "MKT" or $user == "SALES" or $user == 'INV' or $user == 'CEO' or $user == 'Superuser'){
-                      echo "<li><a href='ViewInventory.php'>View Inventory</a></li>";                    
-                      echo "<li><a href='SupplierOrderSummary.php'> Inventory Restocking </a></li>";
+                      if($user == 'Agent' or $user == "CFO" or $user == "MKT" or $user == "SALES" or $user == 'INV' or $user == 'CEO' or $user == 'Superuser'){
+                      echo "<li><a href='ViewInventory.php'>View Inventory</a></li>";   
+                        if($user == 'Agent' or $user == 'CEO' or $user == 'INV' or $user == 'Superuser')    
+                        {             
+                          echo "<li><a href='SupplierOrderSummary.php'> Inventory Restocking </a></li>";
                         }
+                      }
                       ?>
                       
                       <?php
                       if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
                       echo "<li><a>Economic order Quantity (EOQ)<span class='fa fa-chevron-down'></span></a>";
                       echo "<ul class='nav child_menu'>";
-                      if($user == 'CFO'){
-                      echo    "<li><a href='InputPage.php'>Input EOQ Details</a></li>";
-                      
-                      }
-                      if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
-                      echo    "<li><a href='EOQInventory.php'>View Inventory EOQ</a></li>";
-                      }
+                        if($user == 'CFO'){
+                        echo    "<li><a href='InputPage.php'>Input EOQ Details</a></li>";
+                        
+                        }
+                        if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
+                        echo    "<li><a href='EOQInventory.php'>View Inventory EOQ</a></li>";
+                        }
                       echo "</ul>"; 
-                     echo "</li>";
-                  }
+                      echo "</li>";
+                      }
                       ?>
                      
                       <?php
@@ -126,6 +129,7 @@ if(!(isset($_SESSION['usertype']))){
                   echo "<li><a><i class='fa fa-car'></i> Deliveries <span class='fa fa-chevron-down'></span></a>";
                   echo   "<ul class='nav child_menu'>";
                   if($user == 'CEO' or $user == 'SALES' or $user == 'Superuser'){
+                  echo    "<li><a href='ViewTruckCap.php'>View Delivery Schedule</a></li>";
                   echo    "<li><a href='Deliveries.php'>View Delivery Receipts</a></li>";
                 }
                 if($user == 'SALES' or $user == 'Superuser'){
@@ -164,6 +168,18 @@ if(!(isset($_SESSION['usertype']))){
                   echo "</li>";
                         }
                   ?>
+
+                  <?php
+                    if($user == 'SALES' or $user == 'Superuser'){
+                      echo "<li><a><i class='fa fa-edit'></i> Depot Requests <span class='fa fa-chevron-down'></span></a>";
+                      echo  "<ul class='nav child_menu'>";
+                
+                      echo "<li><a href='ViewDepotRequests.php'>View Depot Requests</a></li>";
+                      echo "</ul>";
+                      echo "</li>";
+                    }
+                  ?>
+
                   <?php
                     if($user == 'CFO' or $user == 'MKT' or $user == 'SALES' or $user == 'Superuser'){
                       echo "<li><a><i class='fa fa-user'></i> Clients <span class='fa fa-chevron-down'></span></a>";
@@ -238,13 +254,13 @@ if(!(isset($_SESSION['usertype']))){
 
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="Settings">
+              <a data-toggle="tooltip" data-placement="top" title="Settings" href = "InputPage.php">
                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+              <a data-toggle="tooltip" data-placement="top" title="">
                 <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Lock">
+              <a data-toggle="tooltip" data-placement="top" title="">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
               <a data-toggle="tooltip" data-placement="top" title="Logout" href="logout.php">

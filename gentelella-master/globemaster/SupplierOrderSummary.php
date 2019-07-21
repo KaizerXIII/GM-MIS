@@ -48,6 +48,14 @@
 
               <div class="clearfix"></div>
               <div class="col-md-12 col-sm-12 col-xs-12">
+                <?php
+                  if($user == "CEO")
+                  {
+                ?>
+              <a href = "SupplierOrderForm.php"><button type="button" class="btn btn-success btn-lg"><i class="fa fa-plus"></i> New Supplier Order</button></a>
+              <?php
+                  }
+              ?>
                 <div class="x_panel">
                   <div class="x_content">
                     <!-- <p class="text-muted font-13 m-b-30">
@@ -100,7 +108,7 @@
                             <td align = "center"><button type="button" class="btn btn-round btn-primary btn-xs" disabled>Shipping</button></td>
                           <?php
                             }
-                            else if($row['supply_order_status'] == "Arrived")
+                            else if($row['supply_order_status'] == "Arrived" || $row['supply_order_status'] == "Receiving")
                             {
                           ?>
                             <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Delivered</button></td>

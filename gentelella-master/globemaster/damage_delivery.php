@@ -98,7 +98,7 @@
                            
                             </select>
                         </div>
-                        <h2><span id = "stocks" >Selected Item Qty: </span></h2>
+                        <h2><span id = "stocks" >Ordered Quantity: </span></h2>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Damaged Product Quantity <span class="required">*</span>
@@ -116,6 +116,8 @@
                         <div class="col-md-4 col-sm-6 col-xs-12">
                           <button type="button" id ="replacement_btn" onclick="revertdisable();" class="btn btn-round btn-primary" >Replenish</button>
                           <button type="button" id ="replaceitem" class="btn btn-round btn-warning" onclick="showreplace();">Replace</button>
+                          <!-- will only show when item to be replenished has no stock -->
+                          <button type="button" id ="notifySales" class="btn btn-round btn-danger">Notify Sales</button>
                         </div>
                       </div>
                       <!-- FOR REPLACE ITEM -->
@@ -279,7 +281,7 @@
               "max": $(this).val()         // values (or variables) here
             });
 
-            $("#stocks").text("Selected Item Qty: " + $(this).val());  //Set the current stocks of the items in dropdown
+            $("#stocks").text("Ordered Quantity: " + $(this).val());  //Set the current stocks of the items in dropdown
         });
 
     </script> <!-- Adds the max value based on ordered item-->
@@ -316,7 +318,7 @@
 
             $("#damaged_item_qty").val("");  //Resets input for qty
 
-            $("#stocks").text("Selected Item Qty: " + $("#select_dmg_item :selected").val() );
+            $("#stocks").text("Ordered Quantity: " + $("#select_dmg_item :selected").val() );
           }
           else
           {
