@@ -426,6 +426,19 @@
     $truckID = array();
     $destinationID = array();
     $truckcap = array();
+
+    $TRUCK_PLATE_FROM_TABLE = array();
+    $TRUCK_STATIC_CAP = array();
+
+    $SQL_GET_TRUCK_PLATE = "SELECT * FROM trucktable";
+    $RESULT_GET_TP=mysqli_query($dbc,$SQL_GET_TRUCK_PLATE);
+    while($ROW_RESULT_GET_TP=mysqli_fetch_array($RESULT_GET_TP,MYSQLI_ASSOC))
+    { 
+      $TRUCK_PLATE_FROM_TABLE[] = $ROW_RESULT_GET_TP['truckplate'];
+      $TRUCK_STATIC_CAP[] = $ROW_RESULT_GET_TP['weightCap'];
+    }
+
+
     $sql1 = "SELECT * FROM destination
     JOIN trucktable ON trucktable.truckID = destination.truckID
     join driver ON driver.truckID = trucktable.truckID;";
@@ -490,9 +503,14 @@
     echo "var current_truck_cap_PHP = ".json_encode($DATE_TRUCK_CAP).";";
     echo "var bulk_date_PHP = ".json_encode($BULK_DATE).";";
     echo "var bulk_truck_plate_PHP = ".json_encode($BULK_TRUCK_PLATE).";";
+
+    echo "var TP_FROM_TABLE = ".json_encode($TRUCK_PLATE_FROM_TABLE).";";
+    echo "var STATIC_CAP = ".json_encode($TRUCK_STATIC_CAP).";";
+    
                                                                      
 ?> //PHP END                        
 </script> <!-- Script to add Order Details from DB with PHP inside -->
+
 <script>
 var dropdown = document.getElementById("orderNumberDropdown");
 var table = document.getElementById("datatable");
@@ -514,21 +532,13 @@ var table = document.getElementById("datatable");
           var d = FORMATTED_DELIV_DATE; //Converts to Num;
           var truck_coding = parseInt($('#truckPlate').val().slice(-1)); //Gets the last digit of truck plate
           var onchange = "On Change";
-          
+          console.log("Day Number: "+ d);
+          console.log("Truck Number: "+ truck_coding);
           var code = coding(myDate.getDay(),truck_coding,onchange);
           if(code == null)
           {
-            console.log("Coding NEXT Day: "+FORMATTED_DELIV_DATE);
+           
             $('#deliveryDate').attr("value", FORMATTED_DELIV_DATE);
-          }
-          else
-          {
-            console.log("Coding NEXT Day: "+code);
-            $('#deliveryDate').attr("value", code);
-            $('#deliveryDate').val($('#deliveryDate').attr('value'));
-          }
-         
-
             for(var q = 0; q < bulk_date_PHP.length; q++)
             {
               // console.log("Deliv Date: "+ FORMATTED_DELIV_DATE);
@@ -537,12 +547,40 @@ var table = document.getElementById("datatable");
               {
                 
                 truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
+                break;
               }
               else
               {
-                truckweightBox.value = TruckCapFromPHP[q] + ' KG';
+               
+                $.each(TP_FROM_TABLE , function(index, val){ 
+                  
+
+                  if(val.trim() == $('#truckPlate').val().trim())
+                  {
+                  //   console.log('Foreach Value = '+val);
+                  // // console.log('Foreach Index = '+index);
+                  // console.log('Loop Value = '+bulk_truck_plate_PHP[q]);
+                  // console.log('Static Cap: '+ STATIC_CAP[index]+' at Index: '+index);
+                    truckweightBox.value = STATIC_CAP[index] + ' KG';
+                  }
+                });
+                
               }
-            }
+            } //End for
+            
+          }
+          else
+          {
+            
+            $('#deliveryDate').attr("value", code);
+            $('#deliveryDate').val($('#deliveryDate').attr('value'));
+            truckweightBox.value ="";
+            console.log($('#deliveryDate').attr('value'));
+           
+          }
+         
+
+            
       })
     dropdown.onchange = function(){
         table.innerHTML=table.oldHTML; //returns to the first state of the Table
@@ -579,20 +617,28 @@ var table = document.getElementById("datatable");
                 if("<?php echo date("l", strtotime("+3days")); ?>"=="Sunday")
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+4days"));?>");
-                 
-                  for(var q = 0; q < bulk_date_PHP.length; q++)
-                  {                 
-                    if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
-                    {                    
-                      truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
-                      break;
-                    }
-                    else
-                    {
-                      truckweightBox.value = TruckCapFromPHP[q] + ' KG';
-                    }
-                  }
+
+                  var status = "OnLoad";
+                  var OnloadDate = $("#deliveryDate").attr('value');
+                  var d = new Date($("#deliveryDate").attr('value')); //Converts to Num;
+                  var truck_coding = parseInt($('#truckPlate').val().slice(-1)); //Gets the last digit of truck plate
                   
+                  var code = coding(d.getDay(),truck_coding,status);
+                  if(code == null)
+                  {
+                   
+                    $('#deliveryDate').attr("value", OnloadDate);
+                    set_weight();
+                  }
+                  else
+                  {
+                    
+                    alert("Truck Coding on Selected Date, Moving to Next Day");
+                    $('#deliveryDate').attr("value", code);
+                    $('#deliveryDate').val($('#deliveryDate').attr('value'));
+                    set_weight();
+                   
+                  }                                                    
                 }
                 else
                 {
@@ -606,29 +652,22 @@ var table = document.getElementById("datatable");
                   var code = coding(d.getDay(),truck_coding,status);
                   if(code == null)
                   {
-                    console.log("OnLoad Date: "+OnloadDate);
+                    
                     $('#deliveryDate').attr("value", OnloadDate);
+                    set_weight();
                   }
                   else
                   {
-                    console.log("Coding NEXT Day: "+code);
+                   
                     alert("Truck Coding on Selected Date, Moving to Next Day");
                     $('#deliveryDate').attr("value", code);
                     $('#deliveryDate').val($('#deliveryDate').attr('value'));
+
+                    set_weight();
+
                   }
 
-                  for(var q = 0; q < bulk_date_PHP.length; q++)
-                  {                                  
-                    if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
-                    {                    
-                      truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
-                      break;
-                    }
-                    else
-                    {
-                      truckweightBox.value = TruckCapFromPHP[q] + ' KG';
-                    }
-                  }
+                  
                 }
                 
               
@@ -641,34 +680,56 @@ var table = document.getElementById("datatable");
                 if(date("l", strtotime("+6days"))=='Sunday')
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+7days"));?>");
-                  for(var q = 0; q < bulk_date_PHP.length; q++)
-                  {                 
-                    if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
-                    {                    
-                      truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
-                      break;
-                    }
-                    else
-                    {
-                      truckweightBox.value = TruckCapFromPHP[q] + ' KG';
-                    }
+
+                  var status = "OnLoad";
+                  var OnloadDate = $("#deliveryDate").attr('value');
+                  var d = new Date($("#deliveryDate").attr('value')); //Converts to Num;
+                  var truck_coding = parseInt($('#truckPlate').val().slice(-1)); //Gets the last digit of truck plate
+                  
+                  var code = coding(d.getDay(),truck_coding,status);
+                  if(code == null)
+                  {
+                    
+                    $('#deliveryDate').attr("value", OnloadDate);
+                    set_weight(); //Function below
                   }
+
+                  else
+                  {
+                   
+                    alert("Truck Coding on Selected Date, Moving to Next Day");
+                    $('#deliveryDate').attr("value", code);
+                    $('#deliveryDate').val($('#deliveryDate').attr('value'));
+                    set_weight();
+                  }
+
+                 
                 }
                 else
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+6days"));?>");
-                  for(var q = 0; q < bulk_date_PHP.length; q++)
-                  {                 
-                    if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
-                    {                    
-                      truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
-                      break;
-                    }
-                    else
-                    {
-                      truckweightBox.value = TruckCapFromPHP[q] + ' KG';
-                    }
+
+                  var status = "OnLoad";
+                  var OnloadDate = $("#deliveryDate").attr('value');
+                  var d = new Date($("#deliveryDate").attr('value')); //Converts to Num;
+                  var truck_coding = parseInt($('#truckPlate').val().slice(-1)); //Gets the last digit of truck plate
+                  
+                  var code = coding(d.getDay(),truck_coding,status);
+                  if(code == null)
+                  {
+                   
+                    $('#deliveryDate').attr("value", OnloadDate);
+                    set_weight();
                   }
+                  else
+                  {
+                   
+                    alert("Truck Coding on Selected Date, Moving to Next Day");
+                    $('#deliveryDate').attr("value", code);
+                    $('#deliveryDate').val($('#deliveryDate').attr('value'));
+                    set_weight();
+                   
+                  }               
                 } 
               
                 $("#current_or").text("Order Number: " + dropdown.value);
@@ -885,6 +946,29 @@ function coding(day_number, truck_code, status)
     
     return Formatted_Date;
   }
+}
+</script>
+
+<script>
+function set_weight()
+{
+  for(var q = 0; q < bulk_date_PHP.length; q++)
+    {                 
+      if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
+      {                    
+        truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
+        break;
+      }
+      else
+      {
+        $.each(TP_FROM_TABLE , function(index, val){                
+          if(val.trim() == $('#truckPlate').val().trim())
+          {                     
+            truckweightBox.value = STATIC_CAP[index] + ' KG';
+          }
+        });
+      }
+    }
 }
 </script>
 
