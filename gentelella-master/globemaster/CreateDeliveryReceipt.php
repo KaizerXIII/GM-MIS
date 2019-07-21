@@ -512,8 +512,24 @@ var table = document.getElementById("datatable");
           }
           FORMATTED_DELIV_DATE = year + '-' + month + '-' + day;
 
-          // console.log(FORMATTED_DELIV_DATE);
-      
+          var d = FORMATTED_DELIV_DATE; //Converts to Num;
+          var truck_coding = parseInt($('#truckPlate').val().slice(-1)); //Gets the last digit of truck plate
+          var onchange = "On Change";
+          
+          var code = coding(myDate.getDay(),truck_coding,onchange);
+          if(code == null)
+          {
+            console.log("Coding NEXT Day: "+FORMATTED_DELIV_DATE);
+            $('#deliveryDate').attr("value", FORMATTED_DELIV_DATE);
+          }
+          else
+          {
+            console.log("Coding NEXT Day: "+code);
+            $('#deliveryDate').attr("value", code);
+            $('#deliveryDate').val($('#deliveryDate').attr('value'));
+          }
+         
+
             for(var q = 0; q < bulk_date_PHP.length; q++)
             {
               // console.log("Deliv Date: "+ FORMATTED_DELIV_DATE);
@@ -564,6 +580,7 @@ var table = document.getElementById("datatable");
                 if("<?php echo date("l", strtotime("+3days")); ?>"=="Sunday")
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+4days"));?>");
+                 
                   for(var q = 0; q < bulk_date_PHP.length; q++)
                   {                 
                     if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
@@ -580,9 +597,28 @@ var table = document.getElementById("datatable");
                 }
                 else
                 {
-                 $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+3days"));?>"); 
+                  
+                  $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+3days"));?>"); 
+                  var status = "OnLoad";
+                  var OnloadDate = $("#deliveryDate").attr('value');
+                  var d = new Date($("#deliveryDate").attr('value')); //Converts to Num;
+                  var truck_coding = parseInt($('#truckPlate').val().slice(-1)); //Gets the last digit of truck plate
+                  
+                  var code = coding(d.getDay(),truck_coding,status);
+                  if(code == null)
+                  {
+                    console.log("OnLoad Date: "+OnloadDate);
+                    $('#deliveryDate').attr("value", OnloadDate);
+                  }
+                  else
+                  {
+                    console.log("Coding NEXT Day: "+code);
+                    alert("Truck Coding on Selected Date, Moving to Next Day");
+                    $('#deliveryDate').attr("value", code);
+                    $('#deliveryDate').val($('#deliveryDate').attr('value'));
+                  }
 
-                 for(var q = 0; q < bulk_date_PHP.length; q++)
+                  for(var q = 0; q < bulk_date_PHP.length; q++)
                   {                                  
                     if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
                     {                    
@@ -707,6 +743,150 @@ var table = document.getElementById("datatable");
         
       }
   })
+</script>
+<script>
+function coding(day_number, truck_code, status)
+{
+  if(day_number == 1 && (truck_code == 1 || truck_code == 2))
+  {
+    
+    if(status == "On Change")
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 2);
+    }
+    else
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 1);
+    }
+
+    var dd = get_date.getDate();
+    var mm = get_date.getMonth() + 1;
+    var y = get_date.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    var Formatted_Date = y + '-'+ mm + '-'+ dd;
+    
+    return Formatted_Date;
+  }
+  if(day_number == 2 && (truck_code == 3 || truck_code == 4))
+  {
+    
+    if(status == "On Change")
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 2);
+    }
+    else
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 1);
+    }
+
+    var dd = get_date.getDate();
+    var mm = get_date.getMonth() + 1;
+    var y = get_date.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    var Formatted_Date = y + '-'+ mm + '-'+ dd;
+    
+    return Formatted_Date;
+  }
+  if(day_number == 3 && (truck_code == 5 || truck_code == 6))
+  {
+    if(status == "On Change")
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 2);
+    }
+    else
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 1);
+    }
+
+    var dd = get_date.getDate();
+    var mm = get_date.getMonth() + 1;
+    var y = get_date.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    var Formatted_Date = y + '-'+ mm + '-'+ dd;
+    
+    return Formatted_Date;
+  }
+  if(day_number == 4 && (truck_code == 7 || truck_code == 8))
+  {
+    if(status == "On Change")
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 2);
+    }
+    else
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 1);
+    }
+    
+
+    var dd = get_date.getDate();
+    var mm = get_date.getMonth() + 1;
+    var y = get_date.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    var Formatted_Date = y + '-'+ mm + '-'+ dd;
+    
+    return Formatted_Date;
+  }
+  if(day_number == 5 && (truck_code == 9 || truck_code == 0))
+  {
+    
+    if(status == "On Change")
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 2);
+    }
+    else
+    {
+      var get_date = new Date($("#deliveryDate").attr('value'));
+      get_date.setDate(get_date.getDate() + 1);
+    }
+
+    var dd = get_date.getDate();
+    var mm = get_date.getMonth() + 1;
+    var y = get_date.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    var Formatted_Date = y + '-'+ mm + '-'+ dd;
+    
+    return Formatted_Date;
+  }
+}
 </script>
 
 

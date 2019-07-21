@@ -301,7 +301,8 @@
                               
                               foreach($TRUCK_ARRAY[$i] as $key=>$truck_array_entry){
                               
-                                  echo '<td align = right>'.$truck_array_entry.' KG </td>';                                                                
+                                  echo '<td align = right>'.$truck_array_entry.' KG </td>';   
+                                                                                          
                                                                             
                               }   
                                                                                                                   
