@@ -563,6 +563,18 @@ var table = document.getElementById("datatable");
                 if("<?php echo date("l", strtotime("+3days")); ?>"=="Sunday")
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+4days"));?>");
+                  for(var q = 0; q < bulk_date_PHP.length; q++)
+                  {                 
+                    if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
+                    {                    
+                      truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
+                      break;
+                    }
+                    else
+                    {
+                      truckweightBox.value = TruckCapFromPHP[q] + ' KG';
+                    }
+                  }
                   
                 }
                 else
@@ -570,12 +582,7 @@ var table = document.getElementById("datatable");
                  $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+3days"));?>"); 
 
                  for(var q = 0; q < bulk_date_PHP.length; q++)
-                  {                 
-                    console.log("Bulk Date = "+bulk_date_PHP[q]); 
-                    console.log("#Delive Date = "+$("#deliveryDate").attr('value'));
-                    console.log("Truck Plate PHP: "+ bulk_truck_plate_PHP[q]); 
-                    console.log("#Truck Plate: "+ $('#truckPlate').val());
-                   
+                  {                                  
                     if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
                     {                    
                       truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
@@ -598,10 +605,34 @@ var table = document.getElementById("datatable");
                 if(date("l", strtotime("+6days"))=='Sunday')
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+7days"));?>");
+                  for(var q = 0; q < bulk_date_PHP.length; q++)
+                  {                 
+                    if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
+                    {                    
+                      truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
+                      break;
+                    }
+                    else
+                    {
+                      truckweightBox.value = TruckCapFromPHP[q] + ' KG';
+                    }
+                  }
                 }
                 else
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+6days"));?>");
+                  for(var q = 0; q < bulk_date_PHP.length; q++)
+                  {                 
+                    if(bulk_date_PHP[q] == $("#deliveryDate").attr('value') && bulk_truck_plate_PHP[q] == $('#truckPlate').val())
+                    {                    
+                      truckweightBox.value = current_truck_cap_PHP[q] + ' KG';
+                      break;
+                    }
+                    else
+                    {
+                      truckweightBox.value = TruckCapFromPHP[q] + ' KG';
+                    }
+                  }
                 } 
               
                 $("#current_or").text("Order Number: " + dropdown.value);
