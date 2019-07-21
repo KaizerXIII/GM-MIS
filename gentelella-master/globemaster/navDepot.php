@@ -74,6 +74,17 @@ if(!(isset($_SESSION['usertype']))){
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <ul class="nav side-menu">
+
+                  <?php
+                    if($user == 'SALES' or $user == 'Superuser'){
+                      echo "<li><a><i class='fa fa-archive'></i> Inventory <span class='fa fa-chevron-down'></span></a>";
+                      echo  "<ul class='nav child_menu'>";
+                
+                      echo "<li><a href='DepotViewInventory.php'>View Tiles Inventory</a></li>";
+                      echo "</ul>";
+                      echo "</li>";
+                    }
+                  ?>    
                   <?php
                      if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
                   

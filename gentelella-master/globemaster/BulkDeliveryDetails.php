@@ -115,13 +115,25 @@
                                 
                             </div>
                             <?php
+                                $TRUCK_PLATE_ON_SESSION = $ROW_GET_BO['truck_assigned'];
 
+                                $SQL_GET_TRUCK_AVAILABILITY = "SELECT * FROM trucktable WHERE truckplate = '$TRUCK_PLATE_ON_SESSION';";
+                                $RESULT_TRUCK_AVAILABILITY = mysqli_query($dbc,$SQL_GET_TRUCK_AVAILABILITY);
+                                $ROW_TRUCK_AVAILABILITY = mysqli_fetch_array($RESULT_TRUCK_AVAILABILITY, MYSQLI_ASSOC);
+
+                                if($ROW_TRUCK_AVAILABILITY['truck_availability'] == "Available")
+                                {
                             ?>
-                            <font color = "red">Truck number ZCV-513 is out for delivery.</font> 
+                                <font color = "green">Truck number <?php echo $TRUCK_PLATE_ON_SESSION;?> is idle.</font>
                             <?php
-
+                                }
+                                elseif($ROW_TRUCK_AVAILABILITY['truck_availability'] == "Out for Delivery")
+                                {
                             ?>
-                            <font color = "green">Truck number ZCV-513 is idle.</font>
+                                <font color = "red">Truck number <?php echo $TRUCK_PLATE_ON_SESSION;?> is out for delivery.</font> 
+                            <?php
+                                }
+                            ?>
                             <div class="col-md-12 col-sm-12 col-xs-12" >
                             
                                 </div>
@@ -139,7 +151,20 @@
                                             $ROW_DELIVERY_STATUS = mysqli_fetch_array($RESULT_GET_DELIVERY_STATUS, MYSQLI_ASSOC);
                                         ?>
                                             <!-- <button type="button" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button>  -->
+                                            <?php
+                                                if($ROW_DELIVERY_STATUS['delivery_status'] == "Delivered")
+                                                {
+                                            ?>
+                                            <button type="button" id="finish_delivery" disabled = "disabled" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
+                                            <?php
+                                                }
+                                                else
+                                                {
+                                            ?>
                                             <button type="button" id="finish_delivery" size = "6" class="btn btn-round btn-info btn-md">Finish this Delivery</button> 
+                                            <?php
+                                                }
+                                            ?>
                                         </div>
                                         
                                     </div>
@@ -191,8 +216,20 @@
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                                        <button type="button" class="btn btn-primary btn-lg"  id = "deploy" value ="Deploy"><i class="fa fa-truck"></i> Deploy Truck</button> 
-                                        <button type="button" class="btn btn-success btn-lg" id = "return" value ="Return"><i class="fa fa-truck"></i> Truck has Returned</button> 
+                                        <?php
+                                            if($ROW_TRUCK_AVAILABILITY['truck_availability'] == "Available")
+                                            {
+                                        ?>
+                                            <button type="button" class="btn btn-primary btn-lg"  id = "deploy" value ="Deploy"><i class="fa fa-truck"></i> Deploy Truck</button>
+                                        <?php
+                                            }
+                                            elseif($ROW_TRUCK_AVAILABILITY['truck_availability'] == "Out for Delivery")
+                                            {
+                                        ?> 
+                                            <button type="button" class="btn btn-success btn-lg" id = "return" value ="Return"><i class="fa fa-truck"></i> Truck has Returned</button> 
+                                        <?php
+                                            }
+                                        ?>
                                         <!-- lagyan ng onclick enable disable -->
                                     </div>
                                     </div>
@@ -329,7 +366,8 @@ $('#deploy').on('click', function(e){
         },
         success: function(data)
         {
-            alert("Truck have been successfully Deployed!");            
+            alert("Truck have been successfully Deployed!");  
+            window.location.href = "BulkDeliveryDetails.php";          
         }//End Success
    
         }); // End ajax 
@@ -353,7 +391,8 @@ $('#return').on('click', function(e){
         },
         success: function(data)
         {
-            alert("Truck has Returned!");            
+            alert("Truck has Returned!");  
+            window.location.href ="BulkDeliveryDetails.php";          
         }//End Success
    
         }); // End ajax 

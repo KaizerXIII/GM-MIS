@@ -392,7 +392,7 @@
                                     echo '<td class = supply_qty'.$count.'>'.$row['supply_item_quantity'].'</td>';
                                     echo '<td>'.$row['supply_arrived_quantity'].'</td>';
                                     echo '<td align = "center">';
-                                    if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
+                                    if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
                                     {
                                       echo '<button type="button" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-smsupply" value = '.$count.'><i class = "fa fa-wrench"></i> Edit</button>';
                                     }
