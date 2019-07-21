@@ -52,7 +52,7 @@
                     <div class="col-md-12 col-sm-12 col-xs-12" >
                         <div class="x_panel" >
                             <div class="x_title">
-                                <h1>Edit Inventory - 
+                                <font color = "black"><h1>Edit Inventory - 
                                     <?php
                                      if(isset($_GET['sku_id'], $_GET['item_id']))
                                      {
@@ -67,7 +67,7 @@
                                         echo $_SESSION['getIDfromView']; 
                                      }
                                     ?>
-                                
+                                </h1></font>
                                 <div class="clearfix"></div>
                             </div> <!--END Xtitle-->
                            
@@ -267,6 +267,31 @@
                                                 <label class="control-label col-md-4 col-sm-4 col-xs-12">Discount Amount:</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="number" name ="discountamt" id = "discountamt" class="form-control" value = "" min = "1" max="30" placeholder= "%" oninput="validate(this)">
+                                                </div>
+                                            </div>
+
+                                            <div class="ln_solid"></div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12 col-sm-12 col-xs-12" align = "center">
+                                                <!--  -->
+                                                    <button type="button" class="btn btn-success" onclick = "updatediscountalert()" id = "updatediscount" name ="discountBtn" >Update</button>
+                                            </div> <!-- Col MD -->
+                                        </div> <!-- FormGRP -->
+                                  
+                                </div> <!--END Xpanel -->
+                            </div><!--END Col MD-->
+                            <div class="col-md-6 col-sm-6 col-xs-12" >                                  
+                                        <div class="x_panel" >
+
+                                            <center><font color = "red"><h3><i class="fa fa-fire"></i> Damages</h3></font></center>
+                                            <div class="ln_solid"></div>
+                                            <font color = "red">The damage input here are automatically tagged as environmental (e.g. decay, discoloration, etc.)</font>
+                                            <div class="form-group">
+                                                <br>
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Damaged Quantity:</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="number" name ="damageamt" id = "damageamt" class="form-control" value = "" min = "1" max="30" placeholder= "Input amount in pieces" oninput="validate(this)">
                                                 </div>
                                             </div>
 
