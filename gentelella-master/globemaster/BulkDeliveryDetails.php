@@ -134,11 +134,12 @@
                             <?php
                                 }
                             ?>
+                            <br><br>
                             <div class="col-md-12 col-sm-12 col-xs-12" >
                             
-                                </div>
+                            </div>
                             <form class="form-horizontal form-label-center" method="POST">                              
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 uniquedivA" id="dr_panel">
+                                <div class="col-md-10 col-sm-10 col-xs-12 col-md-offset-1 uniquedivA" id="dr_panel">
                                     <div class="x_panel" id = "dr_form">
                                     <div>
                                         <div class = "col-md-6">
@@ -151,44 +152,40 @@
                                     </div>
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Customer Name</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <label class="control-label col-md-3 col-sm-4 col-xs-12">Customer Name</label>
+                                        <div class="col-md-3 col-sm-6 col-xs-12">
                                             <input type="text" id = "drCusName" class="form-control" readonly="readonly" >
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Destination</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <label class="control-label col-md-3 col-sm-4 col-xs-12">Destination</label>
+                                        <div class="col-md-3 col-sm-6 col-xs-12">
                                             <input type="text" id = "drDestination" class="form-control" readonly="readonly" >
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Current Status</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <label class="control-label col-md-3 col-sm-4 col-xs-12">Current Status</label>
+                                        <div class="col-md-3 col-sm-6 col-xs-12">
                                             <input type="text" id = "drStatus" class="form-control" readonly="readonly">
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Expected Date</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id = "drexpectedDate" class="form-control" readonly="readonly" >
-                                        </div>
-                                    </div>
-                                    
 
-                                    
-                                    <br><br>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Total Weight</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <label class="control-label col-md-2 col-sm-4 col-xs-12">Total Weight</label>
+                                        <div class="col-md-3 col-sm-6 col-xs-6">
                                             <input   type="text" id = "drTotalWeight" class="form-control" readonly="readonly" style="text-align:right;">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Total Amount</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <label class="control-label col-md-3 col-sm-4 col-xs-12">Expected Date</label>
+                                        <div class="col-md-3 col-sm-6 col-xs-12">
+                                            <input type="text" id = "drexpectedDate" class="form-control" readonly="readonly" >
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                        <label class="control-label col-md-2 col-sm-4 col-xs-12">Total Amount</label>
+                                        <div class="col-md-3 col-sm-6 col-xs-6">
                                             <input   type="text" id = "drTotal" class="form-control" readonly="readonly" style="text-align:right;">
                                         </div>
+                                    </div>
                                     </div>
 
                                     </div>

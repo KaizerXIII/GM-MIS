@@ -73,13 +73,13 @@
                     <div class="clearfix"></div>
                   </div>
 
-                  IF TRUCK CANNOT HANDLE DELIVERY (remove this when backend is implemented) Disable submit button when truck is unavailable.
+                  <!-- IF TRUCK CANNOT HANDLE DELIVERY (remove this when backend is implemented) Disable submit button when truck is unavailable.
                   <br>
                   <font color = "red">The delivery truck cannot handle any more deliveries for this day. Please choose another delivery date.</font>
                   <br>
                   IF TRUCK IS ON CODING
                   <br>
-                  <font color = "red">The date selected is the truck's number coding date. Please choose another delivery date.</font>
+                  <font color = "red">The date selected is the truck's number coding date. Please choose another delivery date.</font> -->
 
                   <form class="form-horizontal form-label-center" method="POST">                              
                     <div class="col-md-6 col-sm-6 col-xs-12 " >
