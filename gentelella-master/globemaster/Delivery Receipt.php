@@ -35,10 +35,13 @@
 
     <style type="text/css">
 
+    .print-only{display:none;}
+
     @media print
     {
     .noprint {display:none;}
-    footer, header,.nav, #choose_btn, #go_back{ display:none; } /*Removes elements before print, use [#idname] to find ID and [.class] to find class */
+    footer, header,.nav, .noprint, #choose_btn, #go_back{ display:none; } /*Removes elements before print, use [#idname] to find ID and [.class] to find class */
+    .print-only{display:block;}
 
     }
     @page :footer {
@@ -47,13 +50,13 @@
 
     @media screen
     {
-    
     }
 
     </style>
 </head>
 
 <body class="nav-md">
+    <element class = "noprint">
     <div class="container body">
         <div class="main_container">
                     <?php
@@ -71,11 +74,11 @@
                     
 
                     <!--TABLE OF DETAILS FOR DELIVERY RECEIPT-->
-                    <div class="col-md-12 col-sm-12 col-xs-12" >
+                    <div class="col-md-12 col-sm-12 col-xs-12" id = "maindiv">
                         <div class="x_panel" id="printDR">
                             <div class="x_title">
                                 <div class="col-md-10 col-sm-10 col-xs-12">
-                                    <font color = "black"><h1>Delivery Receipt - [
+                                    <font color = "black" size = "6">Delivery Receipt - [
                                     <?php
                                         if(isset($_GET['deliver_number']))
                                         {
@@ -90,7 +93,7 @@
                                         
                                     ?>
 
-                                    ]</h1></font> 
+                                    ]</font> 
                                 </div>
                                 <div class="col-md-2 col-sm-2 col-xs-12" align="right">
                                          
@@ -404,7 +407,60 @@
 <!-- /footer content -->
 </div>
 </div>
+</element>
 
+<!-- Print div -->
+<div class = "col-md-12 col-sm-12 col-xs-12 print-only">
+    <center>
+        <h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBE MASTER TRADING</h1>
+        <b><h2>Delivery Receipt</h2></b>
+    </center>
+    <div class = "col-md-6 col-sm-6 col-xs-6">
+        <b>Customer Name: </b>Kenneth Wong
+        <br>
+        <b>Delivery Date: </b> 13, 2019
+        <br>
+        <b>Customer Address: </b> Ting St., Ongpin
+        <br><br>
+    </div>
+    <div class = "col-md-6 col-sm-6 col-xs-6" style = "text-align:right">
+        <b><?php echo "[" .$_SESSION['get_dr_number_from_deliveries']. "]"; ?></b>
+        <br>
+        <b>Delivered by:</b> Lito Sy
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Ordered Quantity</th>
+                <th>Price per Piece</th>
+                <th>Total Price per Item</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <th style = "text-align:right">Total Amount this Order: </th>
+                <td align = "right">12345.00</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class = "row" style = "text-align:right">
+    <br><br><br>
+    Received by: ____________________
+    <br><br><br>
+    Printed by: <?php echo $_SESSION['firstname']." ".$_SESSION['middlename']." ".$_SESSION['lastname'];?>
+    </div>
+</div>
 <!-- jQuery -->
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
@@ -677,7 +733,25 @@ echo '</script>';
         $this.val(parseFloat($this.val()).toFixed(2));
           
       }); //Sets the Decimal
-    </script>
+</script>
+
+<!-- heaader style -->
+<style>
+        
+        @font-face {
+        font-family: "Couture Bold";
+        src: url("css/fonts/couture-bld.otf");
+        }
+        
+        h1 {
+            font-family: 'COUTURE Bold', Arial, sans-serif;
+            font-weight:normal;
+            font-style:normal;
+            font-size: 50px;
+            color: #1D2B51;
+            }
+
+</style>   
 
 </body>
 

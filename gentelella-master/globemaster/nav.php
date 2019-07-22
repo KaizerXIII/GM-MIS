@@ -133,14 +133,15 @@ if(!(isset($_SESSION['usertype']))){
                   echo    "<li><a href='Deliveries.php'>View Delivery Receipts</a></li>";
                 }
                 if($user == 'SALES' or $user == 'Superuser'){
-                  if(date("Hi") < "1500")
+                  if(date("Hi") >= "0600" && date("Hi") < "1500")
                   {
                     echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
                   }
-                  elseif(date("Hi") >= "1500")
+                  else
                   {
                     echo    "<li><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
                   }
+                  echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
                 }
                   echo   "</ul>";
                   echo "</li>";

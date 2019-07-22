@@ -14,7 +14,8 @@ if(isset($_POST['login']))
     {
         $_SESSION["username"] = $row['username'];
         $_SESSION["usertype"] = $row["usertype_id"];
-        $_SESSION["firstname"] = $row["first_name"];
+		$_SESSION["firstname"] = $row["first_name"];
+		$_SESSION["middlename"] = $row["middle_name"];
         $_SESSION["lastname"] = $row["last_name"];
 
         header("Location: http://".$_SERVER['HTTP_HOST'].

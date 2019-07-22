@@ -391,62 +391,18 @@
                      
                     // echo '<div class="clearfix"></div>';  
                     // }
-                 
-                    if($user == 'SALES' || $user == 'CEO' || $user == 'MKT' || $user == 'Superuser')
-                    {
-                      //DEPOT REQUEST SUMMARY
-                    ?>
-                        
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="x_panel">
-                                    <h2><center><i class="fa fa-cubes"></i><b>  DEPOT REQUESTS SUMMARY</b></h2>  
-                                    <div class="clearfix"></div>
-                                  <div class="x_content">
+                                    // <!-- if($row['diff'] >= 50)
+                                    // {
+                                    //     echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-danger">Restock now</button></a></center></td>';
+                                    // }
+                                    // else
+                                    // {
+                                    //     echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-warning">Restock now</button></a></center></td>';
+                                    // }
+                                    // echo '</td>';
+                                    // echo '</tr>'; -->
 
-                                    <table class="table table-bordered">
-                                      <thead>
-                                        <tr>
-                                          <th>Request Number</th>
-                                          <th>Request Date</th>
-                                          <th>Expected Date</th>
-                                          <th>Action</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>';
-
-                      <?php 
-                            $SQL_GET_DEPOT_REQUEST = "SELECT * FROM depot_request";
-                            $RESULT_GET_DEPOT_REQUEST=mysqli_query($dbc,$SQL_GET_DEPOT_REQUEST);
-                            while($ROW_DEPOT_REQUEST=mysqli_fetch_array($RESULT_GET_DEPOT_REQUEST,MYSQLI_ASSOC))
-                            {
-                      ?>
-                                    <tr>
-                                      <td><?php echo $ROW_DEPOT_REQUEST['depot_request_id']; ?></td>
-                                      <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_request_date'])); ?></td>
-                                      <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_expected_date'])); ?></td>
-                                      <td align = "center"><i class = "fa fa-wrench"></i></td>
-                                    </tr>
-                      <?php      
-                            } 
-                      ?>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                                    <!-- if($row['diff'] >= 50)
-                                    {
-                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-danger">Restock now</button></a></center></td>';
-                                    }
-                                    else
-                                    {
-                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-warning">Restock now</button></a></center></td>';
-                                    }
-                                    echo '</td>';
-                                    echo '</tr>'; -->
-
-                  <?php
-                    }
+                    
                  
                     if($user == 'CFO' || $user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
                     {
