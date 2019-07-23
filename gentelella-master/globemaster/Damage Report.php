@@ -365,8 +365,9 @@
       }
     </script>
 
-<script>  //Filter Table based on Warehouse                   
+<script>  //Filter Table based on Damage type               
       var get_select_value = document.getElementById("dmg_source");
+      var total_amt_label = document.getElementById('total_loss');
       get_select_value.onchange = function()
       {
         console.log(get_select_value.value); 
@@ -374,6 +375,17 @@
         
         getTable.columns(2).search(get_select_value.value).draw();
         //Get the col of table and searches IF it contains the [VALUE] inside () then draws the table accordingly 
+
+        var current_data_from_table = formatNumber(getTable.column(3,{'search': 'applied'}).data());  //Applies the searched version of the table to get the column data to sum the total Loss of the current report
+          var sum = 0;
+
+          for(var i = 0; i < current_data_from_table.length; i++)
+          {
+            sum = sum +parseFloat(current_data_from_table[i]);
+          }      
+         
+          total_amt_label.innerHTML = '<b><font color = "black" size = "5px">Current Report - Total Losses: [ ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+' ]</font></b>';
+          
       }                                                                          
 </script> 
   </body>
