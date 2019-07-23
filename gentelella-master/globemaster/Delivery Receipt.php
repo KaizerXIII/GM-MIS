@@ -470,16 +470,18 @@
 
 <script>
 $('#print_btn').on('click',function(e){
-    $('#print_customer_name').append($('#drCusName').val());
+
+    $('#print_customer_name').append($('#drCusName').val()); //Appends all necessary info based on the DR
     $('#print_deliv_date').append($('#drDate').val());
     $('#print_customer_address').append($('#drDestination').val());
     $('#print_deliver_name').append($('#delivery_person').val());
+
     $('#datatable tbody').each(function(e){
         console.log($(this).html());
-        $('#print_table').append($(this).html());
+        $('#print_table').append($(this).html()); //Appends the value of the items table to the print table
        
     })
-    $('#print_table').append("<tr><td></td><td></td><th style = text-align:right>Total Amount this Order: </th><td align = right>"+$('#drTotal').val()+"</td></tr>");
+    $('#print_table').append("<tr><td></td><td></td><th style = text-align:right>Total Amount this Order: </th><td align = right>"+$('#drTotal').val()+"</td></tr>"); //Appends the Total after all the items are loaded to avoid duplicate  <TR>
 })
 </script>
 <!-- jQuery -->
