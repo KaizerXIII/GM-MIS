@@ -250,33 +250,33 @@
         dmg_name.push($(this).find('td:first').text());
         orig_qty.push($(this).find('td:first').attr('orig_qty'));
         dmg_qty.push($(this).find('td:nth-child(2)').find('input').val());
-        console.log($(this).find('td:first').attr('orig_qty'));
+        console.log($(this).find('td:first').text());
        
     });
-        // if(confirm("Confirm Damages and Restock Items?"))
-        // {
-        //     request = $.ajax({
-        //     url: "ajax/dmg_type_supplier.php",
-        //     type: "POST",
-        //     data: {
-        //     post_item_name: selected_item_name,
-        //     post_item_qty: $('#arrived').val(),
-        //     post_item_supplier: supp_name,
-        //     post_supply_OR:                    
-        //     },
-        //     success: function(data, textStatus)
-        //     {
-        //         alert("Update Successful!");
-        //         window.location.href = "SupplierOrderDetails.php";           
-        //     }//End Scucess
+        if(confirm("Confirm Damages and Restock Items?"))
+        {
+            request = $.ajax({
+            url: "ajax/dmg_type_supplier.php",
+            type: "POST",
+            data: {
+            post_dmg_name: dmg_name,
+            post_dmg_qty: $('#arrived').val(),
+            post_orig_qty: supp_name,
+            post_supply_OR:                    
+            },
+            success: function(data, textStatus)
+            {
+                alert("Update Successful!");
+                // window.location.href = "SupplierOrderDetails.php";           
+            }//End Scucess
             
-        //     }); // End ajax  
-        // }
-        // else
-        // {
-        //     alert("Action: Cancelled");
+            }); // End ajax  
+        }
+        else
+        {
+            alert("Action: Cancelled");
             
-        // }
+        }
     })
 </script>
 
