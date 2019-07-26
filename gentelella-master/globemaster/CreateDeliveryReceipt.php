@@ -246,7 +246,7 @@
                          <div class="row" >
                            <div class = "col-md-12" align = "center">
                              <!-- "data:image/jpg;base64,'. base64_encode($BLOB[$i]).'" -->
-                              <img src = "https://s7d4.scene7.com/is/image/roomandboard/?layer=0&size=498,300&scl=1&src=996120_wood_W&layer=comp&$prodzoom0$"  border-style = "border-width:3px;"style = "height:20vh; width:15vw">
+                              <img id = "fab_img" src = " https://s7d4.scene7.com/is/image/roomandboard/?layer=0&size=498,300&scl=1&src=996120_wood_W&layer=comp&$prodzoom0$"  border-style = "border-width:3px;"style = "height:20vh; width:15vw">
                            </div>
                             <div class="col-md-12 col-sm-12 col-xs-12"  >
                               <br>
@@ -451,16 +451,6 @@
         $driverLastNameFromHTML[]  = $row1['driverLastName'];
         $truckcap[] = $row1['weightCap'];
     }
-
-    for($i = 0; $i < sizeof($orderNumber); $i++)
-    {
-      $SQL_GET_FAB_DESC = "SELECT * FROM joborderfabrication WHERE order_number = '$orderNumber[$i]'";
-      $RESULT_GET_FAB_DESC = mysqli_query($dbc,$SQL_GET_FAB_DESC);
-      $ROW_RESULT_GET_FAB_DESC = mysqli_fetch_array($RESULT_GET_FAB_DESC,MYSQLI_ASSOC);
-
-      $fab_desc[] =  $ROW_RESULT_GET_FAB_DESC['fab_description'];
-    }
-
     $BULK_DATE = array();
     $DATE_TRUCK_CAP = array();
     $BULK_TRUCK_PLATE = array();
@@ -475,7 +465,7 @@
       $BULK_TRUCK_PLATE[] = $ROW_RESULT_BULK_INFO['truck_assigned']; 
     }
 
-    // echo "console.log(".$BULK_DATE[0].");";
+    // echo "alert(".$FAB_IMG.");";
     echo "var itemNameFromPHP = ".json_encode($itemName).";"; 
     echo "var cusNameFromPHP = ".json_encode($customerName).";"; 
     echo "var orderNumFromPHP = ".json_encode($orderNumber).";";
@@ -497,7 +487,8 @@
     echo "var driverFirstNameFromPHP = ".json_encode($driverFirstNameFromHTML).";";
     echo "var driverLastNameFromPHP = ".json_encode($driverLastNameFromHTML).";";
 
-    echo "var fabdescFromPHP = ".json_encode($fab_desc).";";
+   
+    
     echo "var client_address_PHP = ".json_encode($client_address).";";
 
     echo "var current_truck_cap_PHP = ".json_encode($DATE_TRUCK_CAP).";";
@@ -507,7 +498,7 @@
     echo "var TP_FROM_TABLE = ".json_encode($TRUCK_PLATE_FROM_TABLE).";";
     echo "var STATIC_CAP = ".json_encode($TRUCK_STATIC_CAP).";";
     
-                                                                     
+  //  echo "$('#fab_img').attr('src', 'data:image/jpg;base64,".base64_encode($FAB_IMG)."');";                                                                    
 ?> //PHP END                        
 </script> <!-- Script to add Order Details from DB with PHP inside -->
 
@@ -595,7 +586,9 @@ var table = document.getElementById("datatable");
               textBox.value = cusNameFromPHP[i];               
               totalPriceBox.value = '₱ '+ totalNumFromPHP[i];
               ExpectedDateBox.value = expectedDateFromPHP[i];
-              locationBox.value = client_address_PHP[i] + ' - ' + locationFromPHP[i]; 
+              locationBox.value = client_address_PHP[i] + ' - ' + locationFromPHP[i];
+
+              
 
             // Added total weight
             // echo  " totalweightBox.value = '400' + 'kg'";
@@ -669,8 +662,27 @@ var table = document.getElementById("datatable");
              else
              {  
                 $("#item_fab").show();
+
+                request = $.ajax({
+                  url: "ajax/get_deliv_img.php",
+                  type: "POST",
+                  data: {
+                    post_or_number: dropdown.value                     
+                  },                 
+                  dataType: 'json',
+                  success: function(data)
+                  {
+                    $("#current_or").text("Order Number: " + data[0]);
+                    $("#fab_status").text("Current Status: Finished Fabrication" );
+                    $("#description").text("Description: " + data[1] );
+                    $('#fab_img').attr('src', "data:image/jpg;base64, "+data[2]+"");
+                    
+                  }//End Scucess                   
+                }); // End ajax     
+
+               
                 
-                if(date("l", strtotime("+6days"))=='Sunday')
+                if("<?php echo date("l", strtotime("+6days")); ?>"=="Sunday")
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+7days"));?>");
 
@@ -725,9 +737,7 @@ var table = document.getElementById("datatable");
                   }               
                 } 
               
-                $("#current_or").text("Order Number: " + dropdown.value);
-                $("#fab_status").text("Current Status: " + fabricationStatusFromPHP[i]);
-                $("#description").text("Description: " + fabdescFromPHP[i]);
+              
               } //END ELSE
 
             var newRow = document.getElementById('datatable').insertRow();

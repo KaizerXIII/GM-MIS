@@ -262,7 +262,7 @@
                         <label class="control-label col-md-5 col-sm-5 col-xs-12">Enter Fabrication Cost: ₱<span class="required">*</span>
                         </label>
                          <div class="col-md-3 col-sm-3 col-xs-12">
-                          <input type="number" id = "fab_cost" name="fab_cost"  required="required" class="form-control col-md-7 col-xs-12" step="any" min="0" max ="99999.99" oninput="validate(this)">
+                          <input style="text-align:right" readonly="readonly" type="number" id = "fab_cost" name="fab_cost"  required="required" class="form-control col-md-7 col-xs-12" step="any" min="0" max ="99999.99" oninput="validate(this)">
                         </div>
                       </div>
                       <br>
@@ -291,7 +291,7 @@
                         <label class="control-label col-md-5 col-sm-5 col-xs-12">Total Amount: ₱<span class="required">*</span>
                         </label>
                          <div class="col-md-3 col-sm-3 col-xs-12">
-                          <input type="number" name="total_amount"  id = "total_amount" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
+                          <input style="text-align:right" type="number" name="total_amount"  id = "total_amount" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                 </div>
@@ -726,10 +726,13 @@
       var fab_total = document.getElementById("total_amount");
       var getTotal = localStorage.getItem("settotal").replace("₱ ", "");
 
-      console.log(parseFloat(getTotal));
+      var f_cost = parseFloat($('#item_price').val().replace("₱ ", "")) * 0.1;
+      $('#fab_cost').val(f_cost.toFixed(2));
 
-      fab_total.innerHTML = parseFloat(getTotal);
-      fab_total.value =parseFloat(getTotal);
+      console.log(parseFloat(getTotal));
+      var total = parseFloat(getTotal) + f_cost;
+      // fab_total.innerHTML = parseFloat(getTotal);
+      fab_total.value = total.toFixed(2);
       
     }     
     </script>
