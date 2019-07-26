@@ -1170,7 +1170,6 @@ function nextpageNOFabrication()
 
     function setLoanDown()
     {
-<<<<<<< HEAD
         if(paymentID.value == "1")
         {
             loanpayment.disabled = "true";
@@ -1183,17 +1182,6 @@ function nextpageNOFabrication()
         {
             loanpayment.disabled = false;
             console.log("a");
-=======
-        if(paymentID.value = "Loan")
-        {
-            loanpayment.disabled = "false";
-            paymentID.value = "Loan";
-        }
-        else
-        {
-            loanpayment.disabled = "true";
-            paymentID.value = ""
->>>>>>> e8ed7aa9fdf7239f358a1c89f741d0cc1fc1dec8
         }
         // Not sure what to to with this, paki check nalang mamats.
     }
