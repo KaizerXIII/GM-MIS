@@ -1152,18 +1152,37 @@ function nextpageNOFabrication()
     var loanpayment = document.getElementById("loanpayment");
     var paymentID = document.getElementById("paymentID");
 
+    // $('#paymentID').on('change',function(e)
+    // {    
+    //     if(paymentID.value == "1")
+    //     {
+    //         loanpayment.disabled = "true";
+    //     }
+    //     else if(paymentID.value == "2")
+    //     {
+    //         loanpayment.disabled = "true";
+    //     }
+    //     else if(paymentID.value == "3")
+    //     {
+    //         loanpayment.disabled = "false";
+    //     }
+    // })
+
     function setLoanDown()
     {
-        // if(paymentID.value = "Loan")
-        // {
-        //     loanpayment.disabled = "false";
-        //     paymentID.value = "Loan";
-        // }
-        // else
-        // {
-        //     loanpayment.disabled = "true";
-        //     paymentID.value = ""
-        // }
+        if(paymentID.value == "1")
+        {
+            loanpayment.disabled = "true";
+        }
+        else if(paymentID.value == "2")
+        {
+            loanpayment.disabled = "true";
+        }
+        else if(paymentID.value == "3")
+        {
+            loanpayment.disabled = false;
+            console.log("a");
+        }
         // Not sure what to to with this, paki check nalang mamats.
     }
 </script>
