@@ -29,6 +29,9 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- JQUERY Required Scripts -->
+        
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
 </head>
 
 <body class="nav-md">
@@ -291,7 +294,7 @@
                                                 <br>
                                                 <label class="control-label col-md-4 col-sm-4 col-xs-12">Damaged Quantity:</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="number" name ="damageamt" id = "damageamt" class="form-control" value = "" min = "1" max="30" placeholder= "Input amount in pieces" oninput="validate(this)">
+                                                    <input type="number"  id = "damage_qty" class="form-control" value = "" min = "1" max="30" placeholder= "Input amount in pieces" oninput="validate(this)">
                                                 </div>
                                             </div>
 
@@ -300,7 +303,7 @@
                                             <div class="form-group">
                                                 <div class="col-md-12 col-sm-12 col-xs-12" align = "center">
                                                 <!--  -->
-                                                    <button type="button" class="btn btn-success" onclick = "updatediscountalert()" id = "updatediscount" name ="discountBtn" >Update</button>
+                                                    <button type="button" class="btn btn-success" id = "update_dmg">Update</button>
                                             </div> <!-- Col MD -->
                                         </div> <!-- FormGRP -->
                                   
@@ -531,84 +534,84 @@
 ?>
 
 <script>
-    var confirmButton = document.getElementById('updatedmg'); 
-    var itemNameInEditInventory = document.getElementById('sku_id');
-    var itemPriceInEditInventory = document.getElementById('item_price');
-    var damagePercentage = document.getElementById('percentdmg');
-    var priceEachBox = document.getElementById('priceeach');
-    var dmgQtyBox = document.getElementById('dmgqty');
-    var totalLossBox = document.getElementById('totalloss');
+    // var confirmButton = document.getElementById('updatedmg'); 
+    // var itemNameInEditInventory = document.getElementById('sku_id');
+    // var itemPriceInEditInventory = document.getElementById('item_price');
+    // var damagePercentage = document.getElementById('percentdmg');
+    // var priceEachBox = document.getElementById('priceeach');
+    // var dmgQtyBox = document.getElementById('dmgqty');
+    // var totalLossBox = document.getElementById('totalloss');
     
     
-    damagePercentage.onkeyup = function()
-    {
+    // damagePercentage.onkeyup = function()
+    // {
         
-        var inputValue = damagePercentage.value;    
-        var calculateDamagePrice = inputValue / 100;
-        var priceEach = itemPriceInEditInventory.value * calculateDamagePrice;
-        var totalLoss = dmgQtyBox.value * priceEach;
+    //     var inputValue = damagePercentage.value;    
+    //     var calculateDamagePrice = inputValue / 100;
+    //     var priceEach = itemPriceInEditInventory.value * calculateDamagePrice;
+    //     var totalLoss = dmgQtyBox.value * priceEach;
        
-        priceEachBox.innerHTML = priceEach.toFixed(2)
-        totalLossBox.innerHTML = totalLoss.toFixed(2);
-        priceEachBox.value = priceEach.toFixed(2); 
-        totalLossBox.value = totalLoss.toFixed(2);
-    }
+    //     priceEachBox.innerHTML = priceEach.toFixed(2)
+    //     totalLossBox.innerHTML = totalLoss.toFixed(2);
+    //     priceEachBox.value = priceEach.toFixed(2); 
+    //     totalLossBox.value = totalLoss.toFixed(2);
+    // }
     
-    confirmButton.onclick = function() 
-    {  
-        var inputValue = damagePercentage.value;    
+    // confirmButton.onclick = function() 
+    // {  
+    //     var inputValue = damagePercentage.value;    
    
-    }
+    // }
 </script>
 <script>
     
-    var update_button = document.getElementById('updatedmg');
-    var input_damage_qty = document.getElementById('dmgqty');
-    var input_damage_percent = document.getElementById('percentdmg');
-    var input_damage_price = document.getElementById('priceeach');
-    var input_damage_total = document.getElementById('totalloss');
+    // var update_button = document.getElementById('updatedmg');
+    // var input_damage_qty = document.getElementById('dmgqty');
+    // var input_damage_percent = document.getElementById('percentdmg');
+    // var input_damage_price = document.getElementById('priceeach');
+    // var input_damage_total = document.getElementById('totalloss');
     
-    update_button.onclick = function()
-    {
-        DoAjax();
+    // update_button.onclick = function()
+    // {
+    //     DoAjax();
         
-        var newName = itemNameInEditInventory.value + damagePercentage.value;
-        if(input_damage_qty.length == 0)
-        {
-            alert("No Input Found");
-        }
-        else
-        {       
-            var newRow = document.getElementById('damageTable').insertRow();                       
-            newRow.innerHTML = "<tr> <td>"+ newName+ "</td> <td>" + dmgQtyBox.value+ "</td> </tr>";   
+    //     var newName = itemNameInEditInventory.value + damagePercentage.value;
+    //     if(input_damage_qty.length == 0)
+    //     {
+    //         alert("No Input Found");
+    //     }
+    //     else
+    //     {       
+    //         var newRow = document.getElementById('damageTable').insertRow();                       
+    //         newRow.innerHTML = "<tr> <td>"+ newName+ "</td> <td>" + dmgQtyBox.value+ "</td> </tr>";   
             
-            input_damage_qty.value = "";
-            input_damage_percent.value = "";
-            input_damage_price.value = "";
-            input_damage_total.value = "";       
-        }
+    //         input_damage_qty.value = "";
+    //         input_damage_percent.value = "";
+    //         input_damage_price.value = "";
+    //         input_damage_total.value = "";       
+    //     }
         
        
-     } //End function
-     function DoAjax()
-     {
-        request = $.ajax({
-        url: "ajax/insert_dmg_and_usable_to_db.php",
-        type: "POST",
-            data:{post_damage_qty: input_damage_qty.value, //Never forget to get the Value from the <INPUTS>
-                post_damage_percent: input_damage_percent.value,
-                post_damage_price: input_damage_price.value,
-                post_damage_total: input_damage_total.value,
-                post_damage_item: itemNameInEditInventory.value
-            },
-            success: function(data)
-            {
-                console.log(data);
-                alert(data);   
-            }//End Scucess        
-        }); // End ajax
+    //  } //End function
+    //  function DoAjax()
+    //  {
+    //     request = $.ajax({
+    //     url: "ajax/insert_dmg_and_usable_to_db.php",
+    //     type: "POST",
+    //         data:{post_damage_qty: input_damage_qty.value, //Never forget to get the Value from the <INPUTS>
+    //             post_damage_percent: input_damage_percent.value,
+    //             post_damage_price: input_damage_price.value,
+    //             post_damage_total: input_damage_total.value,
+    //             post_damage_item: itemNameInEditInventory.value
+    //         },
+    //         success: function(data)
+    //         {
+    //             console.log(data);
+    //             alert(data);   
+    //         }//End Scucess        
+    //     }); // End ajax
       
-     }
+    //  }
 </script>
 
 <script type="text/javascript">
@@ -725,41 +728,41 @@
 </script>
 
 <script>
-    // damaged section
-    var damagedbtn = document.getElementById("addDamage"); 
-    var damagedqty = document.getElementById("dmgqty"); 
-    var percentdmg = document.getElementById("percentdmg"); 
-    var priceeach = document.getElementById("priceeach"); 
-    var totalloss = document.getElementById("totalloss"); 
-    var updatedamaged = document.getElementById("updatedmg");  
-    var canceldamaged = document.getElementById("canceldmg"); 
-    damagedbtn.disabled = false;
-    damagedqty.disabled = true;
-    percentdmg.disabled = true;
-    priceeach.disabled = true;
-    totalloss.disabled = true;
-    updatedamaged.disabled = true;
-    canceldamaged.disabled = true;
-    function enableDamaged()
-    {
-        damagedbtn.disabled = true;
-        damagedqty.disabled = false;
-        percentdmg.disabled = false;
-        priceeach.disabled = false;
-        totalloss.disabled = false;
-        updatedamaged.disabled = false;
-        canceldamaged.disabled = false;
-    }
-    function cancelDamaged()
-    {
-        damagedbtn.disabled = false;
-        damagedqty.disabled = true;
-        percentdmg.disabled = true;
-        priceeach.disabled = true;
-        totalloss.disabled = true;
-        updatedamaged.disabled = true;
-        canceldamaged.disabled = true;
-    }
+    // // damaged section
+    // var damagedbtn = document.getElementById("addDamage"); 
+    // var damagedqty = document.getElementById("dmgqty"); 
+    // var percentdmg = document.getElementById("percentdmg"); 
+    // var priceeach = document.getElementById("priceeach"); 
+    // var totalloss = document.getElementById("totalloss"); 
+    // var updatedamaged = document.getElementById("updatedmg");  
+    // var canceldamaged = document.getElementById("canceldmg"); 
+    // damagedbtn.disabled = false;
+    // damagedqty.disabled = true;
+    // percentdmg.disabled = true;
+    // priceeach.disabled = true;
+    // totalloss.disabled = true;
+    // updatedamaged.disabled = true;
+    // canceldamaged.disabled = true;
+    // function enableDamaged()
+    // {
+    //     damagedbtn.disabled = true;
+    //     damagedqty.disabled = false;
+    //     percentdmg.disabled = false;
+    //     priceeach.disabled = false;
+    //     totalloss.disabled = false;
+    //     updatedamaged.disabled = false;
+    //     canceldamaged.disabled = false;
+    // }
+    // function cancelDamaged()
+    // {
+    //     damagedbtn.disabled = false;
+    //     damagedqty.disabled = true;
+    //     percentdmg.disabled = true;
+    //     priceeach.disabled = true;
+    //     totalloss.disabled = true;
+    //     updatedamaged.disabled = true;
+    //     canceldamaged.disabled = true;
+    // }
 </script>
 
 
@@ -849,7 +852,29 @@ var discount_amount = document.getElementById('discountamt');
             }); // End ajax     
         }
     }                                                                                                     
-</script> 
+</script>
+<script>
+$('#update_dmg').on('click', function(e){
+    if(confirm("Confirm Inventory Damages?"))
+        {
+            request = $.ajax({
+            url: "ajax/dmg_type_env.php",
+            type: "POST",
+                data:{                   
+                    post_item_id: "<?php echo $_SESSION['item_IDfromView']; ?>",
+                    post_dmg_qty: $('#damage_qty').val()
+                },
+                success: function(data)
+                {
+                    
+                    //window.location.href = "EditInventory.php";  
+                   
+                }//End Scucess
+                        
+            }); // End ajax     
+        }
+})
+</script>
 </body>
 
 </html>

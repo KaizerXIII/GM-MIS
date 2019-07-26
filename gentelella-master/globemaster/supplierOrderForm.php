@@ -35,7 +35,7 @@
         <!-- Custom Theme Style -->
         <link href="../build/css/custom.min.css" rel="stylesheet">
         <!-- JQUERY Required Scripts -->
-        <script type="text/javascript" src="js/script.js"></script>
+        
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
 
         <script>
@@ -322,6 +322,7 @@
                                                                 $supplierName = $rowSupplierName['supplier_name'];
 
                                                                 $ITEM_ID = $row['item_id'];
+
                                                                 $SQL_GET_2_MONTHS_DEMAND = "SELECT od.*,SUM(od.item_qty) as total_amount FROM
                                                                 order_details od JOIN orders o on od.ordernumber = o.ordernumber 
                                                                 where od.item_id = '$ITEM_ID' and (o.order_date 

@@ -62,9 +62,10 @@
                           <th>Order Number</th>
                           <th>Client Name</th>
                           <th>Order Date</th>
-                          <th>Delivery Date</th>
-                          <th>Total Amount</th>
+                          
+                          
                           <th>Payment Type</th>
+                          <th>Total Amount</th>
                           <th>Status</th>
                           <th></th>
                         </tr>
@@ -98,7 +99,7 @@
                                     echo '<td>';
                                     echo $row['order_date'];
                                     echo '</td>';
-                                    echo '<td>';
+                                    // echo '<td>';
                                     
                                     // if($row['delivery_date'] == null || $row['delivery_date'] == "")
                                     // {
@@ -106,14 +107,15 @@
                                     // }
                                     // else
                                     // {
-                                        echo $row['delivery_date'];
+                                        // echo $row['delivery_date'];
                                     // }
-                                    echo '</td>';
-                                    echo '<td>';
-                                    echo  'Php'." ".number_format($row['totalamt'], 2);
-                                    echo '</td>';
+                                    // echo '</td>';
+                                    
                                     echo '<td>';
                                     echo $paymentType;
+                                    echo '</td>';
+                                    echo '<td style="text-align:right;">';
+                                    echo  '₱ '." ".number_format($row['totalamt'], 2);
                                     echo '</td>';
                                     if ($row['order_status'] == "Delivered")
                                     {

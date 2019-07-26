@@ -201,7 +201,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Destination</label>
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Client Address</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id = "drDestination" class="form-control" readonly="readonly" >
                                         </div>
@@ -217,6 +217,11 @@
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Current Status</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id = "drStatus" class="form-control" readonly="readonly">
+                                        </div>
+                                    </div> <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Delivered By: </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" id = "delivery_person" class="form-control" readonly="readonly">
                                         </div>
                                     </div>
 
@@ -244,9 +249,10 @@
                                                     <table  id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
                                                         <thead>
                                                             <tr role="row">
-                                                                <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 263px;">Product</th>
-                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Pieces</th>
-                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Price per piece</th>
+                                                                <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending"  style="width: 263px;">Product</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  style="width: 197px;">Pieces</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  style="width: 197px;">Price per piece</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  style="width: 197px;">Subtotal Price</th>
                                                             </tr>
                                                         </thead>
                                                         <tr role='row' class='odd'>                                                                  
@@ -416,20 +422,20 @@
         <b><h2>Delivery Receipt</h2></b>
     </center>
     <div class = "col-md-6 col-sm-6 col-xs-6">
-        <b>Customer Name: </b>Kenneth Wong
+        <b>Customer Name: </b><span id = "print_customer_name"></span>
         <br>
-        <b>Delivery Date: </b> 13, 2019
+        <b>Delivery Date: </b><span id = "print_deliv_date"></span>
         <br>
-        <b>Customer Address: </b> Ting St., Ongpin
+        <b>Customer Address: </b><span id = "print_customer_address"></span>
         <br><br>
     </div>
     <div class = "col-md-6 col-sm-6 col-xs-6" style = "text-align:right">
         <b><?php echo "[" .$_SESSION['get_dr_number_from_deliveries']. "]"; ?></b>
         <br>
-        <b>Delivered by:</b> Lito Sy
+        <b>Delivered by: </b><span id = "print_deliver_name"></span>
     </div>
     <div>
-        <table class="table table-bordered">
+        <table id ="print_table" class="table table-bordered print_table">
             <thead>
             <tr>
                 <th>Item Name</th>
@@ -439,7 +445,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <!-- <tr>
                 <th scope="row">1</th>
                 <td>Mark</td>
                 <td>Otto</td>
@@ -450,7 +456,7 @@
                 <td></td>
                 <th style = "text-align:right">Total Amount this Order: </th>
                 <td align = "right">12345.00</td>
-            </tr>
+            </tr> -->
             </tbody>
         </table>
     </div>
@@ -461,6 +467,23 @@
     Printed by: <?php echo $_SESSION['firstname']." ".$_SESSION['middlename']." ".$_SESSION['lastname'];?>
     </div>
 </div>
+
+<script>
+$('#print_btn').on('click',function(e){
+
+    $('#print_customer_name').append($('#drCusName').val()); //Appends all necessary info based on the DR
+    $('#print_deliv_date').append($('#drDate').val());
+    $('#print_customer_address').append($('#drDestination').val());
+    $('#print_deliver_name').append($('#delivery_person').val());
+
+    $('#datatable tbody').each(function(e){
+        console.log($(this).html());
+        $('#print_table').append($(this).html()); //Appends the value of the items table to the print table
+       
+    })
+    $('#print_table').append("<tr><td></td><td></td><th style = text-align:right>Total Amount this Order: </th><td align = right>"+$('#drTotal').val()+"</td></tr>"); //Appends the Total after all the items are loaded to avoid duplicate  <TR>
+})
+</script>
 <!-- jQuery -->
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
@@ -518,6 +541,17 @@
 
 <!-- Custom Theme Scripts -->
 <script src="../build/js/custom.min.js"></script>
+<script>
+function addCommas(num) {
+    var str = num.toString().split('.');
+    if (str[0].length >= 4) {
+        //add comma every 3 digits befor decimal
+        str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    } 
+    
+    return str.join('.');
+}
+</script>
 
   <?php    
 
@@ -539,23 +573,34 @@ $SchedDelivDate = array();
 $SchedDelivDestination = array();
 $SchedDelivCusName = array();
 $SchedDelivStatus = array();
+$SchedDelivDriver = array();
 
+$FAB_STATUS;
+$PAYMENT_ID;
+$INSTALL_STATUS;
 
-$sqlToGetTableValue = "SELECT * FROM scheduledelivery";
+$RENEW_OR;
+
+$sqlToGetTableValue = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$DR_NUM_FROM_VIEW'";
 $resultofQuery2 = mysqli_query($dbc, $sqlToGetTableValue);
 while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
 {
     $OR_FROM_SCHED_DELIV_TABLE =  $rowofResult2['ordernumber'];
-
+    $RENEW_OR = $rowofResult2['ordernumber'];
     $QUERY_GET_OR_FROM_ORDERS = "SELECT * FROM orders
     WHERE ordernumber = '$OR_FROM_SCHED_DELIV_TABLE'";
     
     $RESULT_GET_OR = mysqli_query($dbc, $QUERY_GET_OR_FROM_ORDERS);
     while($ROW_RESULT_GET_OR=mysqli_fetch_array($RESULT_GET_OR,MYSQLI_ASSOC))
     {
+        
         $totalPrice[] = number_format(($ROW_RESULT_GET_OR['totalamt']),2);
         $FORMATTED_EXPECTED_DATE = date('F j, Y',strtotime($ROW_RESULT_GET_OR['expected_date'])); //Formats date 
         $expected_date[]= $FORMATTED_EXPECTED_DATE;
+        $FAB_STATUS = $ROW_RESULT_GET_OR['fab_status'];
+        $PAYMENT_ID = $ROW_RESULT_GET_OR['payment_id'];
+        $INSTALL_STATUS = $ROW_RESULT_GET_OR['installation_status'];
+    
     }
 
     $queryToGetItemList = "SELECT * FROM order_details
@@ -566,10 +611,10 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
         $orderNumberArray[] = $rowofResult1['ordernumber']; //Compare this 
         $itemName[] = $rowofResult1['item_name'];
         $quantity[] = $rowofResult1['item_qty'];
-        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);
-        
-       
+        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);     
     }
+
+   
     
 
     $FORMATTED_DELIV_DATE = date('F j, Y',strtotime($rowofResult2['delivery_Date'])); //Formats date 
@@ -580,6 +625,7 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
     $SchedDelivDestination[] = $rowofResult2['Destination'];
     $SchedDelivCusName[] = $rowofResult2['customer_Name'];
     $SchedDelivStatus[] =  $rowofResult2['delivery_status'];
+    $SchedDelivDriver[] = $rowofResult2['driver'];
 }
     echo '<script text/javascript>';
     echo "var deliverNumberfromHTML = document.getElementById('drNumber');";
@@ -591,6 +637,10 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
     echo "var deliverTotalfromHTML = document.getElementById('drTotal');";  //Gets HTML elements (Textbox)
 
     echo "var DR_NUM_FROM_PHP = ".json_encode($DR_NUM_FROM_VIEW).";";
+    echo "var current_fab_status = ".json_encode($FAB_STATUS).";";
+    echo "var payment_id = ".json_encode($PAYMENT_ID).";";
+    echo "var install_stat = ".json_encode($INSTALL_STATUS).";";
+    echo "var renew_or = ".json_encode($RENEW_OR).";";
     
     echo "var drDateFromPHP = ".json_encode($SchedDelivDate).";";
     echo "var drDesFromPHP = ".json_encode($SchedDelivDestination).";";
@@ -598,7 +648,8 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
     echo "var drStatFromPHP = ".json_encode($SchedDelivStatus).";";
     echo "var DRFromPHP = ".json_encode($SchedDelivDR).";"; 
     echo "var drExpectedDateFromPHP = ".json_encode($expected_date).";";
-    echo "var OrderNumberFromSchedDeliver = ".json_encode($SchedDelivOrderNumber).";";//Values from Sched Delivery Table
+    echo "var OrderNumberFromSchedDeliver = ".json_encode($SchedDelivOrderNumber).";";
+    echo "var DriverFromPHP = ".json_encode($SchedDelivDriver).";";//Values from Sched Delivery Table
 
 
     echo "var ItemNameFromPHP = ".json_encode($itemName).";"; 
@@ -609,14 +660,16 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
    
 
     echo 'var GetDR = localStorage.getItem("DRfromDeliveriesPage");'; //Gets the text to compare fron Deliveries.php
-
+    echo 'var Current_Total = 0;';
         echo 'for(var i = 0; i < DRFromPHP.length ; i++){';   
             
            
             echo 'if(DR_NUM_FROM_PHP.trim() == DRFromPHP[i].trim()) {';
                 // echo 'if(){';
+                echo 'Current_Total = Current_Total +(ItemQuantityFromPHP[i]);';
                 echo 'console.log("Value From Receipts.php = " + DRFromPHP[i]);';
                 echo 'console.log("Value from Delvieries.php = " + GetDR);';
+                echo 'console.log("Value from Total.php = " + ItemTotalFromPHP[i]);';
             
                 echo 'deliverNumberfromHTML.value = DRFromPHP[i];';
                 echo 'deliverDatefromHTML.value = drDateFromPHP[i];';
@@ -625,6 +678,7 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
                 echo 'deliverStatusfromHTML.value = drStatFromPHP[i];';
                 echo 'deliverTotalfromHTML.value = "₱ "+ ItemTotalFromPHP[i];';
                 echo 'expectedDatefromHTML.value = drExpectedDateFromPHP[i];';
+                echo "$('#delivery_person').val(DriverFromPHP[i]);";
                 echo 'var count = OrderNumberFromOrderDetails.length ;';
 
                 echo 'while(count >= 0){';
@@ -635,7 +689,8 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
                     echo 'if(OrderNumberFromSchedDeliver[i] == OrderNumberFromOrderDetails[count]) {';
 
                         echo  "var newRow = document.getElementById('datatable').insertRow();";
-                        echo  'newRow.innerHTML = "<tr><td class= item_name>" +ItemNameFromPHP[count]+ "</td> <td class=item_qty align = right>" +ItemQuantityFromPHP[count]+ "</td><td align = right> ₱ " +ItemPriceFromPHP[count]+ "</td></tr>";';
+                        
+                        echo  'newRow.innerHTML = "<tr><td class= item_name>" +ItemNameFromPHP[count]+ "</td> <td class=item_qty align = right>" +ItemQuantityFromPHP[count]+ "</td><td align = right> ₱ " +ItemPriceFromPHP[count]+ "</td><td align=right> ₱ "+( parseInt(ItemQuantityFromPHP[count].replace(",", "")).toFixed(2) * parseInt(ItemPriceFromPHP[count].replace(",", "")).toFixed(2))+"</td></tr>";';
                         // echo 'localStorage.removeItem("DRfromDeliveriesPage");';
                         echo 'count--;';
                         echo 'continue;';                    
@@ -647,6 +702,7 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
         echo ' }';// END FOR
 echo '</script>';
 ?> <!-- PHP END -->
+
          
 <script>
     var current_name_array = [];
@@ -664,7 +720,9 @@ echo '</script>';
     });
 
     function post_to_dmg_delivery_page()
-    {        
+    {     
+        if(current_fab_status == "No Fabrication")
+        {
             request = $.ajax({
             url: "ajax/post_to_dmg_delivery.php",
             type: "POST",
@@ -677,7 +735,39 @@ echo '</script>';
                     window.location.href = "damage_delivery.php";                    
                 }//End Scucess                       
             }); // End ajax     
+        } 
+        else
+        {
+            alert("Current Delivery Contains a Fabricated Item. \n All items used to create are considered damaged and replacement will be considered sold");
+            if(confirm("Confirm: Fabricated Items is/are damaged beyond use? Replacement will be processed"))
+            {
+                request = $.ajax({
+                url: "ajax/dmg_deliv_fab.php",
+                type: "POST",
+                data:{
+                    post_item_name: current_name_array, //Never forget to get the Value from the <INPUTS>
+                    post_item_qty: current_qty_array,
+                    post_client_name: $('#drCusName').val(),
+                    post_exp_date: drExpectedDateFromPHP,
+                    post_payment_id: payment_id,
+                    post_install_status: install_stat,
+                    post_renew_or: renew_or
+
+                 },
+                success: function(data)
+                {                 
+                    // window.location.href = "damage_delivery.php";                    
+                }//End Scucess  
+                })
+            }
+            else
+            {
+                alert("Action: Cancelled");
+            }
+           
         }
+           
+    }
 </script> <!-- scripts to get the values in the table of delivery-->
 <script>
 // To Clear localstorage =temporary

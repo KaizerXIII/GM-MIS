@@ -38,6 +38,9 @@ require_once('DataFetchers/mysql_connect.php');
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- JQUERY Required Scripts -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
 </head>
 
 <body class="nav-md">
@@ -150,10 +153,12 @@ require_once('DataFetchers/mysql_connect.php');
                         </div> <!-- Canvas Div -->
 
                         <div class="slidecontainer" id = "sliderAmount">
-                            <input type="range" min="1" max="50" value="50" class="slider" id="rangeSlider"> </input>
+                            <input type="range" min="1" max="" value="" class="slider" id="rangeSlider"> 
 
-                            <p>Value: <span id="value"></span></p>
-                            Set Estimated Annual Demand: <input id = "maxInput" type ="number" min = "0" onkeydown="return processKey(event)" value = "0"> </input>
+                            <h3><p>3-Month Demand Value: <b><span id="value"></span></b></p></h3>
+                            <!-- Current Demand Within 3 Months: 
+                            
+                            <input id = "maxInput" type ="number" min = "0" onkeydown="return processKey(event)" value = "0">  -->
                             <script>
                                 function processKey(e)
                                 {
@@ -296,13 +301,12 @@ require_once('DataFetchers/mysql_connect.php');
 <script src="../build/js/custom.min.js"></script>
 <script>
     // Line chart
-
-
     <?php
     require_once('DataFetchers/mysql_connect.php');
     $query = "SELECT * FROM items_trading";
     $result=mysqli_query($dbc,$query);
     $itemQty = array();
+    $TOTAL_DEMAND = array();
 
     while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
     {
@@ -319,8 +323,23 @@ require_once('DataFetchers/mysql_connect.php');
             $qtyfromOrderDeatils = mysqli_fetch_array($resultOrderDetail,MYSQLI_ASSOC);
             $itemQty[] = $qtyfromOrderDeatils['total_amount'];
         }
+        
+        $SQL_GET_2_MONTHS_DEMAND = "SELECT od.*,SUM(od.item_qty) as total_amount FROM
+        order_details od JOIN orders o on od.ordernumber = o.ordernumber 
+        where od.item_id = '$i' and (o.order_date 
+        between DATE_SUB(DATE(NOW()), INTERVAL 90 DAY ) and DATE(NOW())) GROUP BY 1,2";
+        $RESULT_GET_2_MONTHS_DEMAND = mysqli_query($dbc,$SQL_GET_2_MONTHS_DEMAND);
+        $ROW_RESULT_GET_2_MONTHS_DEMAND = mysqli_fetch_array($RESULT_GET_2_MONTHS_DEMAND,MYSQLI_ASSOC);
+
+        $TOTAL_DEMAND[] = $ROW_RESULT_GET_2_MONTHS_DEMAND['total_amount']/90;
+        
+        echo "var demandFromPHP = ".json_encode($TOTAL_DEMAND).";";
+       
+                            
     }
     ?>
+    
+
     var expected = <?php  echo json_encode($itemQty)?>;
     var label_data = [];
     label_data.push(0);
@@ -471,7 +490,7 @@ require_once('DataFetchers/mysql_connect.php');
 
 
     var curr_item_selected_price = 200;
-    var demand = rangeSlider.value;
+    var demand = slider.value;
     var eoq = 100;
     var this_obj = null;
     var slide = document.getElementById('rangeSlider'),
@@ -479,6 +498,7 @@ require_once('DataFetchers/mysql_connect.php');
     slider.onchange = function()
     {
         demand = this.value;
+        $('#value').text(demand);
         myTD(this_obj);
         //recompute_chart(curr_item_selected_price);
     }
@@ -491,9 +511,11 @@ require_once('DataFetchers/mysql_connect.php');
         console.log(ItemPriceFromPHP);
         console.log(HoldingCostFromPHP);
         for(var i = 0; i < itemNameFromPHP.length; i++){
-
+            
             if(itemNameFromPHP[i] == textFromHTML )
             {
+               
+                
                 var eoq = Math.sqrt((2 * demand * AcquisitionCostFromPHP[0]) / ((HoldingCostFromPHP[0]/100) * ItemPriceFromPHP[i]));
                 var Final = eoq.toFixed(2);
                 // echo 'tableCell[i].textContent = Final;
@@ -502,7 +524,14 @@ require_once('DataFetchers/mysql_connect.php');
                 window.eoq = Final;
                 computeLabels(Final);
                 recompute_chart(ItemPriceFromPHP[i]);
-                console.log("EOQ Val: "+Final);
+
+                console.log(demandFromPHP[i]);
+                $("#rangeSlider").attr({
+                    "max": demandFromPHP[i] + 1000,
+                    "value": demandFromPHP[i].toFixed(2)
+                });
+                // $('#value').text($("#rangeSlider").attr('value'));
+                console.log("EOQ Val: "+Final);   
                 // echo'break;';
             };//End IF
 

@@ -245,38 +245,35 @@
    var dmg_qty = Array();
    var orig_qty = Array();
     $('#complete_order').on('click',function(e){
-    
+      
     $('#datatable-checkbox tbody tr:not(:first-child)').each(function(e){
         dmg_name.push($(this).find('td:first').text());
         orig_qty.push($(this).find('td:first').attr('orig_qty'));
-        dmg_qty.push($(this).find('td:nth-child(2)').find('input').val());
-        console.log($(this).find('td:first').attr('orig_qty'));
-       
+        dmg_qty.push($(this).find('td:nth-child(2)').find('input').val());    
     });
-        // if(confirm("Confirm Damages and Restock Items?"))
-        // {
-        //     request = $.ajax({
-        //     url: "ajax/dmg_type_supplier.php",
-        //     type: "POST",
-        //     data: {
-        //     post_item_name: selected_item_name,
-        //     post_item_qty: $('#arrived').val(),
-        //     post_item_supplier: supp_name,
-        //     post_supply_OR:                    
-        //     },
-        //     success: function(data, textStatus)
-        //     {
-        //         alert("Update Successful!");
-        //         window.location.href = "SupplierOrderDetails.php";           
-        //     }//End Scucess
+        if(confirm("Confirm Damages and Restock Items?"))
+        {
+            request = $.ajax({
+            url: "ajax/dmg_type_supplier.php",
+            type: "POST",
+            data: {
+            post_dmg_name: dmg_name,
+            post_dmg_qty: dmg_qty,
+            post_orig_qty: orig_qty                   
+            },
+            success: function(data, textStatus)
+            {
+                alert("Restocking of Items Successful!");
+                window.location.href = "SupplierOrderDetails.php";           
+            }//End Scucess
             
-        //     }); // End ajax  
-        // }
-        // else
-        // {
-        //     alert("Action: Cancelled");
+            }); // End ajax  
+        }
+        else
+        {
+            alert("Action: Cancelled");
             
-        // }
+        }
     })
 </script>
 

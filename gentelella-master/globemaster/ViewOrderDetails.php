@@ -350,12 +350,17 @@
                                             while($ROW_RESULT_SELECT_STATUS=mysqli_fetch_array($RESULT_SELECT_ORDERSTATUS,MYSQLI_ASSOC))
                                             {
                                                 $statohs = $ROW_RESULT_SELECT_STATUS['order_status'];
-                                                if($statohs == "PickUp")
+                                                if($statohs == "PickUp" )
                                                 {
                                         ?>
                                                 <button name = "confirmButton" type="button" class="btn btn-success" onclick ="FinishOrder()">Finish</button>
                                                 <button type="button" class="btn btn-warning" onclick="cancelWarning()">Cancel Order</button>
                                         <?php
+                                                }
+                                                else if($statohs == "Deliver")
+                                                {
+                                                    echo '<button name = "confirmButton" type="button" class="btn btn-success" style = "display:none" onclick ="FinishOrder()">Finish</button>';
+                                                    echo '<button type="button" class="btn btn-warning"  style = "display:block" onclick="cancelWarning()">Cancel Order</button>';
                                                 }
                                                 else if($statohs == "Order In Progress" || $statohs == "Late Delivery" || $statohs == "Order Cancelled" || $statohs == "Delivered" || $statohs == "Deliver")
                                                 {
