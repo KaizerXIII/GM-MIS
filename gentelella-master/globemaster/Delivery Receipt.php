@@ -575,21 +575,32 @@ $SchedDelivCusName = array();
 $SchedDelivStatus = array();
 $SchedDelivDriver = array();
 
-$sqlToGetTableValue = "SELECT * FROM scheduledelivery";
+$FAB_STATUS;
+$PAYMENT_ID;
+$INSTALL_STATUS;
+
+$RENEW_OR;
+
+$sqlToGetTableValue = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$DR_NUM_FROM_VIEW'";
 $resultofQuery2 = mysqli_query($dbc, $sqlToGetTableValue);
 while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
 {
     $OR_FROM_SCHED_DELIV_TABLE =  $rowofResult2['ordernumber'];
-
+    $RENEW_OR = $rowofResult2['ordernumber'];
     $QUERY_GET_OR_FROM_ORDERS = "SELECT * FROM orders
     WHERE ordernumber = '$OR_FROM_SCHED_DELIV_TABLE'";
     
     $RESULT_GET_OR = mysqli_query($dbc, $QUERY_GET_OR_FROM_ORDERS);
     while($ROW_RESULT_GET_OR=mysqli_fetch_array($RESULT_GET_OR,MYSQLI_ASSOC))
     {
+        
         $totalPrice[] = number_format(($ROW_RESULT_GET_OR['totalamt']),2);
         $FORMATTED_EXPECTED_DATE = date('F j, Y',strtotime($ROW_RESULT_GET_OR['expected_date'])); //Formats date 
         $expected_date[]= $FORMATTED_EXPECTED_DATE;
+        $FAB_STATUS = $ROW_RESULT_GET_OR['fab_status'];
+        $PAYMENT_ID = $ROW_RESULT_GET_OR['payment_id'];
+        $INSTALL_STATUS = $ROW_RESULT_GET_OR['installation_status'];
+    
     }
 
     $queryToGetItemList = "SELECT * FROM order_details
@@ -600,12 +611,10 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
         $orderNumberArray[] = $rowofResult1['ordernumber']; //Compare this 
         $itemName[] = $rowofResult1['item_name'];
         $quantity[] = $rowofResult1['item_qty'];
-        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);
-
-       
-        
-       
+        $pricePerItem[] = number_format(($rowofResult1['item_price']),2);     
     }
+
+   
     
 
     $FORMATTED_DELIV_DATE = date('F j, Y',strtotime($rowofResult2['delivery_Date'])); //Formats date 
@@ -628,6 +637,10 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
     echo "var deliverTotalfromHTML = document.getElementById('drTotal');";  //Gets HTML elements (Textbox)
 
     echo "var DR_NUM_FROM_PHP = ".json_encode($DR_NUM_FROM_VIEW).";";
+    echo "var current_fab_status = ".json_encode($FAB_STATUS).";";
+    echo "var payment_id = ".json_encode($PAYMENT_ID).";";
+    echo "var install_stat = ".json_encode($INSTALL_STATUS).";";
+    echo "var renew_or = ".json_encode($RENEW_OR).";";
     
     echo "var drDateFromPHP = ".json_encode($SchedDelivDate).";";
     echo "var drDesFromPHP = ".json_encode($SchedDelivDestination).";";
@@ -656,6 +669,7 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
                 echo 'Current_Total = Current_Total +(ItemQuantityFromPHP[i]);';
                 echo 'console.log("Value From Receipts.php = " + DRFromPHP[i]);';
                 echo 'console.log("Value from Delvieries.php = " + GetDR);';
+                echo 'console.log("Value from Total.php = " + ItemTotalFromPHP[i]);';
             
                 echo 'deliverNumberfromHTML.value = DRFromPHP[i];';
                 echo 'deliverDatefromHTML.value = drDateFromPHP[i];';
@@ -706,7 +720,9 @@ echo '</script>';
     });
 
     function post_to_dmg_delivery_page()
-    {        
+    {     
+        if(current_fab_status == "No Fabrication")
+        {
             request = $.ajax({
             url: "ajax/post_to_dmg_delivery.php",
             type: "POST",
@@ -719,7 +735,39 @@ echo '</script>';
                     window.location.href = "damage_delivery.php";                    
                 }//End Scucess                       
             }); // End ajax     
+        } 
+        else
+        {
+            alert("Current Delivery Contains a Fabricated Item. \n All items used to create are considered damaged and replacement will be considered sold");
+            if(confirm("Confirm: Fabricated Items is/are damaged beyond use? Replacement will be processed"))
+            {
+                request = $.ajax({
+                url: "ajax/dmg_deliv_fab.php",
+                type: "POST",
+                data:{
+                    post_item_name: current_name_array, //Never forget to get the Value from the <INPUTS>
+                    post_item_qty: current_qty_array,
+                    post_client_name: $('#drCusName').val(),
+                    post_exp_date: drExpectedDateFromPHP,
+                    post_payment_id: payment_id,
+                    post_install_status: install_stat,
+                    post_renew_or: renew_or
+
+                 },
+                success: function(data)
+                {                 
+                    // window.location.href = "damage_delivery.php";                    
+                }//End Scucess  
+                })
+            }
+            else
+            {
+                alert("Action: Cancelled");
+            }
+           
         }
+           
+    }
 </script> <!-- scripts to get the values in the table of delivery-->
 <script>
 // To Clear localstorage =temporary
