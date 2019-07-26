@@ -1172,11 +1172,13 @@ function nextpageNOFabrication()
     {
         if(paymentID.value == "1")
         {
-            loanpayment.disabled = "true";
+            loanpayment.disabled = true;
+            loanpayment.value = "";
         }
         else if(paymentID.value == "2")
         {
-            loanpayment.disabled = "true";
+            loanpayment.disabled = true;
+            loanpayment.value = "";
         }
         else if(paymentID.value == "3")
         {
