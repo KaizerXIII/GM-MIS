@@ -332,57 +332,57 @@
                     //          }//End 2nd IF                                                                                                                    
                          
 
-                    //     else if($_SESSION['DeliveryStatus'] == "Deliver") //IF ORder is Deliver
-                    //     {
-                    //         $CLIENT_ID = $_POST['clientID'];
-                    //         $PAYMENT_ID = $_POST['paymentID'];
-                    //         $CART_TOTAL = $_POST['totalPayment'];                               
-                    //         $ORDER_STATUS = $_SESSION['DeliveryStatus'];
-                    //         $CURRENT_OR = $CurrentOR;
-                    //         $INSTALL_STATUS = "No Installation";
-                    //         $FAB_STATUS = $_SESSION['FabricationStatus'];
-                    //         $PAYMENT_STATUS = $_SESSION['payment_status'];
-                    //         $EXPECTED_DATE = date('Y-m-d', strtotime($_POST['getExpectedDelivery']));
-                    //         $LOAN_STATUS = $_POST['paymentID'];
+                        // else if($_SESSION['DeliveryStatus'] == "Deliver") //IF ORder is Deliver
+                        // {
+                        //     $CLIENT_ID = $_POST['clientID'];
+                        //     $PAYMENT_ID = $_POST['paymentID'];
+                        //     $CART_TOTAL = $_POST['totalPayment'];                               
+                        //     $ORDER_STATUS = $_SESSION['DeliveryStatus'];
+                        //     $CURRENT_OR = $CurrentOR;
+                        //     $INSTALL_STATUS = "No Installation";
+                        //     $FAB_STATUS = $_SESSION['FabricationStatus'];
+                        //     $PAYMENT_STATUS = $_SESSION['payment_status'];
+                        //     $EXPECTED_DATE = date('Y-m-d', strtotime($_POST['getExpectedDelivery']));
+                        //     $LOAN_STATUS = $_POST['paymentID'];
 
-                    //         $SANITIZED_CART_TOTAL = filter_var($CART_TOTAL,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
+                        //     $SANITIZED_CART_TOTAL = filter_var($CART_TOTAL,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
 
-                    //         $sqlInsertToOrdersTable = "INSERT INTO orders(ordernumber, client_id, order_date, expected_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
-                    //         VALUES(
-                    //             '$CURRENT_OR',
-                    //             '$CLIENT_ID', 
-                    //             Now(),
-                    //             '$EXPECTED_DATE',  
-                    //             '$PAYMENT_ID', 
-                    //             '$SANITIZED_CART_TOTAL',
-                    //             '$ORDER_STATUS',
-                    //             '$INSTALL_STATUS',
-                    //             '$FAB_STATUS',
-                    //             '$PAYMENT_STATUS');";
-                    //         $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
+                        //     $sqlInsertToOrdersTable = "INSERT INTO orders(ordernumber, client_id, order_date, expected_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
+                        //     VALUES(
+                        //         '$CURRENT_OR',
+                        //         '$CLIENT_ID', 
+                        //         Now(),
+                        //         '$EXPECTED_DATE',  
+                        //         '$PAYMENT_ID', 
+                        //         '$SANITIZED_CART_TOTAL',
+                        //         '$ORDER_STATUS',
+                        //         '$INSTALL_STATUS',
+                        //         '$FAB_STATUS',
+                        //         '$PAYMENT_STATUS');";
+                        //     $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
 
-                    //         if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
-                    //         {
-                    //           $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
-                    //           SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
-                    //           WHERE client_id ='$CLIENT_ID';";
-                    //            $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
-                    //            if(!$RESULT_UNPAID_TOTAL) 
-                    //            {
-                    //                die('Error: ' . mysqli_error($dbc));
-                    //            } 
-                    //            else 
-                    //            {
-                    //                echo '<script language="javascript">';
-                    //                echo 'alert("Added Unpaid Amount to Client");';
-                    //                echo '</script>';
-                    //             //    header("Location: ViewOrders.php");
-                    //            } 
-                    //            $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
-                    //            VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
-                    //            $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
+                        //     if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
+                        //     {
+                        //       $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
+                        //       SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
+                        //       WHERE client_id ='$CLIENT_ID';";
+                        //        $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
+                        //        if(!$RESULT_UNPAID_TOTAL) 
+                        //        {
+                        //            die('Error: ' . mysqli_error($dbc));
+                        //        } 
+                        //        else 
+                        //        {
+                        //            echo '<script language="javascript">';
+                        //            echo 'alert("Added Unpaid Amount to Client");';
+                        //            echo '</script>';
+                        //         //    header("Location: ViewOrders.php");
+                        //        } 
+                        //        $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
+                        //        VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
+                        //        $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
                                                                            
-                    //         }//END IF
+                        //     }//END IF
 
                             
                     //         $CART_ITEM_ID = $_SESSION['order_form_item_id'];
@@ -1254,6 +1254,13 @@ function nextpageNOFabrication()
             console.log(getValue);
             GET_CART_QTY.push(getValue);
         }) //ENd jquery
+
+        var FILTERED_ID = [];
+        for(var i = 0; i < item_id_in_cart.length; i++){
+            if(FILTERED_ID.indexOf(item_id_in_cart[i]) == -1){ //Filters dups
+                FILTERED_ID.push(item_id_in_cart[i]);
+            }
+        }  
         
         request = $.ajax({
         url: "ajax/orders_process.php",
@@ -1265,12 +1272,13 @@ function nextpageNOFabrication()
             post_expected_date: $('#expectedDate').val(),
             post_payment_status: $('#payment_status').val(),
             post_downpayment:  $('#loanpayment').val(),
-            post_cart_item_id: item_id_in_cart,
+            post_cart_item_id: FILTERED_ID,
             post_cart_item_qty: GET_CART_QTY
         },
         success: function(data, textStatus)
         {
-        
+            alert("Order Successful!")  
+            window.location.href = "ViewOrders.php";   
         }//End Scucess
         
         }); // End ajax    

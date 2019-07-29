@@ -464,7 +464,7 @@
     <br><br><br>
     Received by: ____________________
     <br><br><br>
-    Printed by: <?php echo $_SESSION['firstname']." ".$_SESSION['middlename']." ".$_SESSION['lastname'];?>
+    Printed by: <?php echo $_SESSION['firstname']."  ".$_SESSION['lastname'];?>
     </div>
 </div>
 
