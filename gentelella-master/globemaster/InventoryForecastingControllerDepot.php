@@ -234,7 +234,7 @@
         return $data_return;
     }
     function time_series($start_date, $end_date, $item_id){
-        $dbc=mysqli_connect('127.0.0.1','root','Rane0708!','movedb');
+        $dbc=mysqli_connect('127.0.0.1','root','1234','depotdb');
 
         $forecasted_dates = array();
         $forecasted_date_vals = array();

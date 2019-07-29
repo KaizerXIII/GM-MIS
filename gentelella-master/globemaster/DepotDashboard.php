@@ -66,12 +66,80 @@
             <div class="jumbotron" style="background-color:#ffffff">
                 <center><font color = "black"><h1><font color = "#ff9900"></font><font color = "#000066"><b> Welcome!</b></font></h1>
                         <h2><font size = "8px">This is an extension of the Globe Master Home Depot POS.</font></h2>
-                        <p>The main purpose of this module is to forecast the sales and inventory data taken from the database of the POS.</p>
-                        <p>Please choose a type of forecasting from the sidebar provided on this screen.</p></font></center>
                 <div class="row">
                     
                 </div>
             </div>
+            <?php
+                if($user == "CEO" || $user == "Sales" || $user == "Superuser")
+                {
+            ?>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <h2><center><i class="fa fa-cubes"></i><b>  TILES NEARING OR BELOW THRESHOLD</b></h2>  
+                            <div class="clearfix"></div>
+                            <div class="x_content">
+
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Item SKU</th>
+                                    <th>Item Name</th>
+                                    <th>Threshold Amount</th>
+                                    <th>Stocks Remaining</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                <?php 
+                    $SQL_GET_DEPOT_ITEM = "SELECT * 
+                    FROM mydb.items_trading
+                    JOIN depotdb.gm_products
+                    ON gm_products.UnitName = items_trading.item_name
+                    JOIN depotdb.gm_inventorystocks
+                    ON gm_inventorystocks.ProductID = gm_products.ProductID
+                    WHERE gm_inventorystocks.StockOnHand <= 200;";
+                    $RESULT_GET_DEPOT_ITEM=mysqli_query($dbc,$SQL_GET_DEPOT_ITEM);
+                    while($ROW_DEPOT_ITEM=mysqli_fetch_array($RESULT_GET_DEPOT_ITEM,MYSQLI_ASSOC))
+                    {
+                ?>
+                            <tr>
+                                <td><?php echo $ROW_DEPOT_ITEM['SKU']; ?></td>
+                                <td><?php echo $ROW_DEPOT_ITEM['UnitName']; ?></td>
+                                <td align = "right">150 Pieces</td>
+                                <?php
+                                    if($ROW_DEPOT_ITEM['StockOnHand'] <= 200 && $ROW_DEPOT_ITEM['StockOnHand'] >= 150)
+                                    {
+                                ?>
+                                    <td align = "right"><font color = "orange"><?php echo $ROW_DEPOT_ITEM['StockOnHand']." Pieces"; ?></font></td>
+                                <?php
+                                    }
+                                    elseif($ROW_DEPOT_ITEM['StockOnHand'] <= 150)
+                                    {
+                                ?>
+                                    <td align = "right"><font color = "red"><?php echo $ROW_DEPOT_ITEM['StockOnHand']." Pieces"; ?></font></td>
+                                <?php
+                                    }
+                                    else 
+                                    {
+                                ?>
+                                    <td align = "right"><?php echo $ROW_DEPOT_ITEM['StockOnHand']." Pieces"; ?></td>
+                                <?php
+                                    }
+                                ?>
+                            </tr>
+                <?php      
+                    } 
+                ?>
+                            </tbody>
+                        </table>
+                        <center><a href = "depotrequestform.php"><button class = "btn btn-round btn-md btn-primary">Request</button></a></center>
+                        </div>
+                    </div>
+                </div>
+            <?php
+                }
+            ?>
         </div>
     </div>
 

@@ -43,7 +43,7 @@
 
         <!-- sidebar menu -->
         <?php
-        require_once("navDepot.php");
+            require_once("navDepot.php");
         ?>
 
 

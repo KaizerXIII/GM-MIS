@@ -234,27 +234,6 @@
                   <div class = "modal-body">
                   <form class="form-horizontal form-label-left" method="POST" action= "<?php echo $_SERVER["PHP_SELF"];?>">
 
-
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2">Payment Type</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="btn btn-default dropdown-toggle" name="paymentID" id = "paymentID">
-                            <?php
-                                require_once('DataFetchers/mysql_connect.php');
-                                $SQL_PAYMENT_LIST="SELECT * FROM ref_payment";
-                                $result=mysqli_query($dbc,$SQL_PAYMENT_LIST);
-                                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                                {
-                                    echo "<option value=".$row['payment_id']."> ".$row['paymenttype']."</option>";  
-                                }
-
-                                
-                                ?> 
-                            </select>
-                        </div>
-                    </div>
-                    
-
                     <div id = "ifYes" style = "display:block">
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2" >Expected Date<span class="required">*</span>

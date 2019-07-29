@@ -35,10 +35,13 @@
 
     <style type="text/css">
 
+    .print-only{display:none;}
+
     @media print
     {
-    #print_btn {display:none;}
-    footer, header,.nav,  #progress_bar{ display:none; } /*Removes elements before print, use [#idname] to find ID and [.class] to find class */
+    .noprint {display:none;}
+    footer, header,.nav, .noprint, #choose_btn, #go_back{ display:none; } /*Removes elements before print, use [#idname] to find ID and [.class] to find class */
+    .print-only{display:block;}
 
     }
     @page :footer {
@@ -47,13 +50,13 @@
 
     @media screen
     {
-    
     }
 
     </style>
 </head>
 
 <body class="nav-md">
+    <element class = "noprint">
     <div class="container body">
         <div class="main_container">
                     <?php
@@ -87,13 +90,8 @@
                                     </font>
                                 </div>
                                 <div class = "col-md-6" align = "right">
-                                    <button id = "print_btn" type = "button" class = "btn btn-primary btn-lg"><i class = "fa fa-print"></i> Print</button>
+                                    <button type="button" id = "print_btn" class="btn btn-primary btn-lg noprint"><i class="fa fa-print"></i> Print</button> 
                                 </div>
-                                <script>
-                                    $('#print_btn').on('click', function(e){
-                                        window.print();
-                                    })
-                                </script>
                                 <div class="clearfix"></div>
                             </div> <!--END Xtitle-->
                             <div class="x_content">
@@ -113,19 +111,19 @@
 
                                 $FORMATTED_REQUESTED_DATE = date("M/d/y g:i A", $REQUESTED_DATE);
                                 $FORMATTED_EXPECTED_DATE = date("M/d/y g:i A", $EXPECTED_DATE);
-                                echo '<font color = "black">REQUEST DATE: '.$FORMATTED_REQUESTED_DATE.' </font>';                                                                           
+                                echo '<font color = "black">REQUEST DATE: '.$FORMATTED_REQUESTED_DATE.' </font>';  
                                 echo '<br>';
                                 echo '<font color = "black">EXPECTED DATE: '.$FORMATTED_EXPECTED_DATE.' </font>';
                             ?>              
                             </div>
                             <div class = "clearfix" ></div>
-                                <div class = "col-md-12" align = "center" style="z-index: 1" id = "progress_bar">
+                                <!-- <div class = "col-md-12" align = "center" style="z-index: 1" id = "progress_bar">
                                 <ul class="progressbar">
                                     <li class="active" >Requested</li>
                                     <li>Approved</li>
                                     <li>Delivered</li>
                                 </ul>
-                                </div> 
+                                </div>  -->
                             <div class = "clearfix"></div>
                              <form class="form-horizontal form-label-center" method="POST">
 
@@ -140,14 +138,17 @@
                                                 
                                                     <div class="x_content">
 
-                                                        <table id ="damageTable" class="table">
+                                                        <table id ="itemtable" class="table">
                                                             <thead>
                                                                 <tr>    
                                                                     <th>Trading Item Name</th>
                                                                     <th>Depot Reference Name</th>
                                                                     <th>Quantity</th>                                                               
                                                                 </tr>
+                                                            </thead>
+                                                            <tbody>  
                                                                 <?php
+                                                                        require_once("Datafetchers/mysql_connect.php");
                                                                         $GET_STATUS;
                                                                         $SQL_GET_DEPOT_ITEM_DETAILS = "SELECT * 
                                                                         FROM mydb.depot_request
@@ -163,14 +164,12 @@
                                                                             echo '<tr>';
                                                                                 echo '<td>'.$ROW_RESULT_GET_DEPOT_ITEM_DETAILS['sku_id'].'</td>';
                                                                                 echo '<td>'.$ROW_RESULT_GET_DEPOT_ITEM_DETAILS['depot_reference_name'].'</td>';
-                                                                                echo '<td>'.$ROW_RESULT_GET_DEPOT_ITEM_DETAILS['requested_item_qty'].'</td>';
+                                                                                echo '<td align = "right">'.$ROW_RESULT_GET_DEPOT_ITEM_DETAILS['requested_item_qty'].'</td>';
                                                                             echo '</tr>';
 
                                                                         }
 
-                                                                    ?>
-                                                            </thead>
-                                                            <tbody>                                                      
+                                                                    ?>                                                  
                                                             </tbody>
                                                         </table>
                                                         
@@ -223,7 +222,75 @@
     </div>
   </div>
 </div>
+                                                                    </element>
 <!-- /page content -->
+
+<!-- Print div -->
+<div class = "col-md-12 col-sm-12 col-xs-12 print-only">
+    <center>
+        <h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBE MASTER HOME DEPOT</h1>
+        <b><h2>Request Details</h2></b>
+    </center>
+    <div class = "col-md-6 col-sm-6 col-xs-6">
+        <b>Expected Delivery Date: </b><?php echo $FORMATTED_REQUESTED_DATE; ?>
+        <br>
+        <b>Date of Request: </b><?php echo $FORMATTED_EXPECTED_DATE; ?>
+        <br><br>
+    </div>
+    <div class = "col-md-6 col-sm-6 col-xs-6" style = "text-align:right">
+        <b><?php echo "[RN-" .$_SESSION['get_depot_or']. "]"; ?></b>
+        <br>
+        <b>Delivered by: </b><span id = "print_deliver_name"></span>
+    </div>
+    <div>
+        <table id ="print_table" class="table table-bordered print_table">
+            <thead>
+            <tr>
+                <th>Trading Item Name</th>
+                <th>Depot Reference Name</th>
+                <th>Quantity Ordered</th>   
+            </tr>
+            </thead>
+            <tbody>
+            <!-- <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <th style = "text-align:right">Total Amount this Order: </th>
+                <td align = "right">12345.00</td>
+            </tr> -->
+            </tbody>
+        </table>
+    </div>
+    <div class = "row" style = "text-align:right">
+    <br><br><br>
+    Received by: ____________________
+    <br><br><br>
+    Printed by: <?php echo $_SESSION['firstname']."  ".$_SESSION['lastname'];?>
+    </div>
+</div>
+
+<script>
+$('#print_btn').on('click',function(e)
+{
+    //Appends all necessary info based on the DR
+    $('#print_deliver_name').append($('#deliverypersonnel').val());
+
+    $('#itemtable tbody').each(function(e)
+    {
+        console.log($(this).html());
+        $('#print_table').append($(this).html()); //Appends the value of the items table to the print table
+       
+    })
+    // $('#print_table').append("<tr><td></td><td></td><th style = text-align:right>Total Amount this Order: </th><td align = right>"+$('#drTotal').val()+"</td></tr>"); //Appends the Total after all the items are loaded to avoid duplicate  <TR>
+})
+</script>
+
 <script type="text/javascript">
     function validate(obj) {
     obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max
@@ -358,7 +425,12 @@ function FinishOrder()
     }
 }
 
-</script>   
+</script> 
+<script>
+    $('#print_btn').on('click', function(e){      
+        window.print();
+    })    
+</script>  
     <style>
         .container1 {
         width: 600px;
@@ -415,6 +487,7 @@ function FinishOrder()
         background-color: #55b776;
         }
     </style>
+    
 
 </body>
 

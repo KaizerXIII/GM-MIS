@@ -50,10 +50,66 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_content">
-                  
+                    <div class="row tile_count">
+                      <?php
+                        if($user == 'CEO' || $user == 'Inventory' || $user == 'Superuser')
+                        {
+
+                      ?>
+                                  <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                    <span class="count_top"><i class="fa fa-th"></i> Bulacan Tile Warehouse Capacity</span>
+                                    <!-- Insert count of depot requests here -->
+                      <?php
+                                    $SQL_COUNT_ALL_CAPACITY = "SELECT * FROM warehouses
+                                                                WHERE warehouse_id = 1;";
+                                            $RESULT_SQL_COUNT_ALL_CAPACITY  = mysqli_query($dbc, $SQL_COUNT_ALL_CAPACITY);
+                                            $ROWRESULT_COUNT_CAPACITY=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_CAPACITY,MYSQLI_ASSOC);
+                              if($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] < $ROWRESULT_COUNT_CAPACITY['in_capacity'])
+                              {
+                      ?>
+                                <div class="count blue"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity']?></div>
+                      <?php
+                              }
+                              elseif($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] = $ROWRESULT_COUNT_CAPACITY['in_capacity'])
+                              {
+                      ?>
+                                <div class="count red"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity']?></div>
+                      <?php
+                              }
+                      ?>
+                                  <span class="count_bottom"><?php echo "123"; ?> Tiles Outside the Warehouse</a></span>
+                                  </div> 
+
+                                  <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                    <span class="count_top"><i class="fa fa-cubes"></i> EDSA Granite Warehouse Capacity</span>
+                                    <!-- Insert count of depot requests here -->
+                      <?php
+                                    $SQL_COUNT_ALL_CAPACITY = "SELECT * FROM warehouses
+                                    WHERE warehouse_id = 2;";
+                                      $RESULT_SQL_COUNT_ALL_CAPACITY  = mysqli_query($dbc, $SQL_COUNT_ALL_CAPACITY);
+                                      $ROWRESULT_COUNT_CAPACITY=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_CAPACITY,MYSQLI_ASSOC);
+                      if($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] < $ROWRESULT_COUNT_CAPACITY['in_capacity'])
+                        {
+                      ?>
+                                    <div class="count blue"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity']?></div>
+                      <?php
+                        }
+                        elseif($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] = $ROWRESULT_COUNT_CAPACITY['in_capacity'])
+                        {
+                      ?>
+                                    <div class="count red"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity']?></div>
+                      <?php
+                        }
+                      ?>
+                                    <span class="count_bottom"><?php echo "123"; ?> Tiles Outside the Warehouse</a></span>
+                                    </div> 
+                      <?php 
+                        }
+                      ?>
+                    </div> 
                     <div>
                         <form action="AddInventory.php" method="POST">
-                          <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-plus"></i> New Inventory Item</button>
+                          <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-plus"></i> New Product</button>
                           <br><br>
                         </form>
                     </div>
