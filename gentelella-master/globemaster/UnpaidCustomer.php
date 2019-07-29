@@ -162,7 +162,7 @@
                   <div class="x_content">
                     <br>
                     <!-- enctype="multipart/form-data" : required inside tag to upload correctly -->
-    <form action="<?php echo $_SERVER["PHP_SELF"] . '?'.http_build_query($_GET); ?>" method="POST" class="form-horizontal form-label-left" onsubmit="return confirm('Confirm Client Payment?')">
+    <form enctype="multipart/form-data" action="<?php //echo $_SERVER["PHP_SELF"] . '?'.http_build_query($_GET); ?>" method="POST" class="form-horizontal form-label-left" onsubmit="return confirm('Confirm Client Payment?')">
 
                     <!-- </div> END XPanel -->
                 <!-- </div> END Class Colmd -->
@@ -311,7 +311,7 @@
                           echo $ROW_ALL_FROM_PAYMENT['payment_date'];
                         echo '</td>';
                         echo '<td align = center>';
-                          echo '<img id="myImg" alt = "samplepic" src = "https://www.bgehome.com/wp-content/uploads/2018/10/UnderstandingYourBill-1-v3.jpg" width = "80px" height = "100px">';
+                          echo '<img id="myImg" class=img_list alt = "samplepic" src = "data:image/jpg;base64,'. base64_encode($ROW_ALL_FROM_PAYMENT['payment_img']).'"  width = "80px" height = "100px">';
                         echo '</td>';
                       echo '</tr>';
                     }
@@ -345,6 +345,95 @@
          <div class = "ln_solid"> </div>
          <div align = "center">
          <button type="submit" name = "confirm_payment" class="btn btn-success" >Confirm Payment</button>
+         <?php
+        if(isset($_POST['confirm_payment'] ))
+        {
+          //<--------------------------------------------------------[ UPLOADED FILE Checker ]----------------------------------------------------->
+          if(isset($_FILES['file_reference']))
+          {                          
+            echo "Upload: " . $_FILES['file_reference']['name'] . "<br>";
+            echo "Type: " . $_FILES['file_reference']['type'] . "<br>";
+            echo "Size: " . ($_FILES['file_reference']['size'] / 1024) . " kB<br>";
+            echo "Stored in: " . $_FILES['file_reference']['tmp_name'];
+
+            $filename = $_FILES['file_reference']['name'];
+            $filetype = $_FILES['file_reference']['type'];
+            $filesize = $_FILES['file_reference']['size'];
+
+            $allowed = array("JPG" => "image/JPG", "jpg" => "image/jpg", "jpeg" => "image/jpeg", "JPEG" => "image/JPEG", "png" => "image/png", "PNG" => "image/PNG",); //Checks the File type extension 
+            
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+            if(!array_key_exists($ext, $allowed))
+            {
+              die("Error: Please select a valid file format.");
+            }
+
+            $maxsize = 25 * 1024 * 1024;
+            if($filesize > $maxsize)
+            {
+              die("Error: File size is larger than the allowed limit."); //10 MB max 
+            } 
+            echo $_FILES['file_reference']['tmp_name'];
+
+          }//END IF ISSET FILE REFERENCE
+          else
+          {
+            echo "CANT DETECT FILE";
+          }                                                   
+        //<--------------------------------------------------------[ UPLOADED FILE Checker ]----------------------------------------------------->
+          if(!empty($_POST['client_payment']))
+          {
+
+            $BLOB = addslashes(file_get_contents($_FILES['file_reference']['tmp_name']));
+
+            $GET_UNPAID_ID = "SELECT * FROM unpaid_clients WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION'";
+            $RESULT_UNPAID_ID = mysqli_query($dbc,$GET_UNPAID_ID);
+            $ROW_UNPAID_ID = mysqli_fetch_assoc($RESULT_UNPAID_ID);
+           
+          
+            
+              $GET_UNPAID_ID_FROM_SQL = $ROW_UNPAID_ID['unpaidID'];
+              $GET_PAYMENT_OF_CLIENT = $_POST['client_payment'];
+    
+              $INSERT_TO_AUDIT = "INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date, payment_img) 
+              VALUES('$GET_UNPAID_ID_FROM_SQL','$GET_PAYMENT_OF_CLIENT', Now(), '$BLOB');";
+
+              $RESULT_INSERT_TO_AUDIT = mysqli_query($dbc,$INSERT_TO_AUDIT); //Insert to PaymentAudit
+              
+              $UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE = "UPDATE clients
+              SET clients.total_unpaid  = (total_unpaid - '$GET_PAYMENT_OF_CLIENT')
+              WHERE client_id ='$GET_CLIENT_ID_FROM_MENU';";
+
+              $RESULT_UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE=mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE); //Update Total Unpaid in clients table
+
+              $UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE = "UPDATE unpaid_clients
+              SET unpaid_clients.totalunpaid  = (totalunpaid - '$GET_PAYMENT_OF_CLIENT')
+              WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION';";
+
+              $RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE = mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE);  //Update Total Unpaid in clients table
+              if(!$RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE) 
+              {
+                  die('Error: ' . mysqli_error($dbc));
+              } 
+              else 
+              {
+                echo "<meta http-equiv='refresh' content='0'>";
+              }
+
+                      
+          }//END IF ISSET
+          else
+          {
+            echo '<script language="javascript">';
+            echo 'alert("Please INPUT Amount!");';
+            echo '</script>';
+          }
+         
+        }//END IF ISSET
+        
+        ?>
+
     </div>
   </div> <!-- END XPanel -->
 </div> <!-- END Class Colmd -->
@@ -489,23 +578,7 @@
     <script src="../vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-    <script>
-      var clicked_flag = false;
-      window.onload=function(){ 
-        if(clicked_flag == false)
-        {
-          $("#btn0").trigger('click', function(){              
-            clicked_flag = true;
-          });
-          clicked_flag = true;    
-        }
-        else
-        {
-          break;
-        }     
-      
-      };
-    </script><!-- On load click the button to set the required session value -->
+    
     <script>            
     $('#damageTable tbody button.btn.btn-success').on('click', function(e) 
     {              
@@ -528,58 +601,7 @@
       });//END AJAX
     });                        
     </script>
-    <?php
-        if(isset($_POST['confirm_payment'] ))
-        {
-          if(!empty($_POST['client_payment']))
-          {
-            $GET_UNPAID_ID = "SELECT * FROM unpaid_clients WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION'";
-            $RESULT_UNPAID_ID = mysqli_query($dbc,$GET_UNPAID_ID);
-            $ROW_UNPAID_ID = mysqli_fetch_assoc($RESULT_UNPAID_ID);
-           
-          
-            
-              $GET_UNPAID_ID_FROM_SQL = $ROW_UNPAID_ID['unpaidID'];
-              $GET_PAYMENT_OF_CLIENT = $_POST['client_payment'];
     
-              $INSERT_TO_AUDIT = "INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date) 
-              VALUES('$GET_UNPAID_ID_FROM_SQL','$GET_PAYMENT_OF_CLIENT', Now());";
-
-              $RESULT_INSERT_TO_AUDIT = mysqli_query($dbc,$INSERT_TO_AUDIT); //Insert to PaymentAudit
-              
-              $UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE = "UPDATE clients
-              SET clients.total_unpaid  = (total_unpaid - '$GET_PAYMENT_OF_CLIENT')
-              WHERE client_id ='$GET_CLIENT_ID_FROM_MENU';";
-
-              $RESULT_UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE=mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_CLIENT_TABLE); //Update Total Unpaid in clients table
-
-              $UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE = "UPDATE unpaid_clients
-              SET unpaid_clients.totalunpaid  = (totalunpaid - '$GET_PAYMENT_OF_CLIENT')
-              WHERE clientID = '$GET_CLIENT_ID_FROM_MENU' AND ordernumber = '$GET_OR_FROM_AJAX_SESSION';";
-
-              $RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE = mysqli_query($dbc,$UPDATE_UNPAID_AMOUNT_IN_UNPAIDCLIENTS_TABLE);  //Update Total Unpaid in clients table
-              if(!$RESULT_UPDATE_UNPAID_AMOUNT_IN_UNPAID_CLIENTS_TABLE) 
-              {
-                  die('Error: ' . mysqli_error($dbc));
-              } 
-              else 
-              {
-                echo "<meta http-equiv='refresh' content='0'>";
-              }
-
-                      
-          }//END IF ISSET
-          else
-          {
-            echo '<script language="javascript">';
-            echo 'alert("Please INPUT Amount!");';
-            echo '</script>';
-          }
-         
-        }//END IF ISSET
-        
-        ?>
-
 
 
 <script>
@@ -590,11 +612,12 @@
     var img = document.getElementById("myImg");
     var modalImg = document.getElementById("img01");
     var captionText = document.getElementById("caption");
-    img.onclick = function(){
+    $('.img_list').on('click',function(e){
       modal.style.display = "block";
       modalImg.src = this.src;
       captionText.innerHTML = this.alt;
-    }
+    })
+   
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];

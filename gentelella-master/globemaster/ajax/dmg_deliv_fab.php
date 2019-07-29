@@ -7,8 +7,10 @@
     $GET_ITEM_QTYS = $_POST['post_item_qty'];
     $GET_PAY_ID = $_POST['post_payment_id'];
     $GET_INSTALL_STAT = $_POST['post_install_status'];
-    $GET_RENEW_OR = $_POST['post_renew_or'];
     $GET_EXP_DATE = $_POST['post_exp_date'];
+
+    $GET_RENEW_OR = $_POST['post_renew_or'];
+    
 
     $ORDER_STATUS = "Deliver";
     $PAYMENT_STATUS = "Paid";
@@ -65,8 +67,30 @@
         {
             echo "Walao";
         }
+
+       
+    }
+
+    foreach($GET_ITEM_NAMES as $INDEX=>$ITEM_NAME)
+    {
+        
+        $DMG_ITEM_ID;
+        $DMG_ITEM_PRICE;
+        $DMG_ITEM_LOSS;
+
+        $SQL_FIND_ITEMS_INFO = "SELECT * FROM items_trading WHERE item_name = '$ITEM_NAME'";
+        $RESULT_FIND_ITEMS_INFO=mysqli_query($dbc,$SQL_FIND_ITEMS_INFO);
+        while ($ROW_RESULT_FIND_ITEMS_INFO = mysqli_fetch_array($RESULT_FIND_ITEMS_INFO,MYSQLI_ASSOC))
+        {
+            $DMG_ITEM_ID = $ROW_RESULT_FIND_ITEMS_INFO['item_id'];
+            $DMG_ITEM_PRICE = $ROW_RESULT_FIND_ITEMS_INFO['price'];
+            $DMG_ITEM_LOSS = $DMG_ITEM_PRICE * $GET_ITEM_QTYS[$INDEX];        
+        }
+        $INSERT_TO_DMG_TABLE = "INSERT INTO damage_item (refitem_id,item_name,item_quantity,total_loss,dmg_source,last_update)
+        VALUES('$DMG_ITEM_ID','$ITEM_NAME','$GET_ITEM_QTYS[$INDEX]','$DMG_ITEM_LOSS','Delivery', now())";
+        $RESULT_INSERT_TO_DMG_TABLE=mysqli_query($dbc,$INSERT_TO_DMG_TABLE);
     }
     
-        
+  
 
 ?>

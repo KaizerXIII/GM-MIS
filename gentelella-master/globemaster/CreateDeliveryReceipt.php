@@ -709,7 +709,8 @@ var table = document.getElementById("datatable");
                   }
 
                  
-                }
+                }//End iF
+                
                 else
                 {
                   $("#deliveryDate").attr("value", "<?php echo date("Y-m-d", strtotime("+6days"));?>");

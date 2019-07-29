@@ -221,218 +221,221 @@
                                 </table>
                                 <h4 align = "right"> Total Payment: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
                             </div>
+
+                           
                             <?php
                         
                         // WORK IN PROGESS //
                                                
 
-                        if(isset($_POST['viewOrderButton']))
-                        {
-                            if($_SESSION['DeliveryStatus'] == "PickUp") //IF order is pickup
-                            {
-                                $CLIENT_ID = $_POST['clientID'];
-                                $PAYMENT_ID = $_POST['paymentID'];
-                                $CART_TOTAL = $_POST['totalPayment'];                               
-                                $ORDER_STATUS = $_SESSION['DeliveryStatus'];
-                                $CURRENT_OR = $CurrentOR;
-                                $INSTALL_STATUS = "No Installation";
-                                $FAB_STATUS = $_SESSION['FabricationStatus'];
-                                $PAYMENT_STATUS = $_SESSION['payment_status'];
+                    //     if(isset($_POST['viewOrderButton']))
+                    //     {
+                            // if($_SESSION['DeliveryStatus'] == "PickUp") //IF order is pickup
+                            // {
+                            //     $CLIENT_ID = $_POST['clientID'];
+                            //     $PAYMENT_ID = $_POST['paymentID'];
+                            //     $CART_TOTAL = $_POST['totalPayment'];                               
+                            //     $ORDER_STATUS = $_SESSION['DeliveryStatus'];
+                            //     $CURRENT_OR = $CurrentOR;
+                            //     $INSTALL_STATUS = "No Installation";
+                            //     $FAB_STATUS = $_SESSION['FabricationStatus'];
+                            //     $PAYMENT_STATUS = $_SESSION['payment_status'];
 
-                                $SANITIZED_CART_TOTAL = filter_var($CART_TOTAL,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
+                            //     $SANITIZED_CART_TOTAL = filter_var($CART_TOTAL,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
 
-                                $sqlInsertToOrdersTable = "INSERT INTO orders(ordernumber, client_id, order_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
-                                VALUES(
-                                    '$CURRENT_OR',
-                                    '$CLIENT_ID', 
-                                    Now(),  
-                                    '$PAYMENT_ID', 
-                                    '$SANITIZED_CART_TOTAL',
-                                    '$ORDER_STATUS',
-                                    '$INSTALL_STATUS',
-                                    '$FAB_STATUS',
-                                    '$PAYMENT_STATUS');";
+                            //     $sqlInsertToOrdersTable = "INSERT INTO orders(ordernumber, client_id, order_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
+                            //     VALUES(
+                            //         '$CURRENT_OR',
+                            //         '$CLIENT_ID', 
+                            //         Now(),  
+                            //         '$PAYMENT_ID', 
+                            //         '$SANITIZED_CART_TOTAL',
+                            //         '$ORDER_STATUS',
+                            //         '$INSTALL_STATUS',
+                            //         '$FAB_STATUS',
+                            //         '$PAYMENT_STATUS');";
 
-                                $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
-                                if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
-                                {
-                                  $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
-                                  SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
-                                  WHERE client_id ='$CLIENT_ID';";
-                                   $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
-                                   if(!$RESULT_UNPAID_TOTAL) 
-                                   {
-                                       die('Error: ' . mysqli_error($dbc));
-                                   } 
-                                   else 
-                                   {
-                                       echo '<script language="javascript">';
-                                       echo 'alert("Added Unpaid Amount to Client");';
-                                       echo '</script>';
-                                      //  header("Location: ViewOrders.php");
-                                   }
+                            //     $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
+                            //     if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
+                            //     {
+                            //       $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
+                            //       SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
+                            //       WHERE client_id ='$CLIENT_ID';";
+                            //        $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
+                            //        if(!$RESULT_UNPAID_TOTAL) 
+                            //        {
+                            //            die('Error: ' . mysqli_error($dbc));
+                            //        } 
+                            //        else 
+                            //        {
+                            //            echo '<script language="javascript">';
+                            //            echo 'alert("Added Unpaid Amount to Client");';
+                            //            echo '</script>';
+                            //           //  header("Location: ViewOrders.php");
+                            //        }
 
-                                   $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
-                                   VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
-                                   $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
+                            //        $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
+                            //        VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
+                            //        $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
                                                                                            
-                                }//END IF
+                            //     }//END IF
                                 
-                               $CART_ITEM_ID = $_SESSION['order_form_item_id'];
-                               $CART_ITEM_QTY = $_SESSION['order_form_item_qty'];
-                               $ITEM_NAME = array();
-                               $ITEM_PRICE = array();
-                               $DELIVERY_STATUS = $_SESSION['DeliveryStatus'];
+                    //            $CART_ITEM_ID = $_SESSION['order_form_item_id'];
+                    //            $CART_ITEM_QTY = $_SESSION['order_form_item_qty'];
+                            //    $ITEM_NAME = array();
+                            //    $ITEM_PRICE = array();
+                            //    $DELIVERY_STATUS = $_SESSION['DeliveryStatus'];
                                
                                
-                               for($i = 0; $i < sizeof($CART_ITEM_ID); $i++)
-                               {
-                                    $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = $CART_ITEM_ID[$i];";
-                                    $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlGetFromItemTrading);
-                                    while($rowOfSelect=mysqli_fetch_array($resultofInsertToOrderDetails,MYSQLI_ASSOC))
-                                    {
-                                        $ITEM_NAME[] = $rowOfSelect['item_name'];
-                                        $ITEM_PRICE[] = $rowOfSelect['price'];                                        
-                                    }
+                            //    for($i = 0; $i < sizeof($CART_ITEM_ID); $i++)
+                            //    {
+                            //         $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = $CART_ITEM_ID[$i];";
+                            //         $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlGetFromItemTrading);
+                            //         while($rowOfSelect=mysqli_fetch_array($resultofInsertToOrderDetails,MYSQLI_ASSOC))
+                            //         {
+                            //             $ITEM_NAME[] = $rowOfSelect['item_name'];
+                            //             $ITEM_PRICE[] = $rowOfSelect['price'];                                        
+                            //         }
 
-                                    $sqlInsertToOrderDetails = "INSERT INTO order_details(ordernumber, client_id, item_id, item_name, item_price, item_qty, item_status)
-                                    VALUES(
-                                        '$CURRENT_OR',
-                                        '$CLIENT_ID',
-                                        '$CART_ITEM_ID[$i]',
-                                        '$ITEM_NAME[$i]',
-                                        '$ITEM_PRICE[$i]',
-                                        '$CART_ITEM_QTY[$i]',
-                                        '$DELIVERY_STATUS');";
-                                    $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlInsertToOrderDetails); //Insert To Order DEtails
+                            //         $sqlInsertToOrderDetails = "INSERT INTO order_details(ordernumber, client_id, item_id, item_name, item_price, item_qty, item_status)
+                            //         VALUES(
+                            //             '$CURRENT_OR',
+                            //             '$CLIENT_ID',
+                            //             '$CART_ITEM_ID[$i]',
+                            //             '$ITEM_NAME[$i]',
+                            //             '$ITEM_PRICE[$i]',
+                            //             '$CART_ITEM_QTY[$i]',
+                            //             '$DELIVERY_STATUS');";
+                            //         $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlInsertToOrderDetails); //Insert To Order DEtails
                                    
                                     
-                                    $sqlToSubtractFromItemsTrading = "UPDATE items_trading
-                                    SET items_trading.item_count  = (item_count - '$CART_ITEM_QTY[$i]'),
-                                    last_update = Now() 
-                                    WHERE item_id ='$CART_ITEM_ID[$i]';";
-                                     $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); //Subtracts From Inventory
-                                     if(!$resultOfSubtract) 
-                                     {
-                                         die('Error: ' . mysqli_error($dbc));
-                                     } 
-                                     else 
-                                     {
-                                         echo '<script language="javascript">';
-                                         echo 'alert("Subtract Successfull");';
-                                         echo '</script>';
-                                         header("Location: ViewOrders.php");
-                                     }                                                                      
-                                  }//End For
+                            //         $sqlToSubtractFromItemsTrading = "UPDATE items_trading
+                            //         SET items_trading.item_count  = (item_count - '$CART_ITEM_QTY[$i]'),
+                            //         last_update = Now() 
+                            //         WHERE item_id ='$CART_ITEM_ID[$i]';";
+                            //          $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); //Subtracts From Inventory
+                            //          if(!$resultOfSubtract) 
+                            //          {
+                            //              die('Error: ' . mysqli_error($dbc));
+                            //          } 
+                            //          else 
+                            //          {
+                            //              echo '<script language="javascript">';
+                            //              echo 'alert("Subtract Successfull");';
+                            //              echo '</script>';
+                            //              header("Location: ViewOrders.php");
+                            //          }                                                                      
+                            //       }//End For
                                 
 
                                   
-                             }//End 2nd IF                                                                                                                    
+                    //          }//End 2nd IF                                                                                                                    
                          
 
-                        else if($_SESSION['DeliveryStatus'] == "Deliver") //IF ORder is Deliver
-                        {
-                            $CLIENT_ID = $_POST['clientID'];
-                            $PAYMENT_ID = $_POST['paymentID'];
-                            $CART_TOTAL = $_POST['totalPayment'];                               
-                            $ORDER_STATUS = $_SESSION['DeliveryStatus'];
-                            $CURRENT_OR = $CurrentOR;
-                            $INSTALL_STATUS = "No Installation";
-                            $FAB_STATUS = $_SESSION['FabricationStatus'];
-                            $PAYMENT_STATUS = $_SESSION['payment_status'];
-                            $EXPECTED_DATE = date('Y-m-d', strtotime($_POST['getExpectedDelivery']));
+                    //     else if($_SESSION['DeliveryStatus'] == "Deliver") //IF ORder is Deliver
+                    //     {
+                    //         $CLIENT_ID = $_POST['clientID'];
+                    //         $PAYMENT_ID = $_POST['paymentID'];
+                    //         $CART_TOTAL = $_POST['totalPayment'];                               
+                    //         $ORDER_STATUS = $_SESSION['DeliveryStatus'];
+                    //         $CURRENT_OR = $CurrentOR;
+                    //         $INSTALL_STATUS = "No Installation";
+                    //         $FAB_STATUS = $_SESSION['FabricationStatus'];
+                    //         $PAYMENT_STATUS = $_SESSION['payment_status'];
+                    //         $EXPECTED_DATE = date('Y-m-d', strtotime($_POST['getExpectedDelivery']));
+                    //         $LOAN_STATUS = $_POST['paymentID'];
 
-                            $SANITIZED_CART_TOTAL = filter_var($CART_TOTAL,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
+                    //         $SANITIZED_CART_TOTAL = filter_var($CART_TOTAL,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
 
-                            $sqlInsertToOrdersTable = "INSERT INTO orders(ordernumber, client_id, order_date, expected_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
-                            VALUES(
-                                '$CURRENT_OR',
-                                '$CLIENT_ID', 
-                                Now(),
-                                '$EXPECTED_DATE',  
-                                '$PAYMENT_ID', 
-                                '$SANITIZED_CART_TOTAL',
-                                '$ORDER_STATUS',
-                                '$INSTALL_STATUS',
-                                '$FAB_STATUS',
-                                '$PAYMENT_STATUS');";
-                            $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
+                    //         $sqlInsertToOrdersTable = "INSERT INTO orders(ordernumber, client_id, order_date, expected_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
+                    //         VALUES(
+                    //             '$CURRENT_OR',
+                    //             '$CLIENT_ID', 
+                    //             Now(),
+                    //             '$EXPECTED_DATE',  
+                    //             '$PAYMENT_ID', 
+                    //             '$SANITIZED_CART_TOTAL',
+                    //             '$ORDER_STATUS',
+                    //             '$INSTALL_STATUS',
+                    //             '$FAB_STATUS',
+                    //             '$PAYMENT_STATUS');";
+                    //         $resultofInsertToOrders = mysqli_query($dbc,$sqlInsertToOrdersTable);  // Insert To Orders
 
-                            if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
-                            {
-                              $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
-                              SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
-                              WHERE client_id ='$CLIENT_ID';";
-                               $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
-                               if(!$RESULT_UNPAID_TOTAL) 
-                               {
-                                   die('Error: ' . mysqli_error($dbc));
-                               } 
-                               else 
-                               {
-                                   echo '<script language="javascript">';
-                                   echo 'alert("Added Unpaid Amount to Client");';
-                                   echo '</script>';
-                                //    header("Location: ViewOrders.php");
-                               } 
-                               $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
-                               VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
-                               $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
+                    //         if($PAYMENT_STATUS == "Unpaid") // Adds Unpaid amount to Client Tabol
+                    //         {
+                    //           $SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE = "UPDATE clients
+                    //           SET clients.total_unpaid  = (total_unpaid + '$SANITIZED_CART_TOTAL')
+                    //           WHERE client_id ='$CLIENT_ID';";
+                    //            $RESULT_UNPAID_TOTAL=mysqli_query($dbc,$SQL_INSERT_UNPAID_AMOUNT_TO_CLIENT_TABLE);
+                    //            if(!$RESULT_UNPAID_TOTAL) 
+                    //            {
+                    //                die('Error: ' . mysqli_error($dbc));
+                    //            } 
+                    //            else 
+                    //            {
+                    //                echo '<script language="javascript">';
+                    //                echo 'alert("Added Unpaid Amount to Client");';
+                    //                echo '</script>';
+                    //             //    header("Location: ViewOrders.php");
+                    //            } 
+                    //            $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
+                    //            VALUES('$CLIENT_ID', '$CURRENT_OR', '$SANITIZED_CART_TOTAL','$SANITIZED_CART_TOTAL');"; 
+                    //            $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
                                                                            
-                            }//END IF
+                    //         }//END IF
 
                             
-                            $CART_ITEM_ID = $_SESSION['order_form_item_id'];
-                            $CART_ITEM_QTY = $_SESSION['order_form_item_qty'];
-                            $ITEM_NAME = array();
-                            $ITEM_PRICE = array();
-                            $DELIVERY_STATUS = $_SESSION['DeliveryStatus'];
+                    //         $CART_ITEM_ID = $_SESSION['order_form_item_id'];
+                    //         $CART_ITEM_QTY = $_SESSION['order_form_item_qty'];
+                    //         $ITEM_NAME = array();
+                    //         $ITEM_PRICE = array();
+                    //         $DELIVERY_STATUS = $_SESSION['DeliveryStatus'];
                                                         
-                            for($i = 0; $i < sizeof($CART_ITEM_ID); $i++)
-                            {
-                                $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = $CART_ITEM_ID[$i];";
-                                $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlGetFromItemTrading);
-                                while($rowOfSelect=mysqli_fetch_array($resultofInsertToOrderDetails,MYSQLI_ASSOC))
-                                {
-                                    $ITEM_NAME[] = $rowOfSelect['item_name'];
-                                    $ITEM_PRICE[] = $rowOfSelect['price'];
+                    //         for($i = 0; $i < sizeof($CART_ITEM_ID); $i++)
+                    //         {
+                    //             $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = $CART_ITEM_ID[$i];";
+                    //             $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlGetFromItemTrading);
+                    //             while($rowOfSelect=mysqli_fetch_array($resultofInsertToOrderDetails,MYSQLI_ASSOC))
+                    //             {
+                    //                 $ITEM_NAME[] = $rowOfSelect['item_name'];
+                    //                 $ITEM_PRICE[] = $rowOfSelect['price'];
                                     
-                                }
+                    //             }
 
-                                $sqlInsertToOrderDetails = "INSERT INTO order_details(ordernumber, client_id, item_id, item_name, item_price, item_qty, item_status)
-                                VALUES(
-                                    '$CURRENT_OR',
-                                    '$CLIENT_ID',
-                                    '$CART_ITEM_ID[$i]',
-                                    '$ITEM_NAME[$i]',
-                                    '$ITEM_PRICE[$i]',
-                                    '$CART_ITEM_QTY[$i]',
-                                    '$DELIVERY_STATUS');";
-                                $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlInsertToOrderDetails); //Insert To Order DEtails
+                    //             $sqlInsertToOrderDetails = "INSERT INTO order_details(ordernumber, client_id, item_id, item_name, item_price, item_qty, item_status)
+                    //             VALUES(
+                    //                 '$CURRENT_OR',
+                    //                 '$CLIENT_ID',
+                    //                 '$CART_ITEM_ID[$i]',
+                    //                 '$ITEM_NAME[$i]',
+                    //                 '$ITEM_PRICE[$i]',
+                    //                 '$CART_ITEM_QTY[$i]',
+                    //                 '$DELIVERY_STATUS');";
+                    //             $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlInsertToOrderDetails); //Insert To Order DEtails
                                                                 
                                 
-                                $sqlToSubtractFromItemsTrading = "UPDATE items_trading
-                                SET items_trading.item_count  = (item_count - '$CART_ITEM_QTY[$i]'),
-                                last_update = Now() 
-                                WHERE item_id ='$CART_ITEM_ID[$i]';";
-                                $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); //Subtracts From Inventory
-                                if(!$resultOfSubtract) 
-                                {
-                                    die('Error: ' . mysqli_error($dbc));
-                                } 
-                                else 
-                                {
-                                    echo '<script language="javascript">';
-                                    echo 'alert("Subtract Successfull");';
-                                    echo '</script>';
-                                    header("Location: ViewOrders.php");
-                                }
+                    //             $sqlToSubtractFromItemsTrading = "UPDATE items_trading
+                    //             SET items_trading.item_count  = (item_count - '$CART_ITEM_QTY[$i]'),
+                    //             last_update = Now() 
+                    //             WHERE item_id ='$CART_ITEM_ID[$i]';";
+                    //             $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); //Subtracts From Inventory
+                    //             if(!$resultOfSubtract) 
+                    //             {
+                    //                 die('Error: ' . mysqli_error($dbc));
+                    //             } 
+                    //             else 
+                    //             {
+                    //                 echo '<script language="javascript">';
+                    //                 echo 'alert("Subtract Successfull");';
+                    //                 echo '</script>';
+                    //                 header("Location: ViewOrders.php");
+                    //             }
                                 
-                            }//End For
+                    //         }//End For
                             
                                 
-                        }// END else IF
-                    }//END 1st IF
+                    //     }// END else IF
+                    // }//END 1st IF
                        
                            
                             
@@ -483,7 +486,7 @@
                     <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2">Payment Type</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="btn btn-default dropdown-toggle" name="paymentID" id = "paymentID" onchange = "setLoanDown();">
+                            <select class="btn btn-default dropdown-toggle" name="paymentID" id = "paymentID"  onchange = "setLoanDown();">
                             <?php
                                 require_once('DataFetchers/mysql_connect.php');
                                 $SQL_PAYMENT_LIST="SELECT * FROM ref_payment";
@@ -501,7 +504,7 @@
                     <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12 col-md-offset-2">Loan Downpayment</label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                            <input type="number" id="loanpayment" style = "text-align:right" disabled class="form-control col-md-7 col-xs-12">
+                            <input type="number" id="loanpayment" placeholder="0.00" style = "text-align:right" disabled required class="form-control col-md-7 col-xs-12" max ="0" oninput="validate(this)">
                             <!-- Loan downpayment can be 0. If set to the total value of order, the order payment status will automatically be set to PAID. -->
                         </div>
                     </div>
@@ -578,8 +581,10 @@
                       <div class="col-md-12" align = "right">
                         <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         <!--   -->
-                        <input id="send" name ="viewOrderButton" type="submit" class="btn btn-success" onclick="doAction()" value ="Submit" required="required"></input>
-                        <input type="button" class="btn btn-primary" id="fabricationpage" disabled  onclick="nextpageWithFabrication()" value ="Next Step"></input> 
+                        <input id="send" name ="viewOrderButton" type="button" class="btn btn-success" value ="Submit" required="required"></input>
+                        <input type="button" class="btn btn-primary" id="fabricationpage" disabled  onclick="nextpageWithFabrication()" value ="Next Step"></input>
+
+                         
                                   
                       </div>
                     </div>
@@ -1110,7 +1115,9 @@ function nextpageNOFabrication()
 
             });
             
-            
+            loanpayment.disabled = true;
+            loanpayment.value = "";
+            $('#loanpayment').attr('placeholder','0.00');
             // paymentinput.classList.remove("btn.btn-default.dropdown-toggle");
             // paymentinput.classList.remove("btn.btn-warning.dropdown-toggle");
             // paymentinput.classList.add("btn.btn-success.dropdown-toggle");
@@ -1135,7 +1142,11 @@ function nextpageNOFabrication()
                 }
             
             });
-            
+            loanpayment.disabled = false;
+            var format_val = $('#payment').val().replace("₱ ", "");
+            var loanmax = format_val * 0.3;
+            $('#loanpayment').attr('max',loanmax.toFixed(2));
+            $('#loanpayment').attr('placeholder',loanmax.toFixed(2)); //Max loan amount = 30% of Current Total
             // paymentinput.classList.remove('btn btn-default dropdown-toggle');
             // paymentinput.classList.remove('btn btn-success dropdown-toggle');
             // paymentinput.classList.add('btn btn-warning dropdown-toggle');
@@ -1145,6 +1156,10 @@ function nextpageNOFabrication()
             paymentinput.classList.remove('btn','btn-warning','dropdown-toggle');
             paymentinput.classList.remove('btn','btn-success','dropdown-toggle');
             paymentinput.classList.add('btn','btn-default','dropdown-toggle');
+
+            loanpayment.disabled = true;
+            loanpayment.value = "";
+            $('#loanpayment').attr('placeholder','0.00');
         }
     }
 </script>
@@ -1170,20 +1185,38 @@ function nextpageNOFabrication()
 
     function setLoanDown()
     {
+        var paymentinput = document.getElementById("payment_status");
         if(paymentID.value == "1")
         {
             loanpayment.disabled = true;
             loanpayment.value = "";
+            $('#loanpayment').attr('placeholder','0.00');
+            paymentinput.classList.remove('btn','btn-warning','dropdown-toggle');           
+            paymentinput.classList.add('btn','btn-default','dropdown-toggle');
+            $('#payment_status').val("");
         }
         else if(paymentID.value == "2")
         {
-            loanpayment.disabled = true;
-            loanpayment.value = "";
+            loanpayment.disabled = false;
+            console.log($('#payment').val());
+            var format_val = $('#payment').val().replace("₱ ", "");
+            var loanmax = format_val * 0.3;
+            $('#loanpayment').attr('max',loanmax.toFixed(2));
+            $('#loanpayment').attr('placeholder',loanmax.toFixed(2)); //Max loan amount = 30% of Current Total
+
+            paymentinput.classList.add('btn','btn-warning','dropdown-toggle');
+            $('#payment_status').val("Unpaid");
+
         }
         else if(paymentID.value == "3")
         {
-            loanpayment.disabled = false;
-            console.log("a");
+            loanpayment.disabled = true;
+            loanpayment.value = "";
+            $('#loanpayment').attr('placeholder','0.00');
+            paymentinput.classList.remove('btn','btn-warning','dropdown-toggle');         
+            paymentinput.classList.add('btn','btn-default','dropdown-toggle');
+            $('#payment_status').val("");
+            
         }
         // Not sure what to to with this, paki check nalang mamats.
     }
@@ -1205,7 +1238,46 @@ function nextpageNOFabrication()
             color: #1D2B51;
             }
 
-</style>    
+</style> 
+
+<script>
+
+    $('#send').on('click',function(e){
+        if (!$('#loanpayment').val() && ($('#paymentID').val()=="2" || $('#payment_status').val() == "Unpaid")) 
+        {
+            return alert('Please fill in all required fields.');
+        }
+        var GET_CART_QTY=[];
+        $('#cart tr td:nth-child(4)').each(function (e) 
+        {
+            var getValue =parseInt($(this).text());
+            console.log(getValue);
+            GET_CART_QTY.push(getValue);
+        }) //ENd jquery
+        
+        request = $.ajax({
+        url: "ajax/orders_process.php",
+        type: "POST",
+        data: {post_current_or: "<?php echo $CurrentOR; ?>",
+            post_client_id: $('#clientID').val(),
+            post_payment_id: $('#paymentID').val(),
+            post_cart_total: $('#payment').val(),
+            post_expected_date: $('#expectedDate').val(),
+            post_payment_status: $('#payment_status').val(),
+            post_downpayment:  $('#loanpayment').val(),
+            post_cart_item_id: item_id_in_cart,
+            post_cart_item_qty: GET_CART_QTY
+        },
+        success: function(data, textStatus)
+        {
+        
+        }//End Scucess
+        
+        }); // End ajax    
+
+    })
+                            
+</script> 
 
     </body>
 </html>
