@@ -246,6 +246,8 @@
         var CURRENT_SKU = [];
         var DEPOT_REFERENCE = [];
         var approved = "approved";
+        
+        console.log("Deliv Person: "+$('#deliverypersonnel option:selected').text());
         $('#depot_request_table tr td:nth-child(1)').each(function (e){
             var getValue =$(this).text();
             console.log("Cart VAlue: "+getValue);           
@@ -260,6 +262,7 @@
             var getValue =parseInt($(this).text());
             console.log("Cart VAlue: "+getValue);
             CURRENT_QTY.push(getValue);
+            
         }); //ENd jquery
        
 
@@ -273,7 +276,8 @@
                         post_item_qty: CURRENT_QTY,
                         post_depot_reference: DEPOT_REFERENCE,
                         post_depot_or: parseInt($('#requisition_order_number').text()),
-                        post_status: approved
+                        post_status: approved,
+                        post_deliv_person: $('#deliverypersonnel option:selected').text()
                                              
                     },
                     success: function(data, textStatus)

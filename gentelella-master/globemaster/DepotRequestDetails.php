@@ -114,6 +114,8 @@
                                 echo '<font color = "black">REQUEST DATE: '.$FORMATTED_REQUESTED_DATE.' </font>';  
                                 echo '<br>';
                                 echo '<font color = "black">EXPECTED DATE: '.$FORMATTED_EXPECTED_DATE.' </font>';
+                                echo '<br>';
+                                echo '<font color = "black">DELIVERY PERSONNEL: <span id=delivery_person>'.$ROW_RESULT_GET_DEPOT_DETAILS['delivery_person'].' </span></font>';
                             ?>              
                             </div>
                             <div class = "clearfix" ></div>
@@ -248,11 +250,11 @@
 $('#print_btn').on('click',function(e)
 {
     //Appends all necessary info based on the DR
-    $('#print_deliver_name').append($('#deliverypersonnel').val());
+    $('#print_deliver_name').append($('#delivery_person').text());
 
     $('#itemtable tbody').each(function(e)
     {
-        console.log($(this).html());
+        // console.log($(this).html());
         $('#print_table').append($(this).html()); //Appends the value of the items table to the print table
        
     })

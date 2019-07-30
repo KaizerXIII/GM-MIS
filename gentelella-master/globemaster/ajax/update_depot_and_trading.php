@@ -3,16 +3,23 @@
     require_once('mysql_connect.php');
     $GET_ITEMS_SKU = $_POST['post_item_sku'];
     $GET_ITEMS_QTY = $_POST['post_item_qty'];  
-    $GET_DEPOT_REF = $_POST['post_depot_reference'];  
+    $GET_DEPOT_REF = $_POST['post_depot_reference'];
+    
 if($_POST['post_status']== "approved")
 {
    
     $GET_DEPOT_OR = $_POST['post_depot_or'];
+    $GET_DELIV_PERSON = $_POST['post_deliv_person'];
 
     $SQL_UPDATE_DEPOT_REQUEST_STATUS = "UPDATE depot_request
     SET depot_request_status = 'Requisition Approved'
     WHERE depot_request_id = '$GET_DEPOT_OR';";
     $RESULT_UPDATE_STATUS = mysqli_query($dbc,$SQL_UPDATE_DEPOT_REQUEST_STATUS);
+
+    $SQL_UPDATE_DEPOT_REQUEST_DETAILS_DELIV = "UPDATE depot_request_details
+    SET delivery_person = '$GET_DELIV_PERSON'
+    WHERE depot_request_number = '$GET_DEPOT_OR';";
+    $RESULT_UPDATE_DELIV = mysqli_query($dbc,$SQL_UPDATE_DEPOT_REQUEST_DETAILS_DELIV);
 
    
 }
