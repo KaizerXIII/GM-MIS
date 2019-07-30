@@ -7,8 +7,8 @@
     $GET_ITEMS_QTY = $_POST['post_item_qty'];
     $GET_TOTAL_PRICE = $_POST['post_total_price'];
     $GET_REQUESTED_DATE = $_POST['post_requested_date'];
-
-    
+    $GET_ITEMS_SKU = $_POST['post_sku_id'];
+    $GET_DEPOT_REF = $_POST['post_depot_reference'];
 
     $SANITIZED_TOTAL = str_replace("₱","", $GET_TOTAL_PRICE);
     
@@ -44,9 +44,33 @@
             $SQL_INSERT_TO_DETAILS = "INSERT INTO depot_request_details(depot_request_number, requested_item_name, requested_item_qty, depot_reference_name, price_each,delivery_person)
             VALUES('$GET_DOR','$GET_ITEMS_ID[$i]','$GET_ITEMS_QTY[$i]','$DEPOT_ITEM_REFERENCE','$TRADING_PRICE','N/A');";
             $RESULT_INSERT_TO_DETAILS =  mysqli_query($dbc,$SQL_INSERT_TO_DETAILS);
-            
-           
-        }
+                      
+        }//INSERTS PER ITEMS IN DETAILS
+        for($i = 0; $i < sizeof($GET_ITEMS_SKU);$i++ )
+        {    
+                    
+            $SQL_UPDATE_ITEMS_TRADING = "UPDATE mydb.items_trading
+            SET item_count = (item_count - '$GET_ITEMS_QTY[$i]'),
+            last_update = now()
+            WHERE sku_id = '$GET_ITEMS_SKU[$i]';";
+            $RESULT_UPDATE_ITEMS_TRADING = mysqli_query($dbc,$SQL_UPDATE_ITEMS_TRADING);
+            if(!$RESULT_UPDATE_ITEMS_TRADING)
+            {
+                echo "SOmething went wrong in Update Items Trading";
+            }
+    
+            $SQL_UPDATE_DEPOT = "UPDATE depotdb.gm_products
+            JOIN depotdb.gm_inventorystocks
+            ON gm_inventorystocks.ProductID = gm_products.ProductID
+            SET StockOnHand = (StockOnHand + '$GET_ITEMS_QTY[$i]'),
+            LastModified = now()
+            WHERE UnitName = '$GET_DEPOT_REF[$i]'";
+            $RESULT_UPDATE_DEPOT = mysqli_query($dbc,$SQL_UPDATE_DEPOT);
+            if(!$RESULT_UPDATE_DEPOT)
+            {
+                echo "SOmething went wrong in Update Depot Items";
+            }   
+        }// UPDATES VALUES
     }
     
     

@@ -336,7 +336,7 @@
                             if (buttonValue ==$(this).attr('val_id'))
                             { //checks i there is existing item
 
-                                var current_stock = parseInt(row.find('td:nth-child(4)').text());
+                                var current_stock = parseInt(row.find('td:nth-child(5)').text());
 
                                     qty = $(this).text().replace("₱ ", "");                                    
                                     var estinamted_total =  parseInt(itemQuantity) + parseInt(qty);
@@ -385,8 +385,8 @@
                         });
                         if(item_does_not_exist){
 
-                            var price =row.find('td:nth-child(3)').text().replace("₱ ", ""); //Removes the peso sign to make it as INT rather than string
-                            var valid= row.find('td:nth-child(3)');
+                            var price =row.find('td:nth-child(4)').text().replace("₱ ", ""); //Removes the peso sign to make it as INT rather than string
+                            var valid= row.find('td:nth-child(4)');
                             var ParsePrice = parseFloat(price.replace(/\,/g,''), 10);
 
                             // count =  count +1+ parseFloat(price.replace(/\,/g,''), 10);
@@ -396,7 +396,7 @@
                             CurrentTotal = CurrentTotal + totalPayment;
 
                             var newRow = document.getElementById('cart').insertRow();                       
-                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td>" + row.find('td:nth-child(2)').text() +" </td> <td>" + row.find('td:nth-child(3)').text() + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+totalPayment.toFixed(2)+"' > - </button></td>"
+                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td>" + row.find('td:nth-child(2)').text() +" </td> <td>" + row.find('td:nth-child(4)').text() + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+totalPayment.toFixed(2)+"' > - </button></td>"
                              
                             // payment.value = "₱ "+ totalPayment;
                            
@@ -478,12 +478,26 @@
             
 
             $('#send_to_ajax').on('click', function(e){
-                var GET_CART_QTY=[];
+            var GET_CART_QTY=[];
+            var GET_SKU_ID =[];
+            var GET_DEPOT_REF = [];
             $('#cart tr td:nth-child(4)').each(function (e) 
             {
                 var getValue =parseInt($(this).text());
                 console.log("Cart VAlue: "+getValue);
                 GET_CART_QTY.push(getValue);
+            }) //ENd jquery
+            $('#cart tr td:nth-child(1)').each(function (e) 
+            {
+                var get_sku_id =$(this).text();
+                console.log("SKU Value: "+get_sku_id);
+                GET_SKU_ID.push(get_sku_id);
+            }) //ENd jquery
+            $('#cart tr td:nth-child(2)').each(function (e) 
+            {
+                var get_depot_ref =$(this).text();
+                console.log("Depot Ref Name: "+get_depot_ref);
+                GET_DEPOT_REF.push(get_depot_ref);
             }) //ENd jquery
                 if(confirm("Submit the Depot Request?"))
                 {
@@ -493,12 +507,14 @@
                     data: {post_item_id: item_id_in_cart,
                         post_item_qty: GET_CART_QTY,
                         post_total_price: $('#payment').val(),
-                        post_requested_date: $('#expectedDate').val()
+                        post_requested_date: $('#expectedDate').val(),
+                        post_sku_id: GET_SKU_ID,
+                        post_depot_reference: GET_DEPOT_REF
                     },
                     success: function(data, textStatus)
                     {
                         alert("Requistion Successful");
-                        window.location.href= "ViewDepotRequests.php";
+                        // window.location.href= "ViewDepotRequests.php";
                     }//End Scucess
                     
                     }); // End ajax 

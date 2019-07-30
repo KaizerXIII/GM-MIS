@@ -173,6 +173,7 @@
                                                             </tbody>
                                                         </table>
                                                         
+                                                        
                                                     </div> <!--END Xcontent-->
                                                 </div><!--END Col MD-->
                                             </div><!--END Class-row -->
@@ -182,7 +183,7 @@
                                 </div><!--ENDCol MD-->
 
                 <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-
+                <button  type="button" id = "cancel_order" class="btn btn-danger" >Cancel Order</button>
                 </div><!--END Col MD-->
                     
             </div> <!--END X Panel-->
@@ -192,38 +193,6 @@
                     </div><!--END Role=Main -->
                 </div><!--END Container Body-->        
 </body>
-
-<!-- Small modal -->
-
-<div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title" id="myModalLabel2">Depot Tiles Request Approval</h4>
-      </div>
-      <div class="modal-body">
-    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12" for="first-name">Delivery Personnel <span class="required">*</span>
-            </label>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-            <input type="text" id="deliverypersonnel" required="required" class="form-control col-md-7 col-xs-12">
-            </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success">Finish Approval</button>
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
-                                                                    </element>
-<!-- /page content -->
 
 <!-- Print div -->
 <div class = "col-md-12 col-sm-12 col-xs-12 print-only">
@@ -361,71 +330,59 @@ $('#print_btn').on('click',function(e)
 <script src="../build/js/custom.min.js"></script>
 
 <script>
+ $('#cancel_order').on('click', function(e){
+        var CURRENT_QTY = [];
+        var CURRENT_SKU = [];
+        var DEPOT_REFERENCE = [];
+        var approved = "cancelled";
+        $('#itemtable tr td:nth-child(1)').each(function (e){
+            var getValue =$(this).text();
+            console.log("Cart VAlue: "+getValue);           
+            CURRENT_SKU.push(getValue);
+        }); //ENd jquery
+        $('#itemtable tr td:nth-child(2)').each(function (e){
+            var getValue =$(this).text();
+            console.log("Cart VAlue: "+getValue);
+            DEPOT_REFERENCE.push(getValue);
+        }); //ENd jquery
+        $('#itemtable tr td:nth-child(3)').each(function (e){
+            var getValue =parseInt($(this).text());
+            console.log("Cart VAlue: "+getValue);
+            CURRENT_QTY.push(getValue);
+        }); //ENd jquery
+       
 
-    function cancelWarning()
-    {
-        if(confirm("Cancel Current Order?"))
-        {
-            if(confirm("Are you sure?"))
+        if(confirm("Cancel Request?"))
             {
+                
                 request = $.ajax({
-                url: "ajax/cancel_order.php",
+                url: "ajax/update_depot_and_trading.php",
                 type: "POST",
-                data: {
-                    post_or_number:  "<?php echo $_SESSION['order_number_from_view'];?>",                    
+                data: {post_item_sku: CURRENT_SKU,
+                    post_item_qty: CURRENT_QTY,
+                    post_depot_reference: DEPOT_REFERENCE,
+                    post_depot_or: parseInt($('#requisition_order_number').text()),
+                    post_status: approved
+                                            
                 },
-                    success: function(data)
-                    {
-                        alert("Current Order: Cancelled!");
-                        window.location.href = "ViewOrderDetails.php";                         
-                    }//End Scucess               
-                }); // End ajax    
+                success: function(data, textStatus)
+                {
+                    alert("Current Requistion Cancelled!");
+                    // window.location.href= "ViewDepotRequests.php";
+                    
+
+                }//End Success
+                
+                }); // End ajax 
             }
             else
             {
                 alert("Action: Cancelled");
-            }
-        }
-        else
-        {
-            alert("Action: Cancelled");
-        }
-    }
-
+            }                  
+    })
+   
 </script>
-<script>
 
-function FinishOrder()
-{
-    if(confirm("Finish Current Order?"))
-    {
-        if(confirm("Are you sure?"))
-        {
-            request = $.ajax({
-            url: "ajax/finished_order.php",
-            type: "POST",
-            data: {
-                post_or_number:  "<?php echo $_SESSION['order_number_from_view'];?>",                    
-            },
-                success: function(data)
-                {
-                    alert("Current Order: Finished!");
-                    window.location.href = "ViewOrderDetails.php";                         
-                }//End Scucess               
-            }); // End ajax    
-        }
-        else
-        {
-            alert("Action: Cancelled");
-        }
-    }
-    else
-    {
-        alert("Action: Cancelled");
-    }
-}
-
-</script> 
 <script>
     $('#print_btn').on('click', function(e){      
         window.print();
