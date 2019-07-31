@@ -1261,27 +1261,34 @@ function nextpageNOFabrication()
                 FILTERED_ID.push(item_id_in_cart[i]);
             }
         }  
-        
-        request = $.ajax({
-        url: "ajax/orders_process.php",
-        type: "POST",
-        data: {post_current_or: "<?php echo $CurrentOR; ?>",
-            post_client_id: $('#clientID').val(),
-            post_payment_id: $('#paymentID').val(),
-            post_cart_total: $('#payment').val(),
-            post_expected_date: $('#expectedDate').val(),
-            post_payment_status: $('#payment_status').val(),
-            post_downpayment:  $('#loanpayment').val(),
-            post_cart_item_id: FILTERED_ID,
-            post_cart_item_qty: GET_CART_QTY
-        },
-        success: function(data, textStatus)
+        if(confirm("Submit Current Orders?"))
         {
-            alert("Order Successful!")  
-            // window.location.href = "ViewOrders.php";   
-        }//End Scucess
+            request = $.ajax({
+                url: "ajax/orders_process.php",
+                type: "POST",
+                data: {post_current_or: "<?php echo $CurrentOR; ?>",
+                    post_client_id: $('#clientID').val(),
+                    post_payment_id: $('#paymentID').val(),
+                    post_cart_total: $('#payment').val(),
+                    post_expected_date: $('#expectedDate').val(),
+                    post_payment_status: $('#payment_status').val(),
+                    post_downpayment:  $('#loanpayment').val(),
+                    post_cart_item_id: FILTERED_ID,
+                    post_cart_item_qty: GET_CART_QTY
+                },
+                success: function(data, textStatus)
+                {
+                    alert("Order Successful!")  
+                    window.location.href = "ViewOrders.php";   
+                }//End Scucess
+            
+            }); // End ajax    
+        }
+        else
+        {
+            alert("Action: Cancelled");
+        }
         
-        }); // End ajax    
 
     })
                             

@@ -29,7 +29,11 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+     <!-- JQUERY Required Scripts -->
+     
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
 </head>
+
 
 <body class="nav-md">
     <div class="container body">
@@ -151,13 +155,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" id = "exp_date_div">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Expected Date: </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="date" id = "expected_date" class="form-control" readonly="readonly" >
                                                 </div>
                                             </div>
-
+                                   
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Payment Type: </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -176,7 +180,7 @@
                                                     <input type="text" id = "order_status" class="form-control" readonly="readonly">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group" id ="install_stat_div">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Installation Status: </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="text" id = "install_status" class="form-control" readonly="readonly">
@@ -355,6 +359,11 @@
                                         ?>
                                                 <button name = "confirmButton" type="button" class="btn btn-success" onclick ="FinishOrder()">Finish</button>
                                                 <button type="button" class="btn btn-warning" onclick="cancelWarning()">Cancel Order</button>
+                                                <script>
+                                                    $('#exp_date_div').hide();
+                                                    $('#install_stat_div').hide();
+                                                    
+                                                </script>
                                         <?php
                                                 }
                                                 else if($statohs == "Deliver")
