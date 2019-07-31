@@ -202,6 +202,8 @@
                  <input type='text' style='display:none' id='warehouse' value = ''/>
                  <input type='text' style='display:none ' id='price' value = ''/>
                  <input type='text' style='display:none ' id='stock' value = ''/>
+                 <input type='text' style='display:none ' id='items_in' value = ''/>
+                 <input type='text' style='display:none ' id='items_out' value = ''/>
                  <input type='text' style='display:none' id='combine' value = '' onchange = "OnQRDataChange()" onkeyup = "OnQRDataChange()"/>
                  
                  <!-- <div id = 'result'></div> -->
@@ -217,8 +219,8 @@
             </div>
             
             <p class="text-muted font-13 m-b-30">
-                      This QR Code generation tool is referenced from http://goqr.me/api/doc/create-qr-code/. a QR Code API.
-                    </p>
+              This QR Code generation tool is referenced from http://goqr.me/api/doc/create-qr-code/. a QR Code API.
+            </p>
           </div>
         </div>
       </div>
@@ -269,8 +271,8 @@
     
 
 
-     <!-- Datatables -->
-     <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <!-- Datatables -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
     <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
@@ -301,6 +303,8 @@
         var price  = <?php echo json_encode($price); ?>;
         var sku = <?php echo json_encode($SKU); ?>;
         var stock = <?php echo json_encode($stock); ?>;
+        var items_in = <?php echo json_encode($items_in); ?>;
+        var items_out = <?php echo json_encode($items_out); ?>;
 
         var itemidVal = document.getElementById("itemid");
         var skuVal = document.getElementById("itemsku");
@@ -310,6 +314,8 @@
         var warehouseVal = document.getElementById("warehouse");
         var priceVal = document.getElementById("price");
         var stockVal = document.getElementById("stock");
+        var items_inVal = document.getElementById("items_in");
+        var items_outVal = document.getElementById("items_out");
         var combineVal = document.getElementById("combine");
         // alert(obj.textContent);
         var varvar = obj.textContent;
@@ -324,12 +330,14 @@
             supplierVal.value = supplier[i];
             warehouseVal.value = warehouse[i];
             stockVal.value = stock[i];
+            items_inVal.value = items_in[i];
+            items_outVal.value = items_out[i];
             priceVal.value = price[i];
             combineVal.value = "SKU: " + sku[i] + " | " + "Item Name: " + itemname[i] + " | " + "Item Type: " + itemtype[i] + " | " 
             + "Supplier: " + supplier[i] + " | " + "Warehouse Location: " + warehouse[i] + " | " + "Item Price: " + price[i] + " | "
-            + "Item Stock: " + stock[i];
+            + "Item Stock: " + stock[i] + " | " + "Items in Warehouse: " + items_in[i] + " | " + "Item outside of Warehouse: " + items_out[i];
             // alert(combineVal);
-            var var_data = [sku[i], itemname[i], itemtype[i], supplier[i], warehouse[i], price[i], stock[i]];
+            var var_data = [sku[i], itemname[i], itemtype[i], supplier[i], warehouse[i], price[i], stock[i], items_in[i], items_out[i]];
             // alert(var_data);
             $.ajax({
               url: 'qrcodegeneration.php',
