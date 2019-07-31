@@ -1278,7 +1278,7 @@ function nextpageNOFabrication()
         success: function(data, textStatus)
         {
             alert("Order Successful!")  
-            window.location.href = "ViewOrders.php";   
+            // window.location.href = "ViewOrders.php";   
         }//End Scucess
         
         }); // End ajax    

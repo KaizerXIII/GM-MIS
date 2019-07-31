@@ -112,13 +112,15 @@
                           <th>Supplier</th>
                           <th>Stock</th>
                           <th>Warehouse Location</th>
+                          <th>Items Inside</th>
+                          <th>Items Outside</th>
                           <th>Price</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php 
                           require_once('DataFetchers\mysql_connect.php');
-                          $querytogetDBTable = "SELECT item_id, item_name, itemtype, item_count, supplier_name, warehouse, price, sku_id FROM items_trading g 
+                          $querytogetDBTable = "SELECT item_id, item_name, itemtype, item_count, supplier_name, warehouse, price, sku_id,item_outside_warehouse,item_inside_warehouse FROM items_trading g 
                           JOIN ref_itemtype f ON g.itemtype_id
                           JOIN suppliers s ON g.supplier_id
                           JOIN warehouses w ON g.warehouse_id
@@ -136,6 +138,9 @@
                           $price = array();
                           $SKU = array();
                           $stock = array();
+
+                          $items_in = array();
+                          $items_out = array();
                           
                           while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
                           {
@@ -147,6 +152,10 @@
                             $warehouse[] = $rowofResult['warehouse'];
                             $price[] = $rowofResult['price'];
                             $stock[] = $rowofResult['item_count'];
+
+                            $items_in[] = $rowofResult['item_inside_warehouse'];
+                            $items_out[] = $rowofResult['item_outside_warehouse'];
+
                             echo " <tr>";
                               echo '<td id = "SKU" onclick = "SKUclick(this), OnQRDataChange()">';
                               echo $rowofResult['sku_id'];
@@ -165,7 +174,13 @@
                               echo '</td>';
                               echo '<td>';
                               echo $rowofResult['warehouse'];
+                              echo '</td>';
+                              echo '<td>';
+                              echo $rowofResult['item_inside_warehouse'];
                               echo '</td>';  
+                              echo '<td>';
+                              echo $rowofResult['item_outside_warehouse'];
+                              echo '</td>';    
                               echo '<td align = "right">';
                               echo '₱'." ".number_format($rowofResult['price'], 2);
                               echo '</td>';   

@@ -768,7 +768,7 @@ $('#no_dmg_proceed').on('click', function(e){
           success: function(data, textStatus)
           {
            alert("Restocking Successful!");
-           window.location.href = "SupplierOrderSummary.php";
+          //  window.location.href = "SupplierOrderSummary.php";
                   
           }//End Scucess
         
