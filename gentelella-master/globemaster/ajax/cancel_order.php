@@ -10,6 +10,10 @@
     $ROW_CHECK_STATUS = mysqli_fetch_assoc($RESULT_CHECK_ORDER_STATUS);
     $CURRENT_ORDER_STATUS = $ROW_CHECK_STATUS['order_status']; //Checks the current status if [PickUp] or [Type of Deliver]
 
+    $ITEM_ID_ORDERED_LIST = array();
+    $ITEM_QTY_ORDERED_LIST = array();
+    $ITEM_WAREHOUSE = array();
+
    if($CURRENT_ORDER_STATUS == "PickUp")
    {
         $SQL_UPDATE_ORDERS_TABLE = "UPDATE orders
@@ -29,8 +33,7 @@
                 echo 'alert("1st Update Successfull");';
                 echo '</script>';         
             }
-            $ITEM_ID_ORDERED_LIST = array();
-        $ITEM_QTY_ORDERED_LIST = array();
+       
 
         $SELECT_ITEMS_ORDERED="SELECT * FROM order_details WHERE ordernumber = '$GET_OR_NUMBER'";
         $RESULT_SELECT_ITEMS_ORDERED = mysqli_query($dbc,$SELECT_ITEMS_ORDERED);
@@ -54,28 +57,7 @@
             // header("Location: Deliveries.php");
         }
 
-        for($i = 0 ; $i < sizeof($ITEM_ID_ORDERED_LIST); $i++)
-        {
-            $SQL_UPDATE_INVENTORY_QTY = "UPDATE items_trading
-            SET items_trading.item_count  = (item_count + '$ITEM_QTY_ORDERED_LIST[$i]')                                       
-            WHERE item_id ='$ITEM_ID_ORDERED_LIST[$i]';";
         
-            $RESULT_UPDATE_INVENTORY_QTY = mysqli_query($dbc,$SQL_UPDATE_INVENTORY_QTY);
-            if(!$RESULT_SELECT_ITEMS_ORDERED) 
-            {
-                die('Error: ' . mysqli_error($dbc));
-                echo '<script language="javascript">';
-                echo 'alert("Error In Update");';
-                echo '</script>';
-            } 
-            else 
-            {
-                echo '<script language="javascript">';
-                echo 'alert("Update Items Trading Success");';
-                echo '</script>';
-                // header("Location: Deliveries.php");
-            }
-        } //End For
     
    } //END IF
    else
@@ -113,10 +95,7 @@
                 echo '<script language="javascript">';
                 echo 'alert("2nd Update Successfull");';
                 echo '</script>';
-            }
-        $ITEM_ID_ORDERED_LIST = array();
-        $ITEM_QTY_ORDERED_LIST = array();
-
+            }       
         $SELECT_ITEMS_ORDERED="SELECT * FROM order_details WHERE ordernumber = '$GET_OR_NUMBER'";
         $RESULT_SELECT_ITEMS_ORDERED = mysqli_query($dbc,$SELECT_ITEMS_ORDERED);
             while($ROW_ITEMS_ORDERED = mysqli_fetch_array($RESULT_SELECT_ITEMS_ORDERED,MYSQLI_ASSOC))
@@ -137,33 +116,37 @@
             echo 'alert("Select Success");';
             echo '</script>';
             // header("Location: Deliveries.php");
-        }
-
-        for($i = 0 ; $i < sizeof($ITEM_ID_ORDERED_LIST); $i++)
-        {
-            $SQL_UPDATE_INVENTORY_QTY = "UPDATE items_trading
-            SET items_trading.item_count  = (item_count + '$ITEM_QTY_ORDERED_LIST[$i]')                                       
-            WHERE item_id ='$ITEM_ID_ORDERED_LIST[$i]';";
-        
-            $RESULT_UPDATE_INVENTORY_QTY = mysqli_query($dbc,$SQL_UPDATE_INVENTORY_QTY);
-            if(!$RESULT_SELECT_ITEMS_ORDERED) 
-            {
-                die('Error: ' . mysqli_error($dbc));
-                echo '<script language="javascript">';
-                echo 'alert("Error In Update");';
-                echo '</script>';
-            } 
-            else 
-            {
-                echo '<script language="javascript">';
-                echo 'alert("Update Items Trading Success");';
-                echo '</script>';
-                // header("Location: Deliveries.php");
-            }
-        } //End For
-    
+        }          
    } //END ELSE
-   
+   for($i = 0 ; $i < sizeof($ITEM_ID_ORDERED_LIST); $i++)
+    {
+        $SQL_UPDATE_INVENTORY_QTY = "UPDATE items_trading
+        SET items_trading.item_count  = (item_count + '$ITEM_QTY_ORDERED_LIST[$i]'),
+        item_outside_warehouse = (item_outside_warehouse + '$ITEM_QTY_ORDERED_LIST[$i]')                                       
+        WHERE item_id ='$ITEM_ID_ORDERED_LIST[$i]';";
+    
+        $RESULT_UPDATE_INVENTORY_QTY = mysqli_query($dbc,$SQL_UPDATE_INVENTORY_QTY);
+        if(!$RESULT_SELECT_ITEMS_ORDERED) 
+        {
+            die('Error: ' . mysqli_error($dbc));
+            
+        } 
+        else 
+        {      
+            
+            $GET_ITEMS_INFO = "SELECT * FROM items_trading WHERE item_id = '$ITEM_ID_ORDERED_LIST[$i]'";
+            $RESULT_GET_ITEMS = mysqli_query($dbc,$GET_ITEMS_INFO);
+            while($ROW_RESULT_GET_ITEMS_INFO=mysqli_fetch_array($RESULT_GET_ITEMS,MYSQLI_ASSOC))
+            {
+                $ITEM_WAREHOUSE[]=$ROW_RESULT_GET_ITEMS_INFO['warehouse_id'];                                                 
+            }
+            
+            $SQL_UPDATE_WAREHOUSE_OUT= "UPDATE warehouses
+            SET out_capacity = (out_capacity +'$ITEM_QTY_ORDERED_LIST[$i]')
+            WHERE warehouse_id = ' $ITEM_WAREHOUSE[$i]'";
+            $RESULT_UPDATE_WAREHOUSE_OUT = mysqli_query($dbc,$SQL_UPDATE_WAREHOUSE_OUT);
+        }
+    } //End For
     
 
 ?>

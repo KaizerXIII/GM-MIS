@@ -81,8 +81,8 @@
         foreach($CART_ITEM_ID as $i=>$ITEM_ID)
         {
             $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = '$ITEM_ID'";
-            $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlGetFromItemTrading);
-            while($rowOfSelect=mysqli_fetch_array($resultofInsertToOrderDetails,MYSQLI_ASSOC))
+            $RESULT_GET_ITEMS = mysqli_query($dbc,$sqlGetFromItemTrading);
+            while($rowOfSelect=mysqli_fetch_array($RESULT_GET_ITEMS,MYSQLI_ASSOC))
             {
                 $ITEM_NAME[] = $rowOfSelect['item_name'];
                 $ITEM_PRICE[] = $rowOfSelect['price'];   
@@ -343,8 +343,8 @@
         foreach($CART_ITEM_ID as $i=>$ITEM_ID)
         {
             $sqlGetFromItemTrading = "SELECT * FROM items_trading WHERE item_id = '$ITEM_ID'";
-            $resultofInsertToOrderDetails = mysqli_query($dbc,$sqlGetFromItemTrading);
-            while($rowOfSelect=mysqli_fetch_array($resultofInsertToOrderDetails,MYSQLI_ASSOC))
+            $RESULT_GET_ITEMS = mysqli_query($dbc,$sqlGetFromItemTrading);
+            while($rowOfSelect=mysqli_fetch_array($RESULT_GET_ITEMS,MYSQLI_ASSOC))
             {
                 $ITEM_NAME[] = $rowOfSelect['item_name'];
                 $ITEM_PRICE[] = $rowOfSelect['price'];   
