@@ -270,6 +270,7 @@ for($i = 0 ; $i < sizeof($BULK_DETAIL_ARRAY); $i++)
 echo "$('#dr_form').remove();";  //Removes the Original Form to prevent dups
 echo "</script>";
 ?>
+
 <script>
 
 $('.btn.btn-round.btn-info.btn-md').on('click',function(e){
