@@ -105,7 +105,8 @@ require_once('DataFetchers/mysql_connect.php');
 
                         $query = "SELECT * FROM items_trading 
                               JOIN ref_itemtype 
-                              WHERE ref_itemtype.itemtype_id = items_trading.itemtype_id";
+                              WHERE ref_itemtype.itemtype_id = items_trading.itemtype_id
+                              ORDER BY item_id";
 
                         $result=mysqli_query($dbc,$query);
 
@@ -155,7 +156,8 @@ require_once('DataFetchers/mysql_connect.php');
                         <div class="slidecontainer" id = "sliderAmount">
                             <input type="range" min="1" max="" value="" class="slider" id="rangeSlider"> 
 
-                            <h3><p>3-Month Demand Value: <b><span id="value"></span></b></p></h3>
+                            <h3><p>Estimated Demand Value: <b><span id="value"></span></b></p></h3>
+                            <h3><p>Initial 3-Month Demand Value: <b><span id="initial_value"></span></b></p></h3>
                             <!-- Current Demand Within 3 Months: 
                             
                             <input id = "maxInput" type ="number" min = "0" onkeydown="return processKey(event)" value = "0">  -->
@@ -300,6 +302,10 @@ require_once('DataFetchers/mysql_connect.php');
 <!-- Custom Theme Scripts -->
 <script src="../build/js/custom.min.js"></script>
 <script>
+ var demandFromPHP;
+ $('#datatable').dataTable( {
+  "ordering": false
+} );
     // Line chart
     <?php
     require_once('DataFetchers/mysql_connect.php');
@@ -331,6 +337,8 @@ require_once('DataFetchers/mysql_connect.php');
         $RESULT_GET_2_MONTHS_DEMAND = mysqli_query($dbc,$SQL_GET_2_MONTHS_DEMAND);
         $ROW_RESULT_GET_2_MONTHS_DEMAND = mysqli_fetch_array($RESULT_GET_2_MONTHS_DEMAND,MYSQLI_ASSOC);
 
+        $wa = $ROW_RESULT_GET_2_MONTHS_DEMAND['total_amount']/90;
+        echo "console.log('Current Demand = ".$wa." at ".$i."');";
         $TOTAL_DEMAND[] = $ROW_RESULT_GET_2_MONTHS_DEMAND['total_amount']/90;
         
         echo "var demandFromPHP = ".json_encode($TOTAL_DEMAND).";";
@@ -490,11 +498,12 @@ require_once('DataFetchers/mysql_connect.php');
 
 
     var curr_item_selected_price = 200;
-    var demand = slider.value;
+    var demand;
     var eoq = 100;
     var this_obj = null;
     var slide = document.getElementById('rangeSlider'),
         sliderDiv = document.getElementById("sliderAmount");
+  
     slider.onchange = function()
     {
         demand = this.value;
@@ -502,7 +511,6 @@ require_once('DataFetchers/mysql_connect.php');
         myTD(this_obj);
         //recompute_chart(curr_item_selected_price);
     }
-
     function myTD(obj) {
 //  alert(obj.innerHTML);
         var textFromHTML = obj.innerHTML;
@@ -514,26 +522,29 @@ require_once('DataFetchers/mysql_connect.php');
             
             if(itemNameFromPHP[i] == textFromHTML )
             {
-               
-                
-                var eoq = Math.sqrt((2 * demand * AcquisitionCostFromPHP[0]) / ((HoldingCostFromPHP[0]/100) * ItemPriceFromPHP[i]));
-                var Final = eoq.toFixed(2);
-                // echo 'tableCell[i].textContent = Final;
-
-                curr_item_selected_price = ItemPriceFromPHP[i];
-                window.eoq = Final;
-                computeLabels(Final);
-                recompute_chart(ItemPriceFromPHP[i]);
-
-                console.log(demandFromPHP[i]);
+               demand = demandFromPHP[i];
                 $("#rangeSlider").attr({
                     "max": demandFromPHP[i] + 1000,
                     "value": demandFromPHP[i].toFixed(2)
                 });
+                console.log(demandFromPHP[i]);
+            $('#initial_value').text(demandFromPHP[i]);
+                var eoq = Math.sqrt((2 * demand * AcquisitionCostFromPHP[0]) / ((HoldingCostFromPHP[0]/100) * ItemPriceFromPHP[i]));
+                var Final = eoq.toFixed(2);
+                Math.ceil(Final);
+                // echo 'tableCell[i].textContent = Final;
+                
+                console.log("Initial Demand: "+demandFromPHP[i]);
+                curr_item_selected_price = ItemPriceFromPHP[i];
+                window.eoq = Final;
+                computeLabels(Math.ceil(Final));
+                recompute_chart(ItemPriceFromPHP[i]);
+
+               
                 // $('#value').text($("#rangeSlider").attr('value'));
-                console.log("EOQ Val: "+Final);   
+                console.log("EOQ Val: "+Math.ceil(Final));   
                 // echo'break;';
-            };//End IF
+            }//End IF
 
         } //End For
 
@@ -606,6 +617,8 @@ require_once('DataFetchers/mysql_connect.php');
         }
         window.myChart.update();
     }
+
+   
 </script>
 
 </body>

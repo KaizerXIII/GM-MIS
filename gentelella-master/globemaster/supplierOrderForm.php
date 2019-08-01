@@ -326,11 +326,11 @@
                                                                 $SQL_GET_2_MONTHS_DEMAND = "SELECT od.*,SUM(od.item_qty) as total_amount FROM
                                                                 order_details od JOIN orders o on od.ordernumber = o.ordernumber 
                                                                 where od.item_id = '$ITEM_ID' and (o.order_date 
-                                                                between DATE_SUB(DATE(NOW()), INTERVAL 60 DAY ) and DATE(NOW())) GROUP BY 1,2";
+                                                                between DATE_SUB(DATE(NOW()), INTERVAL 90 DAY ) and DATE(NOW())) GROUP BY 1,2";
                                                                 $RESULT_GET_2_MONTHS_DEMAND = mysqli_query($dbc,$SQL_GET_2_MONTHS_DEMAND);
                                                                 $ROW_RESULT_GET_2_MONTHS_DEMAND = mysqli_fetch_array($RESULT_GET_2_MONTHS_DEMAND,MYSQLI_ASSOC);
 
-                                                                $TOTAL_QTY = $ROW_RESULT_GET_2_MONTHS_DEMAND['total_amount']/60;
+                                                                $TOTAL_QTY = $ROW_RESULT_GET_2_MONTHS_DEMAND['total_amount']/90;
 
                                                                 $SQL_GET_AC_AND_HC = "SELECT * FROM ref_eoqformula";
                                                                 $RESULT_SQL_GET_AC_AND_HC =  mysqli_query($dbc,$SQL_GET_AC_AND_HC);
