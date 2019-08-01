@@ -120,7 +120,7 @@
                         <font size = "4" color = "green"><center> 
                           <a href="<?php echo $_SERVER['PHP_SELF'].'?week='.($week-1).'&year='.$year;?>">
                           <i class="fa fa-arrow-left fa-lg"></i> Previous Week</a> <!--Previous week-->
-                          For the week of:   <span id="first_date" style="color:green"> 
+                          <span id="first_date" style="color:green"> 
                         
                         <?php
                             // do {
@@ -132,12 +132,11 @@
                             // } while ($week == $dt->format('W'));
                         ?>
                         </span>
-                         To 
                          <span id="second_date" style="color:green">
                       
                       
                           </span>
-                          <a href="<?php echo $_SERVER['PHP_SELF'].'?week='.($week+1).'&year='.$year; ?>">Next Week  <!--Next week-->
+                          <a href="<?php echo $_SERVER['PHP_SELF'].'?week='.($week+1).'&year='.$year; ?>">| Next Week  <!--Next week-->
                         <i class="fa fa-arrow-right fa-lg"></i> </a></center></font>
                       </div>
                  
@@ -148,7 +147,7 @@
                   <form method = "POST" action = "Delivery Receipt.php">
 
                   <!-- START DATE PICKER FOR WEEK FILTER -->
-                  <div class = "col-md-12 col-sm-12 col-xs-12">
+                  <!-- <div class = "col-md-12 col-sm-12 col-xs-12">
                   <div class = "col-md-2 col-sm-3 col-xs-12">
                   <font size = "5" color = "black">Show week of:</font>
                   </div>
@@ -159,8 +158,8 @@
                                <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                  </div>
-                  <script>
+                  </div> -->
+                  <!-- <script>
                         var get_date = document.getElementById("current_date"); //Gets the date from datepicker
                           var set_date;
                           function refresh_date() 
@@ -200,12 +199,12 @@
                           // }
                         
                         
-                         </script>
+                         </script> -->
 
                   
-                  <div>
+                  <!-- <div>
                   <button type="button" class="btn btn-primary" onclick="refresh_date()" >Refresh</button>
-                  </div>
+                  </div> -->
                   </div>
                   <!-- END DATE PICKER -->
 

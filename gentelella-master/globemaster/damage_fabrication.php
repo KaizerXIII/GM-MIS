@@ -77,12 +77,7 @@
                 <div class="x_panel">
                   <div class="x_content">
                     <br />
-                    IF ITEM TO BE REPLENISHED IS OUT OF STOCK...
-                    
-                    <br>
-                    <font color = "red">The item(s) <b>Granite-A, Granite-B, Granite-C </b>is out of stock and is not available for replenishment. Please inform the customer (09278281281).</font>
-                    <br>
-                    *The phone number is based on the customer info. 
+                   
                     <form method="POST" class="form-horizontal form-label-left" >
 
                       <div class="form-group">

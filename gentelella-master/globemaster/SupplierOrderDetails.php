@@ -280,27 +280,27 @@
                       ?>
                       <table border="0" style="width: 50%;" align = "center" frame="box">
                         <tr>
-                          <th>echo arrived update here.</th>
+                          <th><?php $date = date('Y-m-d H:i:s'); echo $date?></th>
                           <th>The ordered item(s) have arrived to the Globe Master warehouses.</th>
                         </tr>
                         <tr>
-                          <td>echo Receiving update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>The ordered item(s) have arrived to the Globe Master warehouses. The inventory personnel are receiving the ordered items. </td>
                         </tr>
                         <tr>
-                          <td>echo OTW update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>The ordered item(s) are on the way to their respective warehouses.</td>
                         </tr>
                         <tr>
-                          <td>echo philippines update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>The ordered item(s) have arrived at the Philippine port. The items will soon be on its way to their respective warehouses.</td>
                         </tr>
                         <tr>
-                          <td>echo shipped update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>The ordered item(s) are on its way to the Philippine port.</td>
                         </tr>
                         <tr>
-                          <td>echo china update here.</td>
+                          <td><?php $date = date('Y-m-d H:i:s'); echo $date?></td>
                           <td>All of the items have arrived at the China port. The ordered item(s) are ready to be shipped.</td>
                         </tr>
                         <tr>
@@ -344,9 +344,18 @@
                             }
                             else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW")
                             {
+                              if($user != "INV")
+                              {
                           ?>
-                          <button type = "submit" id = "ArrivedReceive" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivRcv" onclick = "ChangeAR(this);" class="btn btn-round btn-success btn-md">Order Arrived - Receiving</button>
+                            <button type = "submit" id = "ArrivedReceive" disabled value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivRcv" onclick = "ChangeAR(this);" class="btn btn-round btn-success btn-md">Order Arrived - Receiving</button>
                           <?php
+                              }
+                              else
+                              {
+                          ?>
+                            <button type = "submit" id = "ArrivedReceive" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" name = "ArrivRcv" onclick = "ChangeAR(this);" class="btn btn-round btn-success btn-md">Order Arrived - Receiving</button>
+                          <?php
+                              }
                             }
                             else if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
                             {
@@ -443,10 +452,10 @@
                           if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving")
                           {
                         ?>
-                          <button type="button" class="btn btn-round btn-success" id = "no_dmg_proceed">Proceed w/o Damage  <i class = "fa fa-arrow-right"></i></button>
+                          <button type="button" value = "<?php echo $CURRENT_SO_ID_NUMBER;?>" class="btn btn-round btn-success btn-md" id = "no_dmg_proceed">Proceed Without Damages  <i class = "fa fa-arrow-right"></i></button>
                        
-                          <button type="submit" class="btn btn-round btn-success" name = "restock_items" id = "proceed">Proceed w/ Damage <i class = "fa fa-arrow-right"></i></button>
-                        <?php
+                          <button type="submit" class="btn btn-round btn-success btn-md" name = "restock_items" id = "proceed">Proceed With Damages <i class = "fa fa-arrow-right"></i></button>
+                       <?php
                           }
                         ?>
                         </div>
@@ -738,12 +747,6 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
 })
 </script>
 
-<script>
-$('#no_dmg_proceed').on('click', function(e){
-
-})
-</script>
-
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -775,6 +778,7 @@ $('#no_dmg_proceed').on('click', function(e){
     <script src="../build/js/custom.min.js"></script>
     <script>
     $('#no_dmg_proceed').on('click', function(e){
+
       var restock_item_array = Array();
       var restock_qty_array = Array();
       $('#datatable-responsive tbody tr').each(function(e){
@@ -784,17 +788,25 @@ $('#no_dmg_proceed').on('click', function(e){
       })
       if(confirm("Are you sure you want to add the items to the inventory?"))
       {
+
+        console.log($('#no_dmg_proceed').val());
+
+        var SET_STATUS_ARRIVED = "Arrived";
+        var SET_SUPPLY_ORDER_NUMBER = $('#no_dmg_proceed').val();
+
         request = $.ajax({
         url: "ajax/restock_all_items.php",
         type: "POST",
-        data: {post_item_name: restock_item_array,
+        data: {post_status_arrived: SET_STATUS_ARRIVED, 
+        post_supply_order_number: SET_SUPPLY_ORDER_NUMBER,
+        post_item_name: restock_item_array,
         post_item_qty: restock_qty_array
                           
         },
           success: function(data, textStatus)
           {
            alert("Restocking Successful!");
-          //  window.location.href = "SupplierOrderSummary.php";
+           window.location.href = "SupplierOrderSummary.php";
                   
           }//End Scucess
         

@@ -5,8 +5,6 @@
     $GET_RESTOCK_NAMES = $_POST['post_item_name'];
     $GET_RESTOCK_QTY =  $_POST['post_item_qty'];
 
-    
-
     for($i = 0; $i < sizeof($GET_RESTOCK_NAMES); $i++)
     {
         $SQL_GET_ITEM_ID = "SELECT * FROM items_trading WHERE item_name = '$GET_RESTOCK_NAMES[$i]'";
@@ -94,6 +92,23 @@
         
         
     }
+
+    $GET_STATUS_ARRIVED = $_POST['post_status_arrived'];
+    $GET_SUPPLY_ORDER_NUMBER = $_POST['post_supply_order_number'];
+
+    $UPDATE_SET_STATUS_ARRIVED = "UPDATE supply_order
+                              SET supply_order.supply_order_status  = ('$GET_STATUS_ARRIVED')
+                              WHERE supply_order_id = '$GET_SUPPLY_ORDER_NUMBER';";
+                              $RESULT_UPDATE_SET_STATUS_ARRIVED=mysqli_query($dbc,$UPDATE_SET_STATUS_ARRIVED);
+                              if(!$RESULT_UPDATE_SET_STATUS_ARRIVED)
+                              {
+                                die('Error: ' . mysqli_error($dbc));
+                                echo "Error: Status update unsuccessful.";
+                              }
+                              else
+                              {
+
+                              }
 
     // for($i = 0; $i < sizeof($GET_RESTOCK_NAMES); $i++)
     // {
