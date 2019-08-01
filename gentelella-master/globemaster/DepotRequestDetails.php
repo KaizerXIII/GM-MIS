@@ -393,7 +393,7 @@ $('#print_btn').on('click',function(e)
                 success: function(data, textStatus)
                 {
                     alert("Current Requistion Confirmed!");
-                    window.location.href= "DepotRequestsSummary.php";
+                    window.location.href= "DepotRequestSummary.php";
                     
 
                 }//End Success
