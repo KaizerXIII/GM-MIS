@@ -319,6 +319,7 @@
     </div>
 
     <script>
+    console.log($('#dalugu').attr('src'));
       /*!
       * Print button for Buttons and DataTables.
       * 2016 SpryMedia Ltd - datatables.net/license
@@ -472,7 +473,8 @@
           // 	'<div>'+config.message+'</div>'+
           // 	html
           // );
-
+          
+         
           if ( config.customize ) {
             config.customize( win );
           }

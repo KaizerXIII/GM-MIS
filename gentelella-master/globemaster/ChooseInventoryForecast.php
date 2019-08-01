@@ -81,18 +81,18 @@
                                         <center>
                                             <p>Please choose a type of forecast.</p>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" aria-label="Text input with dropdown button" value = "Choose Forecast Type" id = "salesforecastlabel" readonly>
+                                                <input type="text" class="form-control" aria-label="Text input with dropdown button" value = "Short-Term Forecasting" id = "salesforecastlabel" readonly>
                                                 <div class="input-group-btn">
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Choose.. <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                                         
-                                                        <li id = "invnaive" onclick="changetonaive(this);" value = "Naive Forecasting" ><a>Naive Forecasting</a>
-                                                        </li>
+                                                        <!-- <li id = "invnaive" onclick="changetonaive(this);" value = "Naive Forecasting" ><a>Naive Forecasting</a>
+                                                        </li> -->
                                                         <li id = "invshortterm" onclick = "changetost(this);" value = "Short-Term Forecasting"><a>Short-Term Forecasting</a>
                                                         </li>
-                                                        <li id = "invtimerseries" onclick = "changetots(this);" value = "Time-Series Forecasting"><a>Time-Series Forecasting</a>
-                                                        </li>
+                                                        <!-- <li id = "invtimerseries" onclick = "changetots(this);" value = "Time-Series Forecasting"><a>Time-Series Forecasting</a>
+                                                        </li> -->
 
                                                     </ul>
                                                 </div>

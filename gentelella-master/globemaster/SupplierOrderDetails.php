@@ -478,6 +478,7 @@
                 return (Math.min(max, Math.max(min, v))); //compares the value between the min and max , returns the max when input value > max
             }
         </script> <!-- To avoid the users input more than the current Max per item -->
+        
 
         <!-- footer content -->
         <footer>
@@ -652,21 +653,7 @@
 <!-- Large Modal end --> 
 
 <!-- confirm all arrive button -->
-<script>
-  $('#confirmArriveAll').on('click', function(e)
-  {
-    var confirmArrive = confirm("Have all the items in this order arrived in the China port?");
 
-    if(confirmArrive == true)
-    {
-      confirm("Are you sure?");
-    }
-    else
-    {
-      alert("Action cancelled!");
-    }
-  })
-</script>
 
 <script>
 $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
@@ -747,6 +734,11 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
 })
 </script>
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c3a633fbd31bc98350f9ede581d9922c77fa3df3
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -819,6 +811,58 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
 
     })
     </script>
+
+<script>
+  $('#confirmArriveAll').on('click', function(e)
+  {
+    var restock_all_item_name = Array();
+    var restock_all_item_qty = Array();
+    var restock_all_item_supplier = Array();
+
+    if(confirm("Have all the items in this order arrived in the China port?"))
+    {
+      if(confirm("Are you sure?"))
+      {
+        $('#datatable-responsive tbody tr').each(function(e)
+        {
+          restock_all_item_name.push($(this).find('td:first').text());
+          restock_all_item_supplier.push($(this).find('td:nth-child(2)').text());
+          restock_all_item_qty.push($(this).find('td:nth-child(3)').text());         
+        
+        })
+
+        request = $.ajax({
+          url: "ajax/supply_order_arrived_qty_all.php",
+          type: "POST",
+          data: {post_item_name: restock_all_item_name,
+          post_item_qty: restock_all_item_qty,
+          post_item_supplier: restock_all_item_supplier,
+          post_supply_OR: "<?php echo $CURRENT_SO_ID_NUMBER; ?>"                    
+          },
+            success: function(data, textStatus)
+            {
+            alert("Update Successful!");
+            window.location.href = "SupplierOrderDetails.php";
+
+            $('#arrived').attr({
+              "max": data //Replaces the max for input using the current selected item qty
+            });
+            
+            }//End Scucess
+          
+          }); // End ajax  
+      }
+      else
+      {
+        alert("Action cancelled!");
+      }
+    }
+    else
+    {
+      alert("Action cancelled!");
+    }
+  })
+</script>
     
 
     <script> 
