@@ -237,6 +237,11 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 
+    <div id = "gmlogo" class = "gmlogo">
+      <img src = "images/GM%20LOGO" width = "80px" height = "80px">GM LOGO HERE
+      <span id = "username"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'] ?></span>
+    </div>
+
     <!-- Modal Input Buton Toggles -->
     <!-- <script>
             var reportfilterlabel = document.getElementById("reportfilterlabel");
@@ -519,12 +524,19 @@ DataTable.ext.buttons.print = {
 		} );
 
 		//$(win.document.head).html( head );
-		win.document.head.innerHTML = head; // Work around for Edge
+    win.document.head.innerHTML = head; // Work around for Edge
+    
+    // $('#gmlogodiv').appendChild($('.gmlogo').children('img').clone());
+
+    var printedby = document.getElementById("username").innerHTML;
 
 		// Inject the table and other surrounding information
 		win.document.body.innerHTML =
-			'<h1>'+title+'</h1>'+
-			'<div>'+config.message+'</div>'+
+        '<center><h1>GLOBE MASTER TRADING</h1></center>'+
+        '<br>'+
+        '<center>Damaged Items Report</center>'+
+        '<div>'+config.message+'</div>'+
+        '<div align  "right"><b>Printed by: '+printedby+'</b></div>'+
 			html;
 		// $(win.document.body).html(
 		// 	'<h1>'+title+'</h1>'+

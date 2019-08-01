@@ -79,6 +79,10 @@
             </div>
 <?php
   }
+
+  if($user == 'INV' || $user == 'Superuser')
+  {
+
 ?>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-thumbs-o-down"></i> Unfinished Fabrications</span>
@@ -94,6 +98,13 @@
               <span class="count_bottom"><i class="green"></i><a href = "FabricationApproval.php" class = "blue">View Fabrication Summary</a></span>
               <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>2 </i> Added From Last Week</span> -->
             </div><br>
+<?php
+  }
+  
+  if($user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
+  {
+
+?>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"> 
               <span class="count_top"><i class="fa fa-truck"></i> Orders to be Delivered Today</span>
               <!-- Insert count of deliveries for today -->
@@ -108,6 +119,14 @@
               <span class="count_bottom"><i class="green"></i><a href = "ViewTruckCap.php" class = "blue">View all Deliveries </a></span>
               <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
             </div>
+
+<?php
+  }
+  
+  if($user == 'SALES' || $user == 'CFO' || $user == 'MKT' || $user == 'Superuser')
+  {
+
+?>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-money"></i> Total Unpaid Client Orders</span>
               <!-- Insert total count of unpaid client orders here -->
@@ -156,6 +175,13 @@
               ?>
                 from Last Month</span>
             </div>
+<?php
+  }
+  
+  if($user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
+  {
+
+?>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-close"></i> Total Current Late Deliveries</span>
               <!-- Insert total late deliveries as of today -->
@@ -170,6 +196,14 @@
               <span class="count_bottom"><i class="green"></i><a href = "Delivery Report.php" class = "blue">View Report </a></span>
               <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
             </div>
+
+<?php
+  }
+  
+  if($user == 'CEO' || $user == 'CFO' || $user == 'MKT' || $user == 'Superuser')
+  {
+
+?>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Losses for this Month</span>
               <!-- Insert total losses due to damages -->
@@ -215,7 +249,12 @@
                 }
                 echo $PERCENTAGEOFLOSS; ?>%</i> From last month | <a href = "Damage Report.php" class = "blue">View Report</a></span>
             </div> 
+            
+<?php
+  }
+?>
           </div> 
+
           <!-- /top tiles -->
             
              <div class="row">
