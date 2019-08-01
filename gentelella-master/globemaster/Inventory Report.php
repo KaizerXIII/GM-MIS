@@ -314,8 +314,8 @@
 
 
     <div id = "gmlogo" class = "gmlogo">
-      <img id="dalugu" src = "images/GM%20LOGO.png" width = "80px" height = "80px">GM LOGO HERE
-      <span id = "username"><?php echo $_SESSION['firstname'].$_SESSION['lastname'] ?></span>
+      <img src = "images/GM%20LOGO" width = "80px" height = "80px">GM LOGO HERE
+      <span id = "username"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'] ?></span>
     </div>
 
     <script>
@@ -457,12 +457,12 @@
           // var img1 = document.createElement("img");
           // img1.src = $('.gmlogo').children('img').attr('src');
 
-          
+          // $('#gmlogodiv').appendChild($('.gmlogo').children('img').clone());
 
           var printedby = document.getElementById("username").innerHTML;
           // Inject the table and other surrounding information
           win.document.body.innerHTML =
-            '<center><h1><span id = "gmlogodiv"><img id=lugu src =\"images/GM%20LOGO.png" width = "80px" height = "80px"></span > GLOBE MASTER TRADING</h1></center>'+
+            '<center><h1>GLOBE MASTER TRADING</h1></center>'+
             '<br>'+
             '<center>Inventory Report</center>'+
             '<div>'+config.message+'</div>'+
