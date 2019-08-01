@@ -12,6 +12,8 @@
    $TOTAL_LOSS;
    $UNDAMAGED_QTY;
 
+   $ITEM_WAREHOUSE;
+
    for($i = 0; $i < sizeof($DMG_NAME_ARRAY); $i++)
    {
     $DMG_ITEM_NAME = $DMG_NAME_ARRAY[$i];
@@ -23,6 +25,8 @@
 
     $CURRENT_ID = $ROW_RESULT_GET_ID['item_id'];
     $CURRENT_PRICE = $ROW_RESULT_GET_ID['price'];
+    $ITEM_WAREHOUSE = $ROW_RESULT_GET_ID['warehouse_id'];
+
     $TOTAL_LOSS = $DMG_QTY_ARRAY[$i] * $CURRENT_PRICE;
 
     $UNDAMAGED_QTY = $ORIG_QTY_ARRAY[$i] - $DMG_QTY_ARRAY[$i];
@@ -37,9 +41,17 @@
     else
     {
         $SQL_UPDATE_ITEMS_TRADING = "UPDATE items_trading
-        SET item_count = (item_count + '$UNDAMAGED_QTY')
+        SET item_count = (item_count + '$UNDAMAGED_QTY'),
+        item_outside_warehouse = (item_outside_warehouse + '$UNDAMAGED_QTY')
         WHERE item_name = '$TRIMMED'";
         $RESULT_UPDATE_TABLE = mysqli_query($dbc,$SQL_UPDATE_ITEMS_TRADING);
+
+        $SQL_UPDATE_WAREHOUSE_OUT= "UPDATE warehouses
+        SET out_capacity = (out_capacity +'$UNDAMAGED_QTY')
+        WHERE warehouse_id = ' $ITEM_WAREHOUSE'";
+        $RESULT_UPDATE_WAREHOUSE_OUT = mysqli_query($dbc,$SQL_UPDATE_WAREHOUSE_OUT);
+
+        
     }
 
     echo "DMG ITEM NAME: ". $DMG_ITEM_NAME."\n";
@@ -48,7 +60,7 @@
     echo "DMG ITEM TOTAL: ".$TOTAL_LOSS."\n";
     echo "UNDMG ITEM TOTAL: ".$UNDAMAGED_QTY."\n";
     
-   }
+   } 
    
 
   

@@ -649,7 +649,7 @@
                     }
                     else
                     {
-                        
+                      alert("Item: "+ currentName +" - Added to Cart!")  
                     var qty_old = 0
                     var item_does_not_exist = true;
                         $(".qtys").each(function(i){ // this gets all the classes in the order table.

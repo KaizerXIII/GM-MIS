@@ -96,9 +96,17 @@
             $CURRENT_ITEM_NAME = $ROW_RESULT_FIND_ITEM['item_name'];
 
              //Inserts to Supply Order Details IF item is not NEW
-            $SQL_INSERT_TO_SUPPLY_DETAILS = "INSERT INTO supply_order_details (supply_order_id, supply_item_name, supply_item_quantity, supplier_name) 
-            VALUES ('$CURRENT_SO', '$CURRENT_ITEM_NAME', '$CURRENT_ITEM_QTY','$CURRENT_SUPPLIER_NAME');";
+            $SQL_INSERT_TO_SUPPLY_DETAILS = "INSERT INTO supply_order_details (supply_order_id, supply_item_name, supply_item_quantity, supply_arrived_quantity,supplier_name) 
+            VALUES ('$CURRENT_SO', '$CURRENT_ITEM_NAME', '$CURRENT_ITEM_QTY','0','$CURRENT_SUPPLIER_NAME');";
             $RESULT_INSERT_TO_DETAILS =  mysqli_query($dbc,$SQL_INSERT_TO_SUPPLY_DETAILS);
+            if(!$RESULT_INSERT_TO_DETAILS)
+            {
+                echo "Error in Supply Details";
+            }
+            else
+            {
+                echo "Success in Insert To Supply Details";
+            }
         }      
         echo "Value of ID Array = ", $CURRENT_ID,"\n";
         echo "Value of QTY Array = ",$CURRENT_ITEM_QTY,"\n";
