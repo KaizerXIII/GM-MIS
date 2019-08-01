@@ -99,8 +99,8 @@
               <!-- Insert count of deliveries for today -->
 
 <?php
-              $SQL_COUNT_ALL_DELIVERIES = "SELECT COUNT(*) as COUNTDELIVERIES FROM orders
-                                                          WHERE delivery_date = CURDATE();";
+              $SQL_COUNT_ALL_DELIVERIES = "SELECT COUNT(delivery_Date) as COUNTDELIVERIES FROM scheduledelivery
+                                            WHERE delivery_Date = CURDATE();";
                       $RESULT_COUNT_ALL_DELIVERIESS  = mysqli_query($dbc, $SQL_COUNT_ALL_DELIVERIES);
                       $ROWRESULT_DELIVERIES=mysqli_fetch_array($RESULT_COUNT_ALL_DELIVERIESS,MYSQLI_ASSOC);
 ?>             
@@ -161,8 +161,8 @@
               <!-- Insert total late deliveries as of today -->
 
 <?php
-              $SQL_COUNT_ALL_LATE_DELIVERIES = "SELECT COUNT(*) as COUNTLATEDELIVERIES FROM orders
-                                                          WHERE delivery_date < CURDATE();";
+              $SQL_COUNT_ALL_LATE_DELIVERIES = "SELECT COUNT(delivery_Date) as COUNTLATEDELIVERIES FROM scheduledelivery
+                                                          WHERE delivery_Date < CURDATE();";
                       $RESULT_COUNT_ALL_LATE_DELIVERIESS  = mysqli_query($dbc, $SQL_COUNT_ALL_LATE_DELIVERIES);
                       $ROWRESULT_LATE_DELIVERIES=mysqli_fetch_array($RESULT_COUNT_ALL_LATE_DELIVERIESS,MYSQLI_ASSOC);
 ?>           

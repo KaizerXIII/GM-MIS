@@ -430,6 +430,14 @@
                         <div class = "clearfix"></div>
                         <div class = "ln_solid"></div>
                         <div align = "right">
+                        <?php
+                          if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
+                          {
+                        ?>
+                          <button type="button" class="btn btn-round btn-primary" id = "confirmArriveAll">  <i class = "fa fa-check-square-o"></i> Confirm All</button>
+                        <?php
+                          }
+                        ?>
 
                         <?php
                           if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving")
@@ -633,6 +641,24 @@
   </div>
 </div>   
 <!-- Large Modal end --> 
+
+<!-- confirm all arrive button -->
+<script>
+  $('#confirmArriveAll').on('click', function(e)
+  {
+    var confirmArrive = confirm("Have all the items in this order arrived in the China port?");
+
+    if(confirmArrive == true)
+    {
+      confirm("Are you sure?");
+    }
+    else
+    {
+      alert("Action cancelled!");
+    }
+  })
+</script>
+
 <script>
 $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
   var supplier_name = $(this).closest('tr').find('td:nth-child(2)').text();  

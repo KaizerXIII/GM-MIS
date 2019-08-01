@@ -32,9 +32,32 @@
      <!-- JQUERY Required Scripts -->
      
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
+
+
+    <style type="text/css">
+
+    .print-only{display:none;}
+
+    @media print
+    {
+    .noprint {display:none;}
+    footer, header,.nav, .noprint, #choose_btn, #go_back{ display:none; } /*Removes elements before print, use [#idname] to find ID and [.class] to find class */
+    .print-only{display:block;}
+
+    }
+    @page :footer {
+        display: none
+    }
+
+    @media screen
+    {
+    }
+
+    </style>
+
 </head>
 
-
+<element class = "noprint">
 <body class="nav-md">
     <div class="container body">
         <div class="main_container">
@@ -50,6 +73,7 @@
                     <div class="col-md-12 col-sm-12 col-xs-12" >
                         <div class="x_panel" >
                             <div class="x_title">
+                                <div class = "col-md-10">
                                 <h1><b>Order Number: </b>
                                     <?php
                                      if(isset($_GET['order_number']))
@@ -67,6 +91,10 @@
                                      }
                                     ?>
                                 </h1>
+                                </div>
+                                <div class = "col-md-2" align = "right">
+                                    <button type="button" id = "print_btn" class="btn btn-primary btn-lg noprint"><i class="fa fa-print"></i> Print</button>          
+                                </div>                                  
                                 <div class="clearfix"></div>
                             </div> <!--END Xtitle-->
                             <div class="x_content">
@@ -308,11 +336,11 @@
                                                                 <tr>    
                                                                 <th>Item Name</th>
                                                                 <th>Price </th>
-                                                                <th>Quantity</th>
+                                                                <th>Quantity Ordered</th>
+                                                                <th>Subtotal</th>
                                                                 
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
 
                                                                 <?php 
                                                                 require_once('DataFetchers/mysql_connect.php');
@@ -321,20 +349,24 @@
                                                                 $RESULT_SELECT = mysqli_query($dbc,$SQL_SELECT_FROM_ORDER_DETAILS);
                                                                 while($ROW_RESULT_SELECT=mysqli_fetch_array($RESULT_SELECT,MYSQLI_ASSOC))
                                                                 {
+                                                                    echo '<tbody>';
                                                                     echo '<tr>';
                                                                         echo '<td>';
                                                                         echo $ROW_RESULT_SELECT['item_name'];
                                                                         echo '</td>';
-                                                                        echo '<td>';
+                                                                        echo '<td align = "right">';
                                                                         echo "₱ ", number_format(($ROW_RESULT_SELECT['item_price']),2);  
                                                                         echo '</td>';
-                                                                        echo '<td>';
+                                                                        echo '<td align = "right">';
                                                                         echo $ROW_RESULT_SELECT['item_qty'];
                                                                         echo '</td>';
-                                                                    echo '</tr>';
+                                                                        echo '<td align = "right">';
+                                                                        echo number_format(($ROW_RESULT_SELECT['item_price']),2)*$ROW_RESULT_SELECT['item_qty'];
+                                                                        echo '</td>';
+                                                                    echo '</tr>';                                                      
+                                                                    echo '</tbody>';
                                                                 }                                                                                 
-                                                                ?>                                                        
-                                                            </tbody>
+                                                                ?>  
                                                         </table>
                                                         
                                                     </div> <!--END Xcontent-->
@@ -396,6 +428,70 @@
                     </div><!--END Role=Main -->
                 </div><!--END Container Body-->        
 </body>
+</element>
+
+<!-- Print div -->
+<div class = "col-md-12 col-sm-12 col-xs-12 print-only">
+    <center>
+        <h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBE MASTER TRADING</h1>
+        <b><h2>Official Receipt</h2></b>
+    </center>
+    <div class = "col-md-6 col-sm-6 col-xs-6">
+        <b>Customer Name: </b><span id = "print_customer_name"></span>
+        <br>
+        <b>Expected Date: </b><span id = "print_expected_date"></span>
+        <br>
+        <b>Payment Type: </b><span id = "print_payment_type"></span>
+        <br>
+        <b>Payment Status: </b><span id = "print_payment_status"></span>
+        <br><br>
+    </div>
+    <div class = "col-md-6 col-sm-6 col-xs-6" style = "text-align:right">
+        <b><?php echo date("F j, Y g:i:s"); ?></b>  
+        <br>                            
+        <b><?php echo "[" .$_SESSION['order_number_from_view']. "]"; ?></b>
+        <br>
+    </div>
+    <div>
+        <table id ="print_table" class="table table-bordered print_table">
+            <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Price per Piece</th>
+                <th>Quantity Ordered</th>
+                <th>Total Price per Item</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class = "row" style = "text-align:right">
+    <br><br><br>
+    Received by: ____________________
+    <br><br><br>
+    Printed by: <?php echo $_SESSION['firstname']."  ".$_SESSION['lastname'];?>
+    </div>
+</div>
+
+<script>
+$('#print_btn').on('click',function(e){
+    console.log("logging");
+
+    $('#print_customer_name').append($('#client_name').val()); //Appends all necessary info based on the DR
+    $('#print_expected_date').append($('#expected_date').val());
+    $('#print_payment_status').append($('#payment_status').val());
+    $('#print_payment_type').append($('#payment_type').val());
+
+    $('#damageTable tbody').each(function(e){
+        console.log($(this).html());
+        $('#print_table').append($(this).html()); //Appends the value of the items table to the print table
+       
+    })
+    $('#print_table').append("<tr><td></td><td></td><th style = text-align:right>Total Amount this Order: </th><td align = right>"+$('#total_amount').val()+"</td></tr>"); //Appends the Total after all the items are loaded to avoid duplicate  <TR>
+})
+</script>
+
 <!-- /page content -->
 <script type="text/javascript">
     function validate(obj) {
@@ -407,6 +503,7 @@
     return (Math.min(max, Math.max(min, v))); //compares the value between the min and max , returns the max when input value > max
     }
 </script> <!-- To avoid the users input more than the current Max per item -->
+
 
 <!-- jQuery -->
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -498,6 +595,11 @@
         }
     }
 
+</script>
+<script>
+    $('#print_btn').on('click', function(e){      
+        window.print();
+    })    
 </script>
 <script>
 

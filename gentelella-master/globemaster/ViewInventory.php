@@ -52,7 +52,7 @@
                   <div class="x_content">
                     <div class="row tile_count">
                       <?php
-                        if($user == 'CEO' || $user == 'Inventory' || $user == 'Superuser')
+                        if($user == 'CEO' || $user == 'INV' || $user == 'Superuser')
                         {
 
                       ?>

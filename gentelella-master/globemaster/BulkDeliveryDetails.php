@@ -108,7 +108,7 @@
                                     <?php
                                         include("print.php");
                                     ?>                                       
-                                        <button type="" class="btn btn-primary btn-lg noprint" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</button>                                    
+                                        <!-- <button type="" class="btn btn-primary btn-lg noprint" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</button>                                     -->
                                 </div>                              
                                 <div class="clearfix"></div>
 
