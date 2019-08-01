@@ -185,23 +185,44 @@
                                 </div><!--ENDCol MD-->
 
                 <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                <button  type="button" id = "confirm_order" class="btn btn-success" >Confirm Order</button>
-                <button  type="button" id = "cancel_order" class="btn btn-danger" >Cancel Order</button>
+                                <!--//Order in Progress 
+                                //Requisition Approved
+                            //Requision Cancelled
+                        //Requision Finished -->
+                <?php
+                $SQL_GET_ORDER_STATUS = "SELECT depot_request_status 
+                                            FROM mydb.depot_request
+                                            WHERE depot_request_id = '$CURRENT_REQUEST_OR';";
+                $RESULT_GET_ORDER_STATUS =  mysqli_query($dbc,$SQL_GET_ORDER_STATUS);
+                $ROW_RESULT_GET_ORDER_STATUS=mysqli_fetch_array($RESULT_GET_ORDER_STATUS,MYSQLI_ASSOC);
+                if($ROW_RESULT_GET_ORDER_STATUS['depot_request_status'] == "Order in Progress")
+                    {
+                ?>
+                    <button  type="button" id = "cancel_order" class="btn btn-danger" >Cancel Order</button>
+                <?php
+                    }
+                    elseif($ROW_RESULT_GET_ORDER_STATUS['depot_request_status'] == "Requisition Approved")
+                    {
+                ?>
+                    <button  type="button" id = "confirm_order" class="btn btn-success" >Order Arrived</button>
+                <?php
+                    }
+                ?>
                 </div><!--END Col MD-->
                     
-            </div> <!--END X Panel-->
-                        </div><!--END Col MD-->
-                        </div>
-                            </form>
-                    </div><!--END Role=Main -->
-                </div><!--END Container Body-->        
+                         </div> <!--END X Panel-->
+                    </div><!--END Col MD-->
+                    </div>
+                </form>
+                </div><!--END Role=Main -->
+            </div><!--END Container Body-->        
 </body>
 </element>
 <!-- Print div -->
 <div class = "col-md-12 col-sm-12 col-xs-12 print-only">
     <center>
         <h1><img src="images/GM%20LOGO.png" width = "80px" height = "80px">GLOBE MASTER HOME DEPOT</h1>
-        <b><h2>Request Details</h2></b>
+        <b><h2>Tile Request Receipt</h2></b>
     </center>
     <div class = "col-md-6 col-sm-6 col-xs-6">
         <b>Expected Delivery Date: </b><?php echo $FORMATTED_REQUESTED_DATE; ?>

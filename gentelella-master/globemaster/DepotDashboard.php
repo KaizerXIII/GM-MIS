@@ -71,7 +71,7 @@
                 </div>
             </div>
             <?php
-                if($user == "CEO" || $user == "Sales" || $user == "Superuser")
+                if($user == "CEO" || $user == "SALES" || $user == "Superuser")
                 {
             ?>
                 <div class="col-md-6 col-sm-6 col-xs-12">

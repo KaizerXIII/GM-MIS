@@ -778,7 +778,7 @@
                         var GET_CART_QTY=[];
                         
                        
-                        alert(GET_NEW_ITEM_NAME[0]);
+                        // alert(GET_NEW_ITEM_NAME[0]);
                         
                         $('#cart tr td:nth-child(2)').each(function (e) 
                         {

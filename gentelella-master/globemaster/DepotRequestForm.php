@@ -279,11 +279,10 @@
             <br>
             <br>
             <!-- End Order2 Modal -->
-                                        </div>
-                                    </div>
+                                                        </div>
+                                                    </div>
                                                 </form>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -514,7 +513,7 @@
                     success: function(data, textStatus)
                     {
                         alert("Requistion Successful");
-                        window.location.href= "ViewDepotRequests.php";
+                        window.location.href= "DepotRequestSummary.php";
                     }//End Scucess
                     
                     }); // End ajax 
