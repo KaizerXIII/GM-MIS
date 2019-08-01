@@ -806,10 +806,12 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
         {
           restock_all_item_name.push($(this).find('td:first').text());
           restock_all_item_supplier.push($(this).find('td:nth-child(2)').text());
-          restock_all_item_qty.push($(this).find('td:nth-child(3)').text());
+          restock_all_item_qty.push($(this).find('td:nth-child(3)').text());         
+        
+        })
 
-          request = $.ajax({
-          url: "ajax/supply_order_arrived_qty.php",
+        request = $.ajax({
+          url: "ajax/supply_order_arrived_qty_all.php",
           type: "POST",
           data: {post_item_name: restock_all_item_name,
           post_item_qty: restock_all_item_qty,
@@ -819,7 +821,7 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
             success: function(data, textStatus)
             {
             alert("Update Successful!");
-            // window.location.href = "SupplierOrderDetails.php";
+            window.location.href = "SupplierOrderDetails.php";
 
             $('#arrived').attr({
               "max": data //Replaces the max for input using the current selected item qty
@@ -828,8 +830,6 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
             }//End Scucess
           
           }); // End ajax  
-        
-        })
       }
       else
       {
