@@ -185,6 +185,7 @@
                                 </div><!--ENDCol MD-->
 
                 <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
+                <button  type="button" id = "confirm_order" class="btn btn-success" >Confirm Order</button>
                 <button  type="button" id = "cancel_order" class="btn btn-danger" >Cancel Order</button>
                 </div><!--END Col MD-->
                     
@@ -262,6 +263,7 @@ $('#print_btn').on('click',function(e)
 })
 </script>
 
+
 <script type="text/javascript">
     function validate(obj) {
     obj.value = valBetween(obj.value, obj.min, obj.max); //Gets the value of input alongside with min and max
@@ -332,6 +334,59 @@ $('#print_btn').on('click',function(e)
 <script src="../build/js/custom.min.js"></script>
 
 <script>
+    $('#confirm_order').on('click',function(e){
+        var CURRENT_QTY = [];
+        var CURRENT_SKU = [];
+        var DEPOT_REFERENCE = [];
+        var status = "Confirmed";
+        $('#itemtable tr td:nth-child(1)').each(function (e){
+            var getValue =$(this).text();
+            console.log("Cart VAlue: "+getValue);           
+            CURRENT_SKU.push(getValue);
+        }); //ENd jquery
+        $('#itemtable tr td:nth-child(2)').each(function (e){
+            var getValue =$(this).text();
+            console.log("Cart VAlue: "+getValue);
+            DEPOT_REFERENCE.push(getValue);
+        }); //ENd jquery
+        $('#itemtable tr td:nth-child(3)').each(function (e){
+            var getValue =parseInt($(this).text());
+            console.log("Cart VAlue: "+getValue);
+            CURRENT_QTY.push(getValue);
+        }); //ENd jquery
+       
+
+        if(confirm("Confirm Request?"))
+            {
+                
+                request = $.ajax({
+                url: "ajax/update_depot_and_trading.php",
+                type: "POST",
+                data: {post_item_sku: CURRENT_SKU,
+                    post_item_qty: CURRENT_QTY,
+                    post_depot_reference: DEPOT_REFERENCE,
+                    post_depot_or: parseInt($('#requisition_order_number').text()),
+                    post_status: status
+                                            
+                },
+                success: function(data, textStatus)
+                {
+                    alert("Current Requistion Confirmed!");
+                    window.location.href= "DepotRequestsSummary.php";
+                    
+
+                }//End Success
+                
+                }); // End ajax 
+            }
+            else
+            {
+                alert("Action: Cancelled");
+            }                  
+    })
+</script>
+
+<script>
  $('#cancel_order').on('click', function(e){
         var CURRENT_QTY = [];
         var CURRENT_SKU = [];
@@ -370,7 +425,7 @@ $('#print_btn').on('click',function(e)
                 success: function(data, textStatus)
                 {
                     alert("Current Requistion Cancelled!");
-                    // window.location.href= "ViewDepotRequests.php";
+                    window.location.href= "ViewDepotRequests.php";
                     
 
                 }//End Success

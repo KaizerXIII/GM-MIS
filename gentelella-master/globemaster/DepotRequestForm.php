@@ -514,7 +514,7 @@
                     success: function(data, textStatus)
                     {
                         alert("Requistion Successful");
-                        // window.location.href= "ViewDepotRequests.php";
+                        window.location.href= "ViewDepotRequests.php";
                     }//End Scucess
                     
                     }); // End ajax 

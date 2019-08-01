@@ -59,17 +59,17 @@
                 echo "SOmething went wrong in Update Items Trading";
             }
     
-            $SQL_UPDATE_DEPOT = "UPDATE depotdb.gm_products
-            JOIN depotdb.gm_inventorystocks
-            ON gm_inventorystocks.ProductID = gm_products.ProductID
-            SET StockOnHand = (StockOnHand + '$GET_ITEMS_QTY[$i]'),
-            LastModified = now()
-            WHERE UnitName = '$GET_DEPOT_REF[$i]'";
-            $RESULT_UPDATE_DEPOT = mysqli_query($dbc,$SQL_UPDATE_DEPOT);
-            if(!$RESULT_UPDATE_DEPOT)
-            {
-                echo "SOmething went wrong in Update Depot Items";
-            }   
+            // $SQL_UPDATE_DEPOT = "UPDATE depotdb.gm_products
+            // JOIN depotdb.gm_inventorystocks
+            // ON gm_inventorystocks.ProductID = gm_products.ProductID
+            // SET StockOnHand = (StockOnHand + '$GET_ITEMS_QTY[$i]'),
+            // LastModified = now()
+            // WHERE UnitName = '$GET_DEPOT_REF[$i]'";
+            // $RESULT_UPDATE_DEPOT = mysqli_query($dbc,$SQL_UPDATE_DEPOT);
+            // if(!$RESULT_UPDATE_DEPOT)
+            // {
+            //     echo "SOmething went wrong in Update Depot Items";
+            // }   
         }// UPDATES VALUES
     }
     
