@@ -145,7 +145,7 @@
               $DIFF_THIS_PREV_MONTH = $ROWRESULT_UNPAID['COUNTUNPAID'] - $DIFF_PREV_MONTH;
               $PERCENT_INC_DEC = ($DIFF_THIS_PREV_MONTH/$ROWRESULT_UNPAID['COUNTUNPAID']) * 100; //to compute for the percentage of increase or decrease
 ?>          
-            <div class="count"><font color = "orange">₱ <?php echo $ROWRESULT_UNPAID['COUNTUNPAID']; ?></font></div>
+            <div class="count"><font color = "orange">₱ <?php echo number_format($ROWRESULT_UNPAID['COUNTUNPAID'],2); ?></font></div>
               <span class="count_bottom">
               <?php if ($PERCENT_INC_DEC > 0) 
                 {

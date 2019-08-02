@@ -468,14 +468,43 @@
     </div>
     <!-- insert if else checker here -->
     <div class = "clearfix"></div>
-    <div>
+    <div id = "fabDivRcpt">
         <b>Fabrication Job Request Details</b>       
-        <br>                                 
-            <img src = "images/globemasterbackground.jpg" width = "200px" height = "180px">
+        <br>     
+        
+        <?php
+            // $SQL_GET_OR_FROM_DR_RCPT = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$GET_ID_DELIVERY' ";
+            // $RESULT_GET_OR_FROM_DR_RCPT = mysqli_query($dbc, $SQL_GET_OR_FROM_DR_RCPT);
+            // $ROW_RESULT_GET_OR_RCPT = mysqli_fetch_array($RESULT_GET_OR_FROM_DR_RCPT,MYSQLI_ASSOC);
+
+            $CURRENT_OR_OF_DR_RCPT = $_SESSION['order_number_from_view'];
+
+            $SQL_GET_FAB_DESC_RCPT = "SELECT * FROM joborderfabrication WHERE order_number = '$CURRENT_OR_OF_DR_RCPT'";
+            $RESULT_GET_FAB_DESC_RCPT = mysqli_query($dbc, $SQL_GET_FAB_DESC_RCPT);                                           
+
+            $ROW_RESULT_GET_FAB_DESC_RCPT = mysqli_fetch_array($RESULT_GET_FAB_DESC_RCPT,MYSQLI_ASSOC);
+            $BLOB_RCPT =  $ROW_RESULT_GET_FAB_DESC_RCPT['reference_drawing'];
+                    
+
+            echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB_RCPT).'"   border-style = "border-width:3px;"style = "height:20vh; width:15vw">'
+        ?>
+            <!-- <img src = "data:image/jpg;base64,'. base64_encode().'" width = "200px" height = "180px"> -->
         <br>
-        <b>Fabrication Description: </b><span id = "print_customer_name"></span>
+        <b>Fabrication Description: </b><?php echo $ROW_RESULT_GET_FAB_DESC_RCPT['fab_description']; ?>
 
     </div>
+    <?php
+            $SQL_GET_FAB_STATUS_RCPT = "SELECT * FROM orders WHERE ordernumber = '$CURRENT_OR_OF_DR_RCPT'";
+                $RESULT_GET_FAB_STATUS_RCPT = mysqli_query($dbc, $SQL_GET_FAB_STATUS_RCPT);
+                $ROW_RESULT_GET_FAB_STATUS_RCPT = mysqli_fetch_array($RESULT_GET_FAB_STATUS_RCPT,MYSQLI_ASSOC);
+
+                $FAB_STATUS_RCPT = $ROW_RESULT_GET_FAB_STATUS_RCPT['fab_status'];
+
+                if($FAB_STATUS_RCPT == "No Fabrication")
+                {
+                    echo '<script>$("#fabDivRcpt").hide();</script>';
+                }
+    ?>
     <div style = "text-align:right">
         <br><br><br>
         Received by: ____________________
