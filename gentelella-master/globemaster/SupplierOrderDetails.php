@@ -734,11 +734,8 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
 })
 </script>
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> c3a633fbd31bc98350f9ede581d9922c77fa3df3
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->

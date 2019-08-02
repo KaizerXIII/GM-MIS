@@ -125,7 +125,7 @@
                                     for($i = 0; $i < sizeof($deliveryexpected); $i++)
                                     {
                                         // to check countdown till delivery
-                                        $queryDeliveryDateDiffNow = "SELECT order_status, DATEDIFF(CURDATE(),sd.delivery_Date) 
+                                        $queryDeliveryDateDiffNow = "SELECT delivery_status, order_status, DATEDIFF(CURDATE(),sd.delivery_Date) 
                                         AS datedifferenceNow
                                         FROM orders o
                                         JOIN scheduledelivery sd 
@@ -134,7 +134,7 @@
                                         $resultDeliveryDateDiffNow = mysqli_query($dbc,$queryDeliveryDateDiffNow);
                                         $rowDeliveryDateDiffNow = mysqli_fetch_array($resultDeliveryDateDiffNow,MYSQLI_ASSOC);
 
-                                        if($rowDeliveryDateDiffNow['order_status'] == "Delivered")
+                                        if($rowDeliveryDateDiffNow['delivery_status'] == "Delivered")
                                         {
                                 ?>
                                             <p><font color = "green">This order has successfully been delivered!</font></p>
@@ -357,7 +357,14 @@
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right ">
                                     <?php
-                                        if($rowDeliveryDateDiffNow['order_status'] == "Delivered" || $rowDeliveryDateDiffNow['order_status'] == "Cancelled")
+
+                                        $SQL_GET_DELIVERY_STATUS = "SELECT delivery_status FROM scheduledelivery
+                                        WHERE delivery_Receipt = '$GET_ID_DELIVERY';"; 
+                                        $RESULT_GET_DELIVERY_STATUS = mysqli_query($dbc,$SQL_GET_DELIVERY_STATUS);
+                                        $ROW_GET_DELIVERY_STATUS = mysqli_fetch_array($RESULT_GET_DELIVERY_STATUS,MYSQLI_ASSOC);
+
+
+                                        if($ROW_GET_DELIVERY_STATUS['delivery_status'] == "Delivered" || $ROW_GET_DELIVERY_STATUS['delivery_status'] == "Cancelled")
                                         {
                                     ?>
                                             <button type="button" id="go_back" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
@@ -372,7 +379,8 @@
                                             </ul>
                                     <?php
                                         }
-                                        else{
+                                        else
+                                        {
                                     ?>
                                             <button type="button"  id="go_back" class="btn btn-default"><a href = Deliveries.php>Go Back</a></button>
                                             <div class="btn-group">

@@ -66,10 +66,8 @@
             <div class="jumbotron" style="background-color:#ffffff">
                 <center><font color = "black"><h1><font color = "#ff9900"><i class="fa fa-line-chart"></i></font><font color = "#000066"><b> Inventory Forecasting</b></font></h1>
                         <p>Please choose a type of Inventory forecast. <font color = "red">One item will be forecasted in participation to the total sales made.</font></p>
-                        <p>The forecast can range from the analysis of:</p>
-                        <p>Naive (Past 30 days of data)</p>
-                        <p>Short-term (Past 90 days of data)</p>
-                        <p>Time-series (Past 365 days of data)</p></font></center>
+                        <p>Short-term forecasting will be used for forecasting each respective inventory item.</p>
+                    </font></center>
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4" align="center">
                         <div class="x_panel">

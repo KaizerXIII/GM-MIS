@@ -214,7 +214,7 @@
                       $RESULT_COUNT_ALL_LOSSES  = mysqli_query($dbc, $SQL_COUNT_ALL_LOSSES);
                       $ROWRESULT_ALL_LOSSES=mysqli_fetch_array($RESULT_COUNT_ALL_LOSSES,MYSQLI_ASSOC);
 ?>     
-              <div class="count"><font color = "darkred">₱ <?php echo $ROWRESULT_ALL_LOSSES['SUMLOSS']; ?></font></div>
+              <div class="count"><font color = "darkred">₱ <?php echo number_format($ROWRESULT_ALL_LOSSES['SUMLOSS']); ?></font></div>
               <!-- insert comparison with last month here -->
 
 <?php
@@ -247,7 +247,7 @@
                 <i class="red"><i class="fa fa-sort-desc"></i>
                 <?php 
                 }
-                echo $PERCENTAGEOFLOSS; ?>%</i> From last month | <a href = "Damage Report.php" class = "blue">View Report</a></span>
+                echo number_format($PERCENTAGEOFLOSS, 2, '.', ' '); ?>%</i> From last month | <a href = "Damage Report.php" class = "blue">View Report</a></span>
             </div> 
             
 <?php
@@ -337,7 +337,7 @@
                                           <th>Action</th>
                                         </tr>
                                       </thead>
-                                      <tbody>';
+                                      <tbody>
 
                       <?php 
                             $SQL_GET_DEPOT_REQUEST = "SELECT * FROM depot_request";
@@ -349,7 +349,7 @@
                                       <td><?php echo $ROW_DEPOT_REQUEST['depot_request_id']; ?></td>
                                       <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_request_date'])); ?></td>
                                       <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_expected_date'])); ?></td>
-                                      <td align = "center"><i class = "fa fa-wrench"></i></td>
+                                      <td align = "center"><a href = "ViewDepotRequests.php"><i class = "fa fa-wrench"></i></a></td>
                                     </tr>
                       <?php      
                             } 
@@ -359,6 +359,7 @@
                               </div>
                             </div>
                           </div>
+                          <div class = "clearfix"></div>
                                     <!-- if($row['diff'] >= 50)
                                     {
                                         echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-danger">Restock now</button></a></center></td>';
@@ -499,10 +500,6 @@
                  
                     if($user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
                     {
-                        if($user != 'MKT')
-                        {
-                             echo '<div class="clearfix"></div>';    
-                        }
                         
                          //ORDERS NEARING DELIVERY
                  
@@ -516,7 +513,6 @@
                                       <thead>
                                         <tr>
                                           <th>Order Number</th>
-                                          <th>Client Name</th>
                                           <th>Delivery Date</th>
                                           <th>Remaining Date</th>
                                         </tr>
@@ -524,15 +520,15 @@
                                       <tbody>';
                         
                             require_once('DataFetchers/mysql_connect.php');
-                            $query = "SELECT ordernumber, client_id, delivery_date, DATEDIFF(delivery_date, NOW()) AS 'remain_date' FROM orders WHERE DATEDIFF(NOW(), delivery_date) < 7";
+                            $query = "SELECT ordernumber, delivery_Date, DATEDIFF(delivery_Date, NOW()) AS 'remain_date' FROM scheduledelivery WHERE DATEDIFF(NOW(), delivery_date) < 7";
                             $result=mysqli_query($dbc,$query);
                             while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                             {
 
-                                    $queryClientName = "SELECT client_name FROM clients WHERE client_id =" . $row['client_id'] . ";";
-                                    $resultClientName = mysqli_query($dbc,$queryClientName);
-                                    $rowClientName=mysqli_fetch_array($resultClientName,MYSQLI_ASSOC);
-                                    $clientName = $rowClientName['client_name'];
+                                    // $queryClientName = "SELECT client_name FROM clients WHERE client_id =" . $row['client_id'] . ";";
+                                    // $resultClientName = mysqli_query($dbc,$queryClientName);
+                                    // $rowClientName=mysqli_fetch_array($resultClientName,MYSQLI_ASSOC);
+                                    // $clientName = $rowClientName['client_name'];
                                     
                                 
                                     echo '<tr>';
@@ -540,15 +536,22 @@
                                     echo $row['ordernumber'];
                                     echo '</td>';
                                     echo '<td>';
-                                    echo $clientName;
+                                    echo date('F d, Y', strtotime($row['delivery_Date']));
                                     echo '</td>';
-                                    echo '<td>';
-                                    echo $row['delivery_date'];
-                                    echo '</td>';
-                                    echo '<td><b>';
-                                    echo $row['remain_date'];
-                                    echo ' days left!';
-                                    echo '</b></td>';
+                                    if($row['remain_date'] <= 8 && $row['remain_date'] >= 0)
+                                    {
+                                      echo '<td><b><font color = "orange">';
+                                      echo $row['remain_date'];
+                                      echo ' Day(s) Left!';
+                                      echo '</font></b></td>';
+                                    }
+                                    elseif($row['remain_date'] < 0)
+                                    {
+                                      echo '<td><b><font color = "red">';
+                                      echo abs($row['remain_date']);
+                                      echo ' Day(s) Late!';
+                                      echo '</font></b></td>';
+                                    }
                                     echo '</tr>';
                                     
                             } 
@@ -558,9 +561,10 @@
                              echo '</div>
                         </div>
                       </div>';
+                      echo '<div class = "clearfix"></div>';
                     }
                  
-                 if($user == 'INV' || $user == 'SALES' || $user == 'Superuser')
+                 if($user == 'INV' || $user == 'Superuser')
                  {
                     
                         //FABRICATION APPROVALS
@@ -582,19 +586,20 @@
                                       <tbody>';
                         
                             require_once('DataFetchers/mysql_connect.php');
-                            $query = "SELECT j.order_number, o.order_date FROM joborderfabrication j JOIN orders o ON j.order_number = o.ordernumber WHERE o.fab_status = 'For Approval'";
+                            $query = "SELECT * FROM orders WHERE fab_status = 'For Fabrication'";
                             $result=mysqli_query($dbc,$query);
                             while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                             {
 
                                     echo '<tr>';
                                     echo '<td>';
-                                    echo $row['order_number'];
+                                    echo $row['ordernumber'];
                                     echo '</td>';
                                     echo '<td>';
                                     echo $row['order_date'];
                                     echo '</td>';
-                                    echo '<td>';
+                                    echo '<td align = "center">';
+                                    echo '<a href = "FabricationApproval.php"><i class = "fa fa-wrench"></i></a>';
                                     echo '</td>';
                                     echo '</tr>';
                                     
@@ -610,7 +615,7 @@
                      
                     }
                  
-                 if($user == 'INV' || $user == 'CEO' || $user == 'Superuser')
+                 if($user == 'CEO' || $user == 'Superuser')
                  {
                     
                         //RECOMMEND INVENTORY DISCOUNT

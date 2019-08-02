@@ -64,20 +64,27 @@
                                                                 WHERE warehouse_id = 1;";
                                             $RESULT_SQL_COUNT_ALL_CAPACITY  = mysqli_query($dbc, $SQL_COUNT_ALL_CAPACITY);
                                             $ROWRESULT_COUNT_CAPACITY=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_CAPACITY,MYSQLI_ASSOC);
+
+
+                                    $SQL_COUNT_ALL_OUTSIDE = "SELECT SUM(item_outside_warehouse) as ALLOUTSIDE FROM items_trading
+                                                                WHERE warehouse_id = 1;";
+                                        $RESULT_SQL_COUNT_ALL_OUTSIDE  = mysqli_query($dbc, $SQL_COUNT_ALL_OUTSIDE);
+                                        $ROWRESULT_COUNT_OUTSIDE=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_OUTSIDE,MYSQLI_ASSOC); 
+
                               if($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] < $ROWRESULT_COUNT_CAPACITY['in_capacity'])
                               {
                       ?>
-                                <div class="count blue"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity']?></div>
+                                <div class="count blue"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity'];?></div>
                       <?php
                               }
                               elseif($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] = $ROWRESULT_COUNT_CAPACITY['in_capacity'])
                               {
                       ?>
-                                <div class="count red"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity']?></div>
+                                <div class="count red"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity'];?></div>
                       <?php
                               }
                       ?>
-                                  <span class="count_bottom"><?php echo "123"; ?> Tiles Outside the Warehouse</a></span>
+                                  <span class="count_bottom"><?php echo $ROWRESULT_COUNT_OUTSIDE['ALLOUTSIDE']; ?> Tiles Outside the Warehouse</a></span>
                                   </div> 
 
                                   <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
@@ -88,6 +95,11 @@
                                     WHERE warehouse_id = 2;";
                                       $RESULT_SQL_COUNT_ALL_CAPACITY  = mysqli_query($dbc, $SQL_COUNT_ALL_CAPACITY);
                                       $ROWRESULT_COUNT_CAPACITY=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_CAPACITY,MYSQLI_ASSOC);
+
+                                    $SQL_COUNT_ALL_OUTSIDE2 = "SELECT SUM(item_outside_warehouse) as ALLOUTSIDE2 FROM items_trading
+                                                              WHERE warehouse_id = 2;";
+                                      $RESULT_SQL_COUNT_ALL_OUTSIDE2  = mysqli_query($dbc, $SQL_COUNT_ALL_OUTSIDE2);
+                                      $ROWRESULT_COUNT_OUTSIDE2=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_OUTSIDE2,MYSQLI_ASSOC); 
                       if($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] < $ROWRESULT_COUNT_CAPACITY['in_capacity'])
                         {
                       ?>
@@ -101,7 +113,7 @@
                       <?php
                         }
                       ?>
-                                    <span class="count_bottom"><?php echo "123"; ?> Tiles Outside the Warehouse</a></span>
+                                    <span class="count_bottom"><?php echo $ROWRESULT_COUNT_OUTSIDE2['ALLOUTSIDE2']; ?> Tiles Outside the Warehouse</a></span>
                                     </div> 
                       <?php 
                         }

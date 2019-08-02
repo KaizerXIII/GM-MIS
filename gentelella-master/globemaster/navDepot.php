@@ -81,6 +81,7 @@ if(!(isset($_SESSION['usertype']))){
                       echo  "<ul class='nav child_menu'>";
                 
                       echo "<li><a href='DepotViewInventory.php'>View Tiles Inventory</a></li>";
+                      echo "<li><a href='DepotRequestSummary.php'>View Tile Requests</a></li>";
                       echo "</ul>";
                       echo "</li>";
                     }

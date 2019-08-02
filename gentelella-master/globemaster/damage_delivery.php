@@ -117,7 +117,7 @@
                           <button type="button" id ="replenish_btn" onclick="revertdisable();" class="btn btn-round btn-primary" >Replenish</button>
                           <button type="button" id ="replaceitem" class="btn btn-round btn-warning" onclick="showreplace();">Replace</button>
                           <!-- will only show when item to be replenished has no stock -->
-                          <button type="button" id ="notifySales" class="btn btn-round btn-danger">Notify Sales</button>
+                          <!-- <button type="button" id ="notifySales" class="btn btn-round btn-danger">Notify Sales</button> -->
                         </div>
                       </div>
                       <!-- FOR REPLACE ITEM -->

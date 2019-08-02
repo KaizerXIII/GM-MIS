@@ -66,10 +66,8 @@
             <div class="jumbotron" style="background-color:#ffffff">
                 <center><font color = "black"><h1><font color = "blue"><i class="fa fa-line-chart"></i></font><font color = "black"><b> POSx Inventory Forecasting</b></font></h1>
                         <p>Please choose a type of Inventory forecast. <font color = "red">One item will be forecasted in participation to the total sales made.</font></p>
-                        <p>The forecast can range from the analysis of:</p>
-                        <p>Naive (Past 30 days of data)</p>
-                        <p>Short-term (Past 90 days of data)</p>
-                        <p>Time-series (Past 365 days of data)</p></font></center>
+                        <p>Short-term forecasting will be used for forecasting each respective inventory item.</p>
+                        </font></center>
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4" align="center">
                         <div class="x_panel">
@@ -81,17 +79,17 @@
                                         <center>
                                             <p>Please choose a type of forecast.</p>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" aria-label="Text input with dropdown button" value = "choose" id = "salesforecastlabel" readonly>
+                                                <input type="text" class="form-control" aria-label="Text input with dropdown button" value = "Short-Term Forecasting" id = "salesforecastlabel" readonly>
                                                 <div class="input-group-btn">
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Choose.. <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                        <li id = "invnaive" onclick="changetonaive(this);" value = "Naive Forecasting" ><a>Naive Forecasting</a>
-                                                        </li>
+                                                        <!-- <li id = "invnaive" onclick="changetonaive(this);" value = "Naive Forecasting" ><a>Naive Forecasting</a>
+                                                        </li> -->
                                                         <li id = "invshortterm" onclick = "changetost(this);" value = "Short-Term Forecasting"><a>Short-Term Forecasting</a>
                                                         </li>
-                                                        <li id = "invtimerseries" onclick = "changetots(this);" value = "Time-Series Forecasting"><a>Time-Series Forecasting</a>
-                                                        </li>
+                                                        <!-- <li id = "invtimerseries" onclick = "changetots(this);" value = "Time-Series Forecasting"><a>Time-Series Forecasting</a>
+                                                        </li> -->
 
                                                     </ul>
                                                 </div>

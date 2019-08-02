@@ -105,20 +105,26 @@ footer, header,.nav{ display:none; } /*Removes elements before print, use [#idna
                                 echo '</td>';                               
                                 if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Order in Progress")
                                 {                                
-                                  echo '<td>';
-                                  echo "<font color = orange>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '<td align = "center">';
+                                  echo "<button class = 'btn btn-round btn-default btn-sm' disabled>Requested</button>";
                                   echo '</td>';
                                 }
                                 else if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Requisition Approved")
                                 {
-                                  echo '<td>';
-                                  echo "<font color = green>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '<td align = "center">';
+                                  echo "<button class = 'btn btn-round btn-primary btn-sm' disabled>Approved</button>";
+                                  echo '</td>';
+                                }
+                                else if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Requisition Confirmed")
+                                {
+                                  echo '<td align = "center">';
+                                  echo "<button class = 'btn btn-round btn-success btn-sm' disabled>Arrived</button>";
                                   echo '</td>';
                                 }
                                 else
                                 {
-                                  echo '<td>';
-                                  echo "<font color = red>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '<td align = "center">';
+                                  echo "<button class = 'btn btn-round btn-danger btn-sm' disabled>Cancelled</button>";
                                   echo '</td>';
                                 }
                                 echo '<td align = "center">';

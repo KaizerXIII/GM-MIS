@@ -194,6 +194,14 @@
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
+                                        if(date("Hi") >= "0600" && date("Hi") < "1500")
+                  {
+                    echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                  }
+                  else
+                  {
+                    echo    "<li><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
+                  }
                                         <?php
                                             if($ROW_TRUCK_AVAILABILITY['truck_availability'] == "Available")
                                             {
