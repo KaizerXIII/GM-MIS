@@ -361,7 +361,7 @@
                                                                         echo $ROW_RESULT_SELECT['item_qty'];
                                                                         echo '</td>';
                                                                         echo '<td align = "right">';
-                                                                        echo number_format(($ROW_RESULT_SELECT['item_price']),2)*$ROW_RESULT_SELECT['item_qty'];
+                                                                        echo "₱ ", number_format(($ROW_RESULT_SELECT['item_price']) * $ROW_RESULT_SELECT['item_qty'], 2);
                                                                         echo '</td>';
                                                                     echo '</tr>';                                                      
                                                                     echo '</tbody>';
@@ -466,11 +466,21 @@
             </tbody>
         </table>
     </div>
-    <div class = "row" style = "text-align:right">
-    <br><br><br>
-    Received by: ____________________
-    <br><br><br>
-    Printed by: <?php echo $_SESSION['firstname']."  ".$_SESSION['lastname'];?>
+    <!-- insert if else checker here -->
+    <div class = "clearfix"></div>
+    <div>
+        <b>Fabrication Job Request Details</b>       
+        <br>                                 
+            <img src = "images/globemasterbackground.jpg" width = "200px" height = "180px">
+        <br>
+        <b>Fabrication Description: </b><span id = "print_customer_name"></span>
+
+    </div>
+    <div style = "text-align:right">
+        <br><br><br>
+        Received by: ____________________
+        <br><br><br>
+        Printed by: <?php echo $_SESSION['firstname']."  ".$_SESSION['lastname'];?>
     </div>
 </div>
 

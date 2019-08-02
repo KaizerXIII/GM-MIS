@@ -1,6 +1,9 @@
 <?php
 ob_start();
 session_start();
+
+date_default_timezone_set('Asia/Hong_Kong');
+
 $_SESSION['user'] = 1;
 $user="";
 $fname="";
@@ -135,12 +138,15 @@ if(!(isset($_SESSION['usertype']))){
                 if($user == 'SALES' or $user == 'Superuser'){
                   if(date("Hi") >= "0600" && date("Hi") < "1500")
                   {
+                    // echo date("Hi");
                     echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
                   }
                   else
                   {
+                    // echo date("Hi");
                     echo    "<li><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
                   }
+                  // echo date("Hi");
                   echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
                 }
                   echo   "</ul>";

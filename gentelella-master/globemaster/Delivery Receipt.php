@@ -453,20 +453,18 @@
             </tr>
             </thead>
             <tbody>
-            <!-- <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <th style = "text-align:right">Total Amount this Order: </th>
-                <td align = "right">12345.00</td>
-            </tr> -->
             </tbody>
         </table>
+    </div>
+    <div class = "clearfix"></div>
+    <!-- insert if else checker here -->
+    <div>
+        <b>Fabrication Job Request Details</b>       
+        <br>                                 
+            <img src = "images/globemasterbackground.jpg" width = "200px" height = "180px">
+        <br>
+        <b>Fabrication Description: </b><span id = "print_customer_name"></span>
+
     </div>
     <div class = "row" style = "text-align:right">
     <br><br><br>
