@@ -613,7 +613,7 @@ $(function()
       success: function(data, textStatus)
       {
         alert("Damages have been successfully Recorded!");
-        // window.location.href= "Deliveries.php";
+        window.location.href= "Deliveries.php";
           
           
 
