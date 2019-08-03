@@ -766,7 +766,8 @@ echo '</script>';
             type: "POST",
                 data:{
                     post_item_name: current_name_array, //Never forget to get the Value from the <INPUTS>
-                    post_item_qty: current_qty_array                   
+                    post_item_qty: current_qty_array,
+                    post_dr_number: "<?php echo $_SESSION['get_dr_number_from_deliveries'];?>"                  
                 },
                 success: function(data)
                 {                 
