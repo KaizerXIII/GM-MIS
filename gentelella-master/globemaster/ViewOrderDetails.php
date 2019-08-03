@@ -486,7 +486,7 @@
             $BLOB_RCPT =  $ROW_RESULT_GET_FAB_DESC_RCPT['reference_drawing'];
                     
 
-            echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB_RCPT).'"   border-style = "border-width:3px;"style = "height:20vh; width:15vw">'
+            echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB_RCPT).' "border-style = "border-width:3px;"style = "height:20vh; width:15vw">'
         ?>
             <!-- <img src = "data:image/jpg;base64,'. base64_encode().'" width = "200px" height = "180px"> -->
         <br>
