@@ -57,7 +57,7 @@
 
                       ?>
                                   <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-th"></i> Bulacan Tile Warehouse Capacity</span>
+                                    <span class="count_top"><i class="fa fa-th"></i> Bulacan Tile Warehouse Availability</span>
                                     <!-- Insert count of depot requests here -->
                       <?php
                                     $SQL_COUNT_ALL_CAPACITY = "SELECT * FROM warehouses
@@ -71,16 +71,24 @@
                                         $RESULT_SQL_COUNT_ALL_OUTSIDE  = mysqli_query($dbc, $SQL_COUNT_ALL_OUTSIDE);
                                         $ROWRESULT_COUNT_OUTSIDE=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_OUTSIDE,MYSQLI_ASSOC); 
 
-                              if($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] < $ROWRESULT_COUNT_CAPACITY['in_capacity'])
+                                        $AVAILABILITY = $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] - $ROWRESULT_COUNT_CAPACITY['in_capacity'];
+
+                              if($AVAILABILITY > 300)
                               {
                       ?>
-                                <div class="count blue"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity'];?></div>
+                                <div class="count blue"><?php echo $AVAILABILITY ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity'];?></div>
                       <?php
                               }
-                              elseif($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] = $ROWRESULT_COUNT_CAPACITY['in_capacity'])
+                              elseif($AVAILABILITY > 0 && $AVAILABILITY < 300 )
                               {
                       ?>
-                                <div class="count red"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity'];?></div>
+                                <div class="count yellow"><?php echo $AVAILABILITY ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity'];?></div>
+                      <?php
+                              }
+                              elseif($AVAILABILITY == 0)
+                              {
+                      ?>
+                                <div class="count red"><?php echo $AVAILABILITY ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity'];?></div>
                       <?php
                               }
                       ?>
@@ -88,28 +96,38 @@
                                   </div> 
 
                                   <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-cubes"></i> EDSA Granite Warehouse Capacity</span>
+                                    <span class="count_top"><i class="fa fa-cubes"></i> EDSA Granite Warehouse Availability</span>
                                     <!-- Insert count of depot requests here -->
                       <?php
-                                    $SQL_COUNT_ALL_CAPACITY = "SELECT * FROM warehouses
+                                    $SQL_COUNT_ALL_CAPACITY1 = "SELECT * FROM warehouses
                                     WHERE warehouse_id = 2;";
-                                      $RESULT_SQL_COUNT_ALL_CAPACITY  = mysqli_query($dbc, $SQL_COUNT_ALL_CAPACITY);
-                                      $ROWRESULT_COUNT_CAPACITY=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_CAPACITY,MYSQLI_ASSOC);
+                                      $RESULT_SQL_COUNT_ALL_CAPACITY1  = mysqli_query($dbc, $SQL_COUNT_ALL_CAPACITY1);
+                                      $ROWRESULT_COUNT_CAPACITY1=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_CAPACITY1,MYSQLI_ASSOC);
 
                                     $SQL_COUNT_ALL_OUTSIDE2 = "SELECT SUM(item_outside_warehouse) as ALLOUTSIDE2 FROM items_trading
                                                               WHERE warehouse_id = 2;";
                                       $RESULT_SQL_COUNT_ALL_OUTSIDE2  = mysqli_query($dbc, $SQL_COUNT_ALL_OUTSIDE2);
                                       $ROWRESULT_COUNT_OUTSIDE2=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_OUTSIDE2,MYSQLI_ASSOC); 
-                      if($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] < $ROWRESULT_COUNT_CAPACITY['in_capacity'])
+
+                                      
+                                  $AVAILABILITY1 = $ROWRESULT_COUNT_CAPACITY1['current_in_capacity'] - $ROWRESULT_COUNT_CAPACITY1['in_capacity'];
+                                  
+                      if($AVAILABILITY1 > 300)
                         {
                       ?>
-                                    <div class="count blue"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity']?></div>
+                                    <div class="count blue"><?php echo $AVAILABILITY1 ."/". $ROWRESULT_COUNT_CAPACITY1['in_capacity']?></div>
                       <?php
                         }
-                        elseif($ROWRESULT_COUNT_CAPACITY['current_in_capacity'] = $ROWRESULT_COUNT_CAPACITY['in_capacity'])
+                        elseif($AVAILABILITY > 0 && $AVAILABILITY < 300 )
                         {
                       ?>
-                                    <div class="count red"><?php echo $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ."/". $ROWRESULT_COUNT_CAPACITY['in_capacity']?></div>
+                                    <div class="count yellow"><?php echo $AVAILABILITY1 ."/". $ROWRESULT_COUNT_CAPACITY1['in_capacity']?></div>
+                      <?php
+                        }
+                        elseif($AVAILABILITY == 0)
+                        {
+                      ?>
+                                     <div class="count red"><?php echo $AVAILABILITY1 ."/". $ROWRESULT_COUNT_CAPACITY1['in_capacity']?></div>
                       <?php
                         }
                       ?>
