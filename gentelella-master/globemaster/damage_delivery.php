@@ -598,14 +598,17 @@ $(function()
 
     if(confirm("Submit Damaged items?"))
     {
+      var value = "<?php echo $_SESSION['current_dr_or'];?>";
       request = $.ajax({
       url: "ajax/dmg_type_delivery.php",
       type: "POST",
+      dataType: "json",
       data: {
         post_dmg_item: dmg_name_array,
         post_dmg_qty: dmg_qty_array,
         post_replace_item: replace_name_array,
-        post_replace_qty: replace_qty_array                                                 
+        post_replace_qty: replace_qty_array,
+        post_current_or:value                                                 
       },
       success: function(data, textStatus)
       {
@@ -615,7 +618,6 @@ $(function()
           
 
       }//End Success
-      
       }); // End ajax 
     }
     else
