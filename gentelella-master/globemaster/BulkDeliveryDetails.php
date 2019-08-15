@@ -194,7 +194,8 @@
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                  
+                                        <button type="button" class="btn btn-primary btn-lg"  id = "deploy" value ="Deploy"><i class="fa fa-truck"></i> Deploy Truck</button>
+
                                         <?php
                                             if($ROW_TRUCK_AVAILABILITY['truck_availability'] == "Available")
                                             {

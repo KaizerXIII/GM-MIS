@@ -144,10 +144,10 @@ if(!(isset($_SESSION['usertype']))){
                   else
                   {
                     // echo date("Hi");
-                    echo    "<li><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
+                    echo    "<li data-toggle = 'tooltip' data-placement='right' title='Cannot make deliveries after 3pm. \n Try again tomorrow.'><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
                   }
-                  // echo date("Hi");
-                  echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                  // // echo date("Hi");
+                  // echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
                 }
                   echo   "</ul>";
                   echo "</li>";

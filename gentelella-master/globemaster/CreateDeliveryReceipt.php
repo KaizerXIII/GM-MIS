@@ -222,8 +222,9 @@
                                 <thead>
                                     <tr role="row">
                                         <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 263px;">Product</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Pieces</th>
                                         <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Price per piece</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 197px;">Pieces</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 197px;">Subtotal</th>
                                         
                                         </tr>
                                 </thead>
@@ -742,7 +743,7 @@ var table = document.getElementById("datatable");
               } //END ELSE
 
             var newRow = document.getElementById('datatable').insertRow();
-            newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td> <td align = right>" +quantityNumFromPHP[i]+ "</td> <td align = right> ₱ "+PriceNumFromPHP[i]+"</td></tr>";
+            newRow.innerHTML = "<tr><td>" +itemNameFromPHP[i]+ "</td><td align = right> ₱ "+PriceNumFromPHP[i]+"</td> <td align = right>" +quantityNumFromPHP[i]+ "</td><td align = right>INSERT SUBTOTAL HERE</td></tr>";
                                             
              } //End IF
                    
