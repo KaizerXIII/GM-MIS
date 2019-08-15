@@ -612,7 +612,7 @@ if(!(isset($_SESSION['usertype']))){
 <script>
   function alertTime()
   {
-    alert("Deliveries are not allowed after 3PM! You can set another delivery tomorrow.");
+    alert("Setting deliveries are not allowed after 3pm! Please try again tomorrow.");
   }
 </script>
           
