@@ -727,9 +727,19 @@ while($rowofResult2=mysqli_fetch_array($resultofQuery2,MYSQLI_ASSOC))
                     echo 'if(OrderNumberFromSchedDeliver[i] == OrderNumberFromOrderDetails[count]) {';
 
                         echo  "var newRow = document.getElementById('datatable').insertRow();";
+
+                        echo "var nf = new Intl.NumberFormat('en-US', {          
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                          });";
+                        echo 'var subtotal = parseFloat(ItemQuantityFromPHP[count].replace(",", "")).toFixed(2) * parseFloat(ItemPriceFromPHP[count].replace(",", "")).toFixed(2);';
                         
-                        echo  'newRow.innerHTML = "<tr><td class= item_name>" +ItemNameFromPHP[count]+ "</td> <td class=item_qty align = right>" +ItemQuantityFromPHP[count]+ "</td><td align = right> ₱ " +ItemPriceFromPHP[count]+ "</td><td align=right> ₱ "+( parseInt(ItemQuantityFromPHP[count].replace(",", "")).toFixed(2) * parseInt(ItemPriceFromPHP[count].replace(",", "")).toFixed(2))+"</td></tr>";';
+                        
+                        echo 'console.log("Subtotal: " + nf.format(subtotal));';
+                        
+                        echo  'newRow.innerHTML = "<tr><td class= item_name>" +ItemNameFromPHP[count]+ "</td> <td class=item_qty align = right>" +ItemQuantityFromPHP[count]+ "</td><td align = right> ₱ " +ItemPriceFromPHP[count]+ "</td><td align=right> ₱ "+nf.format(subtotal)+"</td></tr>";';
                         // echo 'localStorage.removeItem("DRfromDeliveriesPage");';
+                       
                         echo 'count--;';
                         echo 'continue;';                    
 
