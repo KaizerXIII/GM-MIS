@@ -379,7 +379,7 @@
 
                                                                                                                             
                                                                     echo '<td >';
-                                                                    echo '<input  style="text-align:right;" align = "right" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="0" max ="1000" value="" placeholder ="0"></input>';
+                                                                    echo '<input  style="text-align:right;" align = "right" type="number" oninput="validate(this)" id="quantity',$row['item_id'],'" name="quantity',$row['item_id'],'"  min="',ceil($EOQ),'" max ="1000" value="" placeholder ="0"></input>';
                                                                     echo '</td>';
 
                                                                     echo '<td align = center >';
