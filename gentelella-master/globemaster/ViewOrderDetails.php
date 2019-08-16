@@ -372,8 +372,85 @@
                                                     </div> <!--END Xcontent-->
                                                 </div><!--END Col MD-->
                                             </div><!--END Class-row -->
+                            <div class="col-md-12 col-sm-6 col-xs-12" id = "fab_item">
+                                <div class="x_panel" >
+                                <center><h3>Fabricated Product Request</h1></h3></center>
+                                    <div class="ln_solid"></div>
+                                    <div class="row" >
+                                    <div class = "col-md-12" align = "center">
+                                        <!-- "data:image/jpg;base64,'. base64_encode($BLOB[$i]).'" -->
+                                        <?php
+                                        // $SQL_GET_OR_FROM_DR = "SELECT * FROM scheduledelivery WHERE delivery_Receipt = '$GET_ID_DELIVERY' ";
+                                        // $RESULT_GET_OR_FROM_DR = mysqli_query($dbc, $SQL_GET_OR_FROM_DR);
+                                        // $ROW_RESULT_GET_OR = mysqli_fetch_array($RESULT_GET_OR_FROM_DR,MYSQLI_ASSOC);
+
+                                        // $CURRENT_OR_OF_DR = $ROW_RESULT_GET_OR['ordernumber'];
+
+                                        $SQL_GET_FAB_DESC = "SELECT * FROM joborderfabrication WHERE order_number = '$GET_OR_FROM_SESSION_1'";
+                                        $RESULT_GET_FAB_DESC = mysqli_query($dbc, $SQL_GET_FAB_DESC);                                           
+                                        
+                                        $ROW_RESULT_GET_FAB_DESC = mysqli_fetch_array($RESULT_GET_FAB_DESC,MYSQLI_ASSOC);
+                                        $BLOB =  $ROW_RESULT_GET_FAB_DESC['reference_drawing'];
+                                                     
+
+                                         echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'"   border-style = "border-width:3px;"style = "height:20vh; width:15vw">'
+                                        ?>
+                                    </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12"  >
+                                        <br>
+                                            <?php
+
+                                                $SQL_GET_FAB_STATUS = "SELECT * FROM orders WHERE ordernumber = '$GET_OR_FROM_SESSION_1'";
+                                                $RESULT_GET_FAB_STATUS = mysqli_query($dbc, $SQL_GET_FAB_STATUS);
+                                                $ROW_RESULT_GET_FAB_STATUS = mysqli_fetch_array($RESULT_GET_FAB_STATUS,MYSQLI_ASSOC);
+
+                                                $FAB_STATUS = $ROW_RESULT_GET_FAB_STATUS['fab_status'];
+                                                
+                                                if($FAB_STATUS == "For Fabrication")
+                                                {
+                                                    echo '<h2>Current Status: <font color = "blue">Pending Approval</font></h2>';
+                                                }
+                                                else if($FAB_STATUS == "Under Fabrication")
+                                                {
+                                                    echo '<h2>Current Status: <font color = "blue">Fabricating</font></h2>';
+                                                }
+                                                else if($FAB_STATUS == "Finished Fabrication")
+                                                {
+                                                    echo '<h2>Current Status: <font color = "green">Finished</font></h2>';
+                                                }
+                                                else if($FAB_STATUS == "Disapproved")
+                                                {
+                                                    echo '<h2>Current Status: <font color = "red">Disapproved</font></h2>';
+                                                }
+                                                else if($FAB_STATUS == "No Fabrication")
+                                                {
+                                                    echo '<script>$("#fab_item").hide();</script>';
+                                                }
+                                            ?>
+                                        </div>
+                                        <div class ="col-md-12 col-sm-12 col-xs-12">
+                                        <?php
+                                            $SQL_GET_FAB_DESC = "SELECT * FROM joborderfabrication WHERE order_number = '$GET_OR_FROM_SESSION_1'";
+                                            $RESULT_GET_FAB_DESC = mysqli_query($dbc, $SQL_GET_FAB_DESC);                                           
+                                            if(!$RESULT_GET_FAB_DESC) 
+                                            {
+                                                die('Error: ' . mysqli_error($dbc));
+                                                
+                                            } 
+                                            else 
+                                            {
+                                                $ROW_RESULT_GET_FAB_DESC = mysqli_fetch_array($RESULT_GET_FAB_DESC,MYSQLI_ASSOC);
+                                                $BLOB =  $ROW_RESULT_GET_FAB_DESC['reference_drawing'];
+                                                echo '<font size = "3">Description: '.$ROW_RESULT_GET_FAB_DESC['fab_description'].'</font>';                                           
+                                            }                                           
+                                        ?>
+                                        </div>
+                                    </div>         
+                                    </div> <!--END XPanel-->
+                                </div> <!--END Class Colmd-->
                                         
                                         </div><!--END XPanel-->
+                                        
                                     
                                 </div><!--ENDCol MD-->
 

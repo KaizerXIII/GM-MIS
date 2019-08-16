@@ -136,9 +136,24 @@
                                       echo '<div class = "col-md-6">';
                                         echo '<div class = "row"><h2><b>Order Number:</b> '. $ORDER_NUMBER[$i].'</h2></div>';
                                         
-                                            echo '<div class = "row"><h3><b>Order Status:</b> '. $ORDER_STATUS[$i].'</h3></div>';
-                                            echo '<a class="current_anchored_row" href="javascript:" current_or = "'.$ORDER_NUMBER[$i].'">Was an item damaged during production? Click here!</a>';
-                                            echo '<br><br><br>';
+                                        
+                                        $SQL_GET_FAB_STATUS = "SELECT * FROM orders WHERE ordernumber = '$ORDER_NUMBER[$i]';";
+                                        $RESULT_FAB_STATUS = mysqli_query($dbc,$SQL_GET_FAB_STATUS);
+                                        $ROW_RESULT_STATUS = mysqli_fetch_array($RESULT_FAB_STATUS,MYSQLI_ASSOC);
+
+                                        
+
+                                          echo '<div class = "row"><h3><b>Order Status:</b> '. $ORDER_STATUS[$i].'</h3></div>';
+                                        if($ROW_RESULT_STATUS['fab_status'] == "Under Fabrication")
+                                        {
+                                          echo '<a class="current_anchored_row" href="javascript:" current_or = "'.$ORDER_NUMBER[$i].'">Was an item damaged during production? Click here!</a>';
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                          echo '<br><br><br>';
+
                                      
 
                                         echo '<div class = "row">';

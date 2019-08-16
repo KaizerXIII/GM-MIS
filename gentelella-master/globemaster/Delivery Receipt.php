@@ -252,7 +252,7 @@
                                                                 <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending"  style="width: 263px;">Product</th>
                                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  style="width: 197px;">Pieces</th>
                                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  style="width: 197px;">Price per piece</th>
-                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  style="width: 197px;">Subtotal Price</th>
+                                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  style="width: 197px;">Subtotal</th>
                                                             </tr>
                                                         </thead>
                                                         <tr role='row' class='odd'>                                                                  

@@ -144,10 +144,10 @@ if(!(isset($_SESSION['usertype']))){
                   else
                   {
                     // echo date("Hi");
-                    echo    "<li><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
+                    echo    "<li data-toggle = 'tooltip' data-placement='right' title='Cannot make deliveries after 3pm. \n Try again tomorrow.'><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
                   }
-                  // echo date("Hi");
-                  echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                  // // echo date("Hi");
+                  // echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
                 }
                   echo   "</ul>";
                   echo "</li>";
@@ -612,7 +612,7 @@ if(!(isset($_SESSION['usertype']))){
 <script>
   function alertTime()
   {
-    alert("Deliveries are not allowed after 3PM! You can set another delivery tomorrow.");
+    alert("Setting deliveries are not allowed after 3pm! Please try again tomorrow.");
   }
 </script>
           

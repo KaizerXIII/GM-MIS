@@ -275,14 +275,26 @@
                                         <tr>
                                           <th>SKU</th>
                                           <th>Item Name</th>
-                                          <th>Amount In Stock</th>
-                                          <th>Action</th>
-                                        </tr>
+                                          <th>Threshold</th>
+                                          <th>Amount In Stock</th>';
+                                          
+                                          if($user == "CEO" || $user == "Superuser")
+                                          {
+                                            echo '<th>Action</th>';
+                                          }
+                                          else
+                                          {
+
+                                          }
+                                        echo '</tr>
                                       </thead>
                                       <tbody>';
                         
                             require_once('DataFetchers/mysql_connect.php');
-                            $query = "SELECT item_id, sku_id, item_name, item_count, (threshold_amt-item_count) AS 'diff' from items_trading WHERE item_count < threshold_amt";
+                            $query = "SELECT item_id, sku_id, item_name, threshold_amt, item_count, (threshold_amt-item_count) AS 'diff' 
+                                        FROM items_trading 
+                                        WHERE item_count < threshold_amt 
+                                        ORDER BY item_count DESC";
                             $result=mysqli_query($dbc,$query);
                             while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                             {
@@ -295,16 +307,22 @@
                                     echo $row['item_name'];
                                     echo '</td>';
                                     echo '<td align = "right">';
-                                    echo $row['item_count']." pieces";
+                                    echo $row['threshold_amt'] . ' Pieces ';
                                     echo '</td>';
-                                    if($row['diff'] >= 50)
+                                    if($row['item_count'] < $row['threshold_amt'])
                                     {
-                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><i class = "fa fa-wrench"></i></a></center></td>';
+                                      echo '<td align = "right">';
+                                      echo '<b><font color = "red">' .$row['item_count']. ' Pieces </font></b>';
+                                      echo '</td>';
+                                    }
+                                    if($user == "CEO" || $user == "Superuser")
+                                    {
+                                      echo '<td><center><a href ="SupplierOrderForm.php" class=""><i class = "fa fa-wrench"></i></a></center></td>';
                                     }
                                     else
                                     {
-                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><i class = "fa fa-wrench"></i></a></center></td>';
                                     }
+                                  
                                     echo '</td>';
                                     echo '</tr>';
                                     
@@ -360,90 +378,52 @@
                             </div>
                           </div>
                           <div class = "clearfix"></div>
-                                    <!-- if($row['diff'] >= 50)
-                                    {
-                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-danger">Restock now</button></a></center></td>';
-                                    }
-                                    else
-                                    {
-                                        echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-warning">Restock now</button></a></center></td>';
-                                    }
-                                    echo '</td>';
-                                    echo '</tr>'; -->
+                  <?php
+                  if($user == 'CEO' || $user == 'INV' || $user == 'Agent' || $user == 'Superuser')
+                    {
+                      //SUPPLIER ORDER ALERTS
+                    ?>
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                    <h2><center><i class="fa fa-cubes"></i><b>  DEPOT REQUESTS SUMMARY</b></h2>  
+                                    <div class="clearfix"></div>
+                                  <div class="x_content">
+
+                                    <table class="table table-bordered">
+                                      <thead>
+                                        <tr>
+                                          <th>Request Number</th>
+                                          <th>Request Date</th>
+                                          <th>Expected Date</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+
+                      <?php 
+                            $SQL_GET_DEPOT_REQUEST = "SELECT * FROM depot_request";
+                            $RESULT_GET_DEPOT_REQUEST=mysqli_query($dbc,$SQL_GET_DEPOT_REQUEST);
+                            while($ROW_DEPOT_REQUEST=mysqli_fetch_array($RESULT_GET_DEPOT_REQUEST,MYSQLI_ASSOC))
+                            {
+                      ?>
+                                    <tr>
+                                      <td><?php echo $ROW_DEPOT_REQUEST['depot_request_id']; ?></td>
+                                      <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_request_date'])); ?></td>
+                                      <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_expected_date'])); ?></td>
+                                      <td align = "center"><a href = "ViewDepotRequests.php"><i class = "fa fa-wrench"></i></a></td>
+                                    </tr>
+                      <?php      
+                            } 
+                      ?>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
 
                   <?php
                     }
-                 
-                    // if($user == 'CEO' || $user == 'CFO' || $user == 'MKT' || $user == 'Superuser')
-                    // {
-                         
-
-                    //      //LOSSES FOR A MONTH
-                 
-                    //     echo '<div class="col-md-6 col-sm-6 col-xs-12">
-                    //             <div class="x_panel">
-                    //                   <h2><center><i class="fa fa-sort-amount-desc"></i><b> Losses</b></h2>
-                    //                 <div class="clearfix"></div>
-                    //               <div class="x_content">
-
-                    //                 <table class="table table-bordered">
-                    //                   <thead>
-                    //                     <tr>
-                    //                       <th>Item</th>
-                    //                       <th>Damage Percent</th>
-                    //                       <th>Quantity</th>
-                    //                       <th>Total Loss</th>
-                    //                     </tr>
-                    //                   </thead>
-                    //                   <tbody>';
-                        
-                    //         require_once('DataFetchers/mysql_connect.php');
-                    //         $query = "SELECT item_name, damage_percentage * 10, item_quantity, total_loss, last_update FROM damage_item WHERE DATEDIFF(NOW(), last_update) / 31 < 1;";
-                    //         $result11=mysqli_query($dbc,$query);
-                    //         while($row=mysqli_fetch_array($result11,MYSQLI_ASSOC))
-                    //         {
-
-                                    
-                                
-                    //                 echo '<tr>';
-                    //                 echo '<td>';
-                    //                 echo $row['item_name'];
-                    //                 echo '</td>';
-                    //                 echo '<td><b>';
-                    //                 echo $row['damage_percentage * 10'];
-                    //                 echo '%';
-                    //                 echo '</b></td>';
-                    //                 echo '<td>';
-                    //                 echo $row['item_quantity'];
-                    //                 echo '</td>';
-                    //                 echo '<td><b>';
-                    //                 echo  'Php'." ".number_format($row['total_loss'], 2);
-                    //                 echo '</b></td>';
-                    //                 echo '</tr>';
-                                    
-                    //         } 
-                    //  echo '</tbody>';
-                    // echo '</table>';
-                        
-                    //          echo '</div>
-                    //     </div>
-                    //   </div>';
-                     
-                    // echo '<div class="clearfix"></div>';  
-                    // }
-                                    // <!-- if($row['diff'] >= 50)
-                                    // {
-                                    //     echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-danger">Restock now</button></a></center></td>';
-                                    // }
-                                    // else
-                                    // {
-                                    //     echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-warning">Restock now</button></a></center></td>';
-                                    // }
-                                    // echo '</td>';
-                                    // echo '</tr>'; -->
-
-                    
-                 
                     if($user == 'CFO' || $user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
                     {
                         //UNPAID ORDERS
