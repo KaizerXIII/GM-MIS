@@ -88,7 +88,7 @@
                  
                     
                 
-                    <label id ="total_profit"  style="text-align:left;" ><b><font color = "black" size = "5px">Total Sold: [  ]</font></b></label>
+                    <label id ="total_profit"  style="text-align:left;" ><b><font color = "black" size = "5px">Total Sold: </font></b></label>
                       
                   
                     
@@ -314,7 +314,7 @@
           sum = sum +parseFloat(current_data_from_table[i]);
         }      
 
-        total_amt_label.innerHTML = '<b><font color = "black" size = "5px"> Total Sold: [<font color = "green"> ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font> ]</font></b>';
+        total_amt_label.innerHTML = '<b><font color = "black" size = "5px"> Total Sold: <font color = "green"> ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font> </font></b>';
          
         $.fn.dataTable.ext.search.pop();//Pops the function
         });
@@ -342,7 +342,7 @@
               sum = sum +parseFloat(current_data_from_table[i]);
             }      
 
-            total_amt_label.innerHTML = '<b><font color = "black" size = "5px"> Total Sold: [<font color = "green"> ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font> ]</font></b>';
+            total_amt_label.innerHTML = '<b><font color = "black" size = "5px"> Total Sold: <font color = "green"> ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font> </font></b>';
         }//End function                                                                
   </script> 
   <script>

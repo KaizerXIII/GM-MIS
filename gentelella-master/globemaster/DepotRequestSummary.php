@@ -85,7 +85,7 @@ footer, header,.nav{ display:none; } /*Removes elements before print, use [#idna
                       <?php                            
                             require_once('DataFetchers/mysql_connect.php');
                             $GET_DEPOT = "SELECT * 
-                            FROM mydb.depot_request";                           
+                            FROM mydb.depot_request ORDER BY depot_request_status ASC";                           
                             $RESULT_GET_DEPOT=mysqli_query($dbc,$GET_DEPOT);
                             while($ROW_RESULT_GET_DEPOT=mysqli_fetch_array($RESULT_GET_DEPOT,MYSQLI_ASSOC))
                             {                                                                   

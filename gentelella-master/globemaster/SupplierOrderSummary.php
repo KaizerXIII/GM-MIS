@@ -58,13 +58,21 @@
               ?>
                 <div class="x_panel">
                   <div class="x_content">
-                    <!-- <p class="text-muted font-13 m-b-30">
-                      
-                        <button type="button" class="btn btn-success" onclick="window.location.href='newOrderForm.php'"><i class="fa fa-plus" onclick =""></i> Create Order </button>
-                      
-                    </p><br>
-					 -->
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                   
+                  <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab1" class="nav nav-tabs bar_tabs right" role="tablist">
+                      <li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><font color = "black">Purchased</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "skyblue">Shipping</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb3" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "darkblue">Delivered</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content44" role="tab" id="profile-tabb4" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "green">Finished</font></a>
+                      </li>
+                    </ul>
+                    <div id="myTabContent2" class="tab-content">
+                      <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th>Supply Order Number</th>
@@ -83,7 +91,9 @@
                          CAST(DATE_ADD(supply_order_expdate, INTERVAL 14 DAY) AS DATE) AS EXP_RANGE,
                           supply_order_total_quantity,
                            supply_order_status 
-                           FROM supply_order ORDER BY supply_order_id + '0'";
+                           FROM supply_order 
+                           WHERE supply_order_status = 'Purchased' OR supply_order_status = 'China'
+                           ORDER BY supply_order_id + '0'";
 
                       $RESULT_GET_SO = mysqli_query($dbc, $SQL_GET_ALL_SO);
                         while($row=mysqli_fetch_array($RESULT_GET_SO,MYSQLI_ASSOC))
@@ -120,6 +130,191 @@
                       ?>                          
                       </tbody>
                     </table><br>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>Supply Order Number</th>
+                          <th>Order Date</th>
+                          <th>Expected Date</th>
+                          <!-- <th>Total Quantity</th> -->
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php
+                      $SQL_GET_ALL_SO = "SELECT supply_order_id,
+                       CAST(supply_order_date AS DATE) as SD,
+                        CAST(supply_order_expdate AS DATE) as SXD,
+                         CAST(DATE_ADD(supply_order_expdate, INTERVAL 14 DAY) AS DATE) AS EXP_RANGE,
+                          supply_order_total_quantity,
+                           supply_order_status 
+                           FROM supply_order 
+                           WHERE supply_order_status = 'Shipped' OR supply_order_status = 'Philippines' OR supply_order_status = 'OTW'
+                           ORDER BY supply_order_id + '0'";
+
+                      $RESULT_GET_SO = mysqli_query($dbc, $SQL_GET_ALL_SO);
+                        while($row=mysqli_fetch_array($RESULT_GET_SO,MYSQLI_ASSOC))
+                        {
+                          $SO_ID = $row['supply_order_id'];
+                          echo '<tr>';                          
+                          echo ' <td> SR - ' .$row['supply_order_id'].'</td>'; 
+                          echo ' <td>' .$row['SD'].'</td>'; 
+                          echo ' <td>' .$row['SXD']. '  to  ' .$row['EXP_RANGE'].'</td>'; 
+                          // echo ' <td>'.$row['supply_order_total_quantity'].'</td>'; 
+
+                          //start status if/else PHP
+                            if($row['supply_order_status'] == "Purchased" || $row['supply_order_status'] == "China")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-default btn-xs" disabled>Purchased</button></td>
+                          <?php
+                            }
+                            else if($row['supply_order_status'] == "Shipped" || $row['supply_order_status'] == "Philippines" || $row['supply_order_status'] == "OTW")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-info btn-xs" disabled>Shipping</button></td>
+                          <?php
+                            }
+                            else if($row['supply_order_status'] == "Arrived" || $row['supply_order_status'] == "Receiving")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Delivered</button></td>
+                      <?php
+                            } //end progressbar if/else PHP
+                          echo ' <td align = "center"><a href="SupplierOrderDetails.php?so_id='.$SO_ID.'"><i class = "fa fa-wrench"></i></a></td>'; 
+                          echo '</tr>'; 
+                        }
+                      ?>                          
+                      </tbody>
+                    </table><br>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>Supply Order Number</th>
+                          <th>Order Date</th>
+                          <th>Expected Date</th>
+                          <!-- <th>Total Quantity</th> -->
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php
+                      $SQL_GET_ALL_SO = "SELECT supply_order_id,
+                       CAST(supply_order_date AS DATE) as SD,
+                        CAST(supply_order_expdate AS DATE) as SXD,
+                         CAST(DATE_ADD(supply_order_expdate, INTERVAL 14 DAY) AS DATE) AS EXP_RANGE,
+                          supply_order_total_quantity,
+                           supply_order_status 
+                           FROM supply_order 
+                           WHERE supply_order_status = 'Receiving'
+                           ORDER BY supply_order_id + '0'";
+
+                      $RESULT_GET_SO = mysqli_query($dbc, $SQL_GET_ALL_SO);
+                        while($row=mysqli_fetch_array($RESULT_GET_SO,MYSQLI_ASSOC))
+                        {
+                          $SO_ID = $row['supply_order_id'];
+                          echo '<tr>';                          
+                          echo ' <td> SR - ' .$row['supply_order_id'].'</td>'; 
+                          echo ' <td>' .$row['SD'].'</td>'; 
+                          echo ' <td>' .$row['SXD']. '  to  ' .$row['EXP_RANGE'].'</td>'; 
+                          // echo ' <td>'.$row['supply_order_total_quantity'].'</td>'; 
+
+                          //start status if/else PHP
+                            if($row['supply_order_status'] == "Purchased" || $row['supply_order_status'] == "China")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-default btn-xs" disabled>Purchased</button></td>
+                          <?php
+                            }
+                            else if($row['supply_order_status'] == "Shipped" || $row['supply_order_status'] == "Philippines" || $row['supply_order_status'] == "OTW")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-primary btn-xs" disabled>Shipping</button></td>
+                          <?php
+                            }
+                            else if($row['supply_order_status'] == "Receiving")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-primary btn-xs" disabled>Delivered</button></td>
+                      <?php
+                            } //end progressbar if/else PHP
+                          echo ' <td align = "center"><a href="SupplierOrderDetails.php?so_id='.$SO_ID.'"><i class = "fa fa-wrench"></i></a></td>'; 
+                          echo '</tr>'; 
+                        }
+                      ?>                          
+                      </tbody>
+                    </table><br>
+                      </div>
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content44" aria-labelledby="profile-tab">
+                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>Supply Order Number</th>
+                          <th>Order Date</th>
+                          <th>Expected Date</th>
+                          <!-- <th>Total Quantity</th> -->
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php
+                      $SQL_GET_ALL_SO = "SELECT supply_order_id,
+                       CAST(supply_order_date AS DATE) as SD,
+                        CAST(supply_order_expdate AS DATE) as SXD,
+                         CAST(DATE_ADD(supply_order_expdate, INTERVAL 14 DAY) AS DATE) AS EXP_RANGE,
+                          supply_order_total_quantity,
+                           supply_order_status 
+                           FROM supply_order 
+                           WHERE supply_order_status = 'Arrived'
+                           ORDER BY supply_order_id + '0'";
+
+                      $RESULT_GET_SO = mysqli_query($dbc, $SQL_GET_ALL_SO);
+                        while($row=mysqli_fetch_array($RESULT_GET_SO,MYSQLI_ASSOC))
+                        {
+                          $SO_ID = $row['supply_order_id'];
+                          echo '<tr>';                          
+                          echo ' <td> SR - ' .$row['supply_order_id'].'</td>'; 
+                          echo ' <td>' .$row['SD'].'</td>'; 
+                          echo ' <td>' .$row['SXD']. '  to  ' .$row['EXP_RANGE'].'</td>'; 
+                          // echo ' <td>'.$row['supply_order_total_quantity'].'</td>'; 
+
+                          //start status if/else PHP
+                            if($row['supply_order_status'] == "Purchased" || $row['supply_order_status'] == "China")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-default btn-xs" disabled>Purchased</button></td>
+                          <?php
+                            }
+                            else if($row['supply_order_status'] == "Shipped" || $row['supply_order_status'] == "Philippines" || $row['supply_order_status'] == "OTW")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-primary btn-xs" disabled>Shipping</button></td>
+                          <?php
+                            }
+                            else if($row['supply_order_status'] == "Arrived")
+                            {
+                          ?>
+                            <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Finished</button></td>
+                      <?php
+                            } //end progressbar if/else PHP
+                          echo ' <td align = "center"><a href="SupplierOrderDetails.php?so_id='.$SO_ID.'"><i class = "fa fa-wrench"></i></a></td>'; 
+                          echo '</tr>'; 
+                        }
+                      ?>                          
+                      </tbody>
+                    </table><br>
+                    </div>
+                    </div>
+                  </div>
+                  
+                  
                     <div>
                         
                     </div>

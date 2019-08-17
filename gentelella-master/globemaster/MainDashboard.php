@@ -342,7 +342,7 @@
                         
                         <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="x_panel">
-                                    <h2><center><i class="fa fa-cubes"></i><b>  DEPOT REQUESTS SUMMARY</b></h2>  
+                                    <h2><center><i class="glyphicon glyphicon-inbox"></i><b>  DEPOT REQUESTS SUMMARY</b></h2>  
                                     <div class="clearfix"></div>
                                   <div class="x_content">
 
@@ -378,40 +378,64 @@
                             </div>
                           </div>
                           <div class = "clearfix"></div>
+
                   <?php
-                  if($user == 'CEO' || $user == 'INV' || $user == 'Agent' || $user == 'Superuser')
+                    }
+                    if($user == 'CEO' || $user == 'INV' || $user == 'Agent' || $user == 'Superuser')
                     {
-                      //SUPPLIER ORDER ALERTS
+                      //SUPPLIER ORDER SUMMARY
                     ?>
                         
                         <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="x_panel">
-                                    <h2><center><i class="fa fa-cubes"></i><b>  DEPOT REQUESTS SUMMARY</b></h2>  
+                                    <h2><center><i class="fa fa-cubes"></i><b>  RESTOCKING SUMMARY</b></h2>  
                                     <div class="clearfix"></div>
                                   <div class="x_content">
 
                                     <table class="table table-bordered">
                                       <thead>
                                         <tr>
-                                          <th>Request Number</th>
-                                          <th>Request Date</th>
+                                          <th>Order Number</th>
+                                          <th>Order Date</th>
                                           <th>Expected Date</th>
+                                          <th>Status</th>
                                           <th>Action</th>
                                         </tr>
                                       </thead>
                                       <tbody>
 
                       <?php 
-                            $SQL_GET_DEPOT_REQUEST = "SELECT * FROM depot_request";
-                            $RESULT_GET_DEPOT_REQUEST=mysqli_query($dbc,$SQL_GET_DEPOT_REQUEST);
-                            while($ROW_DEPOT_REQUEST=mysqli_fetch_array($RESULT_GET_DEPOT_REQUEST,MYSQLI_ASSOC))
+                            $SQL_GET_SUPPLIER_ORDER = "SELECT * FROM supply_order WHERE supply_order_status = 'Arrived' OR supply_order_status = 'Receiving' ORDER BY supply_order_id DESC LIMIT 10";
+                            $RESULT_GET_SUPPLIER_ORDER=mysqli_query($dbc,$SQL_GET_SUPPLIER_ORDER);
+                            while($ROW_SUPPLIER_ORDER=mysqli_fetch_array($RESULT_GET_SUPPLIER_ORDER,MYSQLI_ASSOC))
                             {
                       ?>
                                     <tr>
-                                      <td><?php echo $ROW_DEPOT_REQUEST['depot_request_id']; ?></td>
-                                      <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_request_date'])); ?></td>
-                                      <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_expected_date'])); ?></td>
-                                      <td align = "center"><a href = "ViewDepotRequests.php"><i class = "fa fa-wrench"></i></a></td>
+                                      <td><?php echo "SR - " .$ROW_SUPPLIER_ORDER['supply_order_id']; ?></td>
+                                      <td><?php echo date('F d, Y', strtotime($ROW_SUPPLIER_ORDER['supply_order_date'])); ?></td>
+                                      <td><?php echo date('F d, Y', strtotime($ROW_SUPPLIER_ORDER['supply_order_expdate'])); ?></td>
+                                      <?php
+                                      //start status if/else PHP
+                                        if($ROW_SUPPLIER_ORDER['supply_order_status'] == "Purchased" || $ROW_SUPPLIER_ORDER['supply_order_status'] == "China")
+                                        {
+                                      ?>
+                                        <td align = "center"><button type="button" class="btn btn-round btn-default btn-xs" disabled>Purchased</button></td>
+                                      <?php
+                                        }
+                                        else if($ROW_SUPPLIER_ORDER['supply_order_status'] == "Shipped" || $ROW_SUPPLIER_ORDER['supply_order_status'] == "Philippines" || $ROW_SUPPLIER_ORDER['supply_order_status'] == "OTW")
+                                        {
+                                      ?>
+                                        <td align = "center"><button type="button" class="btn btn-round btn-primary btn-xs" disabled>Shipping</button></td>
+                                      <?php
+                                        }
+                                        else if($ROW_SUPPLIER_ORDER['supply_order_status'] == "Arrived" || $ROW_SUPPLIER_ORDER['supply_order_status'] == "Receiving")
+                                        {
+                                      ?>
+                                        <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Delivered</button></td>
+                                      <?php
+                                        } //end progressbar if/else PHP
+                                      ?>
+                                      <td align = "center"><a href = "SupplierOrderDetails.php?so_id=<?php echo $ROW_SUPPLIER_ORDER['supply_order_id']; ?>"><i class = "fa fa-wrench"></i></a></td>
                                     </tr>
                       <?php      
                             } 
@@ -424,13 +448,14 @@
 
                   <?php
                     }
-                    if($user == 'CFO' || $user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
+                    if($user == 'CEO' || $user == 'INV' || $user == 'Superuser')
                     {
-                        //UNPAID ORDERS
-                 
-                        echo '<div class="col-md-6 col-sm-6 col-xs-12">
+                      //SUPPLIER ORDER SUMMARY
+                    ?>
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="x_panel">
-                                      <h2><center><i class="fa fa-money"></i><b>  UNPAID ORDERS</b></h2>
+                                    <h2><center><i class="glyphicon glyphicon-list-alt"></i><b>  ARRIVING SHIPMENTS</b></h2>  
                                     <div class="clearfix"></div>
                                   <div class="x_content">
 
@@ -438,6 +463,74 @@
                                       <thead>
                                         <tr>
                                           <th>Order Number</th>
+                                          <th>Order Date</th>
+                                          <th>Expected Date</th>
+                                          <th>Status</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+
+                      <?php 
+                            $SQL_GET_SUPPLIER_ORDER = "SELECT * FROM supply_order 
+                                                        WHERE supply_order_status = 'OTW' OR supply_order_status = 'Philippines'
+                                                        ORDER BY supply_order_id";
+                            $RESULT_GET_SUPPLIER_ORDER=mysqli_query($dbc,$SQL_GET_SUPPLIER_ORDER);
+                            while($ROW_SUPPLIER_ORDER=mysqli_fetch_array($RESULT_GET_SUPPLIER_ORDER,MYSQLI_ASSOC))
+                            {
+                      ?>
+                                    <tr>
+                                      <td><?php echo "SR - " .$ROW_SUPPLIER_ORDER['supply_order_id']; ?></td>
+                                      <td><?php echo date('F d, Y', strtotime($ROW_SUPPLIER_ORDER['supply_order_date'])); ?></td>
+                                      <td><?php echo date('F d, Y', strtotime($ROW_SUPPLIER_ORDER['supply_order_expdate'])); ?></td>
+                                      <?php
+                                      //start status if/else PHP
+                                        if($ROW_SUPPLIER_ORDER['supply_order_status'] == "Purchased" || $ROW_SUPPLIER_ORDER['supply_order_status'] == "China")
+                                        {
+                                      ?>
+                                        <td align = "center"><button type="button" class="btn btn-round btn-default btn-xs" disabled>Purchased</button></td>
+                                      <?php
+                                        }
+                                        else if($ROW_SUPPLIER_ORDER['supply_order_status'] == "Shipped" || $ROW_SUPPLIER_ORDER['supply_order_status'] == "Philippines" || $ROW_SUPPLIER_ORDER['supply_order_status'] == "OTW")
+                                        {
+                                      ?>
+                                        <td align = "center"><button type="button" class="btn btn-round btn-primary btn-xs" disabled>Arriving</button></td>
+                                      <?php
+                                        }
+                                        else if($ROW_SUPPLIER_ORDER['supply_order_status'] == "Arrived" || $ROW_SUPPLIER_ORDER['supply_order_status'] == "Receiving")
+                                        {
+                                      ?>
+                                        <td align = "center"><button type="button" class="btn btn-round btn-success btn-xs" disabled>Delivered</button></td>
+                                      <?php
+                                        } //end progressbar if/else PHP
+                                      ?>
+                                      <td align = "center"><a href = "SupplierOrderDetails.php?so_id=<?php echo $ROW_SUPPLIER_ORDER['supply_order_id']; ?>"><i class = "fa fa-wrench"></i></a></td>
+                                    </tr>
+                      <?php      
+                            } 
+                      ?>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <div class = "clearfix"></div>
+
+                  <?php
+                    }
+                    if($user == 'CFO' || $user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
+                    {
+                        //UNPAID ORDERS
+                 
+                        echo '<div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                      <h2><center><i class="fa fa-money"></i><b>  CLIENTS WITH LOANS</b></h2>
+                                    <div class="clearfix"></div>
+                                  <div class="x_content">
+
+                                    <table class="table table-bordered">
+                                      <thead>
+                                        <tr>
                                           <th>Client Name</th>
                                           <th>Total Balance</th>
                                         </tr>
@@ -445,32 +538,35 @@
                                       <tbody>';
                         
                             require_once('DataFetchers/mysql_connect.php');
-                            $query = "SELECT ordernumber, client_id, totalamt FROM orders WHERE payment_status = 'UNPAID'";
+                            $query = "SELECT client_name, clientid, SUM(totalunpaid) AS TOTALUNPAID
+                                        FROM unpaid_clients UC
+                                        JOIN clients C
+                                        ON C.client_id = UC.clientid
+                                        GROUP BY clientID 
+                                        ORDER BY TOTALUNPAID DESC;";
                             $result=mysqli_query($dbc,$query);
                             while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                             {
 
-                                    $queryClientName = "SELECT client_name FROM clients WHERE client_id =" . $row['client_id'] . ";";
-                                    $resultClientName = mysqli_query($dbc,$queryClientName);
-                                    $rowClientName=mysqli_fetch_array($resultClientName,MYSQLI_ASSOC);
-                                    $clientName = $rowClientName['client_name'];
+                                    // $queryClientName = "SELECT client_name FROM clients WHERE client_id =" . $row['client_id'] . ";";
+                                    // $resultClientName = mysqli_query($dbc,$queryClientName);
+                                    // $rowClientName=mysqli_fetch_array($resultClientName,MYSQLI_ASSOC);
+                                    // $clientName = $rowClientName['client_name'];
                                     
                                 
                                     echo '<tr>';
                                     echo '<td>';
-                                    echo $row['ordernumber'];
+                                    echo $row['client_name'];
                                     echo '</td>';
-                                    echo '<td>';
-                                    echo $clientName;
-                                    echo '</td>';
-                                    echo '<td align = "right">';
-                                    echo  '₱'.number_format($row['totalamt'], 2);
+                                    echo '<td align = "right" >';
+                                    echo '₱'.number_format($row['TOTALUNPAID'], 2);
                                     echo '</td>';
                                     echo '</tr>';
                                     
                             } 
                      echo '</tbody>';
                     echo '</table>';
+                    echo '<center><a href = "CustomerMenu.php"><button class = "btn btn-round btn-md btn-primary">Details</button></a></center>';
                         
                              echo '</div>
                         </div>

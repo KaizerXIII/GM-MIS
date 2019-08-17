@@ -437,6 +437,10 @@
                           
                         </table><br>
                         <div class = "clearfix"></div>
+                        <div> 
+                            Upload a Proof of Arrival: 
+                              <input type="file" name="fileToUpload" id="fileToUpload">
+                        </div>
                         <div class = "ln_solid"></div>
                         <div align = "right">
                         <?php

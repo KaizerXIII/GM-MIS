@@ -143,7 +143,14 @@
 
                                         
 
-                                          echo '<div class = "row"><h3><b>Order Status:</b> '. $ORDER_STATUS[$i].'</h3></div>';
+                                        if($ORDER_STATUS[$i] == "For Fabrication")
+                                        {
+                                          echo '<div class = "row"><font color = "black"><h3><b>Fabrication Status:</b> Pending for Approval</h3></font></div>';
+                                        }
+                                        elseif($ORDER_STATUS[$i] == "Under Fabrication")
+                                        {
+                                          echo '<div class = "row"><font color = "black"><h3><b>Fabrication Status:</b> Fabrication Ongoing</h3></font></div>';
+                                        }
                                         if($ROW_RESULT_STATUS['fab_status'] == "Under Fabrication")
                                         {
                                           echo '<a class="current_anchored_row" href="javascript:" current_or = "'.$ORDER_NUMBER[$i].'">Was an item damaged during production? Click here!</a>';
@@ -197,7 +204,7 @@
                                         }
                                         else if($ORDER_STATUS[$i] == "Under Fabrication")
                                         {
-                                
+                                          echo '<button type="button" class="btn btn-round btn-danger" id = "disapporveBtn" disabled onclick = "disApproveconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Disapprove</button>';
                                           echo '<button type="button" class="btn btn-round btn-primary" disabled>Approve</button>';
                                           echo '<button type="button" class="btn btn-round btn-success" onclick = "Finishconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Finish</button> ';
                                           

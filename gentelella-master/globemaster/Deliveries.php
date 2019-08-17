@@ -49,93 +49,360 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Schedule Deliveries</h2>
+                    <h2>Scheduled Deliveries</h2>
     
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                    
                   <form method = "POST" action = "Delivery Receipt.php">
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                      <thead>
-                        <tr>
-                          <th>D.R.</th>
-                          <th>Date</th>
-                          <th>Driver</th>
-                          <th>Truck #</th>
-                          <th>Customer</th>
-                          <th>Destination Area</th>                                                   
-                          <th>Delivery Status</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                          <?php 
-                            require_once('DataFetchers/mysql_connect.php');
 
-                            $querytogetDBTable = "SELECT * FROM scheduledelivery";
-                            $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
-                            $count = 0;
-                            $postmalone;
-                            while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
-                            {
+                  <!-- TABS -->
+                  <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab1" class="nav nav-tabs bar_tabs right" role="tablist">
+                      <li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><font color = "darkblue">Orders in Progress</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "orange">Late Deliveries</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb3" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "green">Finished Deliveries</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content44" role="tab" id="profile-tabb4" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "red">Cancelled Deliveries</font></a>
+                      </li>
+                    </ul>
+                    <div id="myTabContent2" class="tab-content">
+                      <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                          <tr>
+                            <th>D.R.</th>
+                            <th>Date</th>
+                            <th>Driver</th>
+                            <th>Truck #</th>
+                            <th>Customer</th>
+                            <th>Destination Area</th>                                                   
+                            <th>Delivery Status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                              require_once('DataFetchers/mysql_connect.php');
 
-                              echo " <tr>";
-                                echo '<td  id = "delivrow',$count,'"  value="',$rowofResult['delivery_Receipt'],'"  "> ';            
-                                echo $rowofResult['delivery_Receipt'];
-                                echo '</td>';  
-                                echo '<td>';
-                                echo $rowofResult['delivery_Date'];
-                                echo '</td>'; 
-                                echo '<td>';
-                                echo $rowofResult['driver'];
-                                echo '</td>';  
-                                echo '<td>';
-                                echo $rowofResult['truck_Number'];
-                                echo '</td>';  
-                                echo '<td>';
-                                echo $rowofResult['customer_Name'];
-                                echo '</td>';  
-                                echo '<td>';
-                                echo $rowofResult['Destination'];
-                                echo '</td>';  
-                                if($rowofResult['delivery_status'] == "Delivered")
-                                {
+                              $querytogetDBTable = "SELECT * FROM scheduledelivery
+                                                      WHERE delivery_status = 'Order In Progress'";
+                              $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
+                              $count = 0;
+                              $postmalone;
+                              while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
+                              {
+
+                                echo " <tr>";
+                                  echo '<td  id = "delivrow',$count,'"  value="',$rowofResult['delivery_Receipt'],'"  "> ';            
+                                  echo $rowofResult['delivery_Receipt'];
+                                  echo '</td>';  
                                   echo '<td>';
-                                  echo '<center><button type="button" class="btn btn-round btn-success btn-sm" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
-                                  echo '</td>';
-                                }
-                                else if($rowofResult['delivery_status'] == "Order In Progress" || $rowofResult['delivery_status'] == "Late Delivery")
-                                {
+                                  echo $rowofResult['delivery_Date'];
+                                  echo '</td>'; 
                                   echo '<td>';
-                                  echo '<center><button type="button" class="btn btn-round btn-primary btn-sm" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
-                                  echo '</td>';
-                                }
-                                else if($rowofResult['delivery_status'] == "Cancelled")
-                                {
+                                  echo $rowofResult['driver'];
+                                  echo '</td>';  
                                   echo '<td>';
-                                  echo '<center><button type="button" class="btn btn-round btn-danger btn-sm" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                  echo $rowofResult['truck_Number'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['customer_Name'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['Destination'];
+                                  echo '</td>';  
+                                  if($rowofResult['delivery_status'] == "Delivered")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-success btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  else if($rowofResult['delivery_status'] == "Order In Progress" || $rowofResult['delivery_status'] == "Late Delivery")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-primary btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  else if($rowofResult['delivery_status'] == "Cancelled")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-danger btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  echo '<td align = "center">';
+                                  echo '<a href ="Delivery Receipt.php?deliver_number='.$rowofResult['delivery_Receipt'].'&order_number='.$rowofResult['ordernumber'].' "> <i class="fa fa-wrench"></i> </a>';
                                   echo '</td>';
-                                }
-                                echo '<td align = "center">';
-                                echo '<a href ="Delivery Receipt.php?deliver_number='.$rowofResult['delivery_Receipt'].'&order_number='.$rowofResult['ordernumber'].' "> <i class="fa fa-wrench"></i> </a>';
-                                echo '</td>';
-                              echo "</tr>";
-                              $count++;
-                              
-                                // if(isset($_POST["delivrow".$count ]))
-                                // {
-                                //   echo $_POST["delivrow".$count ];  
-                                // }
-                                // $_SESSION['GET_DEV'] = "delivrow".$count;
-                              // echo $_POST["delivRow',$count,'"];
-                            };
-                          ?>
-                        </tr>
-                        
-                      </tbody>
-                    </table>
-                    </form>
+                                echo "</tr>";
+                                $count++;
+                                
+                                  // if(isset($_POST["delivrow".$count ]))
+                                  // {
+                                  //   echo $_POST["delivrow".$count ];  
+                                  // }
+                                  // $_SESSION['GET_DEV'] = "delivrow".$count;
+                                // echo $_POST["delivRow',$count,'"];
+                              };
+                            ?>
+                          </tr>
+                          
+                        </tbody>
+                      </table>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                          <tr>
+                            <th>D.R.</th>
+                            <th>Date</th>
+                            <th>Driver</th>
+                            <th>Truck #</th>
+                            <th>Customer</th>
+                            <th>Destination Area</th>                                                   
+                            <th>Delivery Status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                              require_once('DataFetchers/mysql_connect.php');
+
+                              $querytogetDBTable = "SELECT * FROM scheduledelivery
+                                                      WHERE delivery_status = 'Late Delivery'";
+                              $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
+                              $count = 0;
+                              $postmalone;
+                              while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
+                              {
+
+                                echo " <tr>";
+                                  echo '<td  id = "delivrow',$count,'"  value="',$rowofResult['delivery_Receipt'],'"  "> ';            
+                                  echo $rowofResult['delivery_Receipt'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['delivery_Date'];
+                                  echo '</td>'; 
+                                  echo '<td>';
+                                  echo $rowofResult['driver'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['truck_Number'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['customer_Name'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['Destination'];
+                                  echo '</td>';  
+                                  if($rowofResult['delivery_status'] == "Delivered")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-success btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  else if($rowofResult['delivery_status'] == "Order In Progress" || $rowofResult['delivery_status'] == "Late Delivery")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-warning btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  else if($rowofResult['delivery_status'] == "Cancelled")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-danger btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  echo '<td align = "center">';
+                                  echo '<a href ="Delivery Receipt.php?deliver_number='.$rowofResult['delivery_Receipt'].'&order_number='.$rowofResult['ordernumber'].' "> <i class="fa fa-wrench"></i> </a>';
+                                  echo '</td>';
+                                echo "</tr>";
+                                $count++;
+                                
+                                  // if(isset($_POST["delivrow".$count ]))
+                                  // {
+                                  //   echo $_POST["delivrow".$count ];  
+                                  // }
+                                  // $_SESSION['GET_DEV'] = "delivrow".$count;
+                                // echo $_POST["delivRow',$count,'"];
+                              };
+                            ?>
+                          </tr>
+                          
+                        </tbody>
+                      </table>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                          <tr>
+                            <th>D.R.</th>
+                            <th>Date</th>
+                            <th>Driver</th>
+                            <th>Truck #</th>
+                            <th>Customer</th>
+                            <th>Destination Area</th>                                                   
+                            <th>Delivery Status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                              require_once('DataFetchers/mysql_connect.php');
+
+                              $querytogetDBTable = "SELECT * FROM scheduledelivery
+                                                      WHERE delivery_status = 'Delivered'";
+                              $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
+                              $count = 0;
+                              $postmalone;
+                              while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
+                              {
+
+                                echo " <tr>";
+                                  echo '<td  id = "delivrow',$count,'"  value="',$rowofResult['delivery_Receipt'],'"  "> ';            
+                                  echo $rowofResult['delivery_Receipt'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['delivery_Date'];
+                                  echo '</td>'; 
+                                  echo '<td>';
+                                  echo $rowofResult['driver'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['truck_Number'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['customer_Name'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['Destination'];
+                                  echo '</td>';  
+                                  if($rowofResult['delivery_status'] == "Delivered")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-success btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  else if($rowofResult['delivery_status'] == "Order In Progress" || $rowofResult['delivery_status'] == "Late Delivery")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-primary btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  else if($rowofResult['delivery_status'] == "Cancelled")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-danger btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  echo '<td align = "center">';
+                                  echo '<a href ="Delivery Receipt.php?deliver_number='.$rowofResult['delivery_Receipt'].'&order_number='.$rowofResult['ordernumber'].' "> <i class="fa fa-wrench"></i> </a>';
+                                  echo '</td>';
+                                echo "</tr>";
+                                $count++;
+                                
+                                  // if(isset($_POST["delivrow".$count ]))
+                                  // {
+                                  //   echo $_POST["delivrow".$count ];  
+                                  // }
+                                  // $_SESSION['GET_DEV'] = "delivrow".$count;
+                                // echo $_POST["delivRow',$count,'"];
+                              };
+                            ?>
+                          </tr>
+                          
+                        </tbody>
+                      </table>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content44" aria-labelledby="profile-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                          <tr>
+                            <th>D.R.</th>
+                            <th>Date</th>
+                            <th>Driver</th>
+                            <th>Truck #</th>
+                            <th>Customer</th>
+                            <th>Destination Area</th>                                                   
+                            <th>Delivery Status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                              require_once('DataFetchers/mysql_connect.php');
+
+                              $querytogetDBTable = "SELECT * FROM scheduledelivery
+                                                      WHERE delivery_status = 'Cancelled'";
+                              $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
+                              $count = 0;
+                              $postmalone;
+                              while($rowofResult=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
+                              {
+
+                                echo " <tr>";
+                                  echo '<td  id = "delivrow',$count,'"  value="',$rowofResult['delivery_Receipt'],'"  "> ';            
+                                  echo $rowofResult['delivery_Receipt'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['delivery_Date'];
+                                  echo '</td>'; 
+                                  echo '<td>';
+                                  echo $rowofResult['driver'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['truck_Number'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['customer_Name'];
+                                  echo '</td>';  
+                                  echo '<td>';
+                                  echo $rowofResult['Destination'];
+                                  echo '</td>';  
+                                  if($rowofResult['delivery_status'] == "Delivered")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-success btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  else if($rowofResult['delivery_status'] == "Order In Progress" || $rowofResult['delivery_status'] == "Late Delivery")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-primary btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  else if($rowofResult['delivery_status'] == "Cancelled")
+                                  {
+                                    echo '<td>';
+                                    echo '<center><button type="button" class="btn btn-round btn-danger btn-xs" style = "align:center"  disabled>'.$rowofResult['delivery_status'].'</button></center>';
+                                    echo '</td>';
+                                  }
+                                  echo '<td align = "center">';
+                                  echo '<a href ="Delivery Receipt.php?deliver_number='.$rowofResult['delivery_Receipt'].'&order_number='.$rowofResult['ordernumber'].' "> <i class="fa fa-wrench"></i> </a>';
+                                  echo '</td>';
+                                echo "</tr>";
+                                $count++;
+                                
+                                  // if(isset($_POST["delivrow".$count ]))
+                                  // {
+                                  //   echo $_POST["delivrow".$count ];  
+                                  // }
+                                  // $_SESSION['GET_DEV'] = "delivrow".$count;
+                                // echo $_POST["delivRow',$count,'"];
+                              };
+                            ?>
+                          </tr>
+                          
+                        </tbody>
+                      </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- TABS END -->
+
+                  </form>
 					
 					
                   </div>
