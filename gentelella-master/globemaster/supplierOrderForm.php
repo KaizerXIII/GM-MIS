@@ -362,7 +362,7 @@
                                                                     elseif($row['item_count'] <= ($itemthreshold + $itemthreshold*0.20))
                                                                     {
                                                                         echo '<td align = right class = ',$row['item_id'],'>';
-                                                                        echo '<font color = "yellow"><b>'.$row['item_count'].'</b></font>';
+                                                                        echo '<font color = "orange"><b>'.$row['item_count'].'</b></font>';
                                                                         echo '</td>';
                                                                     }
                                                                     else
