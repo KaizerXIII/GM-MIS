@@ -279,7 +279,7 @@
                         <label class="control-label col-md-5 col-sm-5 col-xs-12">Upload Reference Drawing <span class="required">*</span>
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="file" name="file_reference" id="fileToUpload" required="required">
+                            <input type="file" accept="image/x-png,image/jpeg" name="file_reference" id="fileToUpload" required="required">
                             <br>
                             <p>Please choose a file no more than 25MB in size.
                             <p><font color = "red">File types are limited to (.jpg, .png).</font></p>

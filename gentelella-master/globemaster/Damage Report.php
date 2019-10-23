@@ -53,9 +53,10 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                  <h1>Filter Damage Source: 
-                      <select id="dmg_source" name = "dmg_source" style=" width:250px";>
-                            <option value="">Choose... </option>
+                  <font color = "black">
+                  <h2><font size = "6px"> Filter damage source: 
+                      <select type = "button" class = "btn btn-round btn-default" id="dmg_source" name = "dmg_source">
+                            <option value="">All </option>
                                 <?php
                                     require_once("print.php"); 
                                     require_once('DataFetchers/mysql_connect.php');
@@ -69,20 +70,67 @@
 
                                                
                                 ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
-                                <option value="All">All </option>                                               
+                                <!-- <option value="All">All </option>                                                -->
                         </select>
-                      </h1>
+                      </font></h2>
 
                       <div class="clearfix"></div>
-                      <h1><font size = "6px"> Damaged Items Report as of: 
+                      <h2><font size = "6px"> Damaged items report as of: 
 
-                      <div id="report_range" class="btn btn-primary btn-lg" >
-                            <span></span> <b class="caret"></b>      
-                      </div>
+                      <div id="report_range" class="btn btn-default btn-round" >
+                            <span></span> <b class="caret"></b>
+                      </div></font>  
 
                       <!-- <button type="submit" class="btn btn-primary btn-lg" style="float: right;"  data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-filter"></i> Filter this Report</button> -->
-                      </font></h1>
+                      </h2></font>
+                      <br>
 
+                      <!-- Bar Chart start -->
+                      <?php
+                          $SQL_GET_DMG_SOURCE_COUNT_DELIVERY = "SELECT COUNT(dmg_source) AS 'COUNTDAMAGESOURCEDELIVERY' FROM damage_item 
+                                                        WHERE dmg_source = 'Delivery';";                                                       
+                          $RESULT_GET_DMG_SOURCE_COUNT_DELIVERY =  mysqli_query($dbc, $SQL_GET_DMG_SOURCE_COUNT_DELIVERY);
+                          $ROW_GET_COUNTED_DAMAGE_SOURCE_DELIVERY = mysqli_fetch_array($RESULT_GET_DMG_SOURCE_COUNT_DELIVERY,MYSQLI_ASSOC);
+
+                          $SQL_GET_DMG_SOURCE_COUNT_CUSTOMER = "SELECT COUNT(dmg_source) AS 'COUNTDAMAGESOURCECUSTOMER' FROM damage_item 
+                                                        WHERE dmg_source = 'Customer';";                                                       
+                          $RESULT_GET_DMG_SOURCE_COUNT_CUSTOMER =  mysqli_query($dbc, $SQL_GET_DMG_SOURCE_COUNT_CUSTOMER);
+                          $ROW_GET_COUNTED_DAMAGE_SOURCE_CUSTOMER = mysqli_fetch_array($RESULT_GET_DMG_SOURCE_COUNT_CUSTOMER,MYSQLI_ASSOC);
+                          
+                          $SQL_GET_DMG_SOURCE_COUNT_EMPLOYEE = "SELECT COUNT(dmg_source) AS 'COUNTDAMAGESOURCEEMPLOYEE' FROM damage_item 
+                                                        WHERE dmg_source = 'Employee';";                                                       
+                          $RESULT_GET_DMG_SOURCE_COUNT_EMPLOYEE =  mysqli_query($dbc, $SQL_GET_DMG_SOURCE_COUNT_EMPLOYEE);
+                          $ROW_GET_COUNTED_DAMAGE_SOURCE_EMPLOYEE = mysqli_fetch_array($RESULT_GET_DMG_SOURCE_COUNT_EMPLOYEE,MYSQLI_ASSOC);
+
+                          $SQL_GET_DMG_SOURCE_COUNT_FABRICATION = "SELECT COUNT(dmg_source) AS 'COUNTDAMAGESOURCEFABRICATION' FROM damage_item 
+                                                        WHERE dmg_source = 'Fabrication';";                                                       
+                          $RESULT_GET_DMG_SOURCE_COUNT_FABRICATION =  mysqli_query($dbc, $SQL_GET_DMG_SOURCE_COUNT_FABRICATION);
+                          $ROW_GET_COUNTED_DAMAGE_SOURCE_FABRICATION = mysqli_fetch_array($RESULT_GET_DMG_SOURCE_COUNT_FABRICATION,MYSQLI_ASSOC);
+
+                          $SQL_GET_DMG_SOURCE_COUNT_SHIPMENT = "SELECT COUNT(dmg_source) AS 'COUNTDAMAGESOURCESHIPMENT' FROM damage_item 
+                                                        WHERE dmg_source = 'Supplier Shipment';";                                                       
+                          $RESULT_GET_DMG_SOURCE_COUNT_SHIPMENT =  mysqli_query($dbc, $SQL_GET_DMG_SOURCE_COUNT_SHIPMENT);
+                          $ROW_GET_COUNTED_DAMAGE_SOURCE_SHIPMENT = mysqli_fetch_array($RESULT_GET_DMG_SOURCE_COUNT_SHIPMENT,MYSQLI_ASSOC);
+
+                          $SQL_GET_DMG_SOURCE_COUNT_ENVIRONMENTAL = "SELECT COUNT(dmg_source) AS 'COUNTDAMAGESOURCEENVIRONMENTAL' FROM damage_item 
+                                                        WHERE dmg_source = 'Environmental';";                                                       
+                          $RESULT_GET_DMG_SOURCE_COUNT_ENVIRONMENTAL =  mysqli_query($dbc, $SQL_GET_DMG_SOURCE_COUNT_ENVIRONMENTAL);
+                          $ROW_GET_COUNTED_DAMAGE_SOURCE_ENVIRONMENTAL = mysqli_fetch_array($RESULT_GET_DMG_SOURCE_COUNT_ENVIRONMENTAL,MYSQLI_ASSOC);
+
+                          $DMGSRC = array($ROW_GET_COUNTED_DAMAGE_SOURCE_DELIVERY['COUNTDAMAGESOURCEDELIVERY'], $ROW_GET_COUNTED_DAMAGE_SOURCE_CUSTOMER['COUNTDAMAGESOURCECUSTOMER'],
+                            $ROW_GET_COUNTED_DAMAGE_SOURCE_EMPLOYEE['COUNTDAMAGESOURCEEMPLOYEE'], $ROW_GET_COUNTED_DAMAGE_SOURCE_FABRICATION['COUNTDAMAGESOURCEFABRICATION'],
+                            $ROW_GET_COUNTED_DAMAGE_SOURCE_SHIPMENT['COUNTDAMAGESOURCESHIPMENT'], $ROW_GET_COUNTED_DAMAGE_SOURCE_ENVIRONMENTAL['COUNTDAMAGESOURCEENVIRONMENTAL']);
+
+                          // print_r($DMGSRC);
+
+                          // json_encode($DMGSRC);
+                      ?> 
+                      <div class = "col-md-8 col-sm-8 col-xs-12 col-md-offset-2 col-sm-offset-2">
+                        <canvas id="DamageSourceChart" width="250" height="90"></canvas>
+                      </div>
+                      <!-- Bar Chart End -->
+                      <div class = "clearfix"></div>
+                      
 
 
                       <?php 
@@ -574,6 +622,50 @@ DataTable.ext.buttons.print = {
 
 return DataTable.Buttons;
 }));
+
+</script>
+
+
+<!-- Bar Chart Script -->
+
+<script>
+// Bar chart
+
+var damagesource = <?php echo json_encode($DMGSRC); ?>;
+
+console.log(damagesource);
+			  
+        if ($('#DamageSourceChart').length ){ 
+          
+          var ctx = document.getElementById("DamageSourceChart");
+          var DamageSourceChart = new Chart(ctx, {
+        	type: 'bar',
+        	data: {
+        	  labels: ["Delivery", "Customer", "Employee", "Fabrication", "Supplier Shipment", "Environmental"],
+        	  datasets: [{
+        		label: 'Source of Damage',
+        		backgroundColor: "#0066CC",
+        		data: damagesource
+        	  }]
+        	},
+  
+        	options: {
+        	  scales: {
+            xAxes: [
+              {
+                barPercentage: 0.4
+              }
+            ],
+        		yAxes: [{
+        		  ticks: {
+        			beginAtZero: true
+        		  }
+        		}]
+        	  }
+        	}
+          });
+          
+        } 
 
 </script>
 
