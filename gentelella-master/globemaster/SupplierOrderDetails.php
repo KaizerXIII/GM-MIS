@@ -315,7 +315,7 @@
 
                     <div class = "clearfix"></div>
                       <div align = "center">
-                      <form action = "<?php echo $_SERVER['PHP_SELF']; ?>" id="" data-parsley-validate class="form-horizontal form-label-left" method = "POST">
+                      <form action = "<?php echo $_SERVER['PHP_SELF']; ?>" id="main_form" data-parsley-validate class="form-horizontal form-label-left" method = "POST">
                         <div align = "center"><b><font color = "black">UPDATE SHIPMENT STATUS</font></b> <br>
                           <?php //start button if/else PHP
                             if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Purchased")
@@ -440,7 +440,23 @@
                         <div> 
                             Upload a Proof of Arrival: 
                               <input type="file" name="fileToUpload" id="fileToUpload">
+                              <br>
+                            <p>Please choose a file no more than 25MB in size.
+                            <p><font color = "red">File types are limited to (.jpg, .png).</font></p>
                         </div>
+                        <?php
+                        
+                        $SQL_GET_BLOB = "SELECT * FROM supply_order WHERE supply_order_id = '$CURRENT_SO_ID_NUMBER'";
+                        $RESULT_GET_BLOB  = mysqli_query($dbc,$SQL_GET_BLOB);
+                        $ROW_RESULT_GET_BLOB = mysqli_fetch_assoc($RESULT_GET_BLOB);
+
+                        $BLOB = $ROW_RESULT_GET_BLOB['arrival_reference'];
+
+                          echo '<div class = "col-md-6">';
+                          echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'" border-style = "border-width:3px;"style = "height:40vh; width:30vw">'; 
+                          echo '</div>';
+                        ?>
+
                         <div class = "ln_solid"></div>
                         <div align = "right">
                         <?php
@@ -769,6 +785,32 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
+    <script>
+        $('#fileToUpload').on("change",function(e){
+          console.log("file uploaded!");
+         
+          /* document.getElementById("main_form") */
+
+          var formData = new FormData();
+          formData.append('file', document.getElementById("fileToUpload").files[0]); /* appends the object from form ("name that will be used by php", value) */
+          formData.append('supply_order_number',<?php echo $_SESSION['supply_order_id']; ?>);
+
+            request = $.ajax({
+            url: "ajax/Supplier_order_detail_Insert_IMG.php",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+              success: function(data, textStatus)
+              {
+                
+              }//End Scucess
+            
+              }); // End ajax  
+          })
+    </script>
+   
+
     <script>
     $('#no_dmg_proceed').on('click', function(e){
 

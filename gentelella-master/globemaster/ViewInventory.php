@@ -71,7 +71,7 @@
                                         $RESULT_SQL_COUNT_ALL_OUTSIDE  = mysqli_query($dbc, $SQL_COUNT_ALL_OUTSIDE);
                                         $ROWRESULT_COUNT_OUTSIDE=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_OUTSIDE,MYSQLI_ASSOC); 
 
-                                        $AVAILABILITY = $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] - $ROWRESULT_COUNT_CAPACITY['in_capacity'];
+                                        $AVAILABILITY = $ROWRESULT_COUNT_CAPACITY['in_capacity'] - $ROWRESULT_COUNT_CAPACITY['current_in_capacity'] ;
 
                               if($AVAILABILITY > 300)
                               {
@@ -110,7 +110,7 @@
                                       $ROWRESULT_COUNT_OUTSIDE2=mysqli_fetch_array($RESULT_SQL_COUNT_ALL_OUTSIDE2,MYSQLI_ASSOC); 
 
                                       
-                                  $AVAILABILITY1 = $ROWRESULT_COUNT_CAPACITY1['current_in_capacity'] - $ROWRESULT_COUNT_CAPACITY1['in_capacity'];
+                                  $AVAILABILITY1 = $ROWRESULT_COUNT_CAPACITY1['in_capacity'] - $ROWRESULT_COUNT_CAPACITY1['current_in_capacity'] ;
                                   
                       if($AVAILABILITY1 > 300)
                         {
