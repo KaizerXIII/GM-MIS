@@ -803,7 +803,8 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
             processData: false,
               success: function(data, textStatus)
               {
-                
+                alert("Image Upload Successful!");
+                location.reload();
               }//End Scucess
             
               }); // End ajax  
