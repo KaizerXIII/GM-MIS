@@ -452,9 +452,9 @@
 
                         $BLOB = $ROW_RESULT_GET_BLOB['arrival_reference'];
 
-                          echo '<div class = "col-md-6">';
-                          echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'" border-style = "border-width:3px;"style = "height:40vh; width:30vw">'; 
-                          echo '</div>';
+                          // echo '<div align>';
+                          echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'" border-style = "border-width:3px;"style = "height:20vh; width:15vw">'; 
+                          // echo '</div>';
                         ?>
 
                         <div class = "ln_solid"></div>
