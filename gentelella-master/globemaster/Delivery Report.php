@@ -51,8 +51,9 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                  <h1><b>Delivery Report:  </b>
-                      <select id="selectLocation" name = "selectLocation" style=" width:250px";>
+                  <font color = "black">
+                  <h2><font size = "6px"> Delivery Report:
+                      <select id="selectLocation" class = "btn btn-round btn-default"  = "selectLocation" style=" width:250px";>
                             <option value="">Choose... </option>
                                 <?php
                                     require_once('DataFetchers/mysql_connect.php');
@@ -68,7 +69,7 @@
                                 ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
                                                                           
                         </select>
-                      </h1>
+                      </font></h2>
                       <script>  //Filter Table based on Warehouse                   
                             var get_select_value = document.getElementById("selectLocation");
                             get_select_value.onchange = function()
@@ -87,15 +88,16 @@
                     <p class="text-muted font-13 m-b-30">
                     
                       
-                          <div class="well" style="overflow: auto">
-                            <h1  ><font size = "6px">  Filter Range: 
-                              <div id="report_range" class="btn btn-primary btn-lg" >
+                          <div style="overflow: auto">
+                            <h1><font size = "6px"> Filter Range: 
+                              <div id="report_range" class="btn btn-default btn-round">
                                 <span></span> <b class="caret"></b>      
                               </div>
                             </font></h1>
                           </div>
+                          </font>
                       
-                     
+
                     </p>
                     <table id="datatable-buttons" class="table table-striped table-bordered">
                       <thead>

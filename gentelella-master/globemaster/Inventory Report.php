@@ -56,8 +56,9 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h1><b>Inventory Report:  </b>
-                      <select id="selectWarehouse" name = "selectWarehouse" style=" width:250px";>
+                  <font color = "black">
+                  <h2><font size = "6px"> Inventory Report: 
+                      <select id="selectWarehouse" class = "btn btn-round btn-default" name = "selectWarehouse" style=" width:250px";>
                             <option value="">Choose... </option>
                                 <?php
                                 require_once("print.php"); 
@@ -75,7 +76,7 @@
                                 ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
                                                       <option value="">All </option>             
                         </select>
-                      </h1>
+                      </font></h2>
                       <script>  //Filter Table based on Warehouse                   
                             var get_select_value = document.getElementById("selectWarehouse");
                             get_select_value.onchange = function()
@@ -93,29 +94,15 @@
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
-                        <div class="well" style="overflow: auto">
-
-                          <!-- <div class='col-md-4'>
-                              <div class="form-group">
-                                <input type="date" name="startdate" id = "startdate" onchange ="setStartDate(this)" class="form-control col-md-7 col-xs-12 deliveryDate">
-                              </div>
-                          </div> -->
-                          <center>
-                          <div id="report_range" class="btn btn-primary btn-lg" >
+                        <div style="overflow: auto">
+                          <h2><font size = "6px"> Inventory as of: 
+                          <div id="report_range" class="btn btn-default btn-round" >
                           <span></span> <b class="caret"></b>
-
-                              
-                          </div></center>
-                          <!-- <div class="col-md-4">
-                                <p>Please pick a date range for the respective report</p>
-                          </div> -->
-                            <!-- <div class='col-md-4'>
-                              <div class="form-group">
-                                <input type="date" name="enddate" id = "enddate" onchange ="setEndDate(this)" class="form-control col-md-7 col-xs-12 deliveryDate">
-                              </div>
-                          </div> -->
-
+                          </div>
+                          </font></h2>
                         </div>
+                    </p>
+                          </font>
                         <script>
                         
                             $(document).ready(function() {

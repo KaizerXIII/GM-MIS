@@ -51,9 +51,10 @@
             <div class="col-md-12 col-sm-8 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h1><b>Sales Report:  </b>
-                      <select id="selectItemType" name = "selectItemType" style=" width:250px";>
-                            <option value="">Choose... </option>
+                  <font color = "black">
+                  <h2><font size = "6px"> Sales Report: 
+                      <select id="selectItemType" class = "btn btn-round btn-default" name = "selectItemType" style=" width:250px";>
+                            <option value="">All Products</option>
                                 <?php
                                 require_once("print.php"); 
                                     require_once('DataFetchers/mysql_connect.php');
@@ -70,9 +71,9 @@
 
                                                
                                 ?> <!-- PHP END [ Getting the Warehouses from DB ]-->    
-                                <option value="All">All </option>                                               
+                                <!-- <option value="All">All </option>                                                -->
                         </select>
-                      </h1>
+                      </font></h2>
                      
                     <div class="clearfix"></div>
                   </div>
@@ -80,11 +81,12 @@
                  
                   <h1  ><font size = "6px">  Choose Report Range: 
                   
-                    <div id="report_range" class="btn btn-primary btn-lg" >
+                    <div id="report_range" class="btn btn-default btn-round" >
                           <span></span> <b class="caret"></b>      
                     </div> 
                     
                   </font></h1>
+                </font>
                  
                     
                 
