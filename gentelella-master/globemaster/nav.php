@@ -84,7 +84,7 @@ if(!(isset($_SESSION['usertype']))){
                      
                      
                       if($user == 'Agent' or $user == "CFO" or $user == "MKT" or $user == "SALES" or $user == 'INV' or $user == 'CEO' or $user == 'Superuser'){
-                      echo "<li><a href='ViewInventory.php'>View Inventory</a></li>";   
+                      echo "<li data-toggle = 'tooltip' data-placement='right' title='Click here to view the company inventory'><a href='ViewInventory.php'>View Inventory</a></li>";   
                         if($user == 'Agent' or $user == 'CEO' or $user == 'INV' or $user == 'Superuser')    
                         {             
                           echo "<li><a href='SupplierOrderSummary.php'> Inventory Restocking </a></li>";
@@ -94,14 +94,14 @@ if(!(isset($_SESSION['usertype']))){
                       
                       <?php
                       if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
-                      echo "<li><a>Economic order Quantity (EOQ)<span class='fa fa-chevron-down'></span></a>";
+                      echo "<li><a>Economic Order Quantity <span class='fa fa-chevron-down'></span></a>";
                       echo "<ul class='nav child_menu'>";
                         if($user == 'CFO'){
-                        echo    "<li><a href='InputPage.php'>Input EOQ Details</a></li>";
+                        echo    "<li data-toggle = 'tooltip' data-placement='right' title='Set EOQ Values \n For CFO Only'><a href='InputPage.php'>Input EOQ Details</a></li>";
                         
                         }
                         if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
-                        echo    "<li><a href='EOQInventory.php'>View Inventory EOQ</a></li>";
+                        echo    "<li data-toggle = 'tooltip' data-placement='right' title='View adjustable EOQ for a specific item'><a href='EOQInventory.php'>View Inventory EOQ</a></li>";
                         }
                       echo "</ul>"; 
                       echo "</li>";
@@ -110,7 +110,7 @@ if(!(isset($_SESSION['usertype']))){
                      
                       <?php
                       if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'Superuser'){
-                      echo "<li><a href='assets_trading.php'>Item Sales Visualization</a></li>";
+                      echo "<li data-toggle = 'tooltip' data-placement='right' title='View the sales trends for a specific item'><a href='assets_trading.php'>Item Sales Visualization</a></li>";
                       }
                       ?>
                         
@@ -118,7 +118,7 @@ if(!(isset($_SESSION['usertype']))){
                       <?php
                      if($user == 'MKT' or $user == 'SALES' or $user == 'INV' or $user == 'Superuser'){
                   
-                      echo "<li><a href='qrcodegenerationNew.php'>Generate QR Code</a></li>";
+                      echo "<li data-toggle = 'tooltip' data-placement='right' title='Generate a QR Code for a product'><a href='qrcodegenerationNew.php'>Generate QR Code</a></li>";
                       
                         }
                       ?>
@@ -132,14 +132,14 @@ if(!(isset($_SESSION['usertype']))){
                   echo "<li><a><i class='fa fa-car'></i> Deliveries <span class='fa fa-chevron-down'></span></a>";
                   echo   "<ul class='nav child_menu'>";
                   if($user == 'CEO' or $user == 'SALES' or $user == 'Superuser'){
-                  echo    "<li><a href='ViewTruckCap.php'>View Delivery Schedule</a></li>";
-                  echo    "<li><a href='Deliveries.php'>View Delivery Receipts</a></li>";
+                  echo    "<li data-toggle = 'tooltip' data-placement='right' title='View company truck schedules and available capacity for a delivery date'><a href='ViewTruckCap.php'>View Delivery Schedule</a></li>";
+                  echo    "<li data-toggle = 'tooltip' data-placement='right' title='View generated DR's'><a href='Deliveries.php'>View Delivery Receipts</a></li>";
                 }
                 if($user == 'SALES' or $user == 'Superuser'){
                   if(date("Hi") >= "0600" && date("Hi") < "1500")
                   {
                     // echo date("Hi");
-                    echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                    echo    "<li data-toggle = 'tooltip' data-placement='right' title='Generate a Delivery Receipt'><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
                   }
                   else
                   {
@@ -160,13 +160,13 @@ if(!(isset($_SESSION['usertype']))){
                   echo "<li><a><i class='fa fa-external-link-square'></i> Orders <span class='fa fa-chevron-down'></span></a>";
                   echo "<ul class='nav child_menu'>";
                   if($user == 'MKT' or $user == 'SALES' or $user == 'Superuser'){
-                  echo    "<li><a href='ViewOrders.php'>View Orders</a></li>";
+                  echo    "<li data-toggle = 'tooltip' data-placement='right' title='View client orders'><a href='ViewOrders.php'>View Orders</a></li>";
                 }
                   if ($user == 'INV' or $user == 'Superuser'){
                   echo    "<li><a>View Fabrication Orders <span class='fa fa-chevron-down'></span></a>";
                   echo       "<ul class='nav child_menu'>";
-                  echo         "<li><a href='FabricationApproval.php'>Fabrication Approval</a></li>";
-                  echo         "<li><a href='FabricationFinished.php'>Finished Fabrication</a></li>";
+                  echo         "<li data-toggle = 'tooltip' data-placement='right' title='Approve fabrication requests here'><a href='FabricationApproval.php'>Fabrication Approval</a></li>";
+                  echo         "<li data-toggle = 'tooltip' data-placement='right' title='View finished fabrications here'><a href='FabricationFinished.php'>Finished Fabrication</a></li>";
                   echo       "</ul>";
                   echo    "</li>";
                  
@@ -181,7 +181,7 @@ if(!(isset($_SESSION['usertype']))){
                       echo "<li><a><i class='fa fa-edit'></i> Depot Requests <span class='fa fa-chevron-down'></span></a>";
                       echo  "<ul class='nav child_menu'>";
                 
-                      echo "<li><a href='ViewDepotRequests.php'>View Depot Requests</a></li>";
+                      echo "<li data-toggle = 'tooltip' data-placement='right' title='View requests made via the Depot Extension System'><a href='ViewDepotRequests.php'>View Depot Requests</a></li>";
                       echo "</ul>";
                       echo "</li>";
                     }
@@ -192,7 +192,7 @@ if(!(isset($_SESSION['usertype']))){
                       echo "<li><a><i class='fa fa-user'></i> Clients <span class='fa fa-chevron-down'></span></a>";
                       echo  "<ul class='nav child_menu'>";
                 
-                      echo "<li><a href='CustomerMenu.php'>View Clients</a></li>";
+                      echo "<li data-toggle = 'tooltip' data-placement='right' title='View and input client payables here'><a href='CustomerMenu.php'>View Clients</a></li>";
                       echo "</ul>";
                       echo "</li>";
                     }
@@ -208,12 +208,12 @@ if(!(isset($_SESSION['usertype']))){
                   echo     "<li><a> Sales <span class='fa fa-chevron-down'></span></a>";
                   echo       "<ul class='nav child_menu'>";
                   echo         "<li><a href='budget_analysis.php'>Sales Variance Analysis</a></li>";
-                  echo         "<li><a href='choosesalesforecast.php'>Sales Forecasting</a></li>";
+                  echo         "<li data-toggle = 'tooltip' data-placement='right' title='View the time-series sales forecast here'><a href='choosesalesforecast.php'>Sales Forecasting</a></li>";
                   echo       "</ul>";
                   echo    "</li>";
                   echo    "<li><a> Inventory <span class='fa fa-chevron-down'></span></a>";
                   echo        "<ul class='nav child_menu'>";
-                  echo            "<li><a href='chooseinventoryforecast.php'>Inventory Forecasting</a></li>";
+                  echo            "<li data-toggle = 'tooltip' data-placement='right' title='View the short-term inventory forecast here'><a href='chooseinventoryforecast.php'>Inventory Forecasting</a></li>";
                   echo         "</ul>";
                   echo    "</li>";
                   echo   "</ul>";
@@ -230,14 +230,14 @@ if(!(isset($_SESSION['usertype']))){
                   echo "<li><a><i class='fa fa-folder-open'></i> Reports <span class='fa fa-chevron-down'></span></a>";
                   echo   "<ul class='nav child_menu'>";
                   if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'INV' or $user == 'Superuser'){
-                    echo     "<li><a href='Inventory Report.php'>Inventory Report</a></li>";
+                    echo     "<li data-toggle = 'tooltip' data-placement='right' title='View the company inventory report here'><a href='Inventory Report.php'>Inventory Report</a></li>";
                   }
-                  echo    "<li><a href='Sales Report.php'>Sales Report</a></li>";
+                  echo    "<li data-toggle = 'tooltip' data-placement='right' title='View the company sales report here'><a href='Sales Report.php'>Sales Report</a></li>";
                   if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'SALES' or $user == 'Superuser'){
-                    echo    "<li><a href='Delivery Report.php'>Delivery Report</a></li>";
+                    echo    "<li data-toggle = 'tooltip' data-placement='right' title='View the company delivery report here'><a href='Delivery Report.php'>Delivery Report</a></li>";
                   }
                   if($user == 'CEO' or $user == 'CFO' or $user == 'MKT' or $user == 'INV' or $user == 'Superuser'){
-                     echo    "<li><a href='Damage Report.php'>Damages Report</a></li>";
+                     echo    "<li data-toggle = 'tooltip' data-placement='right' title='View the company damages report here'><a href='Damage Report.php'>Damages Report</a></li>";
                   }
                   echo   "</ul>";
                   echo "</li>";

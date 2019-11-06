@@ -80,8 +80,8 @@ if(!(isset($_SESSION['usertype']))){
                       echo "<li><a><i class='fa fa-archive'></i> Inventory <span class='fa fa-chevron-down'></span></a>";
                       echo  "<ul class='nav child_menu'>";
                 
-                      echo "<li><a href='DepotViewInventory.php'>View Tiles Inventory</a></li>";
-                      echo "<li><a href='DepotRequestSummary.php'>View Tile Requests</a></li>";
+                      echo "<li data-toggle = 'tooltip' data-placement='right' title='View the Depot tiles inventory here'><a href='DepotViewInventory.php'>View Tiles Inventory</a></li>";
+                      echo "<li data-toggle = 'tooltip' data-placement='right' title='View the tile requests made by the Depot here'><a href='DepotRequestSummary.php'>View Tile Requests</a></li>";
                       echo "</ul>";
                       echo "</li>";
                     }
@@ -94,12 +94,12 @@ if(!(isset($_SESSION['usertype']))){
                   echo   "<ul class='nav child_menu'>";
                   echo     "<li><a> Sales <span class='fa fa-chevron-down'></span></a>";
                   echo       "<ul class='nav child_menu'>";
-                  echo         "<li><a href='ChooseSalesForecastDepot.php'>Sales Forecasting</a></li>";
+                  echo         "<li data-toggle = 'tooltip' data-placement='right' title='View the time-series sales forecast here'><a href='ChooseSalesForecastDepot.php'>Sales Forecasting</a></li>";
                   echo       "</ul>";
                   echo    "</li>";
                   echo    "<li><a> Inventory <span class='fa fa-chevron-down'></span></a>";
                   echo        "<ul class='nav child_menu'>";
-                  echo            "<li><a href='ChooseInventoryForecastDepot.php'>Inventory Forecasting</a></li>";
+                  echo            "<li data-toggle = 'tooltip' data-placement='right' title='View the short-term inventory forecast here'><a href='ChooseInventoryForecastDepot.php'>Inventory Forecasting</a></li>";
                   echo         "</ul>";
                   echo    "</li>";
                   echo   "</ul>";
