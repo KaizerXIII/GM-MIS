@@ -67,7 +67,20 @@ footer, header,.nav{ display:none; } /*Removes elements before print, use [#idna
               <div class="clearfix"></div>
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                  <div class="x_content">                  					
+                  <div class="x_content">    <!-- TABS -->
+                  <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab1" class="nav nav-tabs bar_tabs right" role="tablist">
+                      <li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><font color = "darkblue">Requisitions in Progress</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "skyblue">Approved Requisitions</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb3" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "green">Arrived Requisitions</font></a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content44" role="tab" id="profile-tabb4" data-toggle="tab" aria-controls="profile" aria-expanded="false"><font color = "red">Cancelled Requisitions</font></a>
+                      </li>
+                    </ul>
+                    <div id="myTabContent2" class="tab-content">
+                      <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">              					
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
@@ -85,7 +98,9 @@ footer, header,.nav{ display:none; } /*Removes elements before print, use [#idna
                       <?php                            
                             require_once('DataFetchers/mysql_connect.php');
                             $GET_DEPOT = "SELECT * 
-                            FROM mydb.depot_request ORDER BY depot_request_status ASC";                           
+                            FROM mydb.depot_request 
+                            WHERE depot_request_status = 'Order in Progress'
+                            ORDER BY depot_request_status ASC";                           
                             $RESULT_GET_DEPOT=mysqli_query($dbc,$GET_DEPOT);
                             while($ROW_RESULT_GET_DEPOT=mysqli_fetch_array($RESULT_GET_DEPOT,MYSQLI_ASSOC))
                             {                                                                   
@@ -137,8 +152,205 @@ footer, header,.nav{ display:none; } /*Removes elements before print, use [#idna
                         ?>  
                       </tbody>
                     </table><br>
-                    <div>
-                        
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>Order Number</th>
+                          <!-- <th>Client Name</th> -->
+                          <th>Request Date</th>
+                          <th>Expected Date</th>
+                          <th>Total Amount</th>
+                          <!-- <th>Payment Type</th> -->
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php                            
+                            require_once('DataFetchers/mysql_connect.php');
+                            $GET_DEPOT = "SELECT * FROM mydb.depot_request
+                                            WHERE depot_request_status = 'Requisition Approved'";                           
+                            $RESULT_GET_DEPOT=mysqli_query($dbc,$GET_DEPOT);
+                            while($ROW_RESULT_GET_DEPOT=mysqli_fetch_array($RESULT_GET_DEPOT,MYSQLI_ASSOC))
+                            {                                                                   
+                              echo '<tr>';
+                                echo '<td> Depot OR - ';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_id'];
+                                echo '</td>';
+                                echo '<td>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_date'];
+                                echo '</td>';                                  
+                                echo '<td align = right>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_expected_date'];
+                                echo '</td>';
+                                
+                                echo '<td align = right>';
+                                echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['total_payment'], 2);
+                                echo '</td>';
+                                if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Order in Progress")
+                                {                                
+                                  echo '<td>';
+                                  echo "<font color = orange>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Requisition Approved")
+                                {
+                                  echo '<td align = "center">';
+                                  echo "<button class = 'btn btn-round btn-info btn-xs' disabled>Approved</button>";
+                                  echo '</td>';
+                                }
+                                else
+                                {
+                                  echo '<td>';
+                                  echo "<font color = red>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+     
+                                echo '<td align = "center">';
+                                echo '<a href = "ViewDepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
+                                echo '</td>';
+                              
+                              echo '</tr>';
+                                    
+                            }
+                        ?>  
+                      </tbody>
+                    </table><br>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>Order Number</th>
+                          <!-- <th>Client Name</th> -->
+                          <th>Request Date</th>
+                          <th>Expected Date</th>
+                          <th>Total Amount</th>
+                          <!-- <th>Payment Type</th> -->
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php                            
+                            require_once('DataFetchers/mysql_connect.php');
+                            $GET_DEPOT = "SELECT * FROM mydb.depot_request
+                                            WHERE depot_request_status = 'Requisition Confirmed'";                           
+                            $RESULT_GET_DEPOT=mysqli_query($dbc,$GET_DEPOT);
+                            while($ROW_RESULT_GET_DEPOT=mysqli_fetch_array($RESULT_GET_DEPOT,MYSQLI_ASSOC))
+                            {                                                                   
+                              echo '<tr>';
+                                echo '<td> Depot OR - ';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_id'];
+                                echo '</td>';
+                                echo '<td>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_date'];
+                                echo '</td>';                                  
+                                echo '<td align = right>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_expected_date'];
+                                echo '</td>';
+                                
+                                echo '<td align = right>';
+                                echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['total_payment'], 2);
+                                echo '</td>';
+                                if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Order in Progress")
+                                {                                
+                                  echo '<td>';
+                                  echo "<font color = orange>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Requisition Approved")
+                                {
+                                  echo '<td>';
+                                  echo "<font color = green>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Requisition Confirmed")
+                                {
+                                  echo '<td align = "center">';
+                                  echo "<button class = 'btn btn-round btn-success btn-xs' disabled>Arrived</button>";
+                                  echo '</td>';
+                                }
+     
+                                echo '<td align = "center">';
+                                echo '<a href = "ViewDepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
+                                echo '</td>';
+                              
+                              echo '</tr>';
+                                    
+                            }
+                        ?>  
+                      </tbody>
+                    </table><br>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content44" aria-labelledby="profile-tab">
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>Order Number</th>
+                          <!-- <th>Client Name</th> -->
+                          <th>Request Date</th>
+                          <th>Expected Date</th>
+                          <th>Total Amount</th>
+                          <!-- <th>Payment Type</th> -->
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php                            
+                            require_once('DataFetchers/mysql_connect.php');
+                            $GET_DEPOT = "SELECT * FROM mydb.depot_request
+                                            WHERE depot_request_status = 'Requisition Cancelled'";                           
+                            $RESULT_GET_DEPOT=mysqli_query($dbc,$GET_DEPOT);
+                            while($ROW_RESULT_GET_DEPOT=mysqli_fetch_array($RESULT_GET_DEPOT,MYSQLI_ASSOC))
+                            {                                                                   
+                              echo '<tr>';
+                                echo '<td> Depot OR - ';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_id'];
+                                echo '</td>';
+                                echo '<td>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_request_date'];
+                                echo '</td>';                                  
+                                echo '<td align = right>';
+                                echo $ROW_RESULT_GET_DEPOT['depot_expected_date'];
+                                echo '</td>';
+                                
+                                echo '<td align = right>';
+                                echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['total_payment'], 2);
+                                echo '</td>';
+                                if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Order in Progress")
+                                {                                
+                                  echo '<td>';
+                                  echo "<font color = orange>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else if($ROW_RESULT_GET_DEPOT['depot_request_status'] == "Requisition Approved")
+                                {
+                                  echo '<td>';
+                                  echo "<font color = green>".$ROW_RESULT_GET_DEPOT['depot_request_status']."</font>";
+                                  echo '</td>';
+                                }
+                                else
+                                {
+                                  echo '<td align = "center">';
+                                  echo "<button class = 'btn btn-round btn-danger btn-xs' disabled>Cancelled</button>";
+                                  echo '</td>';
+                                }
+     
+                                echo '<td align = "center">';
+                                echo '<a href = "ViewDepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
+                                echo '</td>';
+                              
+                              echo '</tr>';
+                                    
+                            }
+                        ?>  
+                      </tbody>
+                    </table><br>
+                      </div>
                     </div>
                   </div>
                 </div>
