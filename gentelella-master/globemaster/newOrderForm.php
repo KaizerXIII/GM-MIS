@@ -220,8 +220,8 @@
                                   </tbody>
                                 </table>
                                 <!-- Added as of 11-7-19 Add subtotal and vat computation??? -->
-                                <h4 align = "right"> Subtotal: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
-                                <h4 align = "right"> VAT: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
+                                <h4 align = "right"> Subtotal: <input style="text-align:right;" readonly="readonly" name="subtotal" id ="subtotal" value="0"> </h4>
+                                <h4 align = "right"> VAT: <input style="text-align:right;" readonly="readonly" name="total_vat" id ="total_vat" value="0"> </h4>
                                 <h4 align = "right"> Total Payment: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
                             </div>
 
@@ -629,13 +629,20 @@
         var CurrentTotal = 0; //Gets the current total to pay
         var item_id_in_cart = []; // Get This
 
+        var Calculated_Vat = 0
+        var Grand_Total = 0                           
+
             $('#datatable-checkbox tbody button.btn.btn-success').on('click', function(e) {
                 var row = $(this).closest('tr');
                 var buttonValue = $(this).val();
 
                 item_id_in_cart.push(buttonValue);
                 
+               
+                var subtotal = document.getElementById("subtotal");
+                var vat_total = document.getElementById("total_vat");
                 var payment = document.getElementById("payment");
+
                 var itemQuantity = document.getElementById("quantity"+buttonValue).value;
                 document.getElementById("quantity"+buttonValue).value = "";
                 
@@ -688,8 +695,13 @@
                                             
                                         
                                             CurrentTotal = CurrentTotal+ newPrice;
-                                        payment.value = "₱ "+  CurrentTotal.toFixed(2) ;
- 
+                                            Calculated_Vat = (CurrentTotal / 1.12) * 0.12;
+                                            Grand_Total = CurrentTotal + Calculated_Vat
+
+                                        
+                                        vat_total.value  = "₱ "+ Calculated_Vat.toFixed(2);
+                                        subtotal.value = "₱ "+  CurrentTotal.toFixed(2) ;
+                                        payment.value = "₱ "+  Grand_Total.toFixed(2) ;
                                         var current_max;
                                         $("."+buttonValue).each(function() {
                                             cellText = parseInt($(this).html());                                             
@@ -718,13 +730,18 @@
 
                             CurrentTotal = CurrentTotal + totalPayment;
 
+                            Calculated_Vat = (CurrentTotal / 1.12) * 0.12;
+                            Grand_Total = CurrentTotal + Calculated_Vat
+
                             var newRow = document.getElementById('cart').insertRow();                       
                             newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td>" + row.find('td:nth-child(2)').text() +" </td> <td>" + row.find('td:nth-child(4)').text() + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td> <td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+totalPayment.toFixed(2)+"' > - </button></td>"
                              
                             // payment.value = "₱ "+ totalPayment;
                            
-                            payment.value = "₱ "+ CurrentTotal.toFixed(2);
-
+                            
+                            vat_total.value  = "₱ "+ Calculated_Vat.toFixed(2);
+                            subtotal.value = "₱ "+  CurrentTotal.toFixed(2) ;
+                            payment.value = "₱ "+  Grand_Total.toFixed(2) ;
                             itemName++;
                             quantity++;
 
