@@ -437,6 +437,10 @@
                           
                         </table><br>
                         <div class = "clearfix"></div>
+                        <?php
+                          if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "China")
+                          {
+                        ?>
                         <div> 
                             Upload a Proof of Arrival: 
                               <input type="file" name="fileToUpload" id="fileToUpload">
@@ -453,8 +457,9 @@
                         $BLOB = $ROW_RESULT_GET_BLOB['arrival_reference'];
 
                           // echo '<div align>';
-                          echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'" border-style = "border-width:3px;"style = "height:20vh; width:15vw">'; 
+                          echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'" border-style = "border-width:3px;"style = "height:20vh; width:15vw" required>'; 
                           // echo '</div>';
+                          }
                         ?>
 
                         <div class = "ln_solid"></div>

@@ -219,6 +219,9 @@
                                     </tr>
                                   </tbody>
                                 </table>
+                                <!-- Added as of 11-7-19 Add subtotal and vat computation??? -->
+                                <h4 align = "right"> Subtotal: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
+                                <h4 align = "right"> VAT: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
                                 <h4 align = "right"> Total Payment: <input style="text-align:right;" readonly="readonly" name="totalPayment" id ="payment" value="0"> </h4>
                             </div>
 
