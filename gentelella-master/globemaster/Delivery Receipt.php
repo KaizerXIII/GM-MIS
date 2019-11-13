@@ -805,7 +805,7 @@ echo '</script>';
                  },
                 success: function(data)
                 {                 
-                    window.location.href = "damage_delivery.php";                    
+                                       
                 }//End Scucess  
                 })
             }
