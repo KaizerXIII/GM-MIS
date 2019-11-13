@@ -805,7 +805,7 @@ echo '</script>';
                  },
                 success: function(data)
                 {                 
-                                       
+                    window.location.href = "MainDashboard.php";                           
                 }//End Scucess  
                 })
             }

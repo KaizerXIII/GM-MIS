@@ -29,7 +29,7 @@
     $CurrentOR = "OR - ".$ROW_RESULT_MAX_OR['TOTALOR'];      
     
     $INSERT_TO_ORDERS = "INSERT INTO orders (ordernumber, client_id, order_date, expected_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
-    SELECT '$CurrentOR', client_id, now(), expected_date, payment_id, totalamt, order_status, installation_status, '$FAB_STATUS', payment_status 
+    SELECT '$CurrentOR', client_id, now(), expected_date, payment_id, totalamt, '$ORDER_STATUS', installation_status, '$FAB_STATUS', payment_status 
     FROM orders 
     WHERE ordernumber = '$GET_RENEW_OR';";
     $RESULT_RENEW_OR=mysqli_query($dbc,$INSERT_TO_ORDERS);
