@@ -197,14 +197,14 @@
                                         if($ORDER_STATUS[$i] == "For Fabrication")
                                         {
                             
-                                          echo '<button type="button" class="btn btn-round btn-danger" id = "disapporveBtn" onclick = "disApproveconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Disapprove</button>';
+                                          // echo '<button type="button" class="btn btn-round btn-danger" id = "disapporveBtn" onclick = "disApproveconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Disapprove</button>';
                                           echo '<button type="button" class="btn btn-round btn-primary" id = "approveBtn" onclick = "Approveconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Approve</button>';
                                           echo '<button type="button" class="btn btn-round btn-success" id = "finishBtn" disabled>Finish</button>';
                             
                                         }
                                         else if($ORDER_STATUS[$i] == "Under Fabrication")
                                         {
-                                          echo '<button type="button" class="btn btn-round btn-danger" id = "disapporveBtn" disabled onclick = "disApproveconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Disapprove</button>';
+                                          // echo '<button type="button" class="btn btn-round btn-danger" id = "disapporveBtn" disabled onclick = "disApproveconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Disapprove</button>';
                                           echo '<button type="button" class="btn btn-round btn-primary" disabled>Approve</button>';
                                           echo '<button type="button" class="btn btn-round btn-success" onclick = "Finishconfirm(this)" value ="'.$ORDER_NUMBER[$i].'">Finish</button> ';
                                           
