@@ -355,25 +355,25 @@
                                                                     // mark stock as red if below threshold
                                                                     if($row['item_count'] < $itemthreshold) 
                                                                     {
-                                                                        echo '<td align = right class = ',$row['item_id'],'>';
+                                                                        echo '<td align = "right" class = ',$row['item_id'],'>';
                                                                         echo '<font color = "red"><b>'.$row['item_count'].'</b></font>';
                                                                         echo '</td>';
                                                                     }
                                                                     elseif($row['item_count'] <= ($itemthreshold + $itemthreshold*0.20))
                                                                     {
-                                                                        echo '<td align = right class = ',$row['item_id'],'>';
+                                                                        echo '<td align = "right" class = ',$row['item_id'],'>';
                                                                         echo '<font color = "orange"><b>'.$row['item_count'].'</b></font>';
                                                                         echo '</td>';
                                                                     }
                                                                     else
                                                                     {
-                                                                        echo '<td align = right class = ',$row['item_id'],'>';
+                                                                        echo '<td align = "right" class = ',$row['item_id'],'>';
                                                                         echo $row['item_count'];
                                                                         echo '</td>';
                                                                     }
 
                                                                    
-                                                                    echo '<td align = right>';
+                                                                    echo '<td align = "right">';
                                                                     echo  ceil($EOQ);
                                                                     echo '</td>';
 
@@ -496,7 +496,7 @@
 
                 GET_NEW_ITEM_NAME.push(get_new_item_name);
                 var add_row_to_cart = document.getElementById('cart').insertRow();                       
-                add_row_to_cart.innerHTML = "<tr> <td>" + get_new_item_name + "  </td> <td align = right> " + get_new_item_qty + " </td><td> "+get_sp_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)'> - </button></td>";
+                add_row_to_cart.innerHTML = "<tr> <td>" + get_new_item_name + "  </td> <td align = 'right'> " + get_new_item_qty + " </td><td> "+get_sp_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)'> - </button></td>";
                 alert("Item Added to Cart!");
                 CurrentTotal = CurrentTotal + parseInt(get_new_item_qty);
                 total_qty.value = CurrentTotal;
@@ -627,7 +627,7 @@
                             CurrentTotal = CurrentTotal + parseInt(itemQuantity);
 
                             var newRow = document.getElementById('cart').insertRow();                       
-                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td><td class ='sp_name' sp_id = '"+get_supplier_id+"'> "+get_supplier_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+TotalQuantity+"' > - </button></td>";
+                            newRow.innerHTML = "<tr> <td id = "+buttonValue +">" + currentName + "</td> <td align = 'right' class='qtys' price ='"+ParsePrice+"' val_id='"+buttonValue+"'> " + itemQuantity + " </td><td class ='sp_name' sp_id = '"+get_supplier_id+"'> "+get_supplier_name+" </td><td> <button type='button' class='btn btn-danger' name ='remove' onclick= 'DeleteRow(this)' value ='"+TotalQuantity+"' > - </button></td>";
                             total_qty.value = CurrentTotal;                             
                             // payment.value = "₱ "+ totalPayment;
                             

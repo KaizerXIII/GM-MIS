@@ -155,7 +155,7 @@
                                             }
 
                                             // to check date difference from expected date
-                                            $queryDeliveryDateDiff = "SELECT DATEDIFF(o.expected_date,sd.delivery_Date) 
+                                            $queryDeliveryDateDiff = "SELECT DATEDIFF(sd.delivery_Date,o.expected_date) 
                                             AS datedifference
                                             FROM orders o
                                             JOIN scheduledelivery sd 

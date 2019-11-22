@@ -57,7 +57,7 @@
 
                       ?>
                                   <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-th"></i> Bulacan Tile Warehouse Availability</span>
+                                    <span class="count_top"><i class="fa fa-cubes"></i> EDSA Granite Warehouse Availability</span>
                                     <!-- Insert count of depot requests here -->
                       <?php
                                     $SQL_COUNT_ALL_CAPACITY = "SELECT * FROM warehouses
@@ -96,7 +96,7 @@
                                   </div> 
 
                                   <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                    <span class="count_top"><i class="fa fa-cubes"></i> EDSA Granite Warehouse Availability</span>
+                                    <span class="count_top"><i class="fa fa-th"></i> Bulacan Tile Warehouse Availability</span>
                                     <!-- Insert count of depot requests here -->
                       <?php
                                     $SQL_COUNT_ALL_CAPACITY1 = "SELECT * FROM warehouses

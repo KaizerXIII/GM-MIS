@@ -317,7 +317,7 @@
                                     }
                                     if($user == "CEO" || $user == "Superuser")
                                     {
-                                      echo '<td><center><a href ="SupplierOrderForm.php" class=""><i class = "fa fa-wrench"></i></a></center></td>';
+                                      echo '<td><center><a href ="SupplierOrderForm.php" class=""><button class = "btn btn-sm btn-primary">Reorder</button></a></center></td>';
                                     }
                                     else
                                     {
@@ -729,7 +729,7 @@
                                     echo '<td>';
                                     echo $row['last_update'];
                                     echo '</td>';
-                                    echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-info">Place Discount</button></a></center></td>';
+                                    echo '<td><center><a href ="EditInventory.php?sku_id='.$row['sku_id'].' & item_id='.$row['item_id'].'" onclick = "teit()"class=""><button class="btn btn-warning btn-sm">Place Discount</button></a></center></td>';
                                     echo '</tr>';
                                     
                             } 

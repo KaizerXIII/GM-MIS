@@ -142,7 +142,22 @@
                                                                     echo $ROW_RESULT_GET_DEPOT['UnitName'];
                                                                     echo '</td>';
                                                                     echo '<td >';
-                                                                    echo $ROW_RESULT_GET_DEPOT['StockOnHand'];
+                                                                    if($ROW_RESULT_GET_DEPOT['StockOnHand'] < 150)
+                                                                    {
+                                                                        echo '<font color = "red">';
+                                                                        echo $ROW_RESULT_GET_DEPOT['StockOnHand'];
+                                                                        echo '</font>';
+                                                                    }
+                                                                    else if($ROW_RESULT_GET_DEPOT['StockOnHand'] <= 200 && $ROW_RESULT_GET_DEPOT['StockOnHand'] >= 150)
+                                                                    {
+                                                                        echo '<font color = "orange">';
+                                                                        echo $ROW_RESULT_GET_DEPOT['StockOnHand'];
+                                                                        echo '</font>';
+                                                                    }
+                                                                    else 
+                                                                    {
+                                                                        echo $ROW_RESULT_GET_DEPOT['StockOnHand'];
+                                                                    }
                                                                     echo '</td>';                                                                          
                                                                     echo '<td align = right>';
                                                                     echo  '₱'." ".number_format($ROW_RESULT_GET_DEPOT['price'], 2);
