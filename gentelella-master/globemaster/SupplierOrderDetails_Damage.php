@@ -223,7 +223,7 @@
                                             </div>           
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12" align = "right">
-                        <button type="button" class="btn btn-primary" id="complete_order">Finish Restocking</button>
+                        <button type="button" class="btn btn-success" id="complete_order">Finish Restocking</button>
                     </div>
                 </div>
             </form>
