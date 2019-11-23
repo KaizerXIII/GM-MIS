@@ -337,7 +337,7 @@
     function updateExpected()
     {
       console.log(expectedSlider.value);
-      console.log("hrenlo");
+      
 
       for(var j = 0; j <= 11; j++)
         {

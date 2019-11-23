@@ -548,7 +548,24 @@
                               }                       
                               $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
                               VALUES('$CLIENT_ID', '$OR_NUM', '$SANITIZED_TOTAL','$SANITIZED_TOTAL');"; 
-                              $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference                          
+                              $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
+                              if(!$RESULT_INSERT_TO_UNPAID_TABLE) 
+                                {
+                                    die('Error: ' . mysqli_error($dbc));
+                                    echo "Error in Insert Unpaid";
+                                } 
+                                else 
+                                {
+                                    $GET_UNPAID_TABLE = "SELECT * FROM unpaid_clients WHERE ordernumber ='$CURRENT_OR'";
+                                    $RESULT_GET_UNPAID_TABLE=mysqli_query($dbc,$GET_UNPAID_TABLE);
+                                    $ROW_RESULT_GET_UNPAID_TABLE = mysqli_fetch_assoc($RESULT_GET_UNPAID_TABLE); 
+                                    
+                                    $UNPAID_ID = $ROW_RESULT_GET_UNPAID_TABLE['unpaidID'];
+                                    
+                                    $INSERT_TO_AUDIT="INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date)
+                                    VALUES('$UNPAID_ID','$DOWNPAYMENT', now())";
+                                    $RESULT_INSERT_TO_AUDIT=mysqli_query($dbc,$INSERT_TO_AUDIT); 
+                                }                                   
                           }//END IF 
 
                          $ITEM_ID = $_SESSION['item_id'];
