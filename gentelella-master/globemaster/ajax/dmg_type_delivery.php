@@ -56,7 +56,7 @@
         $FINISH_WITH_DAMAGES = "Finished With Damages";
 
         $UPDATE_DELIVERY_STATUS = "UPDATE scheduledelivery SET delivery_status = '$FINISH_WITH_DAMAGES' WHERE ordernumber = '$OR_FROM_DR'";
-        $RESULT_ITEM_STOCK = mysqli_query($dbc, $UPDATE_DELIVERY_STATUS);
+        $RESULT_UPDATE_DELIVERY_STATUS = mysqli_query($dbc, $UPDATE_DELIVERY_STATUS);
     }
     $PAYMENT_STATUS = "Paid";
     echo "LOSS: ".$LOSS."\n";    
