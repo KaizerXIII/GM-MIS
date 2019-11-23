@@ -259,7 +259,8 @@
             data: {
             post_dmg_name: dmg_name,
             post_dmg_qty: dmg_qty,
-            post_orig_qty: orig_qty                   
+            post_orig_qty: orig_qty,
+            post_so_id: <?php echo $GET_SO_ID ?>                   
             },
             success: function(data, textStatus)
             {
