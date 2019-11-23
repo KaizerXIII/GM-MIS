@@ -29,6 +29,89 @@
     <!-- JQUERY Required Scripts -->
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <!-- image modal style -->
+<style>
+          /* Style the Image Used to Trigger the Modal */
+          #myImg {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+          }
+
+          #myImg:hover {opacity: 0.7;}
+
+          /* The Modal (background) */
+          .modalImg {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+          }
+
+          /* Modal Content (Image) */
+          .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+          }
+
+          /* Caption of Modal Image (Image Text) - Same Width as the Image */
+          #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+          }
+
+          /* Add Animation - Zoom in the Modal */
+          .modal-content, #caption { 
+            animation-name: zoom;
+            animation-duration: 0.6s;
+          }
+
+          @keyframes zoom {
+            from {transform:scale(0)} 
+            to {transform:scale(1)}
+          }
+
+          /* The Close Button */
+          .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+          }
+
+          .close:hover,
+          .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+                    }
+
+          /* 100% Image Width on Smaller Screens */
+          @media only screen and (max-width: 700px){
+            .modal-content {
+              width: 100%;
+            }
+          }
+</style>
   </head>
 
   <body class="nav-md">
@@ -407,7 +490,7 @@
                                     }
                                     else 
                                     {
-                                      echo '<button type="" class="btn btn-round btn-primary btn-xs" data-toggle="" data-target="" value = "" disabled = "disabled"><i class = "fa fa-wrench"></i> Edit</button>';
+                                      echo '<button type="" class="btn btn-round btn-primary btn-xs" data-toggle="modal" data-target="bs-example-modal-smsupply" value = "" disabled = "disabled"><i class = "fa fa-wrench"></i> Edit</button>';
                                     }
                                     if(strpos($row['supply_item_name'], "*NEW ITEM*") != false && $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving")
                                     {
@@ -457,8 +540,22 @@
                         $BLOB = $ROW_RESULT_GET_BLOB['arrival_reference'];
 
                           // echo '<div align>';
-                          echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'" border-style = "border-width:3px;"style = "height:20vh; width:15vw" required>'; 
+                          echo '<img src = "data:image/jpg;base64,'. base64_encode($BLOB).'" border-style = "border-width:3px;"style = "height:10vh; width:15vw" required>'; 
                           // echo '</div>';
+                          }
+                          
+                          if($ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Shipped" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Philippines"
+                          || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "OTW" || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Receiving"
+                          || $ROW_RESULT_GET_FROM_DB['supply_order_status'] == "Arrived")
+                          {
+                            $SQL_GET_BLOB = "SELECT * FROM supply_order WHERE supply_order_id = '$CURRENT_SO_ID_NUMBER'";
+                            $RESULT_GET_BLOB  = mysqli_query($dbc,$SQL_GET_BLOB);
+                            $ROW_RESULT_GET_BLOB = mysqli_fetch_assoc($RESULT_GET_BLOB);
+
+                            $BLOB = $ROW_RESULT_GET_BLOB['arrival_reference'];
+
+                            echo "Proof of Shipment: ";
+                            echo  '<img id = "myImg" class=img_list alt = "Proof of Shipment" src = "data:image/jpg;base64,'. base64_encode($BLOB).'" border-style = "border-width:3px;"style = "height:10vh; width:15vw" required>';  
                           }
                         ?>
 
@@ -515,6 +612,19 @@
         <!-- /footer content -->
       </div>
     </div>
+
+    <!-- Image Modal -->
+      <div id="myModal" class="modalImg">
+
+      <!-- The Close Button -->
+      <span class="close" onclick = "closemodal();">&times;</span>
+
+      <!-- Modal Content (The Image) -->
+      <img class="modal-content" id="img01">
+
+      <!-- Modal Caption (Image Text) -->
+      <div id="caption"></div>
+      </div>
 
 
      <!-- Small modal for edit supply qty-->
@@ -613,10 +723,10 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4 col-sm-3 col-xs-12">Choose Supplier <span class="required">*</span>
+        <label class="control-label col-md-4 col-sm-3 col-xs-12">Supplier Name<span class="required">*</span>
         </label>
         <div class="col-md-6 col-sm-6 col-xs-12">
-          <input type="text" name="supplier_name" id="supplier_id" required="required" class="form-control col-md-7 col-xs-12"/>
+          <input type="text" name="supplier_name" id="supplier_id" required="required" class="form-control col-md-7 col-xs-12">
         </div>
       </div><br><br>
       <div class="form-group">
@@ -629,19 +739,7 @@
       <div class="form-group">
         <label for="middle-name" class="control-label col-md-4 col-sm-3 col-xs-12">Warehouse Location</label>
         <div class="col-md-6 col-sm-6 col-xs-12">
-        <select name="selectWarehouse" id="warehouse_id" required="required" class="form-control col-md-7 col-xs-12">
-        <option value = "">Choose...</option>
-          <?php
-                require_once('DataFetchers/mysql_connect.php');
-                $query = "SELECT * FROM warehouses";
-                $result=mysqli_query($dbc,$query);
-                
-                while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                {
-                    echo '<option value = "'.$row['warehouse'].'" > '.$row['warehouse'].' </option>';
-                }
-            ?>
-            </select>
+          <input type = "text" name="selectWarehouse" id="warehouse_id" disabled class="form-control col-md-7 col-xs-12">
         </div>
       </div>
       <div class="form-group">
@@ -1052,6 +1150,32 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
         border-width: 2px;
     }
     </style>
+
+    <!-- Image Modal Script -->
+    <script>
+      // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById("myImg");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        $('.img_list').on('click',function(e){
+          modal.style.display = "block";
+          modalImg.src = this.src;
+          captionText.innerHTML = this.alt;
+        })
+      
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        function closemodal() { 
+          modal.style.display = "none";
+        }
+    </script>
+
     <script>
       function ChangeChina(obj)
       {
@@ -1108,7 +1232,7 @@ $('.btn.btn-round.btn-success.btn-xs.create').on('click', function(e){
               }, //enddata
               success: function(data, textStatus)
               {
-                alert("All of the ordered items of SR - " + SET_SUPPLY_ORDER_NUMBER + " are on its way to the Philippies!");
+                alert("All of the ordered items of SR - " + SET_SUPPLY_ORDER_NUMBER + " are on its way to the Philippines!");
                 var test = window.location.href("/SupplierOrderDetails.php?so_id="+SET_SUPPLY_ORDER_NUMBER);
                 alert(test);
               }//end success

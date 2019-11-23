@@ -311,7 +311,7 @@
                           echo $ROW_ALL_FROM_PAYMENT['payment_date'];
                         echo '</td>';
                         echo '<td align = center>';
-                          echo '<img id="myImg" class=img_list alt = "samplepic" src = "data:image/jpg;base64,'. base64_encode($ROW_ALL_FROM_PAYMENT['payment_img']).'"  width = "80px" height = "100px">';
+                          echo '<img id="myImg" class=img_list alt = "Proof of Payment" src = "data:image/jpg;base64,'. base64_encode($ROW_ALL_FROM_PAYMENT['payment_img']).'"  width = "80px" height = "100px">';
                         echo '</td>';
                       echo '</tr>';
                     }

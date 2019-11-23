@@ -3,7 +3,9 @@ ob_start();
 session_start();
 
 date_default_timezone_set('Asia/Hong_Kong');
-
+// America/Los_Angeles
+// Asia/Hong_Kong
+// Reference on: https://www.timeanddate.com/worldclock///
 $_SESSION['user'] = 1;
 $user="";
 $fname="";
