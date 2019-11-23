@@ -6,6 +6,8 @@
    $DMG_QTY_ARRAY = $_POST['post_dmg_qty'];
    $ORIG_QTY_ARRAY = $_POST['post_orig_qty'];
 
+   $SUPPLIER_ORDER_ID = $_POST['post_so_id'];
+
    $DMG_SOURCE = "Supplier Shipment";
    $CURRENT_ID;
    $CURRENT_PRICE;
@@ -51,7 +53,9 @@
         WHERE warehouse_id = ' $ITEM_WAREHOUSE'";
         $RESULT_UPDATE_WAREHOUSE_OUT = mysqli_query($dbc,$SQL_UPDATE_WAREHOUSE_OUT);
 
-        
+        $STATUS_FINISHED = "Arrived";
+        $SQL_UPDATE_SUPPLY_ORDER_STATUS = "UPDATE supply_order SET supply_order_status = '$STATUS_FINISHED' WHERE supply_order_id = '$SUPPLIER_ORDER_ID'";
+        $RESULT_UPDATE_SUPPLY_ORDER_STATUS = mysqli_query($dbc,$SQL_UPDATE_SUPPLY_ORDER_STATUS);
     }
 
     echo "DMG ITEM NAME: ". $DMG_ITEM_NAME."\n";
