@@ -1032,6 +1032,8 @@ function nextpageWithFabrication() //Gets all necessary values from current page
     var total_amount = document.getElementById("payment").value;
     var CurrentOrderDate = new Date().toJSON().slice(0,10);
 
+    var getLoan = document.getElementById("loanpayment").value;
+
         if(confirm("Submit Order?")) //ALert IS Showing
         {
             $('#cart tr td:nth-child(4)').each(function (e) 
@@ -1053,7 +1055,7 @@ function nextpageWithFabrication() //Gets all necessary values from current page
                     }           
                                  
 
-                    window.location.href = "CreateJobOrderFab.php?order_id=<?php echo $CurrentOR?>&deliver_date="+ expected_date +"&pay_id="+ payment_id +"&client_id="+ client_id +"&cart_item_id="+ FILTERED_ID +"&cart_qty_per_item="+ getCartQuantity +"&total_amount="+ total_amount +"&order_date="+ CurrentOrderDate +"  ";  
+                    window.location.href = "CreateJobOrderFab.php?order_id=<?php echo $CurrentOR?>&deliver_date="+ expected_date +"&pay_id="+ payment_id +"&client_id="+ client_id +"&cart_item_id="+ FILTERED_ID +"&cart_qty_per_item="+ getCartQuantity +"&total_amount="+ total_amount +"&order_date="+ CurrentOrderDate +"&loan="+getLoan+"";  
                     var days = localStorage.setItem("settotal", total_amount); //Stores total value to get in next page                                    
                                             
                 }                                       

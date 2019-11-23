@@ -108,6 +108,9 @@
                                $_SESSION['payment_id'] = $_GET['pay_id'];
                                echo"Payment ID = ", $_SESSION['payment_id'],"<br>"; // Get Pay Id, remove all Echo once Finalized
 
+                               $_SESSION['loan_amt'] = $_GET['loan'];
+                               echo"Loan AMT = ", $_SESSION['loan_amt'],"<br>"; // Get loan
+
                                
                           ?>
 
@@ -348,6 +351,7 @@
                           $EXPECTED_DATE = $_SESSION['getDeliveryDate'];
                           $PAYMENT_ID = $_SESSION['payment_id'];
 
+                          $LOAN_AMOUNT = $_SESSION['loan_amt'];
                           // $TOTAL_AMOUNT = $_SESSION['total'];
                           $TOTAL_AMOUNT = $_POST['total_amount'];
                           $SANITIZED_TOTAL = filter_var($TOTAL_AMOUNT,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION); //Removes Peso Sign
@@ -402,11 +406,29 @@
                                   echo '<script language="javascript">';
                                   echo 'alert("Added Unpaid Amount to Client");';
                                   echo '</script>';
-                                  header("Location: ViewOrders.php");
+                                 
                               }
                               $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
                               VALUES('$CLIENT_ID', '$OR_NUM', '$SANITIZED_TOTAL','$SANITIZED_TOTAL');"; 
-                              $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference                                                   
+                              $RESULT_INSERT_TO_UNPAID_TABLE=mysqli_query($dbc,$SQL_INSERT_TO_UNPAID_TABLE); //Inserts to UNPAID Client Table for reference
+                              
+                              if(!$RESULT_INSERT_TO_UNPAID_TABLE) 
+                              {
+                                  die('Error: ' . mysqli_error($dbc));
+                                  echo "Error in Insert Unpaid";
+                              } 
+                              else 
+                              {
+                                  $GET_UNPAID_TABLE = "SELECT * FROM unpaid_clients WHERE ordernumber ='$OR_NUM'";
+                                  $RESULT_GET_UNPAID_TABLE=mysqli_query($dbc,$GET_UNPAID_TABLE);
+                                  $ROW_RESULT_GET_UNPAID_TABLE = mysqli_fetch_assoc($RESULT_GET_UNPAID_TABLE); 
+                                  
+                                  $UNPAID_ID = $ROW_RESULT_GET_UNPAID_TABLE['unpaidID'];
+                                  
+                                  $INSERT_TO_AUDIT="INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date)
+                                  VALUES('$UNPAID_ID','$LOAN_AMOUNT', now())";
+                                  $RESULT_INSERT_TO_AUDIT=mysqli_query($dbc,$INSERT_TO_AUDIT); 
+                              }          
                           }//END IF             
 
                          $ITEM_ID = $_SESSION['item_id'];
@@ -464,7 +486,7 @@
                                   echo '<script language="javascript">';
                                   echo 'alert("Subtract Successfull");';
                                   echo '</script>';
-                                  header("Location: ViewOrders.php");
+                                 
                               }
                             } //END FOR
 
@@ -486,7 +508,8 @@
                           {                            
                               echo '<script language="javascript">';
                               echo 'alert("3rd Insert Successful!");';
-                              echo '</script>';                            
+                              echo '</script>';
+                              header("Location: ViewOrders.php");                            
                           } 
                                                                                                                
                         } // END IF DELIVER
@@ -496,6 +519,8 @@
                           $CLIENT_ID = $_SESSION['client_id'];
                           $ORDER_DATE = $_SESSION['order_date'];                          
                           $PAYMENT_ID = $_SESSION['payment_id'];
+
+                          $LOAN_AMOUNT = $_SESSION['loan_amt'];
 
                           // $TOTAL_AMOUNT = $_SESSION['total'];
                           $TOTAL_AMOUNT = $_POST['total_amount'];
@@ -544,7 +569,7 @@
                                   echo '<script language="javascript">';
                                   echo 'alert("Added Unpaid Amount to Client");';
                                   echo '</script>';
-                                  header("Location: ViewOrders.php");
+                                 // header("Location: ViewOrders.php");
                               }                       
                               $SQL_INSERT_TO_UNPAID_TABLE = "INSERT INTO unpaid_clients(clientID, ordernumber, init_unpaid, totalunpaid) 
                               VALUES('$CLIENT_ID', '$OR_NUM', '$SANITIZED_TOTAL','$SANITIZED_TOTAL');"; 
@@ -563,7 +588,7 @@
                                     $UNPAID_ID = $ROW_RESULT_GET_UNPAID_TABLE['unpaidID'];
                                     
                                     $INSERT_TO_AUDIT="INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date)
-                                    VALUES('$UNPAID_ID','$SANITIZED_TOTAL', now())";
+                                    VALUES('$UNPAID_ID','$LOAN_AMOUNT', now())";
                                     $RESULT_INSERT_TO_AUDIT=mysqli_query($dbc,$INSERT_TO_AUDIT); 
                                 }                                   
                           }//END IF 
