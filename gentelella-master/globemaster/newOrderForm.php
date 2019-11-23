@@ -1224,8 +1224,8 @@ function nextpageNOFabrication()
             $('#loanpayment').attr('max',loanmax.toFixed(2));
             $('#loanpayment').attr('placeholder',loanmax.toFixed(2)); //Max loan amount = 30% of Current Total
 
-            paymentinput.classList.add('btn','btn-warning','dropdown-toggle');
-            $('#payment_status').val("Unpaid");
+            paymentinput.classList.add('btn','btn-danger','dropdown-toggle');
+            // $('#payment_status').val("Unpaid");
 
         }
         else if(paymentID.value == "3")
