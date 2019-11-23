@@ -556,14 +556,14 @@
                                 } 
                                 else 
                                 {
-                                    $GET_UNPAID_TABLE = "SELECT * FROM unpaid_clients WHERE ordernumber ='$CURRENT_OR'";
+                                    $GET_UNPAID_TABLE = "SELECT * FROM unpaid_clients WHERE ordernumber ='$OR_NUM'";
                                     $RESULT_GET_UNPAID_TABLE=mysqli_query($dbc,$GET_UNPAID_TABLE);
                                     $ROW_RESULT_GET_UNPAID_TABLE = mysqli_fetch_assoc($RESULT_GET_UNPAID_TABLE); 
                                     
                                     $UNPAID_ID = $ROW_RESULT_GET_UNPAID_TABLE['unpaidID'];
                                     
                                     $INSERT_TO_AUDIT="INSERT INTO unpaidaudit(unpaidID, payment_amount, payment_date)
-                                    VALUES('$UNPAID_ID','$DOWNPAYMENT', now())";
+                                    VALUES('$UNPAID_ID','$SANITIZED_TOTAL', now())";
                                     $RESULT_INSERT_TO_AUDIT=mysqli_query($dbc,$INSERT_TO_AUDIT); 
                                 }                                   
                           }//END IF 
