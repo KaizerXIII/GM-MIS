@@ -8,7 +8,7 @@
     $GET_REPLACE_QTY = $_POST['post_replace_qty'];
 
     $DMG_SOURCE = "Fabrication";
-
+    
     for($i = 0; $i < sizeof($GET_DMG_NAME); $i++)
     {
         echo "DMG NAME: ".$GET_DMG_NAME[$i]."\n";
@@ -37,6 +37,8 @@
       
         $UPDATE_ITEM_STOCK = "UPDATE items_trading SET item_count = (item_count - '$GET_REPLACE_QTY[$i]') WHERE item_id = '$CURRENT_REPLACEMENT_ID'";
         $RESULT_ITEM_STOCK = mysqli_query($dbc, $UPDATE_ITEM_STOCK);
+
+        
 
     }
     
