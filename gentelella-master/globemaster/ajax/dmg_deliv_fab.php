@@ -10,6 +10,7 @@
     $GET_EXP_DATE = $_POST['post_exp_date'];
 
     $GET_RENEW_OR = $_POST['post_renew_or'];
+    $GET_OR = $_POST['post_or'];
     
 
     $ORDER_STATUS = "Deliver";
@@ -26,7 +27,15 @@
     $RESULT_GET_MAX_OR=mysqli_query($dbc,$SQL_GET_MAX_OR);
     $ROW_RESULT_MAX_OR = mysqli_fetch_array($RESULT_GET_MAX_OR,MYSQLI_ASSOC);
 
-    $CurrentOR = "OR - ".$ROW_RESULT_MAX_OR['TOTALOR'];      
+    $CurrentOR = "OR - ".$ROW_RESULT_MAX_OR['TOTALOR'];
+    
+    $FINISH_WITH_DAMAGES = "Finished With Damages";
+
+    $UPDATE_DELIVERY_STATUS = "UPDATE scheduledelivery SET delivery_status = '$FINISH_WITH_DAMAGES' WHERE ordernumber = '$GET_OR'";
+    $RESULT_UPDATE_DELIVERY_STATUS = mysqli_query($dbc, $UPDATE_DELIVERY_STATUS);
+
+    $UPDATE_ORDER_DELIVERY_STATUS = "UPDATE orders SET order_status = '$FINISH_WITH_DAMAGES' WHERE ordernumber= '$GET_OR'";
+    $RESULT_UPDATE_ORDER_DELIVERY_STATUS = mysqli_query($dbc, $UPDATE_ORDER_DELIVERY_STATUS);
     
     $INSERT_TO_ORDERS = "INSERT INTO orders (ordernumber, client_id, order_date, expected_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
     SELECT '$CurrentOR', client_id, now(), expected_date, payment_id, totalamt, '$ORDER_STATUS', installation_status, '$FAB_STATUS', payment_status 

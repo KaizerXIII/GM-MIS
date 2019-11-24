@@ -781,7 +781,7 @@ echo '</script>';
                 },
                 success: function(data)
                 {                 
-                    window.location.href = "damage_delivery.php";                    
+                   // window.location.href = "damage_delivery.php";                    
                 }//End Scucess                       
             }); // End ajax     
         } 
@@ -800,22 +800,21 @@ echo '</script>';
                     post_exp_date: drExpectedDateFromPHP,
                     post_payment_id: payment_id,
                     post_install_status: install_stat,
-                    post_renew_or: renew_or
+                    post_renew_or: renew_or,
+                    post_or: "<?php echo $_SESSION['get_or_number_from_deliveries']; ?>"
 
                  },
                 success: function(data)
                 {                 
-                    window.location.href = "MainDashboard.php";                           
+                    //window.location.href = "MainDashboard.php";                           
                 }//End Scucess  
                 })
             }
             else
             {
                 alert("Action: Cancelled");
-            }
-           
-        }
-           
+            }           
+        }           
     }
 </script> <!-- scripts to get the values in the table of delivery-->
 <script>
