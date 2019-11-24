@@ -27,7 +27,7 @@
         $ROW_RESULT_GET_REPLACEMENT = mysqli_fetch_assoc($RESULT_GET_REPLACEMENT);
         
         $CURRENT_DMG_ID = $ROW_RESULT_GET_INFO['item_id']; //Gets the DMG item id
-        $LOSS = $ROW_RESULT_GET_INFO['price'] * $GET_DMG_QTY[$i]; // Gets the Loss based on the item price of company
+        $LOSS = (int) $ROW_RESULT_GET_INFO['price'] * (int) $GET_DMG_QTY[$i]; // Gets the Loss based on the item price of company
 
         $CURRENT_REPLACEMENT_ID = $ROW_RESULT_GET_REPLACEMENT['item_id']; //Replacement item id
 
@@ -35,11 +35,12 @@
         VALUES('$CURRENT_DMG_ID','$GET_DMG_NAME[$i]','$GET_DMG_QTY[$i]','$LOSS','$DMG_SOURCE',now())";
         $RESULT_INSERT_DMG = mysqli_query($dbc, $INSERT_TO_DMG_TBL);
       
-        $UPDATE_ITEM_STOCK = "UPDATE items_trading SET item_count = (item_count - '$GET_REPLACE_QTY[$i]') WHERE item_id = '$CURRENT_REPLACEMENT_ID'";
+        $UPDATE_ITEM_STOCK = "UPDATE items_trading SET item_count = (item_count - '$GET_REPLACE_QTY[$i]'),
+        item_inside_warehouse = (item_inside_warehouse - '$GET_REPLACE_QTY[$i]')
+        WHERE item_id = '$CURRENT_REPLACEMENT_ID'";
         $RESULT_ITEM_STOCK = mysqli_query($dbc, $UPDATE_ITEM_STOCK);
 
-        
-
+     
     }
     
 

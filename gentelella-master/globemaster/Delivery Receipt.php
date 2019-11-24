@@ -781,7 +781,7 @@ echo '</script>';
                 },
                 success: function(data)
                 {                 
-                   // window.location.href = "damage_delivery.php";                    
+                   /window.location.href = "damage_delivery.php";                    
                 }//End Scucess                       
             }); // End ajax     
         } 
