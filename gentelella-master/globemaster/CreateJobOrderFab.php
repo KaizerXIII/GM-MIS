@@ -472,21 +472,50 @@
                                   echo '</script>';                            
                               } 
                               //Subtracts QTY in the inventory
-                              $sqlToSubtractFromItemsTrading = "UPDATE items_trading
-                              SET items_trading.item_count  = (item_count - '$EXPLODED_ITEM_QTY[$i]'),
-                              last_update = Now() 
-                              WHERE item_id ='$EXPLODED_ITEM_ID[$i]';";
-                              $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); 
-                              if(!$resultOfSubtract) 
+                              $CHECK_ITEMS_INSIDE_WAREHOUSE = "SELECT * FROM items_trading"; //checks if there is any item inside warehouse
+                              $RESULT_CHECK_ITEMS_INSIDE_WAREHOUSE = mysqli_query($dbc,$CHECK_ITEMS_INSIDE_WAREHOUSE);
+                              $ROW_RESULT_CHECK_ITEMS_INSIDE_WAREHOUSE = mysqli_fetch_assoc($RESULT_CHECK_ITEMS_INSIDE_WAREHOUSE);
+
+                              $NUMBER_OF_ITEMS_INSIDE = $ROW_RESULT_CHECK_ITEMS_INSIDE_WAREHOUSE['item_inside_warehouse'];
+
+                              if($NUMBER_OF_ITEMS_INSIDE > 0)  //if there is 
                               {
-                                  die('Error: ' . mysqli_error($dbc));
+                                $sqlToSubtractFromItemsTrading = "UPDATE items_trading
+                                SET items_trading.item_count  = (item_count - '$EXPLODED_ITEM_QTY[$i]'),
+                                item_inside_warehouse = (item_inside_warehouse - '$EXPLODED_ITEM_QTY[$i]' ),
+                                last_update = Now() 
+                                WHERE item_id ='$EXPLODED_ITEM_ID[$i]';";
+                                $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); 
+                                if(!$resultOfSubtract) 
+                                {
+                                    die('Error: ' . mysqli_error($dbc));
+                                } 
+                                else 
+                                {
+                                    echo '<script language="javascript">';
+                                    echo 'alert("Subtract Successfull");';
+                                    echo '</script>';
+                                }
                               } 
-                              else 
+
+                              else
                               {
-                                  echo '<script language="javascript">';
-                                  echo 'alert("Subtract Successfull");';
-                                  echo '</script>';
-                                 
+                                $sqlToSubtractFromItemsTrading = "UPDATE items_trading
+                                SET items_trading.item_count  = (item_count - '$EXPLODED_ITEM_QTY[$i]'),
+                                item_outside_warehouse = (item_outside_warehouse - '$EXPLODED_ITEM_QTY[$i]' ),
+                                last_update = Now() 
+                                WHERE item_id ='$EXPLODED_ITEM_ID[$i]';";
+                                $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); 
+                                if(!$resultOfSubtract) 
+                                {
+                                    die('Error: ' . mysqli_error($dbc));
+                                } 
+                                else 
+                                {
+                                    echo '<script language="javascript">';
+                                    echo 'alert("Subtract Successfull");';
+                                    echo '</script>';
+                                }
                               }
                             } //END FOR
 
@@ -634,21 +663,52 @@
                                   echo '</script>';                            
                               } 
                               //Subtracts QTY in the inventory
-                              $sqlToSubtractFromItemsTrading = "UPDATE items_trading
-                              SET items_trading.item_count  = (item_count - '$EXPLODED_ITEM_QTY[$i]'),
-                              last_update = Now() 
-                              WHERE item_id ='$EXPLODED_ITEM_ID[$i]';";
-                              $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); 
-                              if(!$resultOfSubtract) 
+                              $CHECK_ITEMS_INSIDE_WAREHOUSE = "SELECT * FROM items_trading"; //checks if there is any item inside warehouse
+                              $RESULT_CHECK_ITEMS_INSIDE_WAREHOUSE = mysqli_query($dbc,$CHECK_ITEMS_INSIDE_WAREHOUSE);
+                              $ROW_RESULT_CHECK_ITEMS_INSIDE_WAREHOUSE = mysqli_fetch_assoc($RESULT_CHECK_ITEMS_INSIDE_WAREHOUSE);
+
+                              $NUMBER_OF_ITEMS_INSIDE = $ROW_RESULT_CHECK_ITEMS_INSIDE_WAREHOUSE['item_inside_warehouse'];
+
+                              if($NUMBER_OF_ITEMS_INSIDE > 0)  //if there is 
                               {
-                                  die('Error: ' . mysqli_error($dbc));
+                                $sqlToSubtractFromItemsTrading = "UPDATE items_trading
+                                SET items_trading.item_count  = (item_count - '$EXPLODED_ITEM_QTY[$i]'),
+                                item_inside_warehouse = (item_inside_warehouse - '$EXPLODED_ITEM_QTY[$i]' ),
+                                last_update = Now() 
+                                WHERE item_id ='$EXPLODED_ITEM_ID[$i]';";
+                                $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); 
+                                if(!$resultOfSubtract) 
+                                {
+                                    die('Error: ' . mysqli_error($dbc));
+                                } 
+                                else 
+                                {
+                                    echo '<script language="javascript">';
+                                    echo 'alert("Subtract Successfull");';
+                                    echo '</script>';
+                                }
                               } 
-                              else 
+
+                              else
                               {
-                                  echo '<script language="javascript">';
-                                  echo 'alert("Subtract Successfull");';
-                                  echo '</script>';
+                                $sqlToSubtractFromItemsTrading = "UPDATE items_trading
+                                SET items_trading.item_count  = (item_count - '$EXPLODED_ITEM_QTY[$i]'),
+                                item_outside_warehouse = (item_outside_warehouse - '$EXPLODED_ITEM_QTY[$i]' ),
+                                last_update = Now() 
+                                WHERE item_id ='$EXPLODED_ITEM_ID[$i]';";
+                                $resultOfSubtract=mysqli_query($dbc,$sqlToSubtractFromItemsTrading); 
+                                if(!$resultOfSubtract) 
+                                {
+                                    die('Error: ' . mysqli_error($dbc));
+                                } 
+                                else 
+                                {
+                                    echo '<script language="javascript">';
+                                    echo 'alert("Subtract Successfull");';
+                                    echo '</script>';
+                                }
                               }
+                              
                             } //END FOR
 
                           $fab_text = htmlspecialchars($_POST['item_description']);

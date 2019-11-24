@@ -34,7 +34,7 @@
     $UPDATE_DELIVERY_STATUS = "UPDATE scheduledelivery SET delivery_status = '$FINISH_WITH_DAMAGES' WHERE ordernumber = '$GET_OR'";
     $RESULT_UPDATE_DELIVERY_STATUS = mysqli_query($dbc, $UPDATE_DELIVERY_STATUS);
 
-    $UPDATE_ORDER_DELIVERY_STATUS = "UPDATE orders SET order_status = '$FINISH_WITH_DAMAGES' WHERE ordernumber= '$GET_OR'";
+    $UPDATE_ORDER_DELIVERY_STATUS = "UPDATE orders SET order_status = '$FINISH_WITH_DAMAGES', payment_status = '$PAYMENT_STATUS' WHERE ordernumber= '$GET_OR'";
     $RESULT_UPDATE_ORDER_DELIVERY_STATUS = mysqli_query($dbc, $UPDATE_ORDER_DELIVERY_STATUS);
     
     $INSERT_TO_ORDERS = "INSERT INTO orders (ordernumber, client_id, order_date, expected_date, payment_id, totalamt, order_status, installation_status, fab_status, payment_status)
