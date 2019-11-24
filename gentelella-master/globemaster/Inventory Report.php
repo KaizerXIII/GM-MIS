@@ -447,13 +447,16 @@
           // $('#gmlogodiv').appendChild($('.gmlogo').children('img').clone());
 
           var printedby = document.getElementById("username").innerHTML;
+          var daterange = document.getElementById("report_range").innerHTML;
+          var newdate = new Date();
           // Inject the table and other surrounding information
           win.document.body.innerHTML =
             '<center><h1>GLOBE MASTER TRADING</h1></center>'+
             '<br>'+
-            '<center>Inventory Report</center>'+
+            '<center>Inventory Report as of: '+daterange+'</center>'+
             '<div>'+config.message+'</div>'+
-            '<div align  "right"><b>Printed by: '+printedby+'</b></div>'+
+            '<div align  "right"><b>Printed by: '+printedby+'</b>'+
+            '<div align  "right"><b>Print Date: '+newdate+'</b></div>'+
             html;
           // $(win.document.body).html(
           // 	'<h1>'+title+'</h1>'+
