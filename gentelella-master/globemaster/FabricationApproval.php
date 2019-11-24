@@ -153,7 +153,7 @@
                                         }
                                         if($ROW_RESULT_STATUS['fab_status'] == "Under Fabrication")
                                         {
-                                          echo '<a class="current_anchored_row" href="javascript:" current_or = "'.$ORDER_NUMBER[$i].'">Was an item damaged during production? Click here!</a>';
+                                          echo '<a class="current_anchored_row" href="javascript:" current_or = "'.$ORDER_NUMBER[$i].'"><font color = "red">Was an item damaged during production? Click here!</font></a>';
                                         }
                                         else
                                         {

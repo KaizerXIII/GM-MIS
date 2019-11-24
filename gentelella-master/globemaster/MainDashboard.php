@@ -294,7 +294,7 @@
                             $query = "SELECT item_id, sku_id, item_name, threshold_amt, item_count, (threshold_amt-item_count) AS 'diff' 
                                         FROM items_trading 
                                         WHERE item_count < threshold_amt 
-                                        ORDER BY item_count DESC";
+                                        ORDER BY diff DESC";
                             $result=mysqli_query($dbc,$query);
                             while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                             {
@@ -352,7 +352,7 @@
                                           <th>Request Number</th>
                                           <th>Request Date</th>
                                           <th>Expected Date</th>
-                                          <th>Action</th>
+                                          <!-- <th>Action</th> -->
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -367,13 +367,14 @@
                                       <td><?php echo $ROW_DEPOT_REQUEST['depot_request_id']; ?></td>
                                       <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_request_date'])); ?></td>
                                       <td><?php echo date('F d, Y', strtotime($ROW_DEPOT_REQUEST['depot_expected_date'])); ?></td>
-                                      <td align = "center"><a href = "ViewDepotRequests.php"><i class = "fa fa-wrench"></i></a></td>
+                                      <!-- <td align = "center"><a href = "ViewDepotRequests.php"><i class = "fa fa-wrench"></i></a></td> -->
                                     </tr>
                       <?php      
                             } 
                       ?>
                                   </tbody>
                                 </table>
+                                <a href = "ViewDepotRequests.php"><center><button class = "btn btn-round btn-md btn-primary">See More</button></center></a>
                               </div>
                             </div>
                           </div>

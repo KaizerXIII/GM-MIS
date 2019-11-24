@@ -209,7 +209,7 @@ footer, header,.nav{ display:none; } /*Removes elements before print, use [#idna
                                 }
      
                                 echo '<td align = "center">';
-                                echo '<a href = "ViewDepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
+                                echo '<a href = "DepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
                                 echo '</td>';
                               
                               echo '</tr>';
@@ -275,7 +275,7 @@ footer, header,.nav{ display:none; } /*Removes elements before print, use [#idna
                                 }
      
                                 echo '<td align = "center">';
-                                echo '<a href = "ViewDepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
+                                echo '<a href = "DepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
                                 echo '</td>';
                               
                               echo '</tr>';
@@ -341,7 +341,7 @@ footer, header,.nav{ display:none; } /*Removes elements before print, use [#idna
                                 }
      
                                 echo '<td align = "center">';
-                                echo '<a href = "ViewDepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
+                                echo '<a href = "DepotRequestDetails.php?depot_or='.$ROW_RESULT_GET_DEPOT['depot_request_id'].'"><i class="fa fa-wrench" ></a>'; 
                                 echo '</td>';
                               
                               echo '</tr>';
