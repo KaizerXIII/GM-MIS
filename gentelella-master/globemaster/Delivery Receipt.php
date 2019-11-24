@@ -805,7 +805,7 @@ echo '</script>';
                  },
                 success: function(data)
                 {                 
-                    window.location.href = "MainDashboard.php";                           
+                    window.location.href = "Deliveries.php";                           
                 }//End Scucess  
                 })
             }
@@ -848,7 +848,7 @@ echo '</script>';
                     success: function(data)
                     {
                         alert("Delivery Complete!");
-                        window.location.href = "Delivery Receipt.php";                         
+                        window.location.href = "Deliveries.php";                         
                     }//End Scucess               
                 }); // End ajax    
             }   
