@@ -255,6 +255,7 @@
 
                             $TRUCKS_FROM_TRUCKTABLE = array();
                             $TRUCK_MODEL = array();
+                            $TRUCK_STATIC_CAPACITY = array();
 
                             $querytogetDBTable = "SELECT * FROM trucktable";
                             $resultofQuery =  mysqli_query($dbc, $querytogetDBTable);
@@ -263,7 +264,8 @@
                              
                               $TRUCK_STATIC_CAP[] = $rowofResult['weightCap'];
                               $TRUCKS_FROM_TRUCKTABLE[] = $rowofResult['truckplate'];
-                              $TRUCK_MODEL[]=$rowofResult['truckmodel'];   
+                              $TRUCK_MODEL[]=$rowofResult['truckmodel'];  
+                              $TRUCK_STATIC_CAPACITY[] = $rowofResult['weightCap']; 
                             }; 
 
                             $GET_BULK_CAP = "SELECT * FROM bulk_order";
@@ -293,14 +295,25 @@
                             }
                             
                           
-                            for($i=0; $i<sizeof($TRUCK_ARRAY);$i++){
+                            for($i=0; $i<sizeof($TRUCK_ARRAY);$i++)
+                            {
                               echo "<tr>";
                               echo '<td>'.$TRUCK_MODEL[$i] .' | '.$TRUCKS_FROM_TRUCKTABLE[$i].'</td>';
                               
                               
-                              foreach($TRUCK_ARRAY[$i] as $key=>$truck_array_entry){
-                              
-                                  echo '<td align = right>'.$truck_array_entry.' KG </td>';   
+                              foreach($TRUCK_ARRAY[$i] as $key=>$truck_array_entry)
+                              {
+                                  if (empty($truck_array_entry))
+                                  {
+                                    
+                                    echo '<td align = right>'.$TRUCK_STATIC_CAPACITY[$i].' KG </td>';
+                                  }
+
+                                  else
+                                  {
+                                    echo '<td align = right>'.$truck_array_entry.' KG </td>';
+                                  }
+                                     
                                                                                           
                                                                             
                               }   
