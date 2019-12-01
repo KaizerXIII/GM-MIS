@@ -104,7 +104,8 @@
                           <th width ="100px">Item Name</th>
                           <th width ="100px">Item Type</th>
                           <th width ="100px">Client Name</th>
-                          <th width ="10px">Total Quantity Sold</th>
+                          <th width ="10px">Total Qty Sold</th>
+                          <th width ="10px">Total VAT</th>
                           <th width ="100px">Total Price Sold</th>
                           <th width ="100px">Order Date</th>
                        
@@ -147,6 +148,7 @@
                               echo ' <td> '.$ITEM_TYPE_NAME. '</td>';
                               echo ' <td>'.$row['client_name'].' </td>';
                               echo ' <td align="right">'.$itemQty.' </td>';
+                              echo ' <td align="right"> ₱'.number_format((($row['totalamt'] / 1.12) * 0.12), 2, '.', ',').' </td>';
                               echo ' <td align="right"> ₱ '.number_format($row['totalamt'], 2, '.', ',').' </td>';
                               echo ' <td>'.date('Y-m-d',strtotime($date)).' </td>';
                               
