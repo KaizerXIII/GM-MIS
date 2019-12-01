@@ -358,7 +358,7 @@
                                       <tbody>
 
                       <?php 
-                            $SQL_GET_DEPOT_REQUEST = "SELECT * FROM depot_request";
+                            $SQL_GET_DEPOT_REQUEST = "SELECT * FROM depot_request WHERE depot_request_status = 'Order in Progress'";
                             $RESULT_GET_DEPOT_REQUEST=mysqli_query($dbc,$SQL_GET_DEPOT_REQUEST);
                             while($ROW_DEPOT_REQUEST=mysqli_fetch_array($RESULT_GET_DEPOT_REQUEST,MYSQLI_ASSOC))
                             {

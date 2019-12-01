@@ -142,10 +142,23 @@
                       ?>
 
                           <label id ="total_loss" ><b><font color = "black" size = "5px">Current Report - Total Losses: [ <?php echo '₱ '."".number_format($rowTotalLoss['accumulated_loss'], 2);?> ]</font></b></label>
+                          <br>
                       <?php
                           }
                       ?>
-                    
+                          <label id ="customer_loss" ><b><font color = "black" size = "4px">Customer Losses: </font></b></label>
+                          <br>
+                          <label id ="delivery_loss" ><b><font color = "black" size = "4px">Delivery Losses: </font></b></label>
+                          <br>
+                          <label id ="employee_loss" ><b><font color = "black" size = "4px">Employee Losses: </font></b></label>
+                          <br>
+                          <label id ="environ_loss" ><b><font color = "black" size = "4px">Environmental Losses: </font></b></label>
+                          <br>
+                          <label id ="fab_loss" ><b><font color = "black" size = "4px">Fabrication Losses: </font></b></label>
+                          <br>
+                          <label id ="supplier_loss" ><b><font color = "black" size = "4px">Supplier Shipment Losses: </font></b></label>
+                          
+
                     
                     
                     <div class="clearfix"></div>
@@ -367,6 +380,12 @@
           
           var getTable = $('#datatable-buttons').DataTable();
           var total_amt_label = document.getElementById('total_loss');
+          var customer_loss_label = document.getElementById('customer_loss');
+          var delivery_loss_label = document.getElementById('delivery_loss');
+          var employee_loss_label = document.getElementById('employee_loss');
+          var environ_loss_label = document.getElementById('environ_loss');
+          var fab_loss_label = document.getElementById('fab_loss');
+          var supplier_loss_label = document.getElementById('supplier_loss');
 
           $.fn.dataTable.ext.search.push( //Checks all the dates between start and end then pushes it to array
             function(settings, data, dataIndex) 
@@ -392,16 +411,61 @@
           );
           getTable.draw(); //Draws table based on the dates between start and end compared to the column 
           console.log(formatNumber(getTable.column(3,{'search': 'applied'}).data()));
-
+          console.log(getTable.column(2,{'search': 'applied'}).data() );
           var current_data_from_table = formatNumber(getTable.column(3,{'search': 'applied'}).data());  //Applies the searched version of the table to get the column data to sum the total Loss of the current report
           var sum = 0;
 
+          var dmg_source_from_table = getTable.column(2,{'search': 'applied'}).data(); 
+          var customer_loss_sum = 0;
+          var delivery_loss_sum = 0;
+          var employee_loss_sum = 0;
+          var environ_loss_sum = 0;
+          var fab_loss_sum = 0;
+          var supplier_loss_sum = 0;
+
           for(var i = 0; i < current_data_from_table.length; i++)
           {
-            sum = sum +parseFloat(current_data_from_table[i]);
-          }      
-         
+            sum = sum +parseFloat(current_data_from_table[i]);    
+          }
+
+          for(var j = 0; j < dmg_source_from_table.length; j++)
+          {
+            if(dmg_source_from_table[j] == "Customer")
+            {     
+              customer_loss_sum = customer_loss_sum + parseFloat(current_data_from_table[j]);
+            }
+            else if(dmg_source_from_table[j] == "Delivery")
+            {
+              delivery_loss_sum = delivery_loss_sum + parseFloat(current_data_from_table[j]);
+            }
+            else if(dmg_source_from_table[j] == "Employee")
+            {
+              employee_loss_sum = employee_loss_sum + parseFloat(current_data_from_table[j]);
+            } 
+            else if(dmg_source_from_table[j] == "Environmental")
+            {
+              environ_loss_sum = environ_loss_sum + parseFloat(current_data_from_table[j]);
+            } 
+            else if(dmg_source_from_table[j] == "Fabrication")
+            {
+              fab_loss_sum = fab_loss_sum + parseFloat(current_data_from_table[j]);
+            } 
+            else if(dmg_source_from_table[j] == "Supplier Shipment")
+            {
+              supplier_loss_sum = supplier_loss_sum + parseFloat(current_data_from_table[j]);
+            }    
+             
+          }
+              
           total_amt_label.innerHTML = '<b><font color = "black" size = "5px">Current Report - Total Losses: [ ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+' ]</font></b>';
+          
+          customer_loss_label.innerHTML = '<b><font color = "black" size = "4px">Customer Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(customer_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
+          delivery_loss_label.innerHTML = '<b><font color = "black" size = "4px">Delivery Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(delivery_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
+          employee_loss_label.innerHTML = '<b><font color = "black" size = "4px">Employee Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(employee_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
+          environ_loss_label.innerHTML = '<b><font color = "black" size = "4px">Environmental Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(environ_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
+          fab_loss_label.innerHTML = '<b><font color = "black" size = "4px">Fabrication Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(fab_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
+          supplier_loss_label.innerHTML = '<b><font color = "black" size = "4px">Supplier Shipment Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(supplier_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
+          
           $.fn.dataTable.ext.search.pop();//Pops the function
           
           });//End function
@@ -584,7 +648,7 @@ DataTable.ext.buttons.print = {
 		win.document.body.innerHTML =
         '<center><h1>GLOBE MASTER TRADING</h1></center>'+
         '<br>'+
-        '<center>Inventory Report as of: '+daterange+'</center>'+
+        '<center>Damaged Items Report as of: '+daterange+'</center>'+
         '<center>Damaged Items Report</center>'+
         '<div>'+config.message+'</div>'+
         '<div align  "right"><b>Printed by: '+printedby+'</b></div>'+

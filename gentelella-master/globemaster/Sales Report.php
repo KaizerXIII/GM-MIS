@@ -499,7 +499,7 @@ DataTable.ext.buttons.print = {
 		win.document.body.innerHTML =
         '<center><h1>GLOBE MASTER TRADING</h1></center>'+
         '<br>'+
-        '<center>Inventory Report as of: '+daterange+'</center>'+
+        '<center>Sales Report as of: '+daterange+'</center>'+
         '<center>Sales Report</center>'+
         '<div>'+config.message+'</div>'+
         '<div align  "right"><b>Printed by: '+printedby+'</b></div>'+
