@@ -150,7 +150,8 @@
                           <th>SKU</th>
                           <th>Item Name</th>                                                
                           <th>Supplier</th>                         
-                          <th>Warehouse Location</th> 
+                          <th>Warehouse Location</th>
+                          <th>Item Threshold</th>
                           <th>Item Count</th>
                           <th>Price</th>                       
                           <th>Last Update</th>
@@ -198,8 +199,21 @@
                                     echo $warehouse;
                                     echo '</td>';
                                     echo '<td align = "right">';
-                                    echo $row['item_count'];
+                                    echo $row['threshold_amt'];
                                     echo '</td>';
+                                    if($row['item_count'] <= $row['threshold_amt'])
+                                    {
+                                      echo '<td align = "right">';
+                                      echo '<b><font color = "red">'.$row['item_count'].'</font></b>';
+                                      echo '</td>';
+                                    }
+                                    else 
+                                    {
+                                      echo '<td align = "right">';
+                                      echo $row['item_count'];
+                                      echo '</td>';
+                                    }
+                                   
                                     echo '<td align = "right">';
                                     echo  '₱ '." ".number_format($row['price'], 2);
                                     echo '</td>';

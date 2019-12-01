@@ -221,6 +221,18 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Fabrication Cost: </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" id = "total_fab_cost" class="form-control" readonly="readonly "style="text-align:right;">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">VAT Amount: </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" id = "total_vat" class="form-control" readonly="readonly "style="text-align:right;">
+                                                </div>
+                                            </div>                                       
+                                            <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Amount: </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="text" id = "total_amount" class="form-control" readonly="readonly"  style="text-align:right;">
@@ -243,6 +255,8 @@
                                       echo  'var INSTALL_STATUS_BOX = document.getElementById("install_status");';
                                       echo  'var FAB_STATUS_BOX = document.getElementById("fabrication_status");';
                                       echo  'var TOTAL_AMOUNT_BOX = document.getElementById("total_amount");';
+                                      echo  'var VAT_AMOUNT_BOX = document.getElementById("total_vat");';
+                                      echo  'var FAB_AMOUNT_BOX = document.getElementById("total_fab_cost");';
 
                                     $CLIENT_NAME = array();
                                     $ORDER_DATE = array();
@@ -253,13 +267,14 @@
                                     $INSTALL_STATUS = array();
                                     $FAB_STATUS = array();
                                     $TOTAL_AMOUNT = array();
+                                    $TOTAL_VAT = array();
+                                    $TOTAL_FAB = array();
 
                                     $GET_OR =  $_SESSION['order_number_from_view']; 
                                     $SQL_SELECT_FROM_ORDERS = "SELECT * FROM orders WHERE ordernumber = '$GET_OR'";
                                     $RESULT_SELECT_ORDERS = mysqli_query($dbc,$SQL_SELECT_FROM_ORDERS);
                                     while($ROW_RESULT_SELECT_ORDERS=mysqli_fetch_array($RESULT_SELECT_ORDERS,MYSQLI_ASSOC))
                                     {
-                                       
                                         $queryPaymentType = "SELECT paymenttype FROM ref_payment WHERE payment_id =" . $ROW_RESULT_SELECT_ORDERS['payment_id'] . ";";
                                         $resultPaymentType = mysqli_query($dbc,$queryPaymentType);
                                         $rowPaymentType=mysqli_fetch_array($resultPaymentType,MYSQLI_ASSOC);
@@ -285,9 +300,17 @@
                                         $INSTALL_STATUS[] = $ROW_RESULT_SELECT_ORDERS['installation_status'];
                                         $FAB_STATUS[] = $ROW_RESULT_SELECT_ORDERS['fab_status'];
                                         $TOTAL_AMOUNT[] =  number_format(($ROW_RESULT_SELECT_ORDERS['totalamt']),2);                                          
-                                                                             
+                                                                          
                                     }
-                                      
+                                    $SQL_GET_ITEM_ID = "SELECT * FROM order_details WHERE ordernumber = '$GET_OR'";
+                                    $RESULT_GET_ITEM_ID = mysqli_query($dbc,$SQL_GET_ITEM_ID);
+                                    while($ROW_RESULT_GET_ITEM_ID=mysqli_fetch_array($RESULT_GET_ITEM_ID,MYSQLI_ASSOC))
+                                    {
+                                        $ITEM_PRICE_SUBTOTAL = $ROW_RESULT_GET_ITEM_ID['item_price'] * $ROW_RESULT_GET_ITEM_ID['item_qty'];
+                                        $TOTAL_VAT[] = number_format(($ITEM_PRICE_SUBTOTAL / 1.12) * 0.12,2);
+                                        
+                                        $TOTAL_FAB[] = number_format((($ROW_RESULT_GET_ITEM_ID['item_price'] * $ROW_RESULT_GET_ITEM_ID['item_qty']) + (($ITEM_PRICE_SUBTOTAL / 1.12) * 0.12)) *.10,2);
+                                    }
                                     
                                     echo "var CLIENT_NAME_FROM_PHP = ".json_encode($CLIENT_NAME).";"; 
                                     echo "var ORDER_DATE_FROM_PHP = ".json_encode($ORDER_DATE).";"; 
@@ -298,6 +321,8 @@
                                     echo "var INSTALL_STATUS_FROM_PHP = ".json_encode($INSTALL_STATUS).";";
                                     echo "var FAB_STATUS_FROM_PHP = ".json_encode($FAB_STATUS).";";
                                     echo "var TOTAL_AMOUNT_FROM_PHP = ".json_encode($TOTAL_AMOUNT).";";
+                                    echo "var VAT_AMOUNT_FROM_PHP = ".json_encode($TOTAL_VAT).";";
+                                    echo "var FAB_AMOUNT_FROM_PHP = ".json_encode($TOTAL_FAB).";";
 
                                     echo  " for (var i = 0; i < 1; i++) {  ";   
                                         echo 'CLIENT_NAME_BOX.value = CLIENT_NAME_FROM_PHP[i];';
@@ -309,7 +334,8 @@
                                         echo 'INSTALL_STATUS_BOX.value = INSTALL_STATUS_FROM_PHP[i];';
                                         echo 'FAB_STATUS_BOX.value = FAB_STATUS_FROM_PHP[i];';
                                         echo 'TOTAL_AMOUNT_BOX.value = "₱ "+ TOTAL_AMOUNT_FROM_PHP[i];';
-
+                                        echo 'VAT_AMOUNT_BOX.value = "₱ "+ VAT_AMOUNT_FROM_PHP[i];';
+                                        echo 'FAB_AMOUNT_BOX.value = "₱ "+ FAB_AMOUNT_FROM_PHP[i];';
                                     echo '}'; //End FOR
 
                                      ?>

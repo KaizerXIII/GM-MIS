@@ -111,6 +111,8 @@
                                $_SESSION['loan_amt'] = $_GET['loan'];
                                echo"Loan AMT = ", $_SESSION['loan_amt'],"<br>"; // Get loan
 
+                               $_SESSION['vat_total'] = $_GET['vat_amt'];
+                               echo"Loan AMT = ", $_SESSION['vat_total'],"<br>"; // Get VAT
                                
                           ?>
 
@@ -190,8 +192,13 @@
                 <input type="text" id = "supplier_name" class="form-control" readonly="readonly" value = "<?php echo $rowGetPaymentType['paymenttype'];?>">
             </div>
         </div>
-        <div class="form-group">
-            <br><br>
+        <div class="form-group">         
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">VAT Amount</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id = "vat_amt" class="form-control" readonly="readonly" style="text-align:right" value = "<?php echo $_SESSION['vat_total'];?>">
+            </div>
+        </div>
+        <div class="form-group">         
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Tendered Amount</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right" value = "<?php echo $_SESSION['total'];?>">
@@ -217,6 +224,8 @@
                     <tr>    
                     <th>Item Name</th>
                     <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
                     
                     </tr>
                 </thead>
@@ -235,6 +244,8 @@
                       <tr>
                       <td><?php echo $ITEMSORDERED;?></td>
                       <td><?php echo $ITEMSQUANTITY1[$i];?></td>
+                      <td>₱ <?php echo $rowGetItemsOrdered['price'];?></td>
+                      <td>₱ <?php echo number_format((float)($rowGetItemsOrdered['price'] * $ITEMSQUANTITY1[$i]),2,'.','');?></td>
                       </tr>                                                         
                     </tbody>
 <?php
