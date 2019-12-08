@@ -231,7 +231,13 @@
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="text" id = "total_vat" class="form-control" readonly="readonly "style="text-align:right;">
                                                 </div>
-                                            </div>                                       
+                                            </div>        
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Loan Paid Amount: </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" id = "loanpaid" class="form-control" readonly="readonly"  style="text-align:right;" value = "₱ 300.00">
+                                                </div>
+                                            </div>                               
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Amount: </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -545,6 +551,8 @@
         <b>Expected Date: </b><span id = "print_expected_date"></span>
         <br>
         <b>Payment Type: </b><span id = "print_payment_type"></span>
+        <br>
+        <b>Loan Paid Amount: </b><span>₱ 300.00</span>
         <br>
         <b>Payment Status: </b><span id = "print_payment_status"></span>
         <br><br>

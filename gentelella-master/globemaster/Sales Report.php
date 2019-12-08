@@ -120,7 +120,8 @@
                           JOIN order_details ON orders.ordernumber = order_details.ordernumber
                           JOIN items_trading ON order_details.item_id = items_trading.item_id
                           JOIN clients ON orders.client_id = clients.client_id 
-                          GROUP BY items_trading.item_name";                      
+                          GROUP BY items_trading.item_name
+                          ORDER BY orders.order_date";                      
                           $resultofQuery =  mysqli_query($dbc, $query);
                           while($row=mysqli_fetch_array($resultofQuery,MYSQLI_ASSOC))
                           {

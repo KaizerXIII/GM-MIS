@@ -130,7 +130,20 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Delivery Date:
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input class="form-control deliveryDate"  type="date"  id="deliveryDate" name="deliveryDate"  min="<?php echo date("Y-m-d", strtotime("+1days")); ?>"required/>
+                          <?php
+                            if(date("Hi") >= "0600" && date("Hi") < "1500")
+                            {
+                          ?>
+                              <input class="form-control deliveryDate"  type="date"  id="deliveryDate" name="deliveryDate"  min="<?php echo date("Y-m-d", strtotime("+0days")); ?>"required/>
+                          <?php
+                            }
+                            else
+                            {
+                          ?>
+                              <input class="form-control deliveryDate"  type="date"  id="deliveryDate" name="deliveryDate"  min="<?php echo date("Y-m-d", strtotime("+1days")); ?>"required/>
+                          <?php
+                            }
+                          ?>
                             <style>
                                     .deliveryDate {
                                         -moz-appearance:textfield;

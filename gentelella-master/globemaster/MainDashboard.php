@@ -640,6 +640,73 @@
                       </div>';
                       echo '<div class = "clearfix"></div>';
                     }
+                    if($user == 'SALES' || $user == 'MKT' || $user == 'Superuser')
+                    {
+                        
+                         //LATE DELIVERIES
+                 
+                        echo '<div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                      <h2><center><i class="fa fa-truck"></i><b>  LATE DELIVERIES</b></h2>
+                                    <div class="clearfix"></div>
+                                  <div class="x_content">
+
+                                    <table class="table table-bordered">
+                                      <thead>
+                                        <tr>
+                                          <th>Order Number</th>
+                                          <th>Delivery Date</th>
+                                          <th>Days Late</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>';
+                        
+                            require_once('DataFetchers/mysql_connect.php');
+                            $query = "SELECT ordernumber, delivery_Date, DATEDIFF(NOW(), delivery_Date) AS 'days_late' FROM scheduledelivery 
+                                      WHERE delivery_status ='Late Delivery'
+                                      ORDER BY days_late DESC";
+                            $result=mysqli_query($dbc,$query);
+                            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                            {
+
+                                    // $queryClientName = "SELECT client_name FROM clients WHERE client_id =" . $row['client_id'] . ";";
+                                    // $resultClientName = mysqli_query($dbc,$queryClientName);
+                                    // $rowClientName=mysqli_fetch_array($resultClientName,MYSQLI_ASSOC);
+                                    // $clientName = $rowClientName['client_name'];
+                                    
+                                
+                                    echo '<tr>';
+                                    echo '<td>';
+                                    echo $row['ordernumber'];
+                                    echo '</td>';
+                                    echo '<td>';
+                                    echo date('F d, Y', strtotime($row['delivery_Date']));
+                                    echo '</td>';
+                                    if($row['days_late'] >= 8 && $row['days_late'] <= 0)
+                                    {
+                                      echo '<td><b><font color = "orange">';
+                                      echo $row['days_late'];
+                                      echo ' Day(s) Left!';
+                                      echo '</font></b></td>';
+                                    }
+                                    elseif($row['days_late'] > 0)
+                                    {
+                                      echo '<td align = "right"><b><font color = "red">';
+                                      echo abs($row['days_late']);
+                                      echo ' Day(s) Late!';
+                                      echo '</font></b></td>';
+                                    }
+                                    echo '</tr>';
+                                    
+                            } 
+                     echo '</tbody>';
+                    echo '</table>';
+                        
+                             echo '</div>
+                        </div>
+                      </div>';
+                      echo '<div class = "clearfix"></div>';
+                    }
                  
                  if($user == 'INV' || $user == 'Superuser')
                  {

@@ -137,20 +137,21 @@ if(!(isset($_SESSION['usertype']))){
                   echo    "<li data-toggle = 'tooltip' data-placement='right' title='View company truck schedules and available capacity for a delivery date'><a href='ViewTruckCap.php'>View Delivery Schedule</a></li>";
                   echo    "<li data-toggle = 'tooltip' data-placement='right' title='View generated DR's'><a href='Deliveries.php'>View Delivery Receipts</a></li>";
                 }
-                if($user == 'SALES' or $user == 'Superuser'){
-                  if(date("Hi") >= "0600" && date("Hi") < "1500")
-                  {
-                    // echo date("Hi");
-                    echo    "<li data-toggle = 'tooltip' data-placement='right' title='Generate a Delivery Receipt'><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
-                  }
-                  else
-                  {
-                    // echo date("Hi");
-                    echo    "<li data-toggle = 'tooltip' data-placement='right' title='Cannot make deliveries after 3pm. \n Try again tomorrow.'><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
-                  }
-                  // // echo date("Hi");
-                  // echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
-                }
+                  echo    "<li data-toggle = 'tooltip' data-placement='right' title='Generate a Delivery Receipt'><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                // if($user == 'SALES' or $user == 'Superuser'){
+                //   if(date("Hi") >= "0600" && date("Hi") < "1500")
+                //   {
+                //     // echo date("Hi");
+                //     echo    "<li data-toggle = 'tooltip' data-placement='right' title='Generate a Delivery Receipt'><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                //   }
+                //   else
+                //   {
+                //     // echo date("Hi");
+                //     echo    "<li data-toggle = 'tooltip' data-placement='right' title='Cannot make deliveries after 3pm. \n Try again tomorrow.'><a href='#' onclick = 'alertTime();'>Generate Delivery Receipt</a></li>";
+                //   }
+                //   // // echo date("Hi");
+                //   // echo    "<li><a href='CreateDeliveryReceipt.php'>Generate Delivery Receipt</a></li>";
+                // }
                   echo   "</ul>";
                   echo "</li>";
                         }

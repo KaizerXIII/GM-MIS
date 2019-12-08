@@ -199,6 +199,12 @@
             </div>
         </div>
         <div class="form-group">         
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Loan Downpayment</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id = "vat_amt" class="form-control" readonly="readonly" style="text-align:right" value = "₱ 300.00">
+            </div>
+        </div>
+        <div class="form-group">         
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Total Tendered Amount</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <input type="text" id = "item_price" class="form-control" readonly="readonly" style="text-align:right" value = "<?php echo $_SESSION['total'];?>">

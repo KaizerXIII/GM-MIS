@@ -306,7 +306,7 @@
                                   if (empty($truck_array_entry))
                                   {
                                     
-                                    echo '<td align = right>'.$TRUCK_STATIC_CAPACITY[$i].' KG </td>';
+                                    echo '<td align = right>'.$TRUCK_STATIC_CAPACITY[$i].'.00 KG </td>';
                                   }
 
                                   else
