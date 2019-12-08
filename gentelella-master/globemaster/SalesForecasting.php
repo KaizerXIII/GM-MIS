@@ -81,11 +81,13 @@ require_once("salesForecastingController.php");
 
 
                         <div class="x_content; col-md-12 col-sm-9 col-xs-12 bg-white" id ="topSellingChart">
-                            <canvas id="lineChart1" height = "100"></canvas>
+                            <canvas id="lineChart1" height = "80"></canvas>
                         </div>
                         <br />
 
-                        <div class="clearfix"></div>
+                        <div class="clearfix"></div><div class="x_content; col-md-12 col-sm-9 col-xs-12 bg-white" id ="topSellingChart">
+                            <canvas id="lineChart2" height = "80"></canvas>
+                        </div>
 
 
                         <!-- <div id="echart_line" style="height:350px;"></div> -->
@@ -194,16 +196,6 @@ require_once("salesForecastingController.php");
                         data: {
                             labels: expected,
                             datasets: [{
-                                label: 'Forecasted Data of Item <?php echo $_GET['item_id']?>',
-                                fill: false,
-                                borderDash: [10,5],
-                                pointStyle: 'circle',
-                                pointRadius: 1,
-                                backgroundColor: newColor,
-                                borderColor: newColor,
-                                borderWidth: 0,
-                                data: <?php echo json_encode($data[1]); ?>
-                            },{
                                 label: 'Actual Values of Item <?php echo $_GET['item_id']?>',
                                 fill: false,
                                 pointStyle: 'circle',
@@ -251,6 +243,76 @@ require_once("salesForecastingController.php");
                         }
                     };
                     var ctx = document.getElementById("lineChart1").getContext('2d');
+                    window.lineChart = new Chart(ctx,config);
+                    // Line chart
+                    var chartColors = {
+                        red: 'rgb(255, 99, 132)',
+                        orange: 'rgb(255, 159, 64)',
+                        yellow: 'rgb(255, 205, 86)',
+                        green: 'rgb(75, 192, 192)',
+                        blue: 'rgb(54, 162, 235)',
+                        purple: 'rgb(153, 102, 255)',
+                        grey: 'rgb(231,233,237)',
+                        black: 'rgb(0,0,0)',
+                    };
+                    var color = Chart.helpers.color;
+                    var colorNames = Object.keys(window.chartColors);
+                    var colorName = colorNames[1 % colorNames.length];
+                    var newColor = window.chartColors[colorName];
+                    var expected = <?php echo json_encode($dates); ?>;
+                    var config = {
+                        type: 'line',
+                        data: {
+                            labels: expected,
+                            datasets: [{
+                                label: 'Forecasted Data of Item <?php echo $_GET['item_id']?>',
+                                fill: false,
+                                borderDash: [10,5],
+                                pointStyle: 'circle',
+                                pointRadius: 1,
+                                backgroundColor: newColor,
+                                borderColor: newColor,
+                                borderWidth: 0,
+                                data: <?php echo json_encode($data[1]); ?>
+                            }   ]
+                        },
+                        options: {
+                            spanGaps: true,
+                            responsive: true,
+                            layout: {
+                                padding: {
+                                    top: 50
+                                }
+                            },
+                            legend: {
+                                position: 'bottom',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Forecasted Sales Values'
+                            },
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    },
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Dates'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Sales in Pesos'
+                                    }
+                                }]
+                            }
+                        }
+                    };
+                    var ctx = document.getElementById("lineChart2").getContext('2d');
                     window.lineChart = new Chart(ctx,config);
                     /* DATERANGEPICKER */
                     function init_daterangepicker() {

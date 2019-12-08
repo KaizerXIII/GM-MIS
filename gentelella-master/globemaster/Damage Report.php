@@ -685,6 +685,14 @@ DataTable.ext.buttons.print = {
     var daterange = document.getElementById("report_range").innerHTML;
     var newdate = new Date();
 
+    var totloss = document.getElementById("total_loss").innerHTML;
+    var custdam = document.getElementById("customer_loss").innerHTML;
+    var deldam = document.getElementById("delivery_loss").innerHTML;
+    var empdam = document.getElementById("employee_loss").innerHTML;
+    var envdam = document.getElementById("environ_loss").innerHTML;
+    var fabdam = document.getElementById("fab_loss").innerHTML;
+    var supdam = document.getElementById("supplier_loss").innerHTML;
+
 		// Inject the table and other surrounding information
 		win.document.body.innerHTML =
         '<center><h1>GLOBE MASTER TRADING</h1></center>'+
@@ -692,8 +700,16 @@ DataTable.ext.buttons.print = {
         '<center>Damaged Items Report as of: '+daterange+'</center>'+
         '<center>Damaged Items Report</center>'+
         '<div>'+config.message+'</div>'+
-        '<div align  "right"><b>Printed by: '+printedby+'</b></div>'+
-        '<div align  "right"><b>Print Date: '+newdate+'</b></div>'+
+        '<div align  "right"><b>Printed by: </b>'+printedby+'</div>'+
+        '<div align  "right"><b>Print Date: </b>'+newdate+'</div>'+
+        '<br>'+
+        '<div align  "right">'+totloss+'</div>'+
+        '<div align  "right">'+custdam+'</div>'+
+        '<div align  "right">'+deldam+'</div>'+
+        '<div align  "right">'+empdam+'</div>'+
+        '<div align  "right">'+envdam+'</div>'+
+        '<div align  "right">'+fabdam+'</div>'+
+        '<div align  "right">'+supdam+'</div>'+
 			html;
 		// $(win.document.body).html(
 		// 	'<h1>'+title+'</h1>'+
