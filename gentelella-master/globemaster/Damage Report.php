@@ -146,17 +146,42 @@
                       <?php
                           }
                       ?>
-                          <label id ="customer_loss" ><b><font color = "black" size = "4px">Customer Losses: </font></b></label>
+                      <?php
+                        $SQL_SUM_DMG_CUS = "SELECT SUM(total_loss) as TOTAL_CUS_LOSS FROM damage_item WHERE dmg_source = 'Customer';";
+                        $RESULT_SUM_DMG_CUS =  mysqli_query($dbc, $SQL_SUM_DMG_CUS);
+                        $ROW_RESULT_SUM_DMG_CUS =  mysqli_fetch_array($RESULT_SUM_DMG_CUS,MYSQLI_ASSOC);
+
+                        $SQL_SUM_DMG_DEV = "SELECT SUM(total_loss) as TOTAL_LOSS FROM damage_item WHERE dmg_source = 'Delivery';";
+                        $RESULT_SUM_DMG_DEV =  mysqli_query($dbc, $SQL_SUM_DMG_DEV);
+                        $ROW_RESULT_SUM_DMG_DEV =  mysqli_fetch_array($RESULT_SUM_DMG_DEV,MYSQLI_ASSOC);
+
+                        $SQL_SUM_DMG_EMP = "SELECT SUM(total_loss) as TOTAL_LOSS FROM damage_item WHERE dmg_source = 'Employee';";
+                        $RESULT_SUM_DMG_EMP =  mysqli_query($dbc, $SQL_SUM_DMG_EMP);
+                        $ROW_RESULT_SUM_DMG_EMP =  mysqli_fetch_array($RESULT_SUM_DMG_EMP,MYSQLI_ASSOC);
+
+                        $SQL_SUM_DMG_FAB = "SELECT SUM(total_loss) as TOTAL_LOSS FROM damage_item WHERE dmg_source = 'Fabrication';";
+                        $RESULT_SUM_DMG_FAB =  mysqli_query($dbc, $SQL_SUM_DMG_FAB);
+                        $ROW_RESULT_SUM_DMG_FAB =  mysqli_fetch_array($RESULT_SUM_DMG_FAB,MYSQLI_ASSOC);
+
+                        $SQL_SUM_DMG_ENV = "SELECT SUM(total_loss) as TOTAL_LOSS FROM damage_item WHERE dmg_source = 'Environmental';";
+                        $RESULT_SUM_DMG_ENV =  mysqli_query($dbc, $SQL_SUM_DMG_ENV);
+                        $ROW_RESULT_SUM_DMG_ENV =  mysqli_fetch_array($RESULT_SUM_DMG_ENV,MYSQLI_ASSOC);
+
+                        $SQL_SUM_DMG_SUP = "SELECT SUM(total_loss) as TOTAL_LOSS FROM damage_item WHERE dmg_source = 'Supplier Shipment';";
+                        $RESULT_SUM_DMG_SUP =  mysqli_query($dbc, $SQL_SUM_DMG_SUP);
+                        $ROW_RESULT_SUM_DMG_SUP =  mysqli_fetch_array($RESULT_SUM_DMG_SUP,MYSQLI_ASSOC);
+                      ?>
+                          <label id ="customer_loss" ><b><font color = "black" size = "4px">Customer Losses:</font> <font color = "red" size = "4px"><?php echo '₱ '."".number_format($ROW_RESULT_SUM_DMG_CUS['TOTAL_CUS_LOSS'], 2); ?> </font></b></label>
                           <br>
-                          <label id ="delivery_loss" ><b><font color = "black" size = "4px">Delivery Losses: </font></b></label>
+                          <label id ="delivery_loss" ><b><font color = "black" size = "4px">Delivery Losses:</font> <font color = "red" size = "4px"><?php echo '₱ '."".number_format($ROW_RESULT_SUM_DMG_DEV['TOTAL_LOSS'], 2); ?></font></b></label>
                           <br>
-                          <label id ="employee_loss" ><b><font color = "black" size = "4px">Employee Losses: </font></b></label>
+                          <label id ="employee_loss" ><b><font color = "black" size = "4px">Employee Losses:</font> <font color = "red" size = "4px"><?php echo '₱ '."".number_format($ROW_RESULT_SUM_DMG_EMP['TOTAL_LOSS'], 2); ?></font></b></label>
                           <br>
-                          <label id ="environ_loss" ><b><font color = "black" size = "4px">Environmental Losses: </font></b></label>
+                          <label id ="environ_loss" ><b><font color = "black" size = "4px">Environmental Losses:</font> <font color = "red" size = "4px"><?php echo '₱ '."".number_format($ROW_RESULT_SUM_DMG_ENV['TOTAL_LOSS'], 2); ?></font></b></label>
                           <br>
-                          <label id ="fab_loss" ><b><font color = "black" size = "4px">Fabrication Losses: </font></b></label>
+                          <label id ="fab_loss" ><b><font color = "black" size = "4px">Fabrication Losses:</font> <font color = "red" size = "4px"><?php echo '₱ '."".number_format($ROW_RESULT_SUM_DMG_FAB['TOTAL_LOSS'], 2); ?></font></b></label>
                           <br>
-                          <label id ="supplier_loss" ><b><font color = "black" size = "4px">Supplier Shipment Losses: </font></b></label>
+                          <label id ="supplier_loss" ><b><font color = "black" size = "4px">Supplier Shipment Losses:</font> <font color = "red" size = "4px"><?php echo '₱ '."".number_format($ROW_RESULT_SUM_DMG_SUP['TOTAL_LOSS'], 2); ?></font></b></label>
                           
 
                     
@@ -411,7 +436,7 @@
           );
           getTable.draw(); //Draws table based on the dates between start and end compared to the column 
           console.log(formatNumber(getTable.column(3,{'search': 'applied'}).data()));
-          console.log(getTable.column(2,{'search': 'applied'}).data() );
+          console.log(getTable.column(2,{'search': 'applied'}).data());
           var current_data_from_table = formatNumber(getTable.column(3,{'search': 'applied'}).data());  //Applies the searched version of the table to get the column data to sum the total Loss of the current report
           var sum = 0;
 
@@ -423,6 +448,13 @@
           var fab_loss_sum = 0;
           var supplier_loss_sum = 0;
 
+          var cus_loss_cnt = 0;
+          var del_loss_cnt = 0;
+          var emp_loss_cnt = 0;
+          var env_loss_cnt = 0;
+          var fab_loss_cnt = 0;
+          var sup_loss_cnt = 0;
+
           for(var i = 0; i < current_data_from_table.length; i++)
           {
             sum = sum +parseFloat(current_data_from_table[i]);    
@@ -433,26 +465,32 @@
             if(dmg_source_from_table[j] == "Customer")
             {     
               customer_loss_sum = customer_loss_sum + parseFloat(current_data_from_table[j]);
+              cus_loss_cnt = cus_loss_cnt + 1;
             }
             else if(dmg_source_from_table[j] == "Delivery")
             {
               delivery_loss_sum = delivery_loss_sum + parseFloat(current_data_from_table[j]);
+              del_loss_cnt = del_loss_cnt + 1;
             }
             else if(dmg_source_from_table[j] == "Employee")
             {
               employee_loss_sum = employee_loss_sum + parseFloat(current_data_from_table[j]);
+              emp_loss_cnt = emp_loss_cnt + 1;
             } 
             else if(dmg_source_from_table[j] == "Environmental")
             {
               environ_loss_sum = environ_loss_sum + parseFloat(current_data_from_table[j]);
+              env_loss_cnt = env_loss_cnt + 1;
             } 
             else if(dmg_source_from_table[j] == "Fabrication")
             {
               fab_loss_sum = fab_loss_sum + parseFloat(current_data_from_table[j]);
+              fab_loss_cnt = fab_loss_cnt + 1;
             } 
             else if(dmg_source_from_table[j] == "Supplier Shipment")
             {
               supplier_loss_sum = supplier_loss_sum + parseFloat(current_data_from_table[j]);
+              sup_loss_cnt = sup_loss_cnt + 1;
             }    
              
           }
@@ -460,14 +498,17 @@
           total_amt_label.innerHTML = '<b><font color = "black" size = "5px">Current Report - Total Losses: [ ₱ '+Number(parseFloat(sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+' ]</font></b>';
           
           customer_loss_label.innerHTML = '<b><font color = "black" size = "4px">Customer Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(customer_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
-          delivery_loss_label.innerHTML = '<b><font color = "black" size = "4px">Delivery Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(delivery_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
-          employee_loss_label.innerHTML = '<b><font color = "black" size = "4px">Employee Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(employee_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
-          environ_loss_label.innerHTML = '<b><font color = "black" size = "4px">Environmental Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(environ_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
-          fab_loss_label.innerHTML = '<b><font color = "black" size = "4px">Fabrication Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(fab_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
-          supplier_loss_label.innerHTML = '<b><font color = "black" size = "4px">Supplier Shipment Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(supplier_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font></b>';
+          delivery_loss_label.innerHTML = '<b><font color = "black" size = "4px">Delivery Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(delivery_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font>  </b>';
+          employee_loss_label.innerHTML = '<b><font color = "black" size = "4px">Employee Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(employee_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font>  </b>';
+          environ_loss_label.innerHTML = '<b><font color = "black" size = "4px">Environmental Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(environ_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font>  </b>';
+          fab_loss_label.innerHTML = '<b><font color = "black" size = "4px">Fabrication Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(fab_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font>  </b>';
+          supplier_loss_label.innerHTML = '<b><font color = "black" size = "4px">Supplier Shipment Loss: </font><font color = "red" size = "4px"> ₱ '+Number(parseFloat(supplier_loss_sum).toFixed(2)).toLocaleString('en', {minimumFractionDigits: 2})+'</font>  </b>';
           
           $.fn.dataTable.ext.search.pop();//Pops the function
-          
+
+          var ctx = document.getElementById("DamageSourceChart");
+
+          var damagesource = [cus_loss_cnt, del_loss_cnt,emp_loss_cnt,env_loss_cnt,fab_loss_cnt,sup_loss_cnt];    
           });//End function
         }); //END Document .ready
     </script>
@@ -702,7 +743,7 @@ return DataTable.Buttons;
 var damagesource = <?php echo json_encode($DMGSRC); ?>;
 
 console.log(damagesource);
-			  
+  
         if ($('#DamageSourceChart').length ){ 
           
           var ctx = document.getElementById("DamageSourceChart");
@@ -717,25 +758,27 @@ console.log(damagesource);
         	  }]
         	},
   
-        	options: {
-        	  scales: {
-            xAxes: [
+        	options: 
+            {
+              scales: 
               {
-                barPercentage: 0.4
+                xAxes: 
+                [
+                  {
+                    barPercentage: 0.4
+                  }
+                ],
+                yAxes: 
+                [{
+                  ticks: 
+                  {
+                    beginAtZero: true
+                  }
+                }]
               }
-            ],
-        		yAxes: [{
-        		  ticks: {
-        			beginAtZero: true
-        		  }
-        		}]
-        	  }
-        	}
-          });
-          
+            }
+          });      
         } 
-
 </script>
-
   </body>
 </html>
