@@ -77,7 +77,7 @@
                       <div class="clearfix"></div>
                       <h2><font size = "6px"> Damaged items report as of: 
 
-                      <div id="report_range" class="btn btn-default btn-round" >
+                      <div id="report_range" class="btn btn-default btn-round">
                             <span></span> <b class="caret"></b>
                       </div></font>  
 
@@ -508,7 +508,12 @@
 
           var ctx = document.getElementById("DamageSourceChart");
 
-          var damagesource = [cus_loss_cnt, del_loss_cnt,emp_loss_cnt,env_loss_cnt,fab_loss_cnt,sup_loss_cnt];    
+          var damagesource1 = [cus_loss_cnt, del_loss_cnt,emp_loss_cnt,env_loss_cnt,fab_loss_cnt,sup_loss_cnt];    
+          console.log(damagesource1);
+
+          DamageSourceChart.data.datasets[0].data = damagesource1;
+          DamageSourceChart.update();
+          
           });//End function
         }); //END Document .ready
     </script>
@@ -758,8 +763,12 @@ return DataTable.Buttons;
 
 var damagesource = <?php echo json_encode($DMGSRC); ?>;
 
+// var get_sele ct_value_forchart = document.getElementById("dmg_source");
+
 console.log(damagesource);
-  
+
+
+
         if ($('#DamageSourceChart').length ){ 
           
           var ctx = document.getElementById("DamageSourceChart");
@@ -795,6 +804,15 @@ console.log(damagesource);
             }
           });      
         } 
+
+  // get_select_value_forchart.onchange = function()
+  // {
+  //   console.log("hello");
+  //   var damagesource = damagesource1;
+  //   console.log(damagesource);
+   
+  // }
+  
 </script>
   </body>
 </html>
